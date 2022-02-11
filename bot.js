@@ -1,7 +1,7 @@
 
 const dotenv = require('dotenv');
 const fs= require('fs');
-const { Client, Collection, Intents } = require('discord.js');
+const { Client, Collection, Intents, Message } = require('discord.js');
 const { token } = require('./config.json');
 
 
@@ -16,9 +16,6 @@ for (const file of commandFiles) {
 	bot.commands.set(command.data.name, command);
 }
 
-bot.on('ready', () => {
-    console.log(`${bot.user.tag} has logged in.`);
-});
 
 bot.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
@@ -34,6 +31,18 @@ bot.on('interactionCreate', async interaction => {
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
 });
+
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+
+
+for (const file of eventFiles) {
+	const event = require(`./events/${file}`);
+	if (event.once) {
+		bot.once(event.name, (...args) => event.execute(...args));
+	} else {
+		bot.on(event.name, (...args) => event.execute(...args));
+	}
+}
 
 
 bot.login(token);
