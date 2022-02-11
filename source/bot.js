@@ -1,6 +1,16 @@
-require('dotenv').config();
 
-const {Client} = require('discord.js');
-const bot = new Client();
+const dotenv = require('dotenv');
+const { Client, Intents } = require('discord.js');
+const { token } = require('../config.json');
 
-bot.login(process.env.DISCORDJS_BOT_TOKEN);
+
+
+const bot = new Client({ intents: [Intents.FLAGS.GUILDS] });
+
+dotenv.config();
+
+
+bot.once('ready', () => {
+    console.log('Ready!');
+});
+bot.login(token);
