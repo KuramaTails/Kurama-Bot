@@ -1,5 +1,5 @@
 module.exports = {
-	name: "!no",
+	name: "no",
 	ephemeral: "false",
 	async execute(messageCreate) {
 		await messageCreate.reply('no');

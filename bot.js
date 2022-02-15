@@ -1,8 +1,9 @@
 
 const dotenv = require('dotenv');
 const fs= require('fs');
-const { Client, Collection, Intents, Message } = require('discord.js');
+const { Client, Collection, Intents, Message, Permissions } = require('discord.js');
 const { clientId, guildId, token } = require('./config.json');
+const prefix = "!";
 
 dotenv.config()
 
@@ -60,19 +61,23 @@ bot.on('messageCreate', async msg => {
 	var exec=false;
 	if (msg.author.username!=bot.user.username)
 	{
-		if(msg.content.includes("!")){
-			const msgfeature = msg.content;
+		if(msg.content.startsWith(prefix)){
+			const [msgfeature, ...args] = msg.content
+			.trim()
+			.substring(prefix.length)
+			.split(/\s+/);
 			for (const file of featureFiles) {
 				const feature = require(`./feature/${file}`);
 				if (msgfeature== feature.name) {
-					await feature.execute(msg);
+					await feature.execute(msg , args);
 					exec=true;
 				}
 			}
+			if (exec==false){
+				msg.reply("No commands found")
+			}
 		}
-		if (exec==false){
-			msg.reply("No commands found")
-		}
+		
 	}
 	
 	
