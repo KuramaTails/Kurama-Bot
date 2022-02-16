@@ -26,11 +26,21 @@ module.exports = {
                 return;
             }
             else {
-                setTimeout( unmute , 60 * 1000);
-                function unmute() {
-
+                var muted = messageCreate.guild.roles.cache.find(role => role.name === 'Muted')
+                if (mentionedMember.roles.cache.has(muted)) {
+                    return;
                 }
-                messageCreate.reply(`${mentionedMember} was muted out`);
+                else {
+                    mentionedMember.roles.add(muted);
+                    messageCreate.reply(`${mentionedMember} was muted`)
+                    setTimeout( unmute , 60 * 1000);
+                    function unmute() {
+                        mentionedMember.roles.remove(muted);
+                        messageCreate.reply(`${mentionedMember} has been unmuted`)
+                    }  
+                }
+                
+                
             }
         }
         catch (e) {
