@@ -14,10 +14,18 @@ module.exports = {
 	ephemeral: "false",
 	async execute(messageCreate, args) {
         var mentionedMember;
+        const reason = [...args];
+        reason.shift(1);   
         if (!messageCreate.member.permissions.has(permissions)) {
             messageCreate.reply("You are not an Administator!"); return;
         }
         if (args.length === 0) { messageCreate.reply("Please provide an ID"); return };
+        if (reason.length<1) { messageCreate.reply("Please provide a reason"); return;}
+        const formattedReason = reason.toString()
+        .replace(",", " ")
+        .replace("[", " ")
+        .replace("]", " ")
+        .trim();   
         try {
             mentionedMember = await messageCreate.guild.members.fetch(args[0]);
             if (mentionedMember.permissions.has(permissions)) {
@@ -25,8 +33,9 @@ module.exports = {
                 return;
             }
             else {
-                mentionedMember.kick();
-                messageCreate.reply(`${mentionedMember} was kicked`);
+                await mentionedMember.send(`You have been kicked from ${messageCreate.guild } for ${formattedReason } .`)
+                await mentionedMember.kick();
+                messageCreate.reply(`${mentionedMember} was kicked for ${formattedReason }`);
             }
         }
         catch (e) {

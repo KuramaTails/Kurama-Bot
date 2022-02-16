@@ -14,10 +14,18 @@ module.exports = {
 	ephemeral: "false",
 	async execute(messageCreate, args) {
         var mentionedMember;
+        const reason = [...args];
+        reason.shift(1);       
         if (!messageCreate.member.permissions.has(permissions)) {
             messageCreate.reply("You are not an Administator!"); return;
         }
         if (args.length === 0) { messageCreate.reply("Please provide an ID"); return };
+        if (reason.length<1) { messageCreate.reply("Please provide a reason"); return;}
+        const formattedReason = reason.toString()
+        .replace(",", " ")
+        .replace("[", " ")
+        .replace("]", " ")
+        .trim();    
         try {
             mentionedMember = await messageCreate.guild.members.fetch(args[0]);
             if (mentionedMember.permissions.has(permissions)) {
@@ -25,8 +33,9 @@ module.exports = {
                 return;
             }
             else {
-                mentionedMember.ban();
-                messageCreate.reply(`${mentionedMember} was banned`);
+                await mentionedMember.send(`You have been banned from ${messageCreate.guild } for ${formattedReason }.`)
+                await mentionedMember.ban();
+                messageCreate.reply(`${mentionedMember} was banned for ${formattedReason }`);
             }
         }
         catch (e) {
