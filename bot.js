@@ -85,7 +85,11 @@ bot.on('messageCreate', async msg => {
 });
 
 
-
-
+bot.on('ready', () => {
+    bot.channels.fetch('942439391647899701')
+    .then(channel => {
+        channel.send("Hi,I'm ready!");
+    })
+});
 
 bot.login(token);
