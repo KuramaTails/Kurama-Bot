@@ -12,6 +12,9 @@ const permissions = new Permissions([
 module.exports = {
 	name: "timeout",
 	ephemeral: "false",
+    command:"Timeout",
+    desc:"Timeout a user for some minutes",
+    example:"!timeout userId minutes",
 	async execute(messageCreate, args) {
         var mentionedMember;
         if (!messageCreate.member.permissions.has(permissions)) {

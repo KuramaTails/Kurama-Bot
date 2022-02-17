@@ -13,8 +13,13 @@ const permissions = new Permissions([
 module.exports = {
 	name: "mute",
 	ephemeral: "false",
+    command:"Mute",
+    desc:'Gives "Muted" role to quoted user',
+    example:"!mute userId minutes",
 	async execute(messageCreate, args) {
         var mentionedMember;
+        const duration = [...args]
+        duration.shift(1);
         if (!messageCreate.member.permissions.has(permissions)) {
             messageCreate.reply("You are not an Administator!"); return;
         }
@@ -33,7 +38,7 @@ module.exports = {
                 else {
                     mentionedMember.roles.add(muted);
                     messageCreate.reply(`${mentionedMember} was muted`)
-                    setTimeout( unmute , 60 * 1000);
+                    setTimeout( unmute ,duration * 60 * 1000);
                     function unmute() {
                         mentionedMember.roles.remove(muted);
                         messageCreate.reply(`${mentionedMember} has been unmuted`)

@@ -12,6 +12,9 @@ const permissions = new Permissions([
 module.exports = {
 	name: "ban",
 	ephemeral: "false",
+    command:"Ban",
+    desc:"You can ban a user from this server",
+    example:"!ban userId reason",
 	async execute(messageCreate, args) {
         var mentionedMember;
         const reason = [...args];

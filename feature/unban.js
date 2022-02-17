@@ -12,6 +12,9 @@ const permissions = new Permissions([
 module.exports = {
 	name: "unban",
 	ephemeral: "false",
+    command:"Unban",
+    desc:"Unban previous banned members",
+    example:"!unban userId",
 	async execute(messageCreate, args) {
         var mentionedMemberId; 
         const banList = await messageCreate.guild.bans.fetch();
