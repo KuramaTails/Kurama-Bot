@@ -7,7 +7,7 @@ const prefix = "!";
 
 dotenv.config()
 
-const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"], partials: ["CHANNEL"] });
+const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES" , "DIRECT_MESSAGE_REACTIONS"], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION'] });
 bot.commands = new Collection();
 console.log(bot.status)
 
@@ -77,11 +77,7 @@ bot.on('messageCreate', async msg => {
 				msg.reply("No commands found")
 			}
 		}
-		
 	}
-	
-	
-
 });
 
 
@@ -91,5 +87,6 @@ bot.on('ready', () => {
         channel.send("Hi,I'm ready!");
     })
 });
+
 
 bot.login(token);
