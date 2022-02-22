@@ -25,9 +25,25 @@ module.exports = {
         .setTitle('Add Role')
         .setAuthor({ name: 'Command : Add Role', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
         .setDescription(`Choose a reaction for adding <@${args}> a role`)
-        .setTimestamp()
-        .setFooter({ text: "Click on the title for complete documentation", iconURL: 'https://i.imgur.com/AfFp7pu.png'  });
-
+        var roles = await messageCreate.guild.roles.fetch()
+        let keys = Array.from( roles.keys() );
+        if (keys.length<10){
+            var emojilist = ["0️⃣","1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
+        }
+        else {
+            messageCreate.reply("There was an error. Please contact an Admin")
+        }
+        
+        for (let i = 1; i < keys.length; i++) {
+            roles.get(keys[i]).emoji = emojilist[i]
+            exampleEmbed.addFields(
+                { name: "Emoji" , value: roles.get(keys[i]).emoji, inline: true },
+                { name: 'Description', value: roles.get(keys[i]).name, inline: true },
+                { name: '\u200B', value: "\u200B", inline: true }
+            )
+        }
+        
+        
         if (!messageCreate.member.permissions.has(permissions)) {
             messageCreate.reply("You are not an Administator!"); return;
         }
@@ -39,41 +55,49 @@ module.exports = {
                 return;
             }
             else {
-                
                 messageCreate.reply({ embeds: [exampleEmbed] })
-                .then(async embedMessage => {
-                    embedMessage.react("👍");
-                    embedMessage.react("👎");
-                    const filter = (reaction, user) => {
-                        console.log(user.id)
-                        return reaction.emoji.name === '👍' && user.id === messageCreate.author.id;
-                        
-                    };
+                for (let i = 1; i < keys.length; i++) {
+                    exampleEmbed.react(roles.get(keys[i]).emoji);
                     
-                    const collector = embedMessage.createReactionCollector({filter, time: 5000 });
-                    
-                    collector.on('collect', async (reaction, user) => {
-                        console.log(`Collected ${reaction.emoji.name} from ${user.tag}`);
-                    });
-                    
-                    collector.on('end', async collected => {   
-                        const reaction1 = await embedMessage.reactions.resolve('👍').users.fetch(messageCreate.author.id);
+                }
+                    setTimeout(async () => {
+                        const reaction1 = await embedMessage.reactions.resolve('👍').users.fetch();
+                        const reaction2 = await embedMessage.reactions.resolve('👎').users.fetch();
+                        const reaction3 = await embedMessage.reactions.resolve('✌️').users.fetch();
+                        const reaction4 = await embedMessage.reactions.resolve('🤘').users.fetch();
                         if (!reaction1.get(messageCreate.author.id))
                         {
-                            console.log("no reactions")
+                            if (!reaction2.get(messageCreate.author.id))
+                            {
+                                if (!reaction3.get(messageCreate.author.id))
+                                {
+                                    if (!reaction4.get(messageCreate.author.id))
+                                    {
+                                        console.log("no reactions")
+                                    }
+                                    else {
+                                        console.log("reaction 4")
+                                    }
+                                }
+                                else {
+                                    console.log("reaction 3")
+                                }
+                            }
+                            else {
+                                console.log("reaction 2")
+                            }
                         }
                         else {
-                            console.log("reactions")
+                            console.log("reaction 1")
                         }
-                    });
-
-                });
-                
+                    }, 5000);             
             }
         }
         catch (e) {
             messageCreate.reply("No member found"); 
             return;
         }
+        
+
     }
 };
