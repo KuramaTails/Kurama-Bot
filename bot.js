@@ -75,7 +75,7 @@ bot.on('messageCreate', async msg => {
 			}
 			if (exec==false){
 				msg.reply("No commands found")
-			}
+			}	
 		}
 	}
 });

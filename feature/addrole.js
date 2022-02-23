@@ -3,6 +3,7 @@ const { TIMEOUT } = require('dns');
 const fs= require('fs');
 const { features } = require('process');
 const {args} = require("../bot.js");
+const { clientId, guildId, token } = require('../config.json');
 const permissions = new Permissions([
 	Permissions.FLAGS.VIEW_CHANNEL,
 	Permissions.FLAGS.EMBED_LINKS,
@@ -18,8 +19,11 @@ module.exports = {
     command:"Addrole",
     desc:"You can add a role to a user from this server",
     example:"!addrole userId",
-	async execute(messageCreate, args, discord , bot) {
-        var mentionedMember;
+	async execute(messageCreate, args,bot) {
+        await messageCreate.client.destroy();
+        messageCreate.client.login(token);
+        await messageCreate.client.channels.fetch('942439391647899701')
+        var mentionedMember = await messageCreate.guild.members.fetch(args[0],true);
         const exampleEmbed = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle('Add Role')
@@ -27,77 +31,76 @@ module.exports = {
         .setDescription(`Choose a reaction for adding <@${args}> a role`)
         var roles = await messageCreate.guild.roles.fetch()
         let keys = Array.from( roles.keys() );
-        if (keys.length<10){
-            var emojilist = ["0️⃣","1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
+        const filteredkeys = []
+        for (let i = 0; i < keys.length; i++) {
+            if (! await mentionedMember.roles.cache.has(keys[i])) {
+                if (!roles.get(keys[i]).managed)
+                {
+                    filteredkeys.push(keys[i])
+                }
+                
+            }
+        }
+        if (filteredkeys.length==0) {
+            messageCreate.reply("No roles can be added to this user")
+            return
+        }
+        if (filteredkeys.length<10){
+            var emojilist = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
         }
         else {
             messageCreate.reply("There was an error. Please contact an Admin")
         }
-        
-        for (let i = 1; i < keys.length; i++) {
-            roles.get(keys[i]).emoji = emojilist[i]
+        for (let i = 0; i < filteredkeys.length; i++) {
+            roles.get(filteredkeys[i]).emoji = emojilist[i]
             exampleEmbed.addFields(
-                { name: "Emoji" , value: roles.get(keys[i]).emoji, inline: true },
-                { name: 'Description', value: roles.get(keys[i]).name, inline: true },
+                { name: "Emoji" , value: roles.get(filteredkeys[i]).emoji, inline: true },
+                { name: 'Description', value: roles.get(filteredkeys[i]).name, inline: true },
                 { name: '\u200B', value: "\u200B", inline: true }
             )
         }
-        
-        
         if (!messageCreate.member.permissions.has(permissions)) {
             messageCreate.reply("You are not an Administator!"); return;
         }
         if (args.length === 0) { messageCreate.reply("Please provide an ID"); return };
         try {
-            mentionedMember = await messageCreate.guild.members.fetch(args[0]);
             if (mentionedMember.permissions.has(permissions)) {
                 messageCreate.reply("You can't add a role to an Administrator!");
                 return;
             }
             else {
+                var added = false;
+                var addedroles = []
                 messageCreate.reply({ embeds: [exampleEmbed] })
-                for (let i = 1; i < keys.length; i++) {
-                    exampleEmbed.react(roles.get(keys[i]).emoji);
-                    
-                }
+                .then(embedMessage => {
+                    for (let i = 0; i < filteredkeys.length; i++) {
+                        embedMessage.react(roles.get(filteredkeys[i]).emoji);  
+                    }
                     setTimeout(async () => {
-                        const reaction1 = await embedMessage.reactions.resolve('👍').users.fetch();
-                        const reaction2 = await embedMessage.reactions.resolve('👎').users.fetch();
-                        const reaction3 = await embedMessage.reactions.resolve('✌️').users.fetch();
-                        const reaction4 = await embedMessage.reactions.resolve('🤘').users.fetch();
-                        if (!reaction1.get(messageCreate.author.id))
+                        for (let i = 0; i < filteredkeys.length; i++) {
+                            var counter = await embedMessage.reactions.resolve(roles.get(filteredkeys[i]).emoji).users.fetch();
+                            if (counter.get(messageCreate.author.id)){
+                                var selrole = messageCreate.guild.roles.cache.find(role => role.name === roles.get(filteredkeys[i]).name)
+                                mentionedMember.roles.add(selrole);
+                                addedroles.push(roles.get(filteredkeys[i]).name) 
+                            }
+                        }
+                        if(added!=false)
                         {
-                            if (!reaction2.get(messageCreate.author.id))
-                            {
-                                if (!reaction3.get(messageCreate.author.id))
-                                {
-                                    if (!reaction4.get(messageCreate.author.id))
-                                    {
-                                        console.log("no reactions")
-                                    }
-                                    else {
-                                        console.log("reaction 4")
-                                    }
-                                }
-                                else {
-                                    console.log("reaction 3")
-                                }
-                            }
-                            else {
-                                console.log("reaction 2")
-                            }
+                            messageCreate.reply(`Role(s) ${addedroles} added for user <@${args}>`)
                         }
                         else {
-                            console.log("reaction 1")
+                            messageCreate.reply(`No roles added to user <@${args}>`)
+
                         }
-                    }, 5000);             
+                        
+                    }, 7000);   
+                });               
             }
         }
         catch (e) {
             messageCreate.reply("No member found"); 
             return;
         }
-        
-
     }
 };
