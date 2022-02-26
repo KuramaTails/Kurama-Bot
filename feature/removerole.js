@@ -1,4 +1,4 @@
-const { Permissions, MessageEmbed } = require('discord.js');
+const { Permissions, MessageEmbed, CommandInteractionOptionResolver } = require('discord.js');
 const { TIMEOUT } = require('dns');
 const fs= require('fs');
 const { features } = require('process');
@@ -14,11 +14,11 @@ const permissions = new Permissions([
 
 
 module.exports = {
-	name: "addrole",
+	name: "removerole",
 	ephemeral: "false",
-    command:"Addrole",
-    desc:"You can add a role to a user from this server",
-    example:"!addrole userId",
+    command:"Removerole",
+    desc:"You can remove roles to user from this server",
+    example:"!removerole userId",
 	async execute(messageCreate, args,bot) {
         await messageCreate.client.destroy();
         messageCreate.client.login(token);
@@ -29,22 +29,24 @@ module.exports = {
             messageCreate.reply("No member found"); 
             return;
         }
+        
         const exampleEmbed = new MessageEmbed()
         .setColor('#0099ff')
-        .setTitle('Add Role')
-        .setAuthor({ name: 'Command : Add Role', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
-        .setDescription(`Choose a reaction for adding <@${args}> a role`)
+        .setTitle('Remove Role')
+        .setAuthor({ name: 'Command : Remove Role', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
+        .setDescription(`Choose a reaction for remove <@${args}> a role`)
         var roles = await messageCreate.guild.roles.fetch()
         let keys = Array.from( roles.keys() );
         const filteredkeys = []
         for (let i = 0; i < keys.length; i++) {
-            if (! await mentionedMember.roles.cache.has(keys[i])) {
-                if (!roles.get(keys[i]).managed)
-                {
-                    filteredkeys.push(keys[i])
+            if (roles.get(keys[i]).name != "@everyone")
+                if (await mentionedMember.roles.cache.has(keys[i])) {
+                    if (!roles.get(keys[i]).managed)
+                    {
+                        filteredkeys.push(keys[i])
+                    }
+                    
                 }
-                
-            }
         }
         if (filteredkeys.length==0) {
             messageCreate.reply("No roles can be added to this user")
@@ -74,7 +76,7 @@ module.exports = {
                 return;
             }
             else {
-                var addedroles = []
+                var removedroles = []
                 messageCreate.reply({ embeds: [exampleEmbed] })
                 .then(embedMessage => {
                     for (let i = 0; i < filteredkeys.length; i++) {
@@ -85,16 +87,16 @@ module.exports = {
                             var counter = await embedMessage.reactions.resolve(roles.get(filteredkeys[i]).emoji).users.fetch();
                             if (counter.get(messageCreate.author.id)){
                                 var selrole = messageCreate.guild.roles.cache.find(role => role.name === roles.get(filteredkeys[i]).name)
-                                mentionedMember.roles.add(selrole);
-                                addedroles.push(roles.get(filteredkeys[i]).name) 
+                                mentionedMember.roles.remove(selrole);
+                                removedroles.push(roles.get(filteredkeys[i]).name) 
                             }
                         }
                         if(addedroles.length>=1)
                         {
-                            messageCreate.reply(`Role(s) ${addedroles} added for user <@${args}>`)
+                            messageCreate.reply(`Role(s) ${removedroles} removed for user <@${args}>`)
                         }
                         else {
-                            messageCreate.reply(`No roles added to user <@${args}>`)
+                            messageCreate.reply(`No roles removed to user <@${args}>`)
 
                         }
                         

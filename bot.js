@@ -7,7 +7,7 @@ const prefix = "!";
 
 dotenv.config()
 
-const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES" , "DIRECT_MESSAGE_REACTIONS"], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
+const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES" , "DIRECT_MESSAGE_REACTIONS","GUILD_VOICE_STATES"], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 bot.commands = new Collection();
 console.log(bot.status)
 
