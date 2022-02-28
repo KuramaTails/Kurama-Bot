@@ -91,7 +91,7 @@ module.exports = {
                                 removedroles.push(roles.get(filteredkeys[i]).name) 
                             }
                         }
-                        if(addedroles.length>=1)
+                        if(removedroles.length>=1)
                         {
                             messageCreate.reply(`Role(s) ${removedroles} removed for user <@${args}>`)
                         }

@@ -1,5 +1,8 @@
 const { createAudioPlayer, joinVoiceChannel , AudioPlayerStatus  , createAudioResource, PlayerSubscription } = require('@discordjs/voice');
 const { clientId, guildId, token } = require('../config.json');
+const DisTube = require('distube')
+const Discord = require('discord.js')
+const { YtDlpPlugin } = require('@distube/yt-dlp')
 
 module.exports = {
 	name: "play",
@@ -7,19 +10,24 @@ module.exports = {
     command:"Play",
     desc:"Bot will play something on your vocal channel",
     example:"!play url",
-	async execute(messageCreate,bot) {
-        const player = createAudioPlayer();
-        player.on(AudioPlayerStatus.Playing, () => {
-            console.log("Audio player started playing")
+	async execute(messageCreate,args) {
+        const distube = new DisTube.default(messageCreate.client, {
+            leaveOnStop: false,
+            searchSongs: 1,
+            emitNewSongOnly: true,
+            emitAddSongWhenCreatingQueue: false,
+            emitAddListWhenCreatingQueue: false,
+            youtubeDL: false,
+            plugins: [
+                new YtDlpPlugin()
+              ],
+          } ) 
+        const string = args.join(' ')
+        distube.play(messageCreate.member.voice.channel, args.join(' '), {
+            messageCreate,
+            textChannel: messageCreate.channel,
+            member: messageCreate.member,
         })
-        let resource = createAudioResource('C:\\Users\\Gianmarco\\Documents\\discord-bot-test\\music\\bunnygirl.mp3');
-        player.play(resource);
-        const connection = joinVoiceChannel({
-            channelId: messageCreate.member.voice.channelId,
-            guildId: messageCreate.guild.id,
-            adapterCreator: messageCreate.guild.voiceAdapterCreator,
-        });
-        console.log("Created voice connection")
-        const subscription = connection.subscribe(player);
+        .catch((err) => console.log(err));
     }
 }

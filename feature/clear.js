@@ -1,9 +1,9 @@
 module.exports = {
 	name: "clear",
 	ephemeral: "false",
-	command:"Help",
-	desc:"Gives you a list of all commands available",
-    example:"!help",
+	command:"Clear",
+	desc:"Clear chat",
+    example:"!clear <max 100 messages>",
 	async execute(messageCreate, args) {
      const fetched = args;
      if (fetched<100){

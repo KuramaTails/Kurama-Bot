@@ -4,13 +4,23 @@ const fs= require('fs');
 const { Client, Collection, Intents, Message, Permissions } = require('discord.js');
 const { clientId, guildId, token } = require('./config.json');
 const prefix = "!";
-
+const DisTube = require('distube')
+const { YtDlpPlugin } = require('@distube/yt-dlp')
 dotenv.config()
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES" , "DIRECT_MESSAGE_REACTIONS","GUILD_VOICE_STATES"], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 bot.commands = new Collection();
-console.log(bot.status)
-
+const distube = new DisTube.default(bot, {
+	leaveOnStop: false,
+	searchSongs: 1,
+	emitNewSongOnly: true,
+	emitAddSongWhenCreatingQueue: false,
+	emitAddListWhenCreatingQueue: false,
+	youtubeDL: false,
+	plugins: [
+		new YtDlpPlugin()
+	  ],
+  } ) 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 const featureFiles = fs.readdirSync('./feature').filter(file => file.endsWith('.js'));
@@ -80,6 +90,23 @@ bot.on('messageCreate', async msg => {
 	}
 });
 
+bot.on('messageCreate', message => {
+    if (!message.content.startsWith(prefix) || message.author.bot)
+        return
+
+    const args = message.content
+        .slice(prefix.length)
+        .trim()
+        .split(' ')
+    const command = args.shift().toLowerCase()
+    if (command === 'play')
+        distube.play(message.member.voice.channel, args.join(' '), {
+            message,
+            textChannel: message.channel,
+            member: message.member,
+        })
+		console.log(command)
+})
 
 bot.on('ready', () => {
     bot.channels.fetch('942439391647899701')
