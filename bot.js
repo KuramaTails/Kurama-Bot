@@ -5,8 +5,10 @@ const { Client, Collection, Intents, Message, MessageEmbed , Permissions } = req
 const {  token } = require('./config.json');
 const prefix = "!";
 const DisTube = require('distube')
+const { RepeatMode } = require("distube");
 const { YtDlpPlugin } = require('@distube/yt-dlp')
 const ytsr = require('@distube/ytsr');
+const message = require('@acegoal07/discordjs-pagination/lib/message');
 dotenv.config()
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] ], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
@@ -14,7 +16,7 @@ bot.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 const featureFiles = fs.readdirSync('./feature').filter(file => file.endsWith('.js'));
-let player = new DisTube.DisTube(bot, {
+const player = new DisTube.DisTube(bot, {
 	leaveOnStop: false,
 	searchSongs: 1,
 	emitNewSongOnly: true,
@@ -70,6 +72,7 @@ bot.on('interactionCreate', async interaction => {
 
 bot.on('messageCreate', async msg => {
 	var exec=false;
+	
 	if (msg.author.username!=bot.user.username)
 	{
 		if(msg.content.startsWith(prefix)){
@@ -77,6 +80,14 @@ bot.on('messageCreate', async msg => {
 			.trim()
 			.substring(prefix.length)
 			.split(/\s+/);
+			for (const file of featureFiles) {
+				const feature = require(`./feature/${file}`);
+				if (msgfeature== feature.name) {
+					await feature.execute(msg , args);
+					return
+				}
+				
+			}
 			if (msgfeature === 'play') {
 				
 				const voiceChannel = msg.member.voice.channel
@@ -93,117 +104,167 @@ bot.on('messageCreate', async msg => {
 					.setURL(`${song.url}`)
 					.setDescription(`Duration: \`${song.formattedDuration}\`\nRequested by: ${msg.member}`)
 					msg.reply({ embeds: [Embedsearch] });
-					const serverQueue = player.getQueue(msg)
-					console.log()
-					setTimeout(() => {
-						if (serverQueue==null) {
-							player.voices.leave(voiceChannel)
-							msg.reply("Player leaved : No more songs in queue")
-						}
-					}, song.duration+60*1000);
+					
 				} else {
 					msg.reply(
-						'You must join a voice channel first.',
+						'You must join a voice channel first.'
 					)
 				}
 				
 			}
-			else if (['repeat', 'loop'].includes(msgfeature)) {
-				const mode = player.setRepeatMode(msg)
-				msg.reply(
-					`Set repeat mode to \`${mode? mode === 2? 'All Queue': 'This Song': 'Off'}\``,
-				)
-			}
-		
-			else if (msgfeature === 'stop') {
-				const queue = player.getQueue(msg)
-				if (!queue) {
-					msg.reply('Nothing playing right now!')
-				} else {
-					player.stop(msg)
-					msg.reply('Stopped the music!')
-				} 
-			}
-			
-			else if (msgfeature === 'join') {
-				if (!msg.member.voice.channel) {
-					msg.reply('You are not in a voice channel!')
-				} else {
-					player.voices.join(msg)
-					msg.reply('Joined a voice channel!')
-				} 
-			}
-
-			else if (msgfeature === 'leave') {
-				player.voices.leave(msg)
-				msg.reply('Leaved the voice channel!')
-				} 
-		
-			else if (msgfeature === 'resume') {
-				const queue = player.getQueue(msg)
-				if (!queue) {
-					msg.reply('Nothing playing right now!')
-				} else {
-					player.resume(msg)
-					msg.reply("Player resumed")
-				} 
-			}
-		
-			else if (msgfeature === 'pause') {
-				const queue = player.getQueue(msg)
-				if (!queue) {
-					msg.reply('Nothing playing right now!')
-				} else {
-					player.pause(msg)
-					msg.reply("Player paused")
-				} 
-			}
-		
-			else if (msgfeature === 'skip') {
-				const queue = player.getQueue(msg)
-				if (!queue) {
-					msg.reply('Nothing playing right now!')
-				} else {
-					player.skip(msg)
-					msg.reply("Song skipped")
-				} 
-			}
-		
-			else if (msgfeature === 'queue') {
-				const queue = player.getQueue(msg)
-				if (!queue) {
-					msg.reply('Nothing playing right now!')
-				} else {
-					msg.reply(
-						`Current queue:\n${queue.songs
-							.map(
-								(song, id) =>
-									`**${id ? id : 'Playing'}**. ${
-										song.name
-									} - \`${song.formattedDuration}\``,
-							)
-							.slice(0, 10)
-							.join('\n')}`,
-					)
+			if(!player.getQueue(msg)) { 
+				switch (msgfeature) {
+					case "loop":
+						msg.reply("No songs in queue")
+						break;
+					case "repeat":
+						msg.reply("No songs in queue")
+						break;
+					case "stop":
+						msg.reply("No songs in queue")
+					break;
+					case "join":
+						player.voices.join(msg.member.voice.channel)
+						break;
+					case "leave":
+						player.voices.leave(msg.member.voice.channel)
+						break;
+					case "skip":
+						msg.reply("No songs in queue")
+					break;
+					case "queue":
+						msg.reply("No songs in queue")
+						break;
+					case "pause":
+						msg.reply("No songs in queue")
+						break;
+					case "resume":
+						msg.reply("No songs in queue")
+					break;
+					case "play":
+					break;
+					default:
+						msg.reply("No commands found")
+					break;
 				}
 			}
-			
 			else {
-				for (const file of featureFiles) {
-					const feature = require(`./feature/${file}`);
-					if (msgfeature== feature.name) {
-						await feature.execute(msg , args);
-						exec=true;
+				switch (msgfeature) {
+					case "loop":
+						var mode;
+						if (args[0] != null) {
+							switch(player.setRepeatMode(msg, parseInt(args[0]))) {
+								case RepeatMode.DISABLED:
+									mode = "Off";
+									break;
+								case RepeatMode.SONG:
+									mode = "Repeat a song";
+									break;
+								case RepeatMode.QUEUE:
+									mode = "Repeat all queue";
+									break;
+							}
+							msg.reply("Set repeat mode to `" + mode + "`");
+							break;
+						}
+						else {
+							msg.reply("Please provide a loop mode: DISABLED = 0, SONG = 1 , QUEUE = 2 ")
+						}
+					break;	
+					case "repeat":
+						var mode;
+						if (args[0] != null) {
+							switch(player.setRepeatMode(msg, parseInt(args[0]))) {
+								case RepeatMode.DISABLED:
+									mode = "Off";
+									break;
+								case RepeatMode.SONG:
+									mode = "Repeat a song";
+									break;
+								case RepeatMode.QUEUE:
+									mode = "Repeat all queue";
+									break;
+							}
+							msg.reply("Set repeat mode to `" + mode + "`");
+							break;
+						}
+						else {
+							msg.reply("Please provide a loop mode: DISABLED = 0, SONG = 1 , QUEUE = 2 ")
+						}
+					break;
+					case "stop":
+					if (!player.queues.collection.first().stopped) {
+						player.stop(msg)
+						msg.reply('Stopped the music!')
 					}
+					else {
+						msg.reply("Player is not playing any song")
+					}
+					break;
+					case "leave":
+					if (bot.voice.adapters) {
+						player.voices.leave(msg)
+						msg.reply('Leaved the voice channel!')
+					}
+					else {
+						msg.reply("Player is not in this channel")
+					}
+					break;
+					case "skip":
+						if (player.queues.collection.first().playing) {
+							if (player.queues.collection.first().next) {
+								player.skip(msg)
+								msg.reply("Song skipped")
+							}
+							else {
+								player.voices.leave(msg)
+								msg.reply('Leaved the voice channel, no more songs in queue!')
+							}
+						}
+						else {
+							msg.reply('Nothing playing right now!')
+						} 
+					break;
+					/*case "queue":
+						msg.reply(
+							`Current queue:\n${queue.songs
+								.map(
+									(song, id) =>
+										`**${id ? id : 'Playing'}**. ${
+											song.name
+										} - \`${song.formattedDuration}\``,
+								)
+								.slice(0, 10)
+								.join('\n')}`,
+						)
+						break;*/
+					case "pause":
+						if (!player.queues.collection.first().paused) {
+							player.pause(msg)
+							msg.reply("Player paused")
+							
+						}
+						else {
+							msg.reply('Player already in pause!')
+						}
+						break;
+					case "resume":
+						if (!player.queues.collection.first().playing) {
+							player.resume(msg)
+							msg.reply("Player resumed")
+						}
+						else {
+							msg.reply('Player already playing!')
+						}
+					break;
 				}
-				if (exec==false){
-					msg.reply("No commands found")
-				}	
-			}
+			}			
+			
 		}
 	}
 });
 
+player.on("finish", message => message.reply("No more song in queue"));
 
 bot.on('ready', () => {
     bot.channels.fetch('942439391647899701')
