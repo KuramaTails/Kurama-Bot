@@ -1,13 +1,11 @@
-
 const dotenv = require('dotenv');
 const fs= require('fs');
 const { Client, Collection, Intents, Message, MessageEmbed , Permissions, CommandInteractionOptionResolver } = require('discord.js');
-const {  token } = require('./config.json');
+const { token } = require('./config.json');
 const prefix = "!";
 const DisTube = require('distube')
 const { RepeatMode } = require("distube");
 const { YtDlpPlugin } = require('@distube/yt-dlp')
-const ytsr = require('@distube/ytsr');
 const message = require('@acegoal07/discordjs-pagination/lib/message');
 dotenv.config()
 
@@ -28,6 +26,8 @@ const player = new DisTube.DisTube(bot, {
 	  ],
   } ) 
 let timeoutID;
+var diffqueue
+
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
@@ -58,11 +58,8 @@ for (const file of featureFiles) {
 
 bot.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
-
 	const command = bot.commands.get(interaction.commandName);
-
 	if (!command) return;
-
 	try {
 		await command.execute(interaction);
 	} catch (error) {
@@ -85,50 +82,31 @@ bot.on('messageCreate', async msg => {
 					await feature.execute(msg , args);
 					return
 				}
-				
-			}
-			if (msgfeature === 'play') {
-				
-				let voiceChannel = msg.member.voice.channel
-				const link = args.join(" ");
-				const search = await ytsr(link, { safeSearch: true, limit: 1 })
-				const song = new DisTube.Song(search.items[0]);
-				if (voiceChannel) {
-					if(!link) return msg.reply("Please enter a song url or query to search");
-					await player.play(voiceChannel, link)
-					const Embedsearch = new MessageEmbed()
-					.setColor('#0099ff')
-					.setTitle(`Playing: \`${song.name}\``)
-					.setThumbnail(`${song.thumbnail}`)
-					.setURL(`${song.url}`)
-					.setDescription(`Duration: \`${song.formattedDuration}\`\nRequested by: ${msg.member}`)
-					msg.reply({ embeds: [Embedsearch] });	
-					clearTimeout(timeoutID)
-					timeoutID = undefined	
-				} else {
-					msg.reply(
-						'You must join a voice channel first.'
-					)
-				}
-				
 			}
 			if(!player.getQueue(msg)) { 
 				switch (msgfeature) {
+					case "play":
+						if(msg.member.voice.channel) {
+							let link = args.join(" ");
+								if(!link) return msg.reply("Please enter a song url or query to search");
+								await player.play(msg.member.voice.channel, link)
+						}
+						else {
+							msg.reply(
+								'You must join a voice channel first.'
+							)
+						}
+					break;
 					case "addsong":
 						if(msg.member.voice.channel) {
 							let newlink = args.join(" ");
-							let newsearch = await ytsr(newlink, { safeSearch: true, limit: 1 })
-							const newsong = new DisTube.Song(newsearch.items[0]);
+							if(!newlink) return msg.reply("Please enter a song url or query to search");
 							await player.play(msg.member.voice.channel,newlink) 
-							const AddedEmbed = new MessageEmbed()
-							.setColor('#0099ff')
-							.setTitle(`Playing: \`${newsong.name}\``)
-							.setThumbnail(`${newsong.thumbnail}`)
-							.setURL(`${newsong.url}`)
-							.setDescription(`Duration: \`${newsong.formattedDuration}\`\nRequested by: ${msg.member}`)
-							msg.reply({ embeds: [AddedEmbed] });
-							clearTimeout(timeoutID)
-							timeoutID = undefined
+						}
+						else {
+							msg.reply(
+								'You must join a voice channel first.'
+							)
 						}
 						break;
 					case "loop":
@@ -158,8 +136,6 @@ bot.on('messageCreate', async msg => {
 					case "resume":
 						msg.reply("No songs in queue")
 					break;
-					case "play":
-					break;
 					default:
 						msg.reply("No commands found")
 					break;
@@ -167,22 +143,23 @@ bot.on('messageCreate', async msg => {
 			}
 			else {
 				switch (msgfeature) {
+					case "play":
+						msg.reply("Please use !addsong command for adding songs in queue")
+					break;
 					case "addsong":
 						if(msg.member.voice.channel) {
-							let queue = player.queues.collection.first().songs
+							let oldqueue = player.queues.collection.first().songs.length
 							let newlink = args.join(" ");
-							let newsearch = await ytsr(newlink, { safeSearch: true, limit: 1 })
-							const newsong = new DisTube.Song(newsearch.items[0]);
-							queue.push(newsong)
-							const AddedEmbed = new MessageEmbed()
-							.setColor('#0099ff')
-							.setTitle(`Added: \`${newsong.name}\` to queue`)
-							.setThumbnail(`${newsong.thumbnail}`)
-							.setURL(`${newsong.url}`)
-							.setDescription(`Duration: \`${newsong.formattedDuration}\`\nRequested by: ${msg.member}`)
-							msg.reply({ embeds: [AddedEmbed] });
-							clearTimeout(timeoutID)
-							timeoutID = undefined
+							if(!newlink) return msg.reply("Please enter a song url or query to search");
+							await player.play(msg.member.voice.channel,newlink) 
+							let newqueue = player.queues.collection.first().songs.length
+							diffqueue = newqueue-oldqueue;
+							msg.reply("Added "+ diffqueue + " song(s) to queue")
+						}
+						else {
+							msg.reply(
+								'You must join a voice channel first.'
+							)
 						}
 						break;
 					case "loop":
@@ -247,7 +224,7 @@ bot.on('messageCreate', async msg => {
 					break;
 					case "skip":
 						if (player.queues.collection.first().playing) {
-							if (player.queues.collection.first().next) {
+							if (player.queues.collection.first().songs.length>1) {
 								player.skip(msg)
 								msg.reply("Song skipped")
 							}
@@ -287,13 +264,37 @@ bot.on('messageCreate', async msg => {
 							msg.reply('Player already playing!')
 						}
 					break;
+					default:
+						msg.reply("No commands found")
+					break;
 				}
 			}			
-			
 		}
 	}
 });
-
+player.on('playSong', () =>{
+	bot.channels.fetch('942439391647899701')
+	.then(async channel => {
+		let playlist = player.queues.collection.first().songs;
+		const Embedsearch = new MessageEmbed()
+		.setColor('#0099ff')
+		.setTitle(`Playing: \`${playlist[0].name}\``)
+		.setThumbnail(`${playlist[0].thumbnail}`)
+		.setURL(`${playlist[0].url}`)
+		.setDescription(`Duration: \`${playlist[0].formattedDuration}\`\n`)
+		channel.send({ embeds: [Embedsearch] });	
+		clearTimeout(timeoutID)
+		timeoutID = undefined	
+    })
+});
+player.on('addSong', () => {
+	bot.channels.fetch('942439391647899701')
+	.then(async channel => {
+		let lenght = player.queues.collection.first().songs.length
+		let addedsong = player.queues.collection.first().songs[lenght-1]
+		channel.send(`Added ${addedsong.name} - \`${addedsong.formattedDuration}\` to the queue`);
+    })
+})
 player.on('finish', () => {
 	bot.channels.fetch('942439391647899701')
 	.then(channel => {
@@ -304,7 +305,6 @@ player.on('finish', () => {
 			player.voices.leave(tempvoiceid[0])
 		}, 60*1000);
     })
-	
 });
 player.on('error', () => {
 	console.error(e)
@@ -317,13 +317,10 @@ player.on('empty', () => {
 		player.voices.leave(tempvoiceid[0]);
 	})
 })
-
 bot.on('ready', () => {
     bot.channels.fetch('942439391647899701')
     .then(channel => {
         channel.send("Hi,I'm ready!");
     })
 });
-
-
 bot.login(token);
