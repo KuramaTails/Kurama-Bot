@@ -9,7 +9,7 @@ const { YtDlpPlugin } = require('@distube/yt-dlp')
 const message = require('@acegoal07/discordjs-pagination/lib/message');
 dotenv.config()
 
-const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] ], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
+const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] ], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 bot.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
@@ -85,6 +85,14 @@ bot.on('messageCreate', async msg => {
 			}
 			if(!player.getQueue(msg)) { 
 				switch (msgfeature) {
+					case "wtest":
+						let welcomeEmbed = new MessageEmbed()
+							.setAuthor(`${msg.member.user.username} just joined!`, msg.member.user.avatarURL())
+							.setDescription(`Welcome <@${msg.member.user.id}>! Don't forget to read the rules-channel! `)
+							.setColor("0099ff");
+							msg.reply({embeds: [welcomeEmbed]})
+							.catch((err) => console.log(err));
+						break;
 					case "play":
 						if(msg.member.voice.channel) {
 							let link = args.join(" ");
@@ -317,10 +325,67 @@ player.on('empty', () => {
 		player.voices.leave(tempvoiceid[0]);
 	})
 })
-bot.on('ready', () => {
-    bot.channels.fetch('942439391647899701')
+bot.on('ready', async () => {
+	bot.channels.fetch('942439391647899701')
     .then(channel => {
         channel.send("Hi,I'm ready!");
     })
+});
+bot.on("presenceUpdate", async (oldMember, newMember) => {
+    var guild= await bot.guilds.cache.get("942439391647899698")
+	let members = await guild.members.fetch()
+	let memberskeys = Array.from(members.keys())
+	let onlineMembers = []
+	let offlineMembers = []
+	for (let i = 0; i < memberskeys.length; i++) {
+		try {
+			switch (members.get(memberskeys[i]).presence.status) {
+				case "online":
+					onlineMembers.push(members.get(memberskeys[i]))
+				break;
+				case "idle":
+					onlineMembers.push(members.get(memberskeys[i]))
+				break;    
+				case "dnd":
+					onlineMembers.push(members.get(memberskeys[i]))
+				break;    
+				case "offline":
+					offlineMembers.push(members.get(memberskeys[i]))
+				break;
+			}
+		} catch (error) {
+			offlineMembers.push(members.get(memberskeys[i]))
+		}
+	}
+	var onlinechannel = bot.channels.cache.get('949371630537277440');
+	var offlinechannel = bot.channels.cache.get('949371646257557584');
+	onlinechannel.setName(`Online : ${onlineMembers.length}`);
+	offlinechannel.setName(`Offline : ${offlineMembers.length}`);
+});
+        
+
+bot.on("guildMemberAdd", (member) => {
+	let welcomeEmbed = new MessageEmbed()
+	.setTitle(`${member.user.username} just joined!`, member.user.avatarURL())
+	.setDescription(`Welcome <@${member.user.id}>! Don't forget to read the rules-channel! `)
+	.setColor("0099ff");
+	member.guild.channels.cache.get("942439391647899701").send({embeds: [welcomeEmbed]})
+	.catch((err) => console.log(err));
+	var guild= bot.guilds.cache.get("942439391647899698")
+	var memberchannel = bot.channels.cache.get('949362343362580500');
+	var memberCount = guild.memberCount 
+    memberchannel.setName(`Members : ${memberCount}`);
+});
+bot.on("guildMemberRemove", (member) => {
+    let goodbyeEmbed = new MessageEmbed()
+	.setTitle(`${member.user.username} just left!`, member.user.avatarURL())
+	.setDescription(`Goodbye! 👋👋 `)
+	.setColor("FF0000");
+	member.guild.channels.cache.get("942439391647899701").send({embeds: [goodbyeEmbed]})
+	.catch((err) => console.log(err));
+	var guild= bot.guilds.cache.get("942439391647899698")
+	var memberchannel = bot.channels.cache.get('949362343362580500');
+	var memberCount = guild.memberCount 
+    memberchannel.setName(`Members: ${memberCount}`);
 });
 bot.login(token);
