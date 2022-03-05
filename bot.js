@@ -1,12 +1,12 @@
 const dotenv = require('dotenv');
 const fs= require('fs');
-const { Client, Collection, Intents, Message, MessageEmbed , Permissions, CommandInteractionOptionResolver } = require('discord.js');
+const { Client, Collection, Intents, Message, MessageEmbed , MessageAttachment , Permissions, CommandInteractionOptionResolver } = require('discord.js');
 const { token } = require('./config.json');
 const prefix = "!";
 const DisTube = require('distube')
 const { RepeatMode } = require("distube");
 const { YtDlpPlugin } = require('@distube/yt-dlp')
-const message = require('@acegoal07/discordjs-pagination/lib/message');
+const Canvas = require('canvas');
 dotenv.config()
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] ], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
@@ -27,7 +27,16 @@ const player = new DisTube.DisTube(bot, {
   } ) 
 let timeoutID;
 var diffqueue
+const applyText = (canvas, text) => {
+	const context = canvas.getContext('2d');
+	let fontSize = 70;
 
+	do {
+		context.font = `${fontSize -= 10}px sans-serif`;
+	} while (context.measureText(text).width > canvas.width - 300);
+
+	return context.font;
+};
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
@@ -387,14 +396,43 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
         
 
 bot.on("guildMemberAdd", async (member) => {
-	let welcomeEmbed = new MessageEmbed()
-	.setTitle(`${member.user.username} just joined!`, member.user.avatarURL())
-	.setDescription(`Welcome <@${member.user.id}>! Don't forget to read the rules-channel! `)
-	.setColor("0099ff");
-	member.guild.channels.cache.get("942439391647899701").send({embeds: [welcomeEmbed]})
-	.catch((err) => console.log(err));
 	var guild= await bot.guilds.cache.get("942439391647899698")
 	var memberCount = guild.memberCount 
+	const canvas = Canvas.createCanvas(700, 250);
+	const context = canvas.getContext('2d');
+
+	const background = await Canvas.loadImage('./src/canvas.jpg');
+	context.drawImage(background, 0, 0, canvas.width, canvas.height);
+	context.strokeStyle = '#0099ff';
+	context.strokeRect(0, 0, canvas.width, canvas.height);
+
+	context.font = '28px sans-serif';
+	context.fillStyle = '#ffffff';
+	context.fillText('Welcome!', canvas.width / 2.5, canvas.height / 3.5);
+
+	context.font = applyText(canvas, `${member.user.username}!`);
+	context.fillStyle = '#ffffff';
+	context.fillText(`${member.user.username}`, canvas.width / 2.5, canvas.height / 1.8);
+
+	context.font = '22px sans-serif';
+	context.fillStyle = '#ffffff';
+	context.fillText('Please read #rules-channel first!', canvas.width / 2.5, canvas.height / 1.4);
+
+	context.beginPath();
+	context.arc(125, 125, 100, 0, Math.PI * 2, true);
+	context.closePath();
+	context.clip();
+	
+
+	const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ format: 'jpg' }));
+	context.drawImage(avatar, 25, 25, 200, 200);  
+			
+	const attachment = new MessageAttachment(canvas.toBuffer(), 'profile-image.png');
+	const embed = new MessageEmbed() // Create A New Embed
+                    .setColor('#36393e')
+                    .setDescription(`Welcome <@${member.user.id}> . You are the ${memberCount}th member !`)
+					.setImage('attachment://profile-image.png');
+	member.guild.channels.cache.get("942439391647899701").send({embeds: [embed],files: [attachment] });
     var listchannels = await guild.channels.fetch()
 	var keyschannels = Array.from(listchannels.keys())
 	for (let i = 0; i < keyschannels.length; i++) {
@@ -406,14 +444,51 @@ bot.on("guildMemberAdd", async (member) => {
 	}
 });
 bot.on("guildMemberRemove", async (member) => {
-    let goodbyeEmbed = new MessageEmbed()
-	.setTitle(`${member.user.username} just left!`, member.user.avatarURL())
-	.setDescription(`Goodbye! 👋👋 `)
-	.setColor("FF0000");
-	member.guild.channels.cache.get("942439391647899701").send({embeds: [goodbyeEmbed]})
-	.catch((err) => console.log(err));
 	var guild= await bot.guilds.cache.get("942439391647899698")
 	var memberCount = guild.memberCount 
+
+	const canvas = Canvas.createCanvas(700, 250);
+	const context = canvas.getContext('2d');
+
+	const background = await Canvas.loadImage('./src/canvas.jpg');
+	context.drawImage(background, 0, 0, canvas.width, canvas.height);
+	context.strokeStyle = '#0099ff';
+	context.strokeRect(0, 0, canvas.width, canvas.height);
+
+
+	context.font = '28px sans-serif';
+	context.fillStyle = '#ffffff';
+	context.fillText('Oh no!', canvas.width / 2.5, canvas.height / 3.5);
+
+
+	context.font = applyText(canvas, `${member.user.username}!`);
+	context.fillStyle = '#ffffff';
+	context.fillText(`${member.user.username}`, canvas.width / 2.5, canvas.height / 1.8);
+
+
+	context.font = '22px sans-serif';
+	context.fillStyle = '#ffffff';
+	context.fillText('Just left this discord!', canvas.width / 2.5, canvas.height / 1.4);
+
+
+	context.beginPath();
+	context.arc(125, 125, 100, 0, Math.PI * 2, true);
+	context.closePath();
+	context.clip();
+	
+
+	const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ format: 'jpg' }));
+	context.drawImage(avatar, 25, 25, 200, 200);  
+			
+
+	const attachment = new MessageAttachment(canvas.toBuffer(), 'profile-image.png');
+	const embed = new MessageEmbed() // Create A New Embed
+                    .setColor('#36393e')
+                    .setDescription(`<@${member.user.id}> just left this discord. There are now ${memberCount} members !`)
+					.setImage('attachment://profile-image.png');
+	member.guild.channels.cache.get("942439391647899701").send({embeds: [embed] , files: [attachment] });
+	
+	
     var listchannels = await guild.channels.fetch()
 	var keyschannels = Array.from(listchannels.keys())
 	for (let i = 0; i < keyschannels.length; i++) {
