@@ -26,13 +26,13 @@ const embed1 = new MessageEmbed()
 .setTitle('Command list (1/2)')
 .setURL('https://discord.js.org/')
 .setAuthor({ name: 'Documentation : Commands', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
-.setDescription('This list contains all the commands you can use in this server')
+.setDescription("Please use !playerhelp for a list of all music player's commands")
 const embed2 = new MessageEmbed()
 .setColor('#0099ff')
 .setTitle('Command list (2/2)')
 .setURL('https://discord.js.org/')
 .setAuthor({ name: 'Documentation : Commands', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
-.setDescription('This list contains all the commands you can use in this server')
+.setDescription("Please use !playerhelp for a list of all music player's commands")
 
 const featureFiles = fs.readdirSync('./feature').filter(file => file.endsWith('.js'));
 for (const file of featureFiles) {

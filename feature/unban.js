@@ -1,11 +1,7 @@
 const { Permissions } = require('discord.js');
 const {args} = require("../bot.js");
 const permissions = new Permissions([
-	Permissions.FLAGS.VIEW_CHANNEL,
-	Permissions.FLAGS.EMBED_LINKS,
-	Permissions.FLAGS.ATTACH_FILES,
-	Permissions.FLAGS.READ_MESSAGE_HISTORY,
-	Permissions.FLAGS.MANAGE_ROLES,
+	Permissions.FLAGS.ADMINISTRATOR,
 ]);
 
 
@@ -20,7 +16,7 @@ module.exports = {
         const banList = await messageCreate.guild.bans.fetch();
         const bannedUser = banList.find(user => user.id === mentionedMemberId);
         if (!messageCreate.member.permissions.has(permissions)) {
-            messageCreate.reply("You are not an Administator!"); return;
+            messageCreate.reply("You are not an Administrator!"); return;
         }
         if (args.length === 0) { messageCreate.reply("Please provide an ID"); return };    
         mentionedMemberId = args[0];

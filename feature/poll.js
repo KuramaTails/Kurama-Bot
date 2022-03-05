@@ -1,5 +1,7 @@
-const { Embed } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed , Permissions } = require('discord.js');
+const permissions = new Permissions([
+	Permissions.FLAGS.ADMINISTRATOR,
+]);
 module.exports = {
 	name: "poll",
 	ephemeral: "false",
@@ -7,6 +9,9 @@ module.exports = {
     desc:'You can create a poll',
     example:"!poll Title + Option1 + Option2 + etc",
 	async execute(messageCreate,args) {
+        if (!messageCreate.member.permissions.has(permissions)) {
+            messageCreate.reply("You are not an Administrator!"); return;
+        }
         var emojilist = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
         const string = args.join(" ");
         const splittedstring = string.split("+");

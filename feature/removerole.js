@@ -5,11 +5,7 @@ const { features } = require('process');
 const {args} = require("../bot.js");
 const { clientId, guildId, token } = require('../config.json');
 const permissions = new Permissions([
-	Permissions.FLAGS.VIEW_CHANNEL,
-	Permissions.FLAGS.EMBED_LINKS,
-	Permissions.FLAGS.ATTACH_FILES,
-	Permissions.FLAGS.READ_MESSAGE_HISTORY,
-	Permissions.FLAGS.MANAGE_ROLES,
+	Permissions.FLAGS.ADMINISTRATOR,
 ]);
 
 
@@ -23,6 +19,9 @@ module.exports = {
         await messageCreate.client.destroy();
         messageCreate.client.login(token);
         await messageCreate.client.channels.fetch('942439391647899701')
+        if (!messageCreate.member.permissions.has(permissions)) {
+            messageCreate.reply("You are not an Administrator!"); return;
+        }
         try {
             var mentionedMember = await messageCreate.guild.members.fetch(args[0],true);
         } catch (error) {

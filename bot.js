@@ -332,7 +332,7 @@ bot.on('ready', async () => {
     })
 });
 bot.on("presenceUpdate", async (oldMember, newMember) => {
-    var guild= await bot.guilds.cache.get("942439391647899698")
+	var guild= await bot.guilds.cache.get("942439391647899698")
 	let members = await guild.members.fetch()
 	let memberskeys = Array.from(members.keys())
 	let onlineMembers = []
@@ -357,35 +357,71 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
 			offlineMembers.push(members.get(memberskeys[i]))
 		}
 	}
-	var onlinechannel = bot.channels.cache.get('949371630537277440');
-	var offlinechannel = bot.channels.cache.get('949371646257557584');
-	onlinechannel.setName(`Online : ${onlineMembers.length}`);
-	offlinechannel.setName(`Offline : ${offlineMembers.length}`);
+	var oldOnlineMembers = onlineMembers.length
+	var oldOfflineMembers = offlineMembers.lengthù
+	try {
+		if (oldMember.status=="online"){
+			oldOnlineMembers=oldOnlineMembers+1
+			oldOfflineMembers=oldOfflineMembers-1
+		}
+		else {
+			oldOnlineMembers=oldOnlineMembers-1
+			oldOfflineMembers=oldOfflineMembers+1
+		}
+	} catch (error) {
+		console.log(error)
+	}
+	var memberCount = guild.memberCount
+	var listchannels = await guild.channels.fetch()
+	var keyschannels = Array.from(listchannels.keys())
+	for (let i = 0; i < keyschannels.length; i++) {
+		switch (listchannels.get(keyschannels[i]).name) {
+			case `Serverstats`:
+				listchannels.get(keyschannels[i+1]).setName(`Member : ${memberCount}`)
+				listchannels.get(keyschannels[i+2]).setName(`Online : ${onlineMembers.length}`)
+				listchannels.get(keyschannels[i+3]).setName(`Offline : ${offlineMembers.length}`)
+				break;
+		}	
+	}
 });
         
 
-bot.on("guildMemberAdd", (member) => {
+bot.on("guildMemberAdd", async (member) => {
 	let welcomeEmbed = new MessageEmbed()
 	.setTitle(`${member.user.username} just joined!`, member.user.avatarURL())
 	.setDescription(`Welcome <@${member.user.id}>! Don't forget to read the rules-channel! `)
 	.setColor("0099ff");
 	member.guild.channels.cache.get("942439391647899701").send({embeds: [welcomeEmbed]})
 	.catch((err) => console.log(err));
-	var guild= bot.guilds.cache.get("942439391647899698")
-	var memberchannel = bot.channels.cache.get('949362343362580500');
+	var guild= await bot.guilds.cache.get("942439391647899698")
 	var memberCount = guild.memberCount 
-    memberchannel.setName(`Members : ${memberCount}`);
+    var listchannels = await guild.channels.fetch()
+	var keyschannels = Array.from(listchannels.keys())
+	for (let i = 0; i < keyschannels.length; i++) {
+		switch (listchannels.get(keyschannels[i]).name) {
+			case `Serverstats`:
+				listchannels.get(keyschannels[i+1]).setName(`Member : ${memberCount}`)
+				break;
+		}	
+	}
 });
-bot.on("guildMemberRemove", (member) => {
+bot.on("guildMemberRemove", async (member) => {
     let goodbyeEmbed = new MessageEmbed()
 	.setTitle(`${member.user.username} just left!`, member.user.avatarURL())
 	.setDescription(`Goodbye! 👋👋 `)
 	.setColor("FF0000");
 	member.guild.channels.cache.get("942439391647899701").send({embeds: [goodbyeEmbed]})
 	.catch((err) => console.log(err));
-	var guild= bot.guilds.cache.get("942439391647899698")
-	var memberchannel = bot.channels.cache.get('949362343362580500');
+	var guild= await bot.guilds.cache.get("942439391647899698")
 	var memberCount = guild.memberCount 
-    memberchannel.setName(`Members: ${memberCount}`);
+    var listchannels = await guild.channels.fetch()
+	var keyschannels = Array.from(listchannels.keys())
+	for (let i = 0; i < keyschannels.length; i++) {
+		switch (listchannels.get(keyschannels[i]).name) {
+			case `Serverstats`:
+				listchannels.get(keyschannels[i+1]).setName(`Member : ${memberCount}`)
+				break;
+		}	
+	}
 });
 bot.login(token);

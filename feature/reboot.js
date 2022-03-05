@@ -1,3 +1,7 @@
+const { Permissions } = require('discord.js');
+const permissions = new Permissions([
+	Permissions.FLAGS.ADMINISTRATOR,
+]);
 const { clientId, guildId, token } = require('../config.json');
 module.exports = {
 	name: "reboot",
@@ -6,6 +10,9 @@ module.exports = {
     desc:'Reboot bot',
     example:"!reboot",
 	async execute(messageCreate) {
+        if (!messageCreate.member.permissions.has(permissions)) {
+            messageCreate.reply("You are not an Administrator!"); return;
+        }
         await messageCreate.client.destroy();
         messageCreate.client.login(token);
         messageCreate.reply("Bot is rebooting");
