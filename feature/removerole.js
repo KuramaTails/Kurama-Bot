@@ -55,7 +55,7 @@ module.exports = {
             var emojilist = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
         }
         else {
-            messageCreate.reply("There was an error. Please contact an Admin")
+            return messageCreate.reply("There was an error. Please contact an Admin")
         }
         for (let i = 0; i < filteredkeys.length; i++) {
             roles.get(filteredkeys[i]).emoji = emojilist[i]

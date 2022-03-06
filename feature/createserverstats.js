@@ -17,7 +17,6 @@ module.exports = {
             messageCreate.reply("You are not an Administrator!"); return;
         }
         var guild = await messageCreate.guild.channels;
-        var name = messageCreate.author.username;
         let everyone = messageCreate.guild.roles.cache.find(r => r.name === "@everyone");
         let members = await messageCreate.guild.members.fetch()
         let countMembers = Array.from(members.keys())

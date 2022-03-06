@@ -7,6 +7,7 @@ const DisTube = require('distube')
 const { RepeatMode } = require("distube");
 const { YtDlpPlugin } = require('@distube/yt-dlp')
 const Canvas = require('canvas');
+const message = require('@acegoal07/discordjs-pagination/lib/message');
 dotenv.config()
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] ], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
@@ -98,7 +99,8 @@ bot.on('messageCreate', async msg => {
 						let welcomeEmbed = new MessageEmbed()
 							.setAuthor(`${msg.member.user.username} just joined!`, msg.member.user.avatarURL())
 							.setDescription(`Welcome <@${msg.member.user.id}>! Don't forget to read the rules-channel! `)
-							.setColor("0099ff");
+							.setColor("0099ff")
+							.setThumbnail(msg.member.user.avatarURL({ dynamic: true }))
 							msg.reply({embeds: [welcomeEmbed]})
 							.catch((err) => console.log(err));
 						break;
@@ -499,4 +501,13 @@ bot.on("guildMemberRemove", async (member) => {
 		}	
 	}
 });
+
+bot.on('messageReactionAdd', (reaction, user) => {
+	console.log(reaction);
+});
+
+bot.on('messageReactionRemove', (reaction, user) => {
+    console.log(reaction);
+});
+
 bot.login(token);
