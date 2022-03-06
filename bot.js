@@ -7,7 +7,6 @@ const DisTube = require('distube')
 const { RepeatMode } = require("distube");
 const { YtDlpPlugin } = require('@distube/yt-dlp')
 const Canvas = require('canvas');
-const message = require('@acegoal07/discordjs-pagination/lib/message');
 dotenv.config()
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] ], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
