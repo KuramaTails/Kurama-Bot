@@ -8,7 +8,7 @@ const { YtDlpPlugin } = require('@distube/yt-dlp')
 const Canvas = require('canvas');
 dotenv.config()
 
-const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] ], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
+const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 bot.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
@@ -289,9 +289,18 @@ bot.on('messageCreate', async msg => {
 		}
 	}
 });
-player.on('playSong', () =>{
-	bot.channels.fetch('942439391647899701')
-	.then(async channel => {
+player.on('playSong', async (queue,song) =>{
+	var guild= await bot.guilds.cache.get(queue.clientMember.guild.id)
+	var listchannels = await guild.channels.fetch()
+	var keyschannels = Array.from(listchannels.keys())
+	for (let i = 0; i < keyschannels.length; i++) {
+		switch (listchannels.get(keyschannels[i]).name) {
+			case `player-room`:
+				var textchannel = listchannels.get(keyschannels[i])
+				break;
+		}	
+	}
+	bot.channels.fetch(textchannel.id).then(async channel => {
 		let playlist = player.queues.collection.first().songs;
 		const Embedsearch = new MessageEmbed()
 		.setColor('#0099ff')
@@ -304,16 +313,35 @@ player.on('playSong', () =>{
 		timeoutID = undefined	
     })
 });
-player.on('addSong', () => {
-	bot.channels.fetch('942439391647899701')
-	.then(async channel => {
+player.on('addSong', async (queue,song) => {
+	var guild= await bot.guilds.cache.get(queue.clientMember.guild.id)
+	var listchannels = await guild.channels.fetch()
+	var keyschannels = Array.from(listchannels.keys())
+	for (let i = 0; i < keyschannels.length; i++) {
+		switch (listchannels.get(keyschannels[i]).name) {
+			case `player-room`:
+				var textchannel = listchannels.get(keyschannels[i])
+				break;
+		}	
+	}
+	bot.channels.fetch(textchannel.id).then(async channel => {
 		let lenght = player.queues.collection.first().songs.length
 		let addedsong = player.queues.collection.first().songs[lenght-1]
 		channel.send(`Added ${addedsong.name} - \`${addedsong.formattedDuration}\` to the queue`);
     })
 })
-player.on('finish', () => {
-	bot.channels.fetch('942439391647899701')
+player.on('finish', async (queue) => {
+	var guild= await bot.guilds.cache.get(queue.clientMember.guild.id)
+	var listchannels = await guild.channels.fetch()
+	var keyschannels = Array.from(listchannels.keys())
+	for (let i = 0; i < keyschannels.length; i++) {
+		switch (listchannels.get(keyschannels[i]).name) {
+			case `player-room`:
+				var textchannel = listchannels.get(keyschannels[i])
+				break;
+		}	
+	}
+	bot.channels.fetch(textchannel.id)
 	.then(channel => {
         timeoutID = setTimeout(() => {
 			channel.send('Finish queue! Player leaved vocal channel');
@@ -326,8 +354,18 @@ player.on('finish', () => {
 player.on('error', () => {
 	console.error(e)
 })
-player.on('empty', () => {
-	bot.channels.fetch('942439391647899701').then(channel => {
+player.on('empty', async (queue) => {
+	var guild= await bot.guilds.cache.get(queue.clientMember.guild.id)
+	var listchannels = await guild.channels.fetch()
+	var keyschannels = Array.from(listchannels.keys())
+	for (let i = 0; i < keyschannels.length; i++) {
+		switch (listchannels.get(keyschannels[i]).name) {
+			case `player-room`:
+				var textchannel = listchannels.get(keyschannels[i])
+				break;
+		}	
+	}
+	bot.channels.fetch(textchannel.id).then(channel => {
 		channel.send("The voice channel is empty! Leaving the voice channel...");
 		var tempvoice = bot.voice.adapters;
 		var tempvoiceid= Array.from(tempvoice.keys());
@@ -335,15 +373,117 @@ player.on('empty', () => {
 	})
 })
 bot.on('ready', async () => {
-	bot.channels.fetch('942439391647899701')
-    .then(channel => {
-        channel.send("Hi,I'm ready!");
-    })
+	var guilds= await bot.guilds.fetch()
+	var guildskeys = Array.from(guilds.keys())
+	var guildsnames = []
+	for (let i = 0; i < guildskeys.length; i++) {
+		guildsnames.push(guilds.get(guildskeys[i]).name)
+		
+	}
+    console.log(`Bot joined into ${guildsnames.toString()}`)
 });
 bot.on("presenceUpdate", async (oldMember, newMember) => {
-	var guild= await bot.guilds.cache.get("942439391647899698")
+	try {
+		var guild= await bot.guilds.cache.get(oldMember.guild.id)
+		let members = await guild.members.fetch()
+		let memberskeys = Array.from(members.keys())
+		let onlineMembers = []
+		let offlineMembers = []
+		for (let i = 0; i < memberskeys.length; i++) {
+			try {
+				switch (members.get(memberskeys[i]).presence.status) {
+					case "online":
+						onlineMembers.push(members.get(memberskeys[i]))
+					break;
+					case "idle":
+						onlineMembers.push(members.get(memberskeys[i]))
+					break;    
+					case "dnd":
+						onlineMembers.push(members.get(memberskeys[i]))
+					break;    
+					case "offline":
+						offlineMembers.push(members.get(memberskeys[i]))
+					break;
+				}
+			} catch (error) {
+				offlineMembers.push(members.get(memberskeys[i]))
+			}
+		}
+		var oldOnlineMembers = onlineMembers.length
+		var oldOfflineMembers = offlineMembers.lengthù
+		try {
+			if (oldMember.status=="online"){
+				oldOnlineMembers=oldOnlineMembers+1
+				oldOfflineMembers=oldOfflineMembers-1
+			}
+			else {
+				oldOnlineMembers=oldOnlineMembers-1
+				oldOfflineMembers=oldOfflineMembers+1
+			}
+		} catch (error) {
+			console.log(error)
+		}
+		var memberCount = guild.memberCount
+		var listchannels = await guild.channels.fetch()
+		var keyschannels = Array.from(listchannels.keys())
+		for (let i = 0; i < keyschannels.length; i++) {
+			switch (listchannels.get(keyschannels[i]).name) {
+				case `Serverstats`:
+					listchannels.get(keyschannels[i+1]).setName(`Member : ${memberCount}`)
+					listchannels.get(keyschannels[i+2]).setName(`Online : ${onlineMembers.length}`)
+					listchannels.get(keyschannels[i+3]).setName(`Offline : ${offlineMembers.length}`)
+					break;
+			}	
+		}
+	} catch (error) {
+		console.log(error)
+	}
+	
+	
+});
+        
+
+bot.on("guildMemberAdd", async (member) => {
+	var guild= await bot.guilds.cache.get(member.guild.id)
 	let members = await guild.members.fetch()
-	let memberskeys = Array.from(members.keys())
+	var memberskeys = Array.from(members.keys())
+	var memberCount = guild.memberCount 
+	const canvas = Canvas.createCanvas(700, 250);
+	const context = canvas.getContext('2d');
+
+	const background = await Canvas.loadImage('./src/canvas.jpg');
+	context.drawImage(background, 0, 0, canvas.width, canvas.height);
+	context.strokeStyle = '#0099ff';
+	context.strokeRect(0, 0, canvas.width, canvas.height);
+
+	context.font = '28px sans-serif';
+	context.fillStyle = '#ffffff';
+	context.fillText('Welcome!', canvas.width / 2.5, canvas.height / 3.5);
+
+	context.font = applyText(canvas, `${member.user.username}!`);
+	context.fillStyle = '#ffffff';
+	context.fillText(`${member.user.username}`, canvas.width / 2.5, canvas.height / 1.8);
+
+	context.font = '22px sans-serif';
+	context.fillStyle = '#ffffff';
+	context.fillText('Please read #rules-channel first!', canvas.width / 2.5, canvas.height / 1.4);
+
+	context.beginPath();
+	context.arc(125, 125, 100, 0, Math.PI * 2, true);
+	context.closePath();
+	context.clip();
+	
+
+	const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ format: 'jpg' }));
+	context.drawImage(avatar, 25, 25, 200, 200);  
+			
+	const attachment = new MessageAttachment(canvas.toBuffer(), 'profile-image.png');
+	const embed = new MessageEmbed() // Create A New Embed
+                    .setColor('#36393e')
+                    .setDescription(`Welcome <@${member.user.id}> . You are the ${memberCount}th member !`)
+					.setImage('attachment://profile-image.png');
+	
+	
 	let onlineMembers = []
 	let offlineMembers = []
 	for (let i = 0; i < memberskeys.length; i++) {
@@ -380,8 +520,7 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
 	} catch (error) {
 		console.log(error)
 	}
-	var memberCount = guild.memberCount
-	var listchannels = await guild.channels.fetch()
+    var listchannels = await guild.channels.fetch()
 	var keyschannels = Array.from(listchannels.keys())
 	for (let i = 0; i < keyschannels.length; i++) {
 		switch (listchannels.get(keyschannels[i]).name) {
@@ -390,63 +529,19 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
 				listchannels.get(keyschannels[i+2]).setName(`Online : ${onlineMembers.length}`)
 				listchannels.get(keyschannels[i+3]).setName(`Offline : ${offlineMembers.length}`)
 				break;
-		}	
-	}
-});
-        
-
-bot.on("guildMemberAdd", async (member) => {
-	var guild= await bot.guilds.cache.get("942439391647899698")
-	var memberCount = guild.memberCount 
-	const canvas = Canvas.createCanvas(700, 250);
-	const context = canvas.getContext('2d');
-
-	const background = await Canvas.loadImage('./src/canvas.jpg');
-	context.drawImage(background, 0, 0, canvas.width, canvas.height);
-	context.strokeStyle = '#0099ff';
-	context.strokeRect(0, 0, canvas.width, canvas.height);
-
-	context.font = '28px sans-serif';
-	context.fillStyle = '#ffffff';
-	context.fillText('Welcome!', canvas.width / 2.5, canvas.height / 3.5);
-
-	context.font = applyText(canvas, `${member.user.username}!`);
-	context.fillStyle = '#ffffff';
-	context.fillText(`${member.user.username}`, canvas.width / 2.5, canvas.height / 1.8);
-
-	context.font = '22px sans-serif';
-	context.fillStyle = '#ffffff';
-	context.fillText('Please read #rules-channel first!', canvas.width / 2.5, canvas.height / 1.4);
-
-	context.beginPath();
-	context.arc(125, 125, 100, 0, Math.PI * 2, true);
-	context.closePath();
-	context.clip();
-	
-
-	const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ format: 'jpg' }));
-	context.drawImage(avatar, 25, 25, 200, 200);  
-			
-	const attachment = new MessageAttachment(canvas.toBuffer(), 'profile-image.png');
-	const embed = new MessageEmbed() // Create A New Embed
-                    .setColor('#36393e')
-                    .setDescription(`Welcome <@${member.user.id}> . You are the ${memberCount}th member !`)
-					.setImage('attachment://profile-image.png');
-	member.guild.channels.cache.get("942439391647899701").send({embeds: [embed],files: [attachment] });
-    var listchannels = await guild.channels.fetch()
-	var keyschannels = Array.from(listchannels.keys())
-	for (let i = 0; i < keyschannels.length; i++) {
-		switch (listchannels.get(keyschannels[i]).name) {
-			case `Serverstats`:
-				listchannels.get(keyschannels[i+1]).setName(`Member : ${memberCount}`)
+			case `welcome`:
+				var welcomeChannel = listchannels.get(keyschannels[i]).id
+				member.guild.channels.cache.get(welcomeChannel).send({embeds: [embed],files: [attachment] });
 				break;
 		}	
 	}
+	
 });
 bot.on("guildMemberRemove", async (member) => {
-	var guild= await bot.guilds.cache.get("942439391647899698")
+	var guild= await bot.guilds.cache.get(member.guild.id)
+	let members = await guild.members.fetch()
+	var memberskeys = Array.from(members.keys())
 	var memberCount = guild.memberCount 
-
 	const canvas = Canvas.createCanvas(700, 250);
 	const context = canvas.getContext('2d');
 
@@ -486,26 +581,135 @@ bot.on("guildMemberRemove", async (member) => {
                     .setColor('#36393e')
                     .setDescription(`<@${member.user.id}> just left this discord. There are now ${memberCount} members !`)
 					.setImage('attachment://profile-image.png');
-	member.guild.channels.cache.get("942439391647899701").send({embeds: [embed] , files: [attachment] });
-	
-	
+	let onlineMembers = []
+	let offlineMembers = []
+	for (let i = 0; i < memberskeys.length; i++) {
+		try {
+			switch (members.get(memberskeys[i]).presence.status) {
+				case "online":
+					onlineMembers.push(members.get(memberskeys[i]))
+				break;
+				case "idle":
+					onlineMembers.push(members.get(memberskeys[i]))
+				break;    
+				case "dnd":
+					onlineMembers.push(members.get(memberskeys[i]))
+				break;    
+				case "offline":
+					offlineMembers.push(members.get(memberskeys[i]))
+				break;
+			}
+		} catch (error) {
+			offlineMembers.push(members.get(memberskeys[i]))
+		}
+	}
+	var oldOnlineMembers = onlineMembers.length
+	var oldOfflineMembers = offlineMembers.lengthù
+	try {
+		if (oldMember.status=="online"){
+			oldOnlineMembers=oldOnlineMembers+1
+			oldOfflineMembers=oldOfflineMembers-1
+		}
+		else {
+			oldOnlineMembers=oldOnlineMembers-1
+			oldOfflineMembers=oldOfflineMembers+1
+		}
+	} catch (error) {
+		console.log(error)
+	}
     var listchannels = await guild.channels.fetch()
 	var keyschannels = Array.from(listchannels.keys())
 	for (let i = 0; i < keyschannels.length; i++) {
 		switch (listchannels.get(keyschannels[i]).name) {
 			case `Serverstats`:
 				listchannels.get(keyschannels[i+1]).setName(`Member : ${memberCount}`)
+				listchannels.get(keyschannels[i+2]).setName(`Online : ${onlineMembers.length}`)
+				listchannels.get(keyschannels[i+3]).setName(`Offline : ${offlineMembers.length}`)
+				break;
+			case `welcome`:
+				var welcomeChannel = listchannels.get(keyschannels[i]).id
+				member.guild.channels.cache.get(welcomeChannel).send({embeds: [embed],files: [attachment] });
 				break;
 		}	
 	}
 });
 
-bot.on('messageReactionAdd', (reaction, user) => {
-	console.log(reaction);
+bot.on('messageReactionAdd', async (reaction, user) => {
+    var guild= await bot.guilds.cache.get(reaction.message.guildId)
+	var listchannels = await guild.channels.fetch()
+	var keyschannels = Array.from(listchannels.keys())
+	for (let i = 0; i < keyschannels.length; i++) {
+		if (listchannels.get(keyschannels[i]).id == reaction.message.channelId)
+		{	
+			if (listchannels.get(keyschannels[i]).name!= "choose-role") {return}
+			var emojilist = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
+			var roles = await guild.roles.fetch()
+			let keys = Array.from( roles.keys() );
+			const filteredkeys = []
+			for (let i = 0; i < keys.length; i++) {
+				if (!roles.get(keys[i]).managed ){
+					if (roles.get(keys[i]).name != "@everyone"){
+						filteredkeys.push(keys[i])
+					}
+				}
+			}
+			for (let i = 0; i < filteredkeys.length; i++) {
+				if (!roles.get(filteredkeys[i]).managed ){
+					if (roles.get(filteredkeys[i]).name != "@everyone"){
+						roles.get(filteredkeys[i]).emoji = emojilist[i]
+						if (roles.get(filteredkeys[i]).emoji == reaction.emoji.name)
+						{	
+							if (user.id != bot.user.id) {
+								var selrole = guild.roles.cache.find(role => role.name === roles.get(filteredkeys[i]).name)
+								var userreacted = await guild.members.fetch(user.id,true);
+								userreacted.roles.add(selrole);
+								await userreacted.send(`You have received ${selrole.name} role in ${guild.name}'s Discord.`)
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 });
 
-bot.on('messageReactionRemove', (reaction, user) => {
-    console.log(reaction);
+bot.on('messageReactionRemove', async (reaction, user) => {
+    var guild= await bot.guilds.cache.get(reaction.message.guildId)
+	var listchannels = await guild.channels.fetch()
+	var keyschannels = Array.from(listchannels.keys())
+	for (let i = 0; i < keyschannels.length; i++) {
+		if (listchannels.get(keyschannels[i]).id == reaction.message.channelId)
+		{
+			if (listchannels.get(keyschannels[i]).name!= "choose-role") {return}			
+			var emojilist = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
+			var roles = await guild.roles.fetch()
+			let keys = Array.from( roles.keys() );
+			const filteredkeys = []
+			for (let i = 0; i < keys.length; i++) {
+				if (!roles.get(keys[i]).managed ){
+					if (roles.get(keys[i]).name != "@everyone"){
+						filteredkeys.push(keys[i])
+					}
+				}
+			}
+			for (let i = 0; i < filteredkeys.length; i++) {
+				if (!roles.get(filteredkeys[i]).managed ){
+					if (roles.get(filteredkeys[i]).name != "@everyone"){
+						roles.get(filteredkeys[i]).emoji = emojilist[i]
+						if (roles.get(filteredkeys[i]).emoji == reaction.emoji.name)
+						{
+							if (user.id != bot.user.id) {
+								var selrole = guild.roles.cache.find(role => role.name === roles.get(filteredkeys[i]).name)
+								var userreacted = await guild.members.fetch(user.id,true);
+								userreacted.roles.remove(selrole);
+								await userreacted.send(`You have removed ${selrole.name} role in ${guild.name}'s Discord.`)
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 });
 
 bot.login(process.env.BOT_TOKEN);

@@ -11,11 +11,12 @@ module.exports = {
     desc:"You can add a role to a user from this server",
     example:"!addrole userId",
 	async execute(messageCreate, args) {
+        var member = args[0].replace(/\D/g, "");
         await messageCreate.client.destroy();
-        messageCreate.client.login(token);
+        messageCreate.client.login(process.env.BOT_TOKEN);
         await messageCreate.client.channels.fetch('942439391647899701')
         try {
-            var mentionedMember = await messageCreate.guild.members.fetch(args[0],true);
+            var mentionedMember = await messageCreate.guild.members.fetch(member,true);
         } catch (error) {
             messageCreate.reply("No member found"); 
             return;
@@ -82,10 +83,10 @@ module.exports = {
                         }
                         if(addedroles.length>=1)
                         {
-                            messageCreate.reply(`Role(s) ${addedroles} added for user <@${args}>`)
+                            messageCreate.reply(`Role(s) ${addedroles} added for user <@${member}>`)
                         }
                         else {
-                            messageCreate.reply(`No roles added to user <@${args}>`)
+                            messageCreate.reply(`No roles added to user <@${member}>`)
 
                         }
                         

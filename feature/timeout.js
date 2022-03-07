@@ -12,13 +12,14 @@ module.exports = {
     example:"!timeout userId minutes",
 	async execute(messageCreate, args) {
         var mentionedMember;
+        var member = args[0].replace(/\D/g, "");
         if (!messageCreate.member.permissions.has(permissions)) {
             messageCreate.reply("You are not an Administrator!"); return;
         }
         if (args.length === 0) { messageCreate.reply("Please provide an ID"); return };
         if (args[1] == "") { messageCreate.reply("Please provide timeout minutes"); return };
         try {
-            mentionedMember = await messageCreate.guild.members.fetch(args[0]);
+            mentionedMember = await messageCreate.guild.members.fetch(member);
             if (mentionedMember.permissions.has(permissions)) {
                 messageCreate.reply("You can't timeout an Administrator!");
                 return;

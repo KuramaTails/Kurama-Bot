@@ -12,6 +12,7 @@ module.exports = {
     example:"!ban userId reason",
 	async execute(messageCreate, args) {
         var mentionedMember;
+        var member = args[0].replace(/\D/g, "");
         const reason = [...args];
         reason.shift(1);       
         if (!messageCreate.member.permissions.has(permissions)) {
@@ -25,7 +26,7 @@ module.exports = {
         .replace("]", " ")
         .trim();    
         try {
-            mentionedMember = await messageCreate.guild.members.fetch(args[0]);
+            mentionedMember = await messageCreate.guild.members.fetch(member);
             if (mentionedMember.permissions.has(permissions)) {
                 messageCreate.reply("You can't ban an Administrator!");
                 return;

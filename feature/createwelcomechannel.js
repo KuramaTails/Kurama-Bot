@@ -7,10 +7,10 @@ const channelpermissions = new Permissions([
 ]);
 
 module.exports = {
-	name: "createroleschannel",
+	name: "createwelcomechannel",
 	ephemeral: "false",
-	command:"createroleschannel",
-	desc:"Create channels for roles assignation",
+	command:"CreateWelcomeChannel",
+	desc:"Create channels for welcome new users",
     example:"!createroleschannel",
 	async execute(messageCreate, args,bot) {
         if (!messageCreate.member.permissions.has(permissions)) {
@@ -51,7 +51,7 @@ module.exports = {
                 }
             }
         }
-        guild.create('Roles', {
+        guild.create('Welcomer', {
             type: 'GUILD_CATEGORY',
             position: 0,
             permissionOverwrites: [
@@ -62,6 +62,9 @@ module.exports = {
              ],
           })
           .then(cat => {
+            guild.create(`welcome`,  {
+                type: 'GUILD_TEXT',parent: cat,
+                });
             guild.create(`Choose-role`,  {
                 type: 'GUILD_TEXT',parent: cat,
                 }).then(roleschannel => {
@@ -70,7 +73,8 @@ module.exports = {
                             embedMessage.react(roles.get(filteredkeys[i]).emoji);  
                         }
                     })
-                });        
+                });  
+                  
         });
     }
 };

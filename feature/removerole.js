@@ -11,6 +11,7 @@ module.exports = {
     desc:"You can remove roles to user from this server",
     example:"!removerole userId",
 	async execute(messageCreate, args,bot) {
+        var member = args[0].replace(/\D/g, "");
         await messageCreate.client.destroy();
         messageCreate.client.login(token);
         await messageCreate.client.channels.fetch('942439391647899701')
@@ -18,7 +19,7 @@ module.exports = {
             messageCreate.reply("You are not an Administrator!"); return;
         }
         try {
-            var mentionedMember = await messageCreate.guild.members.fetch(args[0],true);
+            var mentionedMember = await messageCreate.guild.members.fetch(member,true);
         } catch (error) {
             messageCreate.reply("No member found"); 
             return;
@@ -87,10 +88,10 @@ module.exports = {
                         }
                         if(removedroles.length>=1)
                         {
-                            messageCreate.reply(`Role(s) ${removedroles} removed for user <@${args}>`)
+                            messageCreate.reply(`Role(s) ${removedroles} removed for user <@${member}>`)
                         }
                         else {
-                            messageCreate.reply(`No roles removed to user <@${args}>`)
+                            messageCreate.reply(`No roles removed to user <@${member}>`)
 
                         }
                         

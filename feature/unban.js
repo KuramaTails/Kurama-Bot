@@ -12,13 +12,14 @@ module.exports = {
     example:"!unban userId",
 	async execute(messageCreate, args) {
         var mentionedMemberId; 
+        var member = args[0].replace(/\D/g, "");
         const banList = await messageCreate.guild.bans.fetch();
         const bannedUser = banList.find(user => user.id === mentionedMemberId);
         if (!messageCreate.member.permissions.has(permissions)) {
             messageCreate.reply("You are not an Administrator!"); return;
         }
         if (args.length === 0) { messageCreate.reply("Please provide an ID"); return };    
-        mentionedMemberId = args[0];
+        mentionedMemberId = member;
         if (bannedUser)
             {
                 messageCreate.guild.members.unban(mentionedMemberId);
