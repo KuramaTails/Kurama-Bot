@@ -508,4 +508,4 @@ bot.on('messageReactionRemove', (reaction, user) => {
     console.log(reaction);
 });
 
-bot.login(token);
+bot.login(process.env.BOT_TOKEN);
