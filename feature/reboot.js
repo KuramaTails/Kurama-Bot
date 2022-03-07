@@ -2,7 +2,6 @@ const { Permissions } = require('discord.js');
 const permissions = new Permissions([
 	Permissions.FLAGS.ADMINISTRATOR,
 ]);
-const { clientId, guildId, token } = require('../config.json');
 module.exports = {
 	name: "reboot",
 	ephemeral: "false",
