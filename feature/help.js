@@ -1,6 +1,5 @@
 const { MessageEmbed } = require('discord.js');
 const fs= require('fs');
-const { features } = require('process');
 module.exports = {
 	name: "help",
 	ephemeral: "false",

@@ -1,5 +1,4 @@
 const { Permissions, MessageEmbed } = require('discord.js');
-const client = require("../bot")
 const permissions = new Permissions([
 	Permissions.FLAGS.ADMINISTRATOR,
 ]);

@@ -1,9 +1,4 @@
-const { Permissions, MessageEmbed, CommandInteractionOptionResolver } = require('discord.js');
-const { TIMEOUT } = require('dns');
-const fs= require('fs');
-const { features } = require('process');
-const {args} = require("../bot.js");
-const { clientId, guildId, token } = require('../config.json');
+const { Permissions, MessageEmbed } = require('discord.js');
 const permissions = new Permissions([
 	Permissions.FLAGS.ADMINISTRATOR,
 ]);

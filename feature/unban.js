@@ -1,5 +1,4 @@
 const { Permissions } = require('discord.js');
-const {args} = require("../bot.js");
 const permissions = new Permissions([
 	Permissions.FLAGS.ADMINISTRATOR,
 ]);

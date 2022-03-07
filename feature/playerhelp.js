@@ -1,8 +1,4 @@
 const { Permissions , MessageEmbed } = require('discord.js');
-const permissions = new Permissions([
-	Permissions.FLAGS.ADMINISTRATOR,
-]);
-
 module.exports = {
 	name: "playerhelp",
 	ephemeral: "false",

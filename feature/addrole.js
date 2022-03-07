@@ -1,9 +1,4 @@
 const { Permissions, MessageEmbed } = require('discord.js');
-const { TIMEOUT } = require('dns');
-const fs= require('fs');
-const { features } = require('process');
-const {args} = require("../bot.js");
-const { clientId, guildId, token } = require('../config.json');
 const permissions = new Permissions([
 	Permissions.FLAGS.ADMINISTRATOR,
 ]);
@@ -15,7 +10,7 @@ module.exports = {
     command:"Addrole",
     desc:"You can add a role to a user from this server",
     example:"!addrole userId",
-	async execute(messageCreate, args,bot) {
+	async execute(messageCreate, args) {
         await messageCreate.client.destroy();
         messageCreate.client.login(token);
         await messageCreate.client.channels.fetch('942439391647899701')
