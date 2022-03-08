@@ -6,6 +6,9 @@ const DisTube = require('distube')
 const { RepeatMode } = require("distube");
 const { YtDlpPlugin } = require('@distube/yt-dlp')
 const Canvas = require('canvas');
+const createserverstats = require("./feature/createserverstats")
+const createwelcomechannel = require("./feature/createwelcomechannel")
+const createplayerchannels = require("./feature/createplayerchannels")
 dotenv.config()
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
@@ -365,12 +368,7 @@ player.on('empty', async (queue) => {
 				break;
 		}	
 	}
-	bot.channels.fetch(textchannel.id).then(channel => {
-		channel.send("The voice channel is empty! Leaving the voice channel...");
-		var tempvoice = bot.voice.adapters;
-		var tempvoiceid= Array.from(tempvoice.keys());
-		player.voices.leave(tempvoiceid[0]);
-	})
+	textchannel.send("The voice channel is empty! Leaving the voice channel...")
 })
 bot.on('ready', async () => {
 	var guilds= await bot.guilds.fetch()
@@ -383,6 +381,7 @@ bot.on('ready', async () => {
     console.log(`Bot joined into ${guildsnames.toString()}`)
 });
 bot.on("presenceUpdate", async (oldMember, newMember) => {
+	if (oldMember=== null) { return}
 	try {
 		var guild= await bot.guilds.cache.get(oldMember.guild.id)
 		let members = await guild.members.fetch()
@@ -427,14 +426,19 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
 		var listchannels = await guild.channels.fetch()
 		var keyschannels = Array.from(listchannels.keys())
 		for (let i = 0; i < keyschannels.length; i++) {
-			switch (listchannels.get(keyschannels[i]).name) {
-				case `Serverstats`:
-					listchannels.get(keyschannels[i+1]).setName(`Member : ${memberCount}`)
-					listchannels.get(keyschannels[i+2]).setName(`Online : ${onlineMembers.length}`)
-					listchannels.get(keyschannels[i+3]).setName(`Offline : ${offlineMembers.length}`)
-					break;
+			switch (true) {
+				case listchannels.get(keyschannels[i]).name.includes("Member :"):
+				listchannels.get(keyschannels[i]).setName(`Member : ${memberCount}`)
+				break;
+				case listchannels.get(keyschannels[i]).name.includes("Online :"):
+				listchannels.get(keyschannels[i]).setName(`Online : ${onlineMembers.length}`)
+				break;
+				case listchannels.get(keyschannels[i]).name.includes("Offline :"):
+				listchannels.get(keyschannels[i]).setName(`Offline : ${offlineMembers.length}`)
+				break;
 			}	
 		}
+		console.log(`Presence updated in ${guild}`)
 	} catch (error) {
 		console.log(error)
 	}
@@ -523,16 +527,20 @@ bot.on("guildMemberAdd", async (member) => {
     var listchannels = await guild.channels.fetch()
 	var keyschannels = Array.from(listchannels.keys())
 	for (let i = 0; i < keyschannels.length; i++) {
-		switch (listchannels.get(keyschannels[i]).name) {
-			case `Serverstats`:
-				listchannels.get(keyschannels[i+1]).setName(`Member : ${memberCount}`)
-				listchannels.get(keyschannels[i+2]).setName(`Online : ${onlineMembers.length}`)
-				listchannels.get(keyschannels[i+3]).setName(`Offline : ${offlineMembers.length}`)
-				break;
-			case `welcome`:
-				var welcomeChannel = listchannels.get(keyschannels[i]).id
-				member.guild.channels.cache.get(welcomeChannel).send({embeds: [embed],files: [attachment] });
-				break;
+		switch (true) {
+			case listchannels.get(keyschannels[i]).name.includes("Member :"):
+			listchannels.get(keyschannels[i]).setName(`Member : ${memberCount}`)
+			break;
+			case listchannels.get(keyschannels[i]).name.includes("Online :"):
+			listchannels.get(keyschannels[i]).setName(`Online : ${onlineMembers.length}`)
+			break;
+			case listchannels.get(keyschannels[i]).name.includes("Offline :"):
+			listchannels.get(keyschannels[i]).setName(`Offline : ${offlineMembers.length}`)
+			break;
+			case listchannels.get(keyschannels[i]).name.includes("welcome"):
+			var welcomeChannel = listchannels.get(keyschannels[i]).id
+			member.guild.channels.cache.get(welcomeChannel).send({embeds: [embed],files: [attachment] });
+			break;
 		}	
 	}
 	
@@ -620,17 +628,21 @@ bot.on("guildMemberRemove", async (member) => {
     var listchannels = await guild.channels.fetch()
 	var keyschannels = Array.from(listchannels.keys())
 	for (let i = 0; i < keyschannels.length; i++) {
-		switch (listchannels.get(keyschannels[i]).name) {
-			case `Serverstats`:
-				listchannels.get(keyschannels[i+1]).setName(`Member : ${memberCount}`)
-				listchannels.get(keyschannels[i+2]).setName(`Online : ${onlineMembers.length}`)
-				listchannels.get(keyschannels[i+3]).setName(`Offline : ${offlineMembers.length}`)
-				break;
-			case `welcome`:
-				var welcomeChannel = listchannels.get(keyschannels[i]).id
-				member.guild.channels.cache.get(welcomeChannel).send({embeds: [embed],files: [attachment] });
-				break;
-		}	
+		switch (true) {
+			case listchannels.get(keyschannels[i]).name.includes("Member :"):
+			listchannels.get(keyschannels[i]).setName(`Member : ${memberCount}`)
+			break;
+			case listchannels.get(keyschannels[i]).name.includes("Online :"):
+			listchannels.get(keyschannels[i]).setName(`Online : ${onlineMembers.length}`)
+			break;
+			case listchannels.get(keyschannels[i]).name.includes("Offline :"):
+			listchannels.get(keyschannels[i]).setName(`Offline : ${offlineMembers.length}`)
+			break;
+			case listchannels.get(keyschannels[i]).name.includes("welcome"):
+			var welcomeChannel = listchannels.get(keyschannels[i]).id
+			member.guild.channels.cache.get(welcomeChannel).send({embeds: [embed],files: [attachment] });
+			break;
+		}		
 	}
 });
 
@@ -711,5 +723,201 @@ bot.on('messageReactionRemove', async (reaction, user) => {
 		}
 	}
 });
+
+bot.on("guildCreate", async (guild) => {
+    console.log("Joined a new guild: " + guild.name);
+	var listchannels = await guild.channels.fetch()
+	var keyschannels = Array.from(listchannels.keys())
+	for (let i = 0; i < keyschannels.length; i++) {
+		if (listchannels.get(keyschannels[i]).type== "GUILD_TEXT"){
+			listchannels.get(keyschannels[i]).send("Hi! I've just joined your channel. Please check the newly created channels").then(async msg => {
+				await createserverstats.execute(msg);
+				await createwelcomechannel.execute(msg);
+				await createplayerchannels.execute(msg);
+				return })
+				return
+		}
+	}	
+})
+
+bot.on("guildDelete", async (guild) => {
+    console.log("Left a guild: " + guild.name);
+})
+
+bot.on("roleCreate", async (role) => {
+	var guild = await bot.guilds.fetch(role.guild.id)
+	var listchannels = await guild.channels.fetch()
+	var keyschannels = Array.from(listchannels.keys())
+	for (let i = 0; i < keyschannels.length; i++) {
+		switch (listchannels.get(keyschannels[i]).name) {
+			case "choose-role":
+				var selchannel = listchannels.get(keyschannels[i])
+				var allmessages = await selchannel.messages.fetch()
+				var keysmessages = Array.from(allmessages.keys())
+				for (let i = 0; i < keysmessages.length; i++) {
+					if (allmessages.get(keysmessages[i]).embeds.MessageEmbed=== null) { return }
+					else {
+						var oldEmbed = allmessages.get(keysmessages[i]).embeds[0];
+						var emojilist = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
+						const newEmbed = new MessageEmbed()
+						.setColor('#0099ff')
+						.setTitle('Add Role')
+						.setAuthor({ name: 'Command : Add Role', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
+						.setDescription(`Choose a reaction for receiving a role`)
+						var roles = await guild.roles.fetch()
+						let keys = Array.from( roles.keys() );
+						const filteredkeys = []
+						for (let i = 0; i < keys.length; i++) {
+							if (!roles.get(keys[i]).managed ){
+								if (roles.get(keys[i]).name != "@everyone"){
+									filteredkeys.push(keys[i])
+								}
+							}
+						}
+						if (filteredkeys.length<10){
+							var emojilist = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
+						}
+						else {
+							return console.log("Too many roles") 
+						}
+						for (let i = 0; i < filteredkeys.length; i++) {
+							if (!roles.get(filteredkeys[i]).managed ){
+								if (roles.get(filteredkeys[i]).name != "@everyone"){
+									roles.get(filteredkeys[i]).emoji = emojilist[i]
+									newEmbed.addFields(
+										{ name: "Emoji" , value: roles.get(filteredkeys[i]).emoji, inline: true },
+										{ name: 'Description', value: roles.get(filteredkeys[i]).name, inline: true },
+										{ name: '\u200B', value: "\u200B", inline: true })
+								}
+							}
+						}
+						await allmessages.get(keysmessages[i]).delete();
+						selchannel.send({embeds: [newEmbed]}).then(embedMessage => {
+							for (let i = 0; i < filteredkeys.length; i++) {
+								embedMessage.react(roles.get(filteredkeys[i]).emoji);  
+							}
+						});
+					}
+				}
+			break;
+		}
+			
+	}
+})
+
+bot.on("roleDelete", async (role) => {
+	var guild = await bot.guilds.fetch(role.guild.id)
+	var listchannels = await guild.channels.fetch()
+	var keyschannels = Array.from(listchannels.keys())
+	for (let i = 0; i < keyschannels.length; i++) {
+		switch (listchannels.get(keyschannels[i]).name) {
+			case "choose-role":
+				var selchannel = listchannels.get(keyschannels[i])
+				var allmessages = await selchannel.messages.fetch()
+				var keysmessages = Array.from(allmessages.keys())
+				for (let i = 0; i < keysmessages.length; i++) {
+					if (allmessages.get(keysmessages[i]).embeds.MessageEmbed=== null) { return }
+					else {
+						var emojilist = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
+						const newEmbed = new MessageEmbed()
+						.setColor('#0099ff')
+						.setTitle('Add Role')
+						.setAuthor({ name: 'Command : Add Role', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
+						.setDescription(`Choose a reaction for receiving a role`)
+						var roles = await guild.roles.fetch()
+						let keys = Array.from( roles.keys() );
+						const filteredkeys = []
+						for (let i = 0; i < keys.length; i++) {
+							if (!roles.get(keys[i]).managed ){
+								if (roles.get(keys[i]).name != "@everyone"){
+									filteredkeys.push(keys[i])
+								}
+							}
+						}
+						if (filteredkeys.length<10){
+							var emojilist = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
+						}
+						else {
+							return console.log("Too many roles") 
+						}
+						for (let i = 0; i < filteredkeys.length; i++) {
+							if (!roles.get(filteredkeys[i]).managed ){
+								if (roles.get(filteredkeys[i]).name != "@everyone"){
+									roles.get(filteredkeys[i]).emoji = emojilist[i]
+									newEmbed.addFields(
+										{ name: "Emoji" , value: roles.get(filteredkeys[i]).emoji, inline: true },
+										{ name: 'Description', value: roles.get(filteredkeys[i]).name, inline: true },
+										{ name: '\u200B', value: "\u200B", inline: true })
+								}
+							}
+						}
+						await allmessages.get(keysmessages[i]).delete();
+						selchannel.send({embeds: [newEmbed]}).then(embedMessage => {
+							for (let i = 0; i < filteredkeys.length; i++) {
+								embedMessage.react(roles.get(filteredkeys[i]).emoji);  
+							}
+						});
+					}
+				}
+			break;
+		}
+			
+	}
+})
+
+bot.on("roleUpdate", async (role) => {
+	var guild = await bot.guilds.fetch(role.guild.id)
+	var listchannels = await guild.channels.fetch()
+	var keyschannels = Array.from(listchannels.keys())
+	for (let i = 0; i < keyschannels.length; i++) {
+		switch (listchannels.get(keyschannels[i]).name) {
+			case "choose-role":
+				var selchannel = listchannels.get(keyschannels[i])
+				var allmessages = await selchannel.messages.fetch()
+				var keysmessages = Array.from(allmessages.keys())
+				for (let i = 0; i < keysmessages.length; i++) {
+					if (allmessages.get(keysmessages[i]).embeds.MessageEmbed=== null) { return }
+					else {
+						var emojilist = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
+						const newEmbed = new MessageEmbed()
+						.setColor('#0099ff')
+						.setTitle('Add Role')
+						.setAuthor({ name: 'Command : Add Role', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
+						.setDescription(`Choose a reaction for receiving a role`)
+						var roles = await guild.roles.fetch()
+						let keys = Array.from( roles.keys() );
+						const filteredkeys = []
+						for (let i = 0; i < keys.length; i++) {
+							if (!roles.get(keys[i]).managed ){
+								if (roles.get(keys[i]).name != "@everyone"){
+									filteredkeys.push(keys[i])
+								}
+							}
+						}
+						if (filteredkeys.length<10){
+							var emojilist = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
+						}
+						else {
+							return console.log("Too many roles") 
+						}
+						for (let i = 0; i < filteredkeys.length; i++) {
+							if (!roles.get(filteredkeys[i]).managed ){
+								if (roles.get(filteredkeys[i]).name != "@everyone"){
+									roles.get(filteredkeys[i]).emoji = emojilist[i]
+									newEmbed.addFields(
+										{ name: "Emoji" , value: roles.get(filteredkeys[i]).emoji, inline: true },
+										{ name: 'Description', value: roles.get(filteredkeys[i]).name, inline: true },
+										{ name: '\u200B', value: "\u200B", inline: true })
+								}
+							}
+						}
+						allmessages.get(keysmessages[i]).edit({embeds: [newEmbed]});
+					}
+				}
+			break;
+		}
+			
+	}
+})
 
 bot.login(process.env.BOT_TOKEN);
