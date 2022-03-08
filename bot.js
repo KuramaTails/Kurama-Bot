@@ -427,14 +427,17 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
 		var keyschannels = Array.from(listchannels.keys())
 		for (let i = 0; i < keyschannels.length; i++) {
 			switch (true) {
-				case listchannels.get(keyschannels[i]).name.includes("Member :"):
+				case listchannels.get(keyschannels[i]).name.includes("Member"):
 				listchannels.get(keyschannels[i]).setName(`Member : ${memberCount}`)
+				console.log(`Member : ${memberCount}`)
 				break;
-				case listchannels.get(keyschannels[i]).name.includes("Online :"):
+				case listchannels.get(keyschannels[i]).name.includes("Online"):
 				listchannels.get(keyschannels[i]).setName(`Online : ${onlineMembers.length}`)
+				console.log(`Online : ${onlineMembers.length}`)
 				break;
-				case listchannels.get(keyschannels[i]).name.includes("Offline :"):
+				case listchannels.get(keyschannels[i]).name.includes("Offline"):
 				listchannels.get(keyschannels[i]).setName(`Offline : ${offlineMembers.length}`)
+				console.log(`Offline : ${offlineMembers.length}`)
 				break;
 			}	
 		}
@@ -528,14 +531,17 @@ bot.on("guildMemberAdd", async (member) => {
 	var keyschannels = Array.from(listchannels.keys())
 	for (let i = 0; i < keyschannels.length; i++) {
 		switch (true) {
-			case listchannels.get(keyschannels[i]).name.includes("Member :"):
+			case listchannels.get(keyschannels[i]).name.includes("Member"):
 			listchannels.get(keyschannels[i]).setName(`Member : ${memberCount}`)
+			console.log(`Member : ${memberCount}`)
 			break;
-			case listchannels.get(keyschannels[i]).name.includes("Online :"):
+			case listchannels.get(keyschannels[i]).name.includes("Online"):
 			listchannels.get(keyschannels[i]).setName(`Online : ${onlineMembers.length}`)
+			console.log(`Online : ${onlineMembers.length}`)
 			break;
-			case listchannels.get(keyschannels[i]).name.includes("Offline :"):
+			case listchannels.get(keyschannels[i]).name.includes("Offline"):
 			listchannels.get(keyschannels[i]).setName(`Offline : ${offlineMembers.length}`)
+			console.log(`Offline : ${offlineMembers.length}`)
 			break;
 			case listchannels.get(keyschannels[i]).name.includes("welcome"):
 			var welcomeChannel = listchannels.get(keyschannels[i]).id
@@ -629,14 +635,17 @@ bot.on("guildMemberRemove", async (member) => {
 	var keyschannels = Array.from(listchannels.keys())
 	for (let i = 0; i < keyschannels.length; i++) {
 		switch (true) {
-			case listchannels.get(keyschannels[i]).name.includes("Member :"):
+			case listchannels.get(keyschannels[i]).name.includes("Member"):
 			listchannels.get(keyschannels[i]).setName(`Member : ${memberCount}`)
+			console.log(`Member : ${memberCount}`)
 			break;
-			case listchannels.get(keyschannels[i]).name.includes("Online :"):
+			case listchannels.get(keyschannels[i]).name.includes("Online"):
 			listchannels.get(keyschannels[i]).setName(`Online : ${onlineMembers.length}`)
+			console.log(`Online : ${onlineMembers.length}`)
 			break;
-			case listchannels.get(keyschannels[i]).name.includes("Offline :"):
+			case listchannels.get(keyschannels[i]).name.includes("Offline"):
 			listchannels.get(keyschannels[i]).setName(`Offline : ${offlineMembers.length}`)
+			console.log(`Offline : ${offlineMembers.length}`)
 			break;
 			case listchannels.get(keyschannels[i]).name.includes("welcome"):
 			var welcomeChannel = listchannels.get(keyschannels[i]).id
