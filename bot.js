@@ -381,7 +381,7 @@ bot.on('ready', async () => {
     console.log(`Bot joined into ${guildsnames.toString()}`)
 });
 bot.on("presenceUpdate", async (oldMember, newMember) => {
-	if (oldMember=== null) { return}
+	if (oldMember=== null || oldMember.status == newMember.status) { return}
 	try {
 		var guild= await bot.guilds.cache.get(oldMember.guild.id)
 		let members = await guild.members.fetch()
