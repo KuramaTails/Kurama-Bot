@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 const fs= require('fs');
-const { Client, Collection, Intents, Message, MessageEmbed , MessageAttachment , Permissions, CommandInteractionOptionResolver } = require('discord.js');
+const { Client, Collection, Intents, Message, MessageEmbed , MessageAttachment } = require('discord.js');
 const prefix = "!";
 const DisTube = require('distube')
 const { RepeatMode } = require("distube");
