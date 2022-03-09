@@ -9,9 +9,6 @@ const Canvas = require('canvas');
 const createserverstats = require("./feature/createserverstats")
 const createwelcomechannel = require("./feature/createwelcomechannel")
 const createplayerchannels = require("./feature/createplayerchannels")
-const permissions = new Permissions([
-	Permissions.FLAGS.ADMINISTRATOR,
-]);
 dotenv.config()
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
@@ -35,11 +32,9 @@ var diffqueue
 const applyText = (canvas, text) => {
 	const context = canvas.getContext('2d');
 	let fontSize = 70;
-
 	do {
 		context.font = `${fontSize -= 10}px sans-serif`;
 	} while (context.measureText(text).width > canvas.width - 300);
-
 	return context.font;
 };
 
@@ -271,8 +266,7 @@ bot.on('messageCreate', async msg => {
 					case "pause":
 						if (!player.queues.collection.first().paused) {
 							player.pause(msg)
-							msg.reply("Player paused")
-							
+							msg.reply("Player paused")	
 						}
 						else {
 							msg.reply('Player already in pause!')
@@ -379,7 +373,6 @@ bot.on('ready', async () => {
 	var guildsnames = []
 	for (let i = 0; i < guildskeys.length; i++) {
 		guildsnames.push(guilds.get(guildskeys[i]).name)
-		
 	}
     console.log(`Bot joined into ${guildsnames.toString()}`)
 });
@@ -448,10 +441,7 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
 	} catch (error) {
 		console.log(error)
 	}
-	
-	
-});
-        
+});      
 
 bot.on("guildMemberAdd", async (member) => {
 	var guild= await bot.guilds.cache.get(member.guild.id)
@@ -551,9 +541,9 @@ bot.on("guildMemberAdd", async (member) => {
 			member.guild.channels.cache.get(welcomeChannel).send({embeds: [embed],files: [attachment] });
 			break;
 		}	
-	}
-	
+	}	
 });
+
 bot.on("guildMemberRemove", async (member) => {
 	var guild= await bot.guilds.cache.get(member.guild.id)
 	let members = await guild.members.fetch()

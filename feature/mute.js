@@ -39,8 +39,6 @@ module.exports = {
                         messageCreate.reply(`${mentionedMember} has been unmuted`)
                     }  
                 }
-                
-                
             }
         }
         catch (e) {

@@ -45,14 +45,10 @@ module.exports = {
         guild.create('Serverstats', {
             type: 'GUILD_CATEGORY',
             position: 0,
-            permissionOverwrites: [
-                {
-                  id: everyone.id,
-                  deny: [channelpermissions],
-               },
-             ],
-          })
-          .then(cat => {
+            permissionOverwrites: [{id: everyone.id,deny: [channelpermissions]}
+            ],
+        })
+        .then(cat => {
             guild.create(`Members : ${countMembers.length}`,  {
                 type: 'GUILD_VOICE',parent: cat,
                 });
@@ -60,9 +56,8 @@ module.exports = {
                 type: 'GUILD_VOICE',parent: cat,
                 });
             guild.create(`Offline : ${offlineMembers.length}`,  {
-            type: 'GUILD_VOICE',parent: cat,
-            })
-        
+                type: 'GUILD_VOICE',parent: cat,
+                })
         });
     }
 };

@@ -58,25 +58,21 @@ module.exports = {
             position: 0,
             permissionOverwrites: [
                 {
-                  id: everyone.id,
-                  deny: [channelpermissions],
-               },
-             ],
-          })
-          .then(cat => {
-            guild.create(`welcome`,  {
-                type: 'GUILD_TEXT',parent: cat,
-                });
-            guild.create(`Choose-role`,  {
-                type: 'GUILD_TEXT',parent: cat,
-                }).then(roleschannel => {
+                id: everyone.id,
+                deny: [channelpermissions],
+            },
+            ],
+        })
+        .then(cat => {
+            guild.create(`welcome`,  {type: 'GUILD_TEXT',parent: cat});
+            guild.create(`Choose-role`,  {type: 'GUILD_TEXT',parent: cat,})
+            .then(roleschannel => {
                     roleschannel.send({ embeds: [exampleEmbed] }).then(embedMessage => {
-                        for (let i = 0; i < filteredkeys.length; i++) {
-                            embedMessage.react(roles.get(filteredkeys[i]).emoji);  
-                        }
-                    })
-                });  
-                  
+                    for (let i = 0; i < filteredkeys.length; i++) {
+                        embedMessage.react(roles.get(filteredkeys[i]).emoji);  
+                    }
+                })
+            });  
         });
     }
 };

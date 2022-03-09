@@ -62,6 +62,5 @@ for (let i = 0; i < commands.length; i++) {
 			{ name: 'Description', value: commands[i].desc, inline: true },
 			{ name: 'Example', value: commands[i].example, inline: true },
 			)
-	}
-	
+	}	
 }

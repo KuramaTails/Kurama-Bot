@@ -16,7 +16,6 @@ module.exports = {
 							messageCreate.reply({ embeds: [embed2] })
 						}
                     }, 10000);
-					
 				})	
 	}
 };
@@ -54,6 +53,5 @@ for (const file of featureFiles) {
 		else {
 			messageCreate.reply("There was a problem. Please contact an admin")
 		}
-
 	}		
 }

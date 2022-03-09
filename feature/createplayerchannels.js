@@ -21,14 +21,9 @@ module.exports = {
         guild.create('Music-Zone', {
             type: 'GUILD_CATEGORY',
             position: 0,
-            permissionOverwrites: [
-                {
-                  id: everyone.id,
-                  deny: [channelpermissions],
-               },
-             ],
+            permissionOverwrites: [{id: everyone.id,deny: [channelpermissions]}]
         })
-          .then(cat => {
+        .then(cat => {
             guild.create(`player-room`,  {
                 type: 'GUILD_TEXT',parent: cat,
                 });
@@ -41,7 +36,6 @@ module.exports = {
             guild.create(`Room3`,  {
             type: 'GUILD_VOICE',parent: cat,
             })
-        
         });
     }
 };
