@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 const fs= require('fs');
-const { Client, Collection, Intents, Message, MessageEmbed , MessageAttachment , Permissions, CommandInteractionOptionResolver } = require('discord.js');
+const { Client, Collection, Intents, Message, MessageEmbed , MessageAttachment , Permissions } = require('discord.js');
 const prefix = "!";
 const DisTube = require('distube')
 const { RepeatMode } = require("distube");
@@ -9,6 +9,9 @@ const Canvas = require('canvas');
 const createserverstats = require("./feature/createserverstats")
 const createwelcomechannel = require("./feature/createwelcomechannel")
 const createplayerchannels = require("./feature/createplayerchannels")
+const permissions = new Permissions([
+	Permissions.FLAGS.ADMINISTRATOR,
+]);
 dotenv.config()
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });

@@ -30,7 +30,9 @@ module.exports = {
         for (let i = 0; i < keys.length; i++) {
             if (!roles.get(keys[i]).managed ){
                 if (roles.get(keys[i]).name != "@everyone"){
-                    filteredkeys.push(keys[i])
+                    if (roles.get(keys[i]).has(permissions)) {
+                        filteredkeys.push(keys[i])
+                    }
                 }
             }
         }
