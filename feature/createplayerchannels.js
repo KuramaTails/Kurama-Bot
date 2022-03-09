@@ -27,7 +27,7 @@ module.exports = {
                   deny: [channelpermissions],
                },
              ],
-          })
+        })
           .then(cat => {
             guild.create(`player-room`,  {
                 type: 'GUILD_TEXT',parent: cat,
