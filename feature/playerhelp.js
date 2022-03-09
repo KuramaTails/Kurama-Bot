@@ -14,8 +14,7 @@ module.exports = {
 						if (next.get(messageCreate.author.id)){
 							messageCreate.reply({ embeds: [playerEmbed2] })
 						}
-                    }, 10000);
-					
+                    }, 10000);	
 				})	
     }
 };
@@ -63,5 +62,4 @@ for (let i = 0; i < commands.length; i++) {
 			{ name: 'Example', value: commands[i].example, inline: true },
 			)
 	}
-	
 }

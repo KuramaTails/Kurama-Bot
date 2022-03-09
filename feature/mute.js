@@ -38,9 +38,7 @@ module.exports = {
                         mentionedMember.roles.remove(muted);
                         messageCreate.reply(`${mentionedMember} has been unmuted`)
                     }  
-                }
-                
-                
+                }                
             }
         }
         catch (e) {

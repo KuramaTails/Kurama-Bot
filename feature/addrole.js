@@ -34,8 +34,7 @@ module.exports = {
                 if (!roles.get(keys[i]).managed)
                 {
                     filteredkeys.push(keys[i])
-                }
-                
+                }  
             }
         }
         if (filteredkeys.length==0) {
@@ -87,9 +86,7 @@ module.exports = {
                         }
                         else {
                             messageCreate.reply(`No roles added to user <@${member}>`)
-
                         }
-                        
                     }, 7000);   
                 });               
             }

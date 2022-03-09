@@ -28,6 +28,5 @@ module.exports = {
             else {
                 messageCreate.reply(`${mentionedMemberId} is not a banned user `)
             }
-        
 	},
 };

@@ -50,9 +50,9 @@ module.exports = {
                   id: everyone.id,
                   deny: [channelpermissions],
                },
-             ],
-          })
-          .then(cat => {
+            ],
+            })
+            .then(cat => {
             guild.create(`Members : ${countMembers.length}`,  {
                 type: 'GUILD_VOICE',parent: cat,
                 });

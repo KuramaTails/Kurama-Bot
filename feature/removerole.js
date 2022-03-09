@@ -40,7 +40,6 @@ module.exports = {
                     {
                         filteredkeys.push(keys[i])
                     }
-                    
                 }
         }
         if (filteredkeys.length==0) {
@@ -92,9 +91,7 @@ module.exports = {
                         }
                         else {
                             messageCreate.reply(`No roles removed to user <@${member}>`)
-
-                        }
-                        
+                        }     
                     }, 7000);   
                 });               
             }

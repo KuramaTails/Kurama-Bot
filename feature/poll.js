@@ -28,8 +28,7 @@ module.exports = {
                     { name: "Emoji" , value: emojilist[i], inline: true },
                     { name: 'Option', value: options[i], inline: true },
                     { name: '\u200B', value: "\u200B", inline: true }
-                )
-                
+                )     
             }
             messageCreate.reply({ embeds: [poll] })
             .then(poolembed => {
@@ -37,7 +36,6 @@ module.exports = {
                     poolembed.react(emojilist[i]);  
                 }
                 setTimeout(async () => {
-                    
                     var rawresults = [];
                     var results = []
                     for (let i = 0; i < options.length; i++) {
@@ -53,20 +51,15 @@ module.exports = {
                             { name: "Count" , value: `***${results[i]}***`, inline: true },
                             { name: 'Option', value: options[i], inline: true },
                             { name: '\u200B', value: "\u200B", inline: true }
-                        )
-                        
+                        )    
                     }
                     poolembed.delete();
-                    messageCreate.reply( {content:`Poll ended! Thank you for your participation.\nFollowing are the results:`, embeds: [resultspoll]})
-					
-                    
-                    
+                    messageCreate.reply( {content:`Poll ended! Thank you for your participation.\nFollowing are the results:`, embeds: [resultspoll]})  
                 }, 30000);  
             })
         }
         else {
             messageCreate.reply("Please provide some options for poll (Use + for divide them)")
         }
-        
 	},
 };
