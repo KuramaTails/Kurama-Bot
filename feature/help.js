@@ -15,7 +15,8 @@ module.exports = {
 						if (next.get(messageCreate.author.id)){
 							messageCreate.reply({ embeds: [embed2] })
 						}
-                    }, 10000);	
+                    }, 10000);
+					
 				})	
 	}
 };
@@ -53,5 +54,6 @@ for (const file of featureFiles) {
 		else {
 			messageCreate.reply("There was a problem. Please contact an admin")
 		}
+
 	}		
 }

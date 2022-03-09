@@ -12,7 +12,7 @@ module.exports = {
 	command:"CreateWelcomeChannel",
 	desc:"Create channels for welcome new users",
     example:"!createroleschannel",
-	async execute(messageCreate) {
+	async execute(messageCreate, args,bot) {
         if (!messageCreate.member.permissions.has(permissions)) {
             messageCreate.reply("You are not an Administrator!"); return;
         }
@@ -30,9 +30,7 @@ module.exports = {
         for (let i = 0; i < keys.length; i++) {
             if (!roles.get(keys[i]).managed ){
                 if (roles.get(keys[i]).name != "@everyone"){
-                    if(!roles.get(keys[i]).permissions.has(permissions)){
-                        filteredkeys.push(keys[i])
-                    }
+                    filteredkeys.push(keys[i])
                 }
             }
         }
@@ -62,20 +60,21 @@ module.exports = {
                   deny: [channelpermissions],
                },
              ],
-        })
-        .then(cat => {
-        guild.create(`welcome`,  {
-            type: 'GUILD_TEXT',parent: cat,
-            });
-        guild.create(`Choose-role`,  {
-            type: 'GUILD_TEXT',parent: cat,
-            }).then(roleschannel => {
-                roleschannel.send({ embeds: [exampleEmbed] }).then(embedMessage => {
-                    for (let i = 0; i < filteredkeys.length; i++) {
-                        embedMessage.react(roles.get(filteredkeys[i]).emoji);  
-                    }
-                })
-            });        
+          })
+          .then(cat => {
+            guild.create(`welcome`,  {
+                type: 'GUILD_TEXT',parent: cat,
+                });
+            guild.create(`Choose-role`,  {
+                type: 'GUILD_TEXT',parent: cat,
+                }).then(roleschannel => {
+                    roleschannel.send({ embeds: [exampleEmbed] }).then(embedMessage => {
+                        for (let i = 0; i < filteredkeys.length; i++) {
+                            embedMessage.react(roles.get(filteredkeys[i]).emoji);  
+                        }
+                    })
+                });  
+                  
         });
     }
 };

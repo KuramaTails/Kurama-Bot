@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 const fs= require('fs');
-const { Client, Collection, Intents, Message, MessageEmbed , MessageAttachment , Permissions } = require('discord.js');
-const prefix = "?";
+const { Client, Collection, Intents, Message, MessageEmbed , MessageAttachment , Permissions, CommandInteractionOptionResolver } = require('discord.js');
+const prefix = "!";
 const DisTube = require('distube')
 const { RepeatMode } = require("distube");
 const { YtDlpPlugin } = require('@distube/yt-dlp')
@@ -9,9 +9,6 @@ const Canvas = require('canvas');
 const createserverstats = require("./feature/createserverstats")
 const createwelcomechannel = require("./feature/createwelcomechannel")
 const createplayerchannels = require("./feature/createplayerchannels")
-const permissions = new Permissions([
-	Permissions.FLAGS.ADMINISTRATOR,
-]);
 dotenv.config()
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
@@ -672,10 +669,9 @@ bot.on('messageReactionAdd', async (reaction, user) => {
 			const filteredkeys = []
 			for (let i = 0; i < keys.length; i++) {
 				if (!roles.get(keys[i]).managed ){
-					if(!roles.get(keys[i]).permissions.has(permissions))
-						{
-							filteredkeys.push(keys[i])
-						}
+					if (roles.get(keys[i]).name != "@everyone"){
+						filteredkeys.push(keys[i])
+					}
 				}
 			}
 			for (let i = 0; i < filteredkeys.length; i++) {
@@ -713,10 +709,7 @@ bot.on('messageReactionRemove', async (reaction, user) => {
 			for (let i = 0; i < keys.length; i++) {
 				if (!roles.get(keys[i]).managed ){
 					if (roles.get(keys[i]).name != "@everyone"){
-						if(!roles.get(keys[i]).permissions.has(permissions))
-						{
-							filteredkeys.push(keys[i])
-						}
+						filteredkeys.push(keys[i])
 					}
 				}
 			}

@@ -27,8 +27,8 @@ module.exports = {
                   deny: [channelpermissions],
                },
              ],
-            })
-            .then(cat => {
+          })
+          .then(cat => {
             guild.create(`player-room`,  {
                 type: 'GUILD_TEXT',parent: cat,
                 });
@@ -41,6 +41,7 @@ module.exports = {
             guild.create(`Room3`,  {
             type: 'GUILD_VOICE',parent: cat,
             })
+        
         });
     }
 };
