@@ -9,6 +9,7 @@ module.exports = {
 	ephemeral: "false",
     command:"Addrole",
     desc:"You can add a role to a user from this server",
+    categ:"admin",
     example:"!addrole userId",
 	async execute(messageCreate, args) {
         var member = args[0].replace(/\D/g, "");

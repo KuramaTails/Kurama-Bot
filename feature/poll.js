@@ -7,6 +7,7 @@ module.exports = {
 	ephemeral: "false",
     command:"Poll",
     desc:'You can create a poll',
+    categ:"general",
     example:"!poll Title + Option1 + Option2 + etc",
 	async execute(messageCreate,args) {
         if (!messageCreate.member.permissions.has(permissions)) {

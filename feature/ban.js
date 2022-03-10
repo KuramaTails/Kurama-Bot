@@ -9,6 +9,7 @@ module.exports = {
 	ephemeral: "false",
     command:"Ban",
     desc:"You can ban a user from this server",
+    categ:"admin",
     example:"!ban userId reason",
 	async execute(messageCreate, args) {
         var mentionedMember;

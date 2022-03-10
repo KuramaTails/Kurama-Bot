@@ -9,6 +9,7 @@ module.exports = {
 	ephemeral: "false",
     command:"Unban",
     desc:"Unban previous banned members",
+    categ:"admin",
     example:"!unban userId",
 	async execute(messageCreate, args) {
         var mentionedMemberId; 

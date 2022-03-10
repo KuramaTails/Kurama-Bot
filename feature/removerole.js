@@ -9,6 +9,7 @@ module.exports = {
 	ephemeral: "false",
     command:"Removerole",
     desc:"You can remove roles to user from this server",
+    categ:"admin",
     example:"!removerole userId",
 	async execute(messageCreate, args,bot) {
         var member = args[0].replace(/\D/g, "");

@@ -8,6 +8,7 @@ module.exports = {
 	ephemeral: "false",
 	command:"Clear",
 	desc:"Clear chat",
+    categ:"utility",
     example:"!clear <max 100 messages>",
 	async execute(messageCreate, args) {
         if (!messageCreate.member.permissions.has(permissions)) {

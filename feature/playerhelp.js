@@ -5,7 +5,7 @@ module.exports = {
 	command:"Playerhelp",
 	desc:"Gives you a list of all music player's commands available",
     example:"!playerhelp",
-	async execute(messageCreate, args) {
+	async execute(messageCreate) {
 		messageCreate.reply({ embeds: [playerEmbed] })
                 .then(embedMessage =>{
 					embedMessage.react("⏩");

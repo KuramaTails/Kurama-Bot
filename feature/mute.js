@@ -9,6 +9,7 @@ module.exports = {
 	ephemeral: "false",
     command:"Mute",
     desc:'Gives "Muted" role to quoted user',
+    categ:"admin",
     example:"!mute userId minutes",
 	async execute(messageCreate, args) {
         var mentionedMember;

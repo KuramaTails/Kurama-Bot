@@ -9,6 +9,7 @@ module.exports = {
 	ephemeral: "false",
     command:"Timeout",
     desc:"Timeout a user for some minutes",
+    categ:"admin",
     example:"!timeout userId minutes",
 	async execute(messageCreate, args) {
         var mentionedMember;

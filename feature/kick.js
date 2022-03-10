@@ -9,6 +9,7 @@ module.exports = {
 	ephemeral: "false",
     command:"Kick",
 	desc:"You can kick a user from this server",
+    categ:"admin",
     example:"!kick userId reason",
 	async execute(messageCreate, args) {
         var mentionedMember;

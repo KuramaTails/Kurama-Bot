@@ -1,14 +1,18 @@
 const dotenv = require('dotenv');
 const fs= require('fs');
 const { Client, Collection, Intents, Message, MessageEmbed , MessageAttachment , Permissions } = require('discord.js');
-const prefix = "!";
+const prefix = "?";
 const DisTube = require('distube')
 const { RepeatMode } = require("distube");
 const { YtDlpPlugin } = require('@distube/yt-dlp')
 const Canvas = require('canvas');
 const createserverstats = require("./feature/createserverstats")
 const createwelcomechannel = require("./feature/createwelcomechannel")
-const createplayerchannels = require("./feature/createplayerchannels")
+const createplayerchannels = require("./feature/createplayerchannels");
+const adminEmbed = require("./feature/adminEmbed");
+const helpEmbed = require("./feature/helpEmbed");
+const generalEmbed = require("./feature/generalEmbed");
+const helpHome = require("./feature/help");
 dotenv.config()
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
@@ -649,40 +653,64 @@ bot.on("guildMemberRemove", async (member) => {
 });
 
 bot.on('messageReactionAdd', async (reaction, user) => {
+	if (user.id == bot.user.id) {return}
     var guild= await bot.guilds.cache.get(reaction.message.guildId)
 	var listchannels = await guild.channels.fetch()
 	var keyschannels = Array.from(listchannels.keys())
 	for (let i = 0; i < keyschannels.length; i++) {
 		if (listchannels.get(keyschannels[i]).id == reaction.message.channelId)
-		{	
-			if (listchannels.get(keyschannels[i]).name!= "choose-role") {return}
-			var emojilist = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
-			var roles = await guild.roles.fetch()
-			let keys = Array.from( roles.keys() );
-			const filteredkeys = []
-			for (let i = 0; i < keys.length; i++) {
-				if (!roles.get(keys[i]).managed ){
-					if (roles.get(keys[i]).name != "@everyone"){
-						filteredkeys.push(keys[i])
-					}
-				}
-			}
-			for (let i = 0; i < filteredkeys.length; i++) {
-				if (!roles.get(filteredkeys[i]).managed ){
-					if (roles.get(filteredkeys[i]).name != "@everyone"){
-						roles.get(filteredkeys[i]).emoji = emojilist[i]
-						if (roles.get(filteredkeys[i]).emoji == reaction.emoji.name)
-						{	
-							if (user.id != bot.user.id) {
-								var selrole = guild.roles.cache.find(role => role.name === roles.get(filteredkeys[i]).name)
-								var userreacted = await guild.members.fetch(user.id,true);
-								userreacted.roles.add(selrole);
-								await userreacted.send(`You have received ${selrole.name} role in ${guild.name}'s Discord.`)
+		{		
+			var selchannel = await listchannels.get(keyschannels[i]).messages.fetch()
+			var keysMessages= Array.from( selchannel.keys() );
+			for (let i = 0; i < keysMessages.length; i++) {
+				if (reaction.message.id == selchannel.get(keysMessages[i]).id) {
+					if (listchannels.get(keyschannels[i]).name= "choose-role") {
+						var emojilist = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
+						var roles = await guild.roles.fetch()
+						let keys = Array.from( roles.keys() );
+						const filteredkeys = []
+						for (let i = 0; i < keys.length; i++) {
+							if (!roles.get(keys[i]).managed ){
+								if (roles.get(keys[i]).name != "@everyone"){
+									filteredkeys.push(keys[i])
+								}
 							}
+						}
+						for (let i = 0; i < filteredkeys.length; i++) {
+							if (!roles.get(filteredkeys[i]).managed ){
+								if (roles.get(filteredkeys[i]).name != "@everyone"){
+									roles.get(filteredkeys[i]).emoji = emojilist[i]
+									if (roles.get(filteredkeys[i]).emoji == reaction.emoji.name)
+									{	
+										var selrole = guild.roles.cache.find(role => role.name === roles.get(filteredkeys[i]).name)
+										var userreacted = await guild.members.fetch(user.id,true);
+										userreacted.roles.add(selrole);
+										await userreacted.send(`You have received ${selrole.name} role in ${guild.name}'s Discord.`)
+									}
+								}
+							}
+						}
+					}
+					if (selchannel.get(keysMessages[i]).embeds[0].title.includes("Command list")) {
+						switch (reaction.emoji.name) {
+							case "🔑":
+								adminEmbed.execute(selchannel.get(keysMessages[i]))
+							break;
+							case "ℹ":
+								helpEmbed.execute(selchannel.get(keysMessages[i]))
+							break;
+							case "⚒":
+								generalEmbed.execute(selchannel.get(keysMessages[i]))
+							break;
+							case "⬅":
+								helpHome.execute(selchannel.get(keysMessages[i]))
+							break;
 						}
 					}
 				}
 			}
+			
+			
 		}
 	}
 });
