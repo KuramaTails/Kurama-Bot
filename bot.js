@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 const fs= require('fs');
-const { Client, Collection, Intents, Message, MessageEmbed , MessageAttachment , Permissions } = require('discord.js');
+const { Client, Collection, Intents, MessageEmbed , MessageAttachment } = require('discord.js');
 const prefix = "?";
 const DisTube = require('distube')
 const { RepeatMode } = require("distube");
@@ -100,15 +100,6 @@ bot.on('messageCreate', async msg => {
 			}
 			if(!player.getQueue(msg)) { 
 				switch (msgfeature) {
-					case "wtest":
-						let welcomeEmbed = new MessageEmbed()
-							.setAuthor(`${msg.member.user.username} just joined!`, msg.member.user.avatarURL())
-							.setDescription(`Welcome <@${msg.member.user.id}>! Don't forget to read the rules-channel! `)
-							.setColor("0099ff")
-							.setThumbnail(msg.member.user.avatarURL({ dynamic: true }))
-							msg.reply({embeds: [welcomeEmbed]})
-							.catch((err) => console.log(err));
-						break;
 					case "play":
 						if(msg.member.voice.channel) {
 							let link = args.join(" ");
@@ -134,9 +125,6 @@ bot.on('messageCreate', async msg => {
 						}
 						break;
 					case "loop":
-						msg.reply("No songs in queue")
-						break;
-					case "repeat":
 						msg.reply("No songs in queue")
 						break;
 					case "stop":
@@ -207,27 +195,6 @@ bot.on('messageCreate', async msg => {
 							msg.reply("Please provide a loop mode: DISABLED = 0, SONG = 1 , QUEUE = 2 ")
 						}
 					break;	
-					case "repeat":
-						var mode;
-						if (args[0] != null) {
-							switch(player.setRepeatMode(msg, parseInt(args[0]))) {
-								case RepeatMode.DISABLED:
-									mode = "Off";
-									break;
-								case RepeatMode.SONG:
-									mode = "Repeat a song";
-									break;
-								case RepeatMode.QUEUE:
-									mode = "Repeat all queue";
-									break;
-							}
-							msg.reply("Set repeat mode to `" + mode + "`");
-							break;
-						}
-						else {
-							msg.reply("Please provide a loop mode: DISABLED = 0, SONG = 1 , QUEUE = 2 ")
-						}
-					break;
 					case "stop":
 					if (!player.queues.collection.first().stopped) {
 						player.stop(msg)
@@ -307,6 +274,7 @@ player.on('playSong', async (queue,song) =>{
 		}	
 	}
 	bot.channels.fetch(textchannel.id).then(async channel => {
+		var foundMessage
 		let playlist = player.queues.collection.first().songs;
 		const Embedsearch = new MessageEmbed()
 		.setColor('#0099ff')
@@ -314,7 +282,27 @@ player.on('playSong', async (queue,song) =>{
 		.setThumbnail(`${playlist[0].thumbnail}`)
 		.setURL(`${playlist[0].url}`)
 		.setDescription(`Duration: \`${playlist[0].formattedDuration}\`\n`)
-		channel.send({ embeds: [Embedsearch] });	
+		var allmessages = await channel.messages.fetch()
+		var keysmessages = Array.from(allmessages.keys())
+		for (let i = 0; i < keysmessages.length; i++) {
+			if (allmessages.get(keysmessages[i]).embeds.length > 0) {
+				foundMessage = await allmessages.get(keysmessages[i])
+			}
+		}	
+		if (foundMessage) {
+			foundMessage.edit({embeds: [Embedsearch]});
+		}
+		else {
+			channel.send ({embeds: [Embedsearch]}).then(embedMessage => {
+				embedMessage.react("⏮")
+				embedMessage.react("⏯")
+				embedMessage.react("⏭")
+				embedMessage.react("🔀")
+				embedMessage.react("🔁")
+				embedMessage.react("🔉")
+				embedMessage.react("🔊")
+			})
+		}
 		clearTimeout(timeoutID)
 		timeoutID = undefined	
     })
@@ -669,13 +657,10 @@ bot.on('messageReactionAdd', async (reaction, user) => {
 	var keyschannels = Array.from(listchannels.keys())
 	for (let i = 0; i < keyschannels.length; i++) {
 		if (listchannels.get(keyschannels[i]).id == reaction.message.channelId)
-		{		
-			var selchannel = await listchannels.get(keyschannels[i]).messages.fetch()
-			var keysMessages= Array.from( selchannel.keys() );
-			for (let i = 0; i < keysMessages.length; i++) {
-				if (reaction.message.id == selchannel.get(keysMessages[i]).id) {
-					if (listchannels.get(keyschannels[i]).name= "choose-role") {
-						var emojilist = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
+		{	
+			switch (listchannels.get(keyschannels[i]).name) {
+				case "choose-role":
+					var emojilist = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
 						var roles = await guild.roles.fetch()
 						let keys = Array.from( roles.keys() );
 						const filteredkeys = []
@@ -700,7 +685,13 @@ bot.on('messageReactionAdd', async (reaction, user) => {
 								}
 							}
 						}
-					}
+				break;
+			}
+			var textchannel = listchannels.get(keyschannels[i])
+			var selchannel = await listchannels.get(keyschannels[i]).messages.fetch()
+			var keysMessages= Array.from( selchannel.keys() );
+			for (let i = 0; i < keysMessages.length; i++) {
+				if (reaction.message.id == selchannel.get(keysMessages[i]).id) {
 					switch (true) {
 						case selchannel.get(keysMessages[i]).embeds[0].title.includes("Help"):
 							switch (reaction.emoji.name) {
@@ -767,6 +758,54 @@ bot.on('messageReactionAdd', async (reaction, user) => {
 								break;
 								case "⬅":
 									await helpHome.execute(selchannel.get(keysMessages[i]))
+								break;
+							}
+						break;
+						case selchannel.get(keysMessages[i]).embeds[0].title.includes("Playing"):
+							switch (reaction.emoji.name) {
+								case "⏮":
+									//no previous
+								break;
+								case "⏯":
+									try {
+										if (!player.queues.collection.first().paused) {
+											player.pause(textchannel)
+											textchannel.send("Player paused")	
+										}
+										else {
+											player.resume(textchannel)
+											textchannel.send("Player resumed")	
+										}
+									} catch (error) {
+										console.log(error)
+									}
+								break;
+								case "⏭":
+									try {
+										if (player.queues.collection.first().playing) {
+											if (player.queues.collection.first().songs.length>1) {
+												player.skip(textchannel)
+												textchannel.send("Song skipped")
+											}
+											else {
+												player.voices.leave(textchannel)
+											}
+										}
+									} catch (error) {
+										console.log(error)
+									} 
+								break;
+								case "🔀":
+									//still no shuffle
+								break;
+								case "🔁":
+									//mode problem
+								break;
+								case "🔉":
+									//no audio var
+								break;
+								case "🔊":
+									//no audio var
 								break;
 							}
 						break;
