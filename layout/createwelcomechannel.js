@@ -7,12 +7,7 @@ const channelpermissions = new Permissions([
 ]);
 
 module.exports = {
-	name: "createwelcomechannel",
-	ephemeral: "false",
-	command:"CreateWelcomeChannel",
-	desc:"Create channels for welcome new users",
-    example:"!createroleschannel",
-	async execute(messageCreate, args,bot) {
+	async execute(messageCreate) {
         if (!messageCreate.member.permissions.has(permissions)) {
             messageCreate.reply("You are not an Administrator!"); return;
         }

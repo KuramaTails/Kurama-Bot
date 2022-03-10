@@ -15,9 +15,9 @@ module.exports = {
             messageCreate.reply("You are not an Administrator!"); return;
         }
         const fetched = args;
-        if (fetched<100){
+        if (fetched<101){
             const selected = await messageCreate.channel.messages.fetch(fetched);
-            messageCreate.channel.bulkDelete(selected);
+            messageCreate.channel.bulkDelete(selected,true);
         }
         else {
             messageCreate.reply("Please select less then 100 messages")

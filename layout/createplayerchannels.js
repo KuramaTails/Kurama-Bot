@@ -7,11 +7,6 @@ const channelpermissions = new Permissions([
 ]);
 
 module.exports = {
-	name: "createplayerchannels",
-	ephemeral: "false",
-	command:"CreatePlayerChannels",
-	desc:"Create channels for player messages",
-    example:"!createplayerchannels",
 	async execute(messageCreate) {
         let everyone = messageCreate.guild.roles.cache.find(r => r.name === "@everyone");
         if (!messageCreate.member.permissions.has(permissions)) {

@@ -7,12 +7,7 @@ const channelpermissions = new Permissions([
 ]);
 
 module.exports = {
-	name: "createserverstats",
-	ephemeral: "false",
-	command:"CreateServerStats",
-	desc:"Create channels for server stats",
-    example:"!createserverstats",
-	async execute(messageCreate, args) {
+	async execute(messageCreate) {
         if (!messageCreate.member.permissions.has(permissions)) {
             messageCreate.reply("You are not an Administrator!"); return;
         }
