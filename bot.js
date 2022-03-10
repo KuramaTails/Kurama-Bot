@@ -6,12 +6,13 @@ const DisTube = require('distube')
 const { RepeatMode } = require("distube");
 const { YtDlpPlugin } = require('@distube/yt-dlp')
 const Canvas = require('canvas');
-const createserverstats = require("./feature/createserverstats")
-const createwelcomechannel = require("./feature/createwelcomechannel")
-const createplayerchannels = require("./feature/createplayerchannels");
-const adminEmbed = require("./feature/adminEmbed");
-const helpEmbed = require("./feature/helpEmbed");
-const generalEmbed = require("./feature/generalEmbed");
+const createserverstats = require("./layout/createserverstats")
+const createwelcomechannel = require("./layout/createwelcomechannel")
+const createplayerchannels = require("./layout/createplayerchannels");
+const adminEmbed = require("./embeds/adminEmbed");
+const helpEmbed = require("./embeds/helpEmbed");
+const generalEmbed = require("./embeds/generalEmbed");
+const playerEmbed = require("./embeds/playerEmbed");
 const helpHome = require("./feature/help");
 dotenv.config()
 
@@ -691,26 +692,79 @@ bot.on('messageReactionAdd', async (reaction, user) => {
 							}
 						}
 					}
-					if (selchannel.get(keysMessages[i]).embeds[0].title.includes("Command list")) {
-						switch (reaction.emoji.name) {
-							case "🔑":
-								adminEmbed.execute(selchannel.get(keysMessages[i]))
-							break;
-							case "ℹ":
-								helpEmbed.execute(selchannel.get(keysMessages[i]))
-							break;
-							case "⚒":
-								generalEmbed.execute(selchannel.get(keysMessages[i]))
-							break;
-							case "⬅":
-								helpHome.execute(selchannel.get(keysMessages[i]))
-							break;
-						}
+					switch (true) {
+						case selchannel.get(keysMessages[i]).embeds[0].title.includes("Help"):
+							console.log("hi")
+							switch (reaction.emoji.name) {
+								case "🔑":
+									await adminEmbed.execute(selchannel.get(keysMessages[i]))
+								break;
+								case "ℹ":
+									await helpEmbed.execute(selchannel.get(keysMessages[i]))
+								break;
+								case "⚒":
+									await generalEmbed.execute(selchannel.get(keysMessages[i]))
+								break;
+								case "🎵":
+									await playerEmbed.execute(selchannel.get(keysMessages[i]),1)
+								break;
+							}
+						break;
+						case selchannel.get(keysMessages[i]).embeds[0].title.includes("Admin"):
+							switch (reaction.emoji.name) {
+								case "⬆":
+									await adminEmbed.execute(selchannel.get(keysMessages[i]),1)
+								break;
+								case "⬇":
+									await adminEmbed.execute(selchannel.get(keysMessages[i]),2)
+								break;
+								case "⬅":
+									await helpHome.execute(selchannel.get(keysMessages[i]))
+								break;
+							}
+						break;
+						case selchannel.get(keysMessages[i]).embeds[0].title.includes("General"):
+							switch (reaction.emoji.name) {
+								case "⬆":
+									await generalEmbed.execute(selchannel.get(keysMessages[i]),1)
+								break;
+								case "⬇":
+									await generalEmbed.execute(selchannel.get(keysMessages[i]),2)
+								break;
+								case "⬅":
+									await helpHome.execute(selchannel.get(keysMessages[i]))
+								break;
+							}
+						break;
+						case selchannel.get(keysMessages[i]).embeds[0].title.includes("Utility"):
+							switch (reaction.emoji.name) {
+								case "⬆":
+									await helpEmbed.execute(selchannel.get(keysMessages[i]),1)
+								break;
+								case "⬇":
+									await helpEmbed.execute(selchannel.get(keysMessages[i]),2)
+								break;
+								case "⬅":
+									await helpHome.execute(selchannel.get(keysMessages[i]))
+								break;
+							}
+						break;
+						case selchannel.get(keysMessages[i]).embeds[0].title.includes("Player"):
+							switch (reaction.emoji.name) {
+								case "⬆":
+									await playerEmbed.execute(selchannel.get(keysMessages[i]),1)
+								break;
+								case "⬇":
+									await playerEmbed.execute(selchannel.get(keysMessages[i]),2)
+								break;
+								case "⬅":
+									await helpHome.execute(selchannel.get(keysMessages[i]))
+								break;
+							}
+						break;
 					}
 				}
 			}
-			
-			
 		}
 	}
 });

@@ -10,7 +10,7 @@ module.exports = {
     command:"Unban",
     desc:"Unban previous banned members",
     categ:"admin",
-    example:"!unban userId",
+    example:"!unban @User",
 	async execute(messageCreate, args) {
         var mentionedMemberId; 
         var member = args[0].replace(/\D/g, "");

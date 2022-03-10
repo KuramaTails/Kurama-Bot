@@ -10,8 +10,8 @@ module.exports = {
     command:"Removerole",
     desc:"You can remove roles to user from this server",
     categ:"admin",
-    example:"!removerole userId",
-	async execute(messageCreate, args,bot) {
+    example:"!removerole @User",
+	async execute(messageCreate, args) {
         var member = args[0].replace(/\D/g, "");
         await messageCreate.client.destroy();
         messageCreate.client.login(token);

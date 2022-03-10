@@ -10,7 +10,7 @@ module.exports = {
     command:"Kick",
 	desc:"You can kick a user from this server",
     categ:"admin",
-    example:"!kick userId reason",
+    example:"!kick @User reason",
 	async execute(messageCreate, args) {
         var mentionedMember;
         var member = args[0].replace(/\D/g, "");

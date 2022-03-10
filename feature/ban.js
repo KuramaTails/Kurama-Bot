@@ -10,7 +10,7 @@ module.exports = {
     command:"Ban",
     desc:"You can ban a user from this server",
     categ:"admin",
-    example:"!ban userId reason",
+    example:"!ban @User reason",
 	async execute(messageCreate, args) {
         var mentionedMember;
         var member = args[0].replace(/\D/g, "");

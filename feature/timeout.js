@@ -10,7 +10,7 @@ module.exports = {
     command:"Timeout",
     desc:"Timeout a user for some minutes",
     categ:"admin",
-    example:"!timeout userId minutes",
+    example:"!timeout @User minutes",
 	async execute(messageCreate, args) {
         var mentionedMember;
         var member = args[0].replace(/\D/g, "");

@@ -10,7 +10,7 @@ module.exports = {
     command:"Mute",
     desc:'Gives "Muted" role to quoted user',
     categ:"admin",
-    example:"!mute userId minutes",
+    example:"!mute @User minutes",
 	async execute(messageCreate, args) {
         var mentionedMember;
         var member = args[0].replace(/\D/g, "");

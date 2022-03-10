@@ -10,7 +10,7 @@ module.exports = {
     command:"Addrole",
     desc:"You can add a role to a user from this server",
     categ:"admin",
-    example:"!addrole userId",
+    example:"!addrole @User",
 	async execute(messageCreate, args) {
         var member = args[0].replace(/\D/g, "");
         await messageCreate.client.destroy();
