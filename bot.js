@@ -94,7 +94,8 @@ bot.on('messageCreate', async msg => {
 					return
 				}
 			}
-			playerCommands.execute(msg ,msgfeature, args ,player)		
+			var guild= await bot.guilds.cache.get(msg.guild.id)
+			playerCommands.execute(msg ,msgfeature, args ,player,guild)		
 		}
 	}
 });
@@ -119,6 +120,7 @@ player.on('empty', async (queue) => {
 	var guild= await bot.guilds.cache.get(queue.clientMember.guild.id)
 	empty.execute(guild,player)
 })
+
 bot.on('ready', async () => {
 	var guilds= await bot.guilds.fetch()
 	var guildskeys = Array.from(guilds.keys())
@@ -151,10 +153,11 @@ bot.on("guildMemberRemove", async (member) => {
 bot.on('messageReactionAdd', async (reaction, user) => {
 	if (user.id == bot.user.id) {return}
     var guild= await bot.guilds.cache.get(reaction.message.guildId)
-	messageReactionAdd.execute(guild,reaction,player)
+	messageReactionAdd.execute(guild,reaction,user,player)
 });
 
 bot.on('messageReactionRemove', async (reaction, user) => {
+	if (user.id == bot.user.id) {return}
     var guild= await bot.guilds.cache.get(reaction.message.guildId)
 	messageReactionRemove.execute(guild,reaction)
 });
