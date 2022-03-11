@@ -15,6 +15,9 @@ const helpEmbed = require("./embeds/helpEmbed");
 const generalEmbed = require("./embeds/generalEmbed");
 const playerEmbed = require("./embeds/playerEmbed");
 const helpHome = require("./feature/help");
+const playSong = require('./player/playSong');
+const { finished } = require('stream');
+const { ready } = require('libsodium-wrappers');
 dotenv.config()
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
@@ -262,104 +265,26 @@ bot.on('messageCreate', async msg => {
 		}
 	}
 });
-player.on('playSong', async (queue,song) =>{
+player.on('playSong', async (queue) =>{
 	var guild= await bot.guilds.cache.get(queue.clientMember.guild.id)
-	var listchannels = await guild.channels.fetch()
-	var keyschannels = Array.from(listchannels.keys())
-	for (let i = 0; i < keyschannels.length; i++) {
-		switch (listchannels.get(keyschannels[i]).name) {
-			case `player-room`:
-				var textchannel = listchannels.get(keyschannels[i])
-				break;
-		}	
-	}
-	bot.channels.fetch(textchannel.id).then(async channel => {
-		var foundMessage
-		let playlist = player.queues.collection.first().songs;
-		const Embedsearch = new MessageEmbed()
-		.setColor('#0099ff')
-		.setTitle(`Playing: \`${playlist[0].name}\``)
-		.setThumbnail(`${playlist[0].thumbnail}`)
-		.setURL(`${playlist[0].url}`)
-		.setDescription(`Duration: \`${playlist[0].formattedDuration}\`\n`)
-		var allmessages = await channel.messages.fetch()
-		var keysmessages = Array.from(allmessages.keys())
-		for (let i = 0; i < keysmessages.length; i++) {
-			if (allmessages.get(keysmessages[i]).embeds.length > 0) {
-				foundMessage = await allmessages.get(keysmessages[i])
-			}
-		}	
-		if (foundMessage) {
-			foundMessage.edit({embeds: [Embedsearch]});
-		}
-		else {
-			channel.send ({embeds: [Embedsearch]}).then(embedMessage => {
-				embedMessage.react("⏮")
-				embedMessage.react("⏯")
-				embedMessage.react("⏭")
-				embedMessage.react("🔀")
-				embedMessage.react("🔁")
-				embedMessage.react("🔉")
-				embedMessage.react("🔊")
-			})
-		}
-		clearTimeout(timeoutID)
-		timeoutID = undefined	
-    })
+	playSong.execute(guild,player)
+	clearTimeout(timeoutID)
+	timeoutID = undefined	
 });
-player.on('addSong', async (queue,song) => {
+player.on('addSong', async (queue) => {
 	var guild= await bot.guilds.cache.get(queue.clientMember.guild.id)
-	var listchannels = await guild.channels.fetch()
-	var keyschannels = Array.from(listchannels.keys())
-	for (let i = 0; i < keyschannels.length; i++) {
-		switch (listchannels.get(keyschannels[i]).name) {
-			case `player-room`:
-				var textchannel = listchannels.get(keyschannels[i])
-				break;
-		}	
-	}
-	bot.channels.fetch(textchannel.id).then(async channel => {
-		let lenght = player.queues.collection.first().songs.length
-		let addedsong = player.queues.collection.first().songs[lenght-1]
-		channel.send(`Added ${addedsong.name} - \`${addedsong.formattedDuration}\` to the queue`);
-    })
+	addSong.execute(guild,player)
 })
 player.on('finish', async (queue) => {
 	var guild= await bot.guilds.cache.get(queue.clientMember.guild.id)
-	var listchannels = await guild.channels.fetch()
-	var keyschannels = Array.from(listchannels.keys())
-	for (let i = 0; i < keyschannels.length; i++) {
-		switch (listchannels.get(keyschannels[i]).name) {
-			case `player-room`:
-				var textchannel = listchannels.get(keyschannels[i])
-				break;
-		}	
-	}
-	bot.channels.fetch(textchannel.id)
-	.then(channel => {
-        timeoutID = setTimeout(() => {
-			channel.send('Finish queue! Player leaved vocal channel');
-			var tempvoice = bot.voice.adapters
-			var tempvoiceid= Array.from(tempvoice.keys())
-			player.voices.leave(tempvoiceid[0])
-		}, 60*1000);
-    })
+	finish.execute(guild,player)
 });
 player.on('error', () => {
 	console.error(e)
 })
 player.on('empty', async (queue) => {
 	var guild= await bot.guilds.cache.get(queue.clientMember.guild.id)
-	var listchannels = await guild.channels.fetch()
-	var keyschannels = Array.from(listchannels.keys())
-	for (let i = 0; i < keyschannels.length; i++) {
-		switch (listchannels.get(keyschannels[i]).name) {
-			case `player-room`:
-				var textchannel = listchannels.get(keyschannels[i])
-				break;
-		}	
-	}
-	textchannel.send("The voice channel is empty! Leaving the voice channel...")
+	empty.execute(guild,player)
 })
 bot.on('ready', async () => {
 	var guilds= await bot.guilds.fetch()
@@ -445,7 +370,7 @@ bot.on("guildMemberAdd", async (member) => {
 	const canvas = Canvas.createCanvas(700, 250);
 	const context = canvas.getContext('2d');
 
-	const background = await Canvas.loadImage('./src/canvas.jpg');
+	const background = await Canvas.loadImage('./welcomer/canvas.jpg');
 	context.drawImage(background, 0, 0, canvas.width, canvas.height);
 	context.strokeStyle = '#0099ff';
 	context.strokeRect(0, 0, canvas.width, canvas.height);
@@ -554,7 +479,7 @@ bot.on("guildMemberRemove", async (member) => {
 	const canvas = Canvas.createCanvas(700, 250);
 	const context = canvas.getContext('2d');
 
-	const background = await Canvas.loadImage('./src/canvas.jpg');
+	const background = await Canvas.loadImage('./welcomer/canvas.jpg');
 	context.drawImage(background, 0, 0, canvas.width, canvas.height);
 	context.strokeStyle = '#0099ff';
 	context.strokeRect(0, 0, canvas.width, canvas.height);
