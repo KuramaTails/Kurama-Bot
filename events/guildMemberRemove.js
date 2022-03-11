@@ -1,6 +1,7 @@
 const Canvas = require('canvas');
+const { MessageAttachment, MessageEmbed } = require('discord.js');
 module.exports = {
-    async execute(guild) {
+    async execute(guild,member) {
         let members = await guild.members.fetch()
         var memberskeys = Array.from(members.keys())
         var memberCount = guild.memberCount 
@@ -104,3 +105,11 @@ module.exports = {
     }
 };
    
+const applyText = (canvas, text) => {
+	const context = canvas.getContext('2d');
+	let fontSize = 70;
+	do {
+		context.font = `${fontSize -= 10}px sans-serif`;
+	} while (context.measureText(text).width > canvas.width - 300);
+	return context.font;
+};

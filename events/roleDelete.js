@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
-	async execute(guild) {
+	async execute(guild,role) {
         try {
             var listchannels = await guild.channels.fetch()
             if (listchannels) {

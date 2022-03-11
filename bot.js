@@ -38,14 +38,7 @@ const player = new DisTube.DisTube(bot, {
   } ) 
 let timeoutID;
 var diffqueue
-const applyText = (canvas, text) => {
-	const context = canvas.getContext('2d');
-	let fontSize = 70;
-	do {
-		context.font = `${fontSize -= 10}px sans-serif`;
-	} while (context.measureText(text).width > canvas.width - 300);
-	return context.font;
-};
+
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
@@ -147,12 +140,12 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
 
 bot.on("guildMemberAdd", async (member) => {
 	var guild= await bot.guilds.cache.get(member.guild.id)
-	guildMemberAdd.execute(guild)
+	guildMemberAdd.execute(guild,member)
 });
 
 bot.on("guildMemberRemove", async (member) => {
 	var guild= await bot.guilds.cache.get(member.guild.id)
-	guildMemberRemove.execute(guild)
+	guildMemberRemove.execute(guild,member)
 });
 
 bot.on('messageReactionAdd', async (reaction, user) => {
@@ -177,17 +170,17 @@ bot.on("guildDelete", async (guild) => {
 
 bot.on("roleCreate", async (role) => {
 	var guild = await bot.guilds.fetch(role.guild.id)
-	roleCreate.execute(guild)
+	roleCreate.execute(guild,role)
 })
 
 bot.on("roleDelete", async (role) => {
 	var guild = await bot.guilds.fetch(role.guild.id)
-	roleDelete.execute(guild)		
+	roleDelete.execute(guild,role)		
 })
 
 bot.on("roleUpdate", async (role) => {
 	var guild = await bot.guilds.fetch(role.guild.id)
-	roleUpdate.execute(guild)
+	roleUpdate.execute(guild,role)
 })
 
 bot.login(process.env.BOT_TOKEN);

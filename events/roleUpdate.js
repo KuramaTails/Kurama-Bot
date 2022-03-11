@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
-	async execute(guild) {
+	async execute(guild,role) {
         var listchannels = await guild.channels.fetch()
         var keyschannels = Array.from(listchannels.keys())
         for (let i = 0; i < keyschannels.length; i++) {
