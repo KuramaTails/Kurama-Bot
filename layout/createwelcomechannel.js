@@ -1,4 +1,4 @@
-const { Permissions, MessageEmbed } = require('discord.js');
+const { Permissions, MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const permissions = new Permissions([
 	Permissions.FLAGS.ADMINISTRATOR,
 ]);
@@ -17,7 +17,7 @@ module.exports = {
         .setColor('#0099ff')
         .setTitle('Add Role')
         .setAuthor({ name: 'Command : Add Role', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
-        .setDescription(`Choose a reaction for receiving a role`)
+        .setDescription(`Click on a button for receiving a role`)
         var roles = await messageCreate.guild.roles.fetch()
         let everyone = messageCreate.guild.roles.cache.find(r => r.name === "@everyone");
         let keys = Array.from( roles.keys() );
@@ -37,14 +37,32 @@ module.exports = {
         else {
             return messageCreate.reply("There was an error. Please contact an Admin") 
         }
+        const buttons = new MessageActionRow()
+        const buttons2 = new MessageActionRow()
         for (let i = 0; i < filteredkeys.length; i++) {
             if (!roles.get(filteredkeys[i]).managed ){
                 if (roles.get(filteredkeys[i]).name != "@everyone"){
                     roles.get(filteredkeys[i]).emoji = emojilist[i]
-                    exampleEmbed.addFields(
+                    newEmbed.addFields(
                         { name: "Emoji" , value: roles.get(filteredkeys[i]).emoji, inline: true },
                         { name: 'Description', value: roles.get(filteredkeys[i]).name, inline: true },
                         { name: '\u200B', value: "\u200B", inline: true })
+                    if (buttons.components.length<5) {
+                        buttons.addComponents(
+                            new MessageButton()
+                                .setCustomId(`${roles.get(filteredkeys[i]).id}`)
+                                .setLabel(`${roles.get(filteredkeys[i]).name}`)
+                                .setStyle("PRIMARY"),
+                        ); 
+                    }
+                    else {
+                        buttons2.addComponents(
+                            new MessageButton()
+                                .setCustomId(`${roles.get(filteredkeys[i]).id}`)
+                                .setLabel(`${roles.get(filteredkeys[i]).name}`)
+                                .setStyle("PRIMARY"),
+                        ); 
+                    }      
                 }
             }
         }
@@ -62,12 +80,13 @@ module.exports = {
             guild.create(`welcome`,  {type: 'GUILD_TEXT',parent: cat});
             guild.create(`Choose-role`,  {type: 'GUILD_TEXT',parent: cat,})
             .then(roleschannel => {
-                    roleschannel.send({ embeds: [exampleEmbed] }).then(embedMessage => {
-                    for (let i = 0; i < filteredkeys.length; i++) {
-                        embedMessage.react(roles.get(filteredkeys[i]).emoji);  
-                    }
-                })
-            });  
-        });
+                        if (filteredkeys.length<5){
+                            roleschannel.send({embeds: [newEmbed],components: [buttons] })
+                        }
+                        else {
+                            roleschannel.send({embeds: [newEmbed],components: [buttons,buttons2] })
+                        }
+            })
+        })
     }
 };

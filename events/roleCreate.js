@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 module.exports = {
 	async execute(guild) {
         try {
@@ -19,7 +19,7 @@ module.exports = {
                                 .setColor('#0099ff')
                                 .setTitle('Add Role')
                                 .setAuthor({ name: 'Command : Add Role', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
-                                .setDescription(`Choose a reaction for receiving a role`)
+                                .setDescription(`Click on a button for receiving a role`)
                                 var roles = await guild.roles.fetch()
                                 let keys = Array.from( roles.keys() );
                                 const filteredkeys = []
@@ -36,6 +36,8 @@ module.exports = {
                                 else {
                                     return console.log("Too many roles") 
                                 }
+                                const buttons = new MessageActionRow()
+                                const buttons2 = new MessageActionRow()
                                 for (let i = 0; i < filteredkeys.length; i++) {
                                     if (!roles.get(filteredkeys[i]).managed ){
                                         if (roles.get(filteredkeys[i]).name != "@everyone"){
@@ -44,15 +46,32 @@ module.exports = {
                                                 { name: "Emoji" , value: roles.get(filteredkeys[i]).emoji, inline: true },
                                                 { name: 'Description', value: roles.get(filteredkeys[i]).name, inline: true },
                                                 { name: '\u200B', value: "\u200B", inline: true })
-                                        }
+                                            if (buttons.components.length<5) {
+                                                buttons.addComponents(
+                                                    new MessageButton()
+                                                        .setCustomId(`${roles.get(filteredkeys[i]).id}`)
+                                                        .setLabel(`${roles.get(filteredkeys[i]).name}`)
+                                                        .setStyle("PRIMARY"),
+                                                ); 
+                                            }
+                                            else {
+                                                buttons2.addComponents(
+                                                    new MessageButton()
+                                                        .setCustomId(`${roles.get(filteredkeys[i]).id}`)
+                                                        .setLabel(`${roles.get(filteredkeys[i]).name}`)
+                                                        .setStyle("PRIMARY"),
+                                                ); 
+                                            }
+                                             
+                                    }
                                     }
                                 }
-                                selMessage.reactions.removeAll();
-                                selMessage.edit({embeds: [newEmbed]}).then(embedMessage => {
-                                    for (let i = 0; i < filteredkeys.length; i++) {
-                                        embedMessage.react(roles.get(filteredkeys[i]).emoji);  
-                                    }
-                                });
+                                if (filteredkeys.length<5){
+                                    selMessage.edit({embeds: [newEmbed],components: [buttons] })
+                                }
+                                else {
+                                    selMessage.edit({embeds: [newEmbed],components: [buttons,buttons2] })
+                                }
                             }
                         }
                     break;
