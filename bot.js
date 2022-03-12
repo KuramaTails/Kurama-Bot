@@ -18,6 +18,8 @@ const guildMemberRemove = require('./events/guildMemberRemove');
 const guildMemberAdd = require('./events/guildMemberAdd');
 const guildCreate = require('./events/guildCreate')
 const presenceUpdate = require('./events/presenceUpdate');
+const chooseRole = require('./buttons/chooseRole')
+const playerButtons = require('./buttons/playerButtons')
 dotenv.config()
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
@@ -71,50 +73,19 @@ bot.on('interactionCreate', async interaction => {
 	if (interaction.isButton()) {
 		var guild= await bot.guilds.cache.get(interaction.guildId)
 		try {
-            var listChannels = await guild.channels.fetch()
-            var keysChannels = Array.from(listChannels.keys())
-            for (let i = 0; i < keysChannels.length; i++) {
-                switch (listChannels.get(keysChannels[i]).name) {
-                    case "choose-role":
-						var selChannel = listChannels.get(keysChannels[i])
-                    break;
-                }   
-            }
-			if (selChannel) {
-				var allRole = await guild.roles.fetch()
-				for (let i = 0; i < interaction.message.components[0].components.length; i++) {
-					if (interaction.customId ==  interaction.message.components[0].components[i].customId) {
-						var nameRole = interaction.message.components[0].components[i].label
-					}
-				}
-				
-				let keysRole = Array.from( allRole.keys() );
-				for (let i = 0; i < keysRole.length; i++) {
-					if (allRole.get(keysRole[i]).name == nameRole)
-					{
-						var selRole = allRole.get(keysRole[i])
-						var selUser = await guild.members.fetch(interaction.user.id,true);
-						if (!selUser.roles.cache.has(selRole.id)) {
-							selUser.roles.add(selRole);
-							interaction.reply({
-								content: `Role ${selRole} added`,
-								ephemeral: true
-							  })
-						}
-						else {
-							selUser.roles.remove(selRole);
-							interaction.reply({
-								content: `Role ${selRole} removed`,
-								ephemeral: true
-							  })
-						}
-						
-					}
-				}
+			var selChannel = await guild.channels.fetch(interaction.message.channelId)
+            switch (selChannel.name) {
+				case "choose-role":
+					chooseRole.execute(guild,interaction)
+				break;
+				case "player-room":
+					const countVoiceChannels = bot.voice.adapters.size
+					playerButtons.execute(guild,interaction,player,selChannel,countVoiceChannels)
+				break;
 			}
-        } catch (error) {
-            console.log(error)
-        }
+		}catch (error) {
+			console.log(error)
+		}
 	}
 	if (!interaction.isCommand()) return;
 	const command = bot.commands.get(interaction.commandName);
