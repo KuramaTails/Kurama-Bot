@@ -1,30 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
-	async execute(messageCreate,pageNumber) {
-		switch (pageNumber) {
-			case 1:
-				if (playerEmbed2.fields.length>1) {
-					messageCreate.reactions.removeAll();
-					messageCreate.edit({ embeds: [playerEmbed] }).then(embedMessage => {
-						embedMessage.react("⬅").emoji  
-						embedMessage.react("⬇").emoji 
-					})
-				}
-				else {
-					messageCreate.reactions.removeAll();
-					messageCreate.edit({ embeds: [playerEmbed] }).then(embedMessage => {
-						embedMessage.react("⬅").emoji  
-					})
-				}	
-			break;
-			case 2:
-				messageCreate.reactions.removeAll();
-				messageCreate.edit({ embeds: [playerEmbed2] }).then(embedMessage => {
-					embedMessage.react("⬅").emoji  
-					embedMessage.react("⬆").emoji
-				})
-			break;
-		}
+	async execute(messageCreate,helpButtons) {
+		messageCreate.edit({ embeds: [playerEmbed],components: [helpButtons]  })
 	}
 };
 
@@ -45,12 +22,12 @@ var commands = [
 
 const playerEmbed = new MessageEmbed()
 .setColor('#0099ff')
-.setTitle('Player Command list 1/2')
+.setTitle('Help : Player Command list 1/2')
 .setURL('https://discord.js.org/')
 .setAuthor({ name: 'Documentation : Commands', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
 const playerEmbed2 = new MessageEmbed()
 .setColor('#0099ff')
-.setTitle('Player Command list 2/2')
+.setTitle('Help : Player Command list 2/2')
 .setURL('https://discord.js.org/')
 .setAuthor({ name: 'Documentation : Commands', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
 for (let i = 0; i < commands.length; i++) {

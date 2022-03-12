@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed , MessageActionRow , MessageButton } = require('discord.js');
 module.exports = {
 	name: "help",
 	ephemeral: "false",
@@ -8,21 +8,10 @@ module.exports = {
 	example:"!help",
 	async execute(messageCreate) {
 		if (messageCreate.embeds.length<1) {
-			messageCreate.reply({ embeds: [startEmbed] }).then(embedMessage => {
-				embedMessage.react("🔑").emoji  
-				embedMessage.react("ℹ").emoji  
-				embedMessage.react("⚒").emoji
-				embedMessage.react("🎵").emoji     
-			})
+			messageCreate.reply({embeds: [startEmbed],components: [helpButtons] })
 		}
 		else {
-			messageCreate.reactions.removeAll();
-			messageCreate.edit({ embeds: [startEmbed] }).then(embedMessage => {
-				embedMessage.react("🔑").emoji  
-				embedMessage.react("ℹ").emoji  
-				embedMessage.react("⚒").emoji 
-				embedMessage.react("🎵").emoji     
-		})
+			messageCreate.edit({embeds: [startEmbed],components: [helpButtons]})
 		}
 	}
 };
@@ -38,12 +27,12 @@ const startEmbed = new MessageEmbed()
 	{ name: '\u200B', value: "\u200B", inline: true }
 	)
 .addFields(
-	{ name: "\u200B" , value: "ℹ", inline: true },
+	{ name: "\u200B" , value: "🆘", inline: true },
 	{ name: '\u200B', value: "General", inline: true },
 	{ name: '\u200B', value: "\u200B", inline: true }
 	)
 .addFields(
-	{ name: "\u200B" , value: "⚒", inline: true },
+	{ name: "\u200B" , value: "🔨", inline: true },
 	{ name: '\u200B', value: "Utility", inline: true },
 	{ name: '\u200B', value: "\u200B", inline: true }
 	)
@@ -52,4 +41,41 @@ const startEmbed = new MessageEmbed()
 	{ name: '\u200B', value: "Music Player", inline: true },
 	{ name: '\u200B', value: "\u200B", inline: true }
 	)
+const helpButtons = new MessageActionRow()
+for (let i = 0; i < startEmbed.fields.length; i++) {
+	switch (startEmbed.fields[i].value) {
+		case "🔑":
+			helpButtons.addComponents(
+				new MessageButton()
+				.setCustomId(`${startEmbed.fields[i+1].value}`)
+				.setLabel(`${startEmbed.fields[i].value+startEmbed.fields[i+1].value}`)
+				.setStyle("PRIMARY"),
+			);
+		break;
+		case "🆘":
+			helpButtons.addComponents(
+				new MessageButton()
+				.setCustomId(`${startEmbed.fields[i+1].value}`)
+				.setLabel(`${startEmbed.fields[i].value+startEmbed.fields[i+1].value}`)
+				.setStyle("PRIMARY"),
+			);
+		break;
+		case "🔨":
+			helpButtons.addComponents(
+				new MessageButton()
+				.setCustomId(`${startEmbed.fields[i+1].value}`)
+				.setLabel(`${startEmbed.fields[i].value+startEmbed.fields[i+1].value}`)
+				.setStyle("PRIMARY"),
+			);
+		break;
+		case "🎵":
+			helpButtons.addComponents(
+				new MessageButton()
+				.setCustomId(`${startEmbed.fields[i+1].value}`)
+				.setLabel(`${startEmbed.fields[i].value+startEmbed.fields[i+1].value}`)
+				.setStyle("PRIMARY"),
+			);
+		break;		
+	}
+}
 	

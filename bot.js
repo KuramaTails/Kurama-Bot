@@ -12,14 +12,13 @@ const playerCommands = require('./player/playerCommands');
 const roleUpdate = require('./events/roleUpdate');
 const roleDelete = require('./events/roleDelete');
 const roleCreate = require('./events/roleCreate');
-const messageReactionRemove = require('./events/messageReactionRemove');
-const messageReactionAdd = require('./events/messageReactionAdd');
 const guildMemberRemove = require('./events/guildMemberRemove');
 const guildMemberAdd = require('./events/guildMemberAdd');
 const guildCreate = require('./events/guildCreate')
 const presenceUpdate = require('./events/presenceUpdate');
 const chooseRole = require('./buttons/chooseRole')
 const playerButtons = require('./buttons/playerButtons')
+const helpButtons = require('./buttons/helpButtons')
 dotenv.config()
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
@@ -39,7 +38,6 @@ const player = new DisTube.DisTube(bot, {
 	  ],
   } ) 
 let timeoutID;
-var diffqueue
 
 
 for (const file of commandFiles) {
@@ -81,6 +79,15 @@ bot.on('interactionCreate', async interaction => {
 				case "player-room":
 					const countVoiceChannels = bot.voice.adapters.size
 					playerButtons.execute(guild,interaction,player,selChannel,countVoiceChannels)
+				break;
+				default:
+					var allMessages = await selChannel.messages.fetch()
+					var selMessage = allMessages.get(interaction.message.id)
+					switch (true) {
+						case selMessage.embeds[0].title.includes("Help"):
+							helpButtons.execute(interaction,selMessage)
+						break;
+					}
 				break;
 			}
 		}catch (error) {
@@ -168,18 +175,6 @@ bot.on("guildMemberAdd", async (member) => {
 bot.on("guildMemberRemove", async (member) => {
 	var guild= await bot.guilds.cache.get(member.guild.id)
 	guildMemberRemove.execute(guild,member)
-});
-
-bot.on('messageReactionAdd', async (reaction, user) => {
-	if (user.id == bot.user.id) {return}
-    var guild= await bot.guilds.cache.get(reaction.message.guildId)
-	messageReactionAdd.execute(guild,reaction,user,player)
-});
-
-bot.on('messageReactionRemove', async (reaction, user) => {
-	if (user.id == bot.user.id) {return}
-    var guild= await bot.guilds.cache.get(reaction.message.guildId)
-	messageReactionRemove.execute(guild,reaction)
 });
 
 bot.on("guildCreate", async (guild) => {

@@ -17,9 +17,7 @@ module.exports = {
                                 const newEmbed = new MessageEmbed()
                                 .setColor('#0099ff')
                                 .setTitle('Add Role')
-                                .setAuthor({ name: 'Command : Add Role', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
-                                .setDescription(`Click on a button for receiving a role`)
-
+                                .setDescription(`Click on a button to get yourself a role`)
                                 var roles = await guild.roles.fetch()
                                 let keys = Array.from( roles.keys() );
                                 const filteredkeys = []

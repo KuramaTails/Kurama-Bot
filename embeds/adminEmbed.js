@@ -1,17 +1,14 @@
 const { MessageEmbed } = require('discord.js');
 const fs= require('fs');
 module.exports = {
-	async execute(messageCreate) {
-		messageCreate.reactions.removeAll();
-		messageCreate.edit({ embeds: [adminEmbed] }).then(embedMessage => {
-			embedMessage.react("⬅").emoji  
-		})
+	async execute(messageCreate,helpButtons) {
+		messageCreate.edit({ embeds: [adminEmbed],components: [helpButtons]  })
 	}
 };
 
 const adminEmbed = new MessageEmbed()
 .setColor('#0099ff')
-.setTitle('Admin Command List')
+.setTitle('Help : Admin Command List')
 .setURL('https://discord.js.org/')
 .setAuthor({ name: 'Documentation : Commands', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
 
