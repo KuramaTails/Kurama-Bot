@@ -26,9 +26,6 @@ const { Routes } = require('discord-api-types/v9');
 const rest = new REST({ version: '9' }).setToken(process.env.BOT_TOKEN);
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 bot.commands = new Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
-const featureFiles = fs.readdirSync('./feature').filter(file => file.endsWith('.js'));
 const player = new DisTube.DisTube(bot, {
 	leaveOnStop: false,
 	leaveOnEmpty: true,
@@ -43,6 +40,8 @@ const player = new DisTube.DisTube(bot, {
 let timeoutID;
 const commands = [];
 
+
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	bot.commands.set(command.data.name, command);
@@ -50,6 +49,7 @@ for (const file of commandFiles) {
 	console.log(`Command loaded`);
 }
 
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
 	if (event.once) {
@@ -60,6 +60,7 @@ for (const file of eventFiles) {
 	console.log(`Event loaded`); 
 }
 
+const featureFiles = fs.readdirSync('./feature').filter(file => file.endsWith('.js'));
 for (const file of featureFiles) {
 	const feature = require(`./feature/${file}`);
 	bot.commands.set(feature.name, feature);
@@ -123,38 +124,37 @@ bot.on('messageCreate', async msg => {
 					return
 				}
 			}
-			var guild= await bot.guilds.cache.get(msg.guild.id)
-			playerCommands.execute(msg ,msgfeature, args ,player,guild)		
+			playerCommands.execute(msg ,msgfeature, args ,player)		
 		}
 	}
 });
-player.on('playSong', async (queue) =>{
+player.on('playSong', (queue) =>{
 	playSong.execute(queue,player)
 	clearTimeout(timeoutID)
 	timeoutID = undefined	
 });
-player.on('addSong', async (queue) => {
+player.on('addSong', (queue) => {
 	addSong.execute(queue,player)
 })
-player.on('finish', async (queue) => {
-	var guild= await bot.guilds.cache.get(queue.clientMember.guild.id)
-	finish.execute(guild,player)
+player.on('finish', (queue) => {
+	timeoutID = setTimeout(() => {
+		finish.execute(queue,player)
+	  }, 30 * 1000)
 });
 player.on('error', () => {
 	console.error(e)
 })
-player.on('empty', async (queue) => {
-	var guild= await bot.guilds.cache.get(queue.clientMember.guild.id)
-	empty.execute(guild,player)
+player.on('empty', (queue) => {
+	empty.execute(queue,player)
 })
 
 bot.on('ready', async () => {
 	var guilds= await bot.guilds.fetch()
-	var guildskeys = Array.from(guilds.keys())
+	var guildsKeys= Array.from(guilds.keys())
 	var guildsnames = []
-	for (let i = 0; i < guildskeys.length; i++) {
-		guildsnames.push(guilds.get(guildskeys[i]).name)
-		await rest.put(Routes.applicationGuildCommands(bot.user.id, guilds.get(guildskeys[i]).id), { body: commands })
+	for (let i = 0; i < guildsKeys.length; i++) {
+		guildsnames.push(guilds.get(guildsKeys[i]).name)
+		await rest.put(Routes.applicationGuildCommands(bot.user.id, guilds.get(guildsKeys[i]).id), { body: commands })
 		.then(() => console.log('Successfully registered application commands.'))
 		.catch(console.error);
 	}
@@ -164,21 +164,18 @@ bot.on('ready', async () => {
 bot.on("presenceUpdate", async (oldMember, newMember) => {
 	if (oldMember=== null || oldMember.status == newMember.status) { return}
 	try {
-		var guild= await bot.guilds.cache.get(oldMember.guild.id)
-		presenceUpdate.execute(guild)
+		presenceUpdate.execute(oldMember)
 	} catch (error) {
 		console.log(error)
 	}
 });      
 
 bot.on("guildMemberAdd", async (member) => {
-	var guild= await bot.guilds.cache.get(member.guild.id)
-	guildMemberAdd.execute(guild,member)
+	guildMemberAdd.execute(member)
 });
 
 bot.on("guildMemberRemove", async (member) => {
-	var guild= await bot.guilds.cache.get(member.guild.id)
-	guildMemberRemove.execute(guild,member)
+	guildMemberRemove.execute(member)
 });
 
 bot.on("guildCreate", async (guild) => {
@@ -191,22 +188,19 @@ bot.on("guildDelete", async (guild) => {
 })
 
 bot.on("roleCreate", async (role) => {
-	var guild = await bot.guilds.fetch(role.guild.id)
-	roleCreate.execute(guild,role)
+	roleCreate.execute(role)
 })
 
 bot.on("roleDelete", async (role) => {
-	var guild = await bot.guilds.fetch(role.guild.id)
-	roleDelete.execute(guild,role)		
+	roleDelete.execute(role)		
 })
 
 bot.on("roleUpdate", async (role) => {
-	var guild = await bot.guilds.fetch(role.guild.id)
-	roleUpdate.execute(guild,role)
+	roleUpdate.execute(role)
 })
 
 
-bot.on('debug', (...args) => console.log('debug', ...args));
+//bot.on('debug', (...args) => console.log('debug', ...args));
 bot.on('rateLimit', (...args) => console.log('rateLimit', ...args));
 
 bot.login(process.env.BOT_TOKEN);

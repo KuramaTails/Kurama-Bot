@@ -1,10 +1,10 @@
 const Canvas = require('canvas');
 const { MessageAttachment, MessageEmbed } = require('discord.js');
 module.exports = {
-    async execute(guild,member) {
-        let members = await guild.members.fetch()
+    async execute(member) {
+        let members = await member.guild.members.fetch()
         var memberskeys = Array.from(members.keys())
-        var memberCount = guild.memberCount 
+        var memberCount = member.guild.memberCount 
         const canvas = Canvas.createCanvas(700, 250);
         const context = canvas.getContext('2d');
 
@@ -80,7 +80,7 @@ module.exports = {
         } catch (error) {
             console.log(error)
         }
-        var listchannels = await guild.channels.fetch()
+        var listchannels = member.guild.channels.cache
         var keyschannels = Array.from(listchannels.keys())
         for (let i = 0; i < keyschannels.length; i++) {
             switch (true) {

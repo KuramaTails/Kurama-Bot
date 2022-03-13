@@ -1,7 +1,7 @@
 const { RepeatMode } = require("distube");
 module.exports = {
-    async execute(msg,msgfeature,args,player,guild) {
-        var listchannels = await guild.channels.fetch()
+    async execute(msg,msgfeature,args,player) {
+        var listchannels = msg.guild.channels.cache
         var selChannel = listchannels.get(msg.channelId)
         if(!player.getQueue(msg)) { 
             switch (msgfeature) {

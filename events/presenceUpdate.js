@@ -1,7 +1,7 @@
 module.exports = {
-    async execute(guild) {
+    async execute(oldMember) {
         try {
-            let members = await guild.members.fetch()
+            let members = oldMember.guild.members.cache
             let memberskeys = Array.from(members.keys())
             let onlineMembers = []
             let offlineMembers = []
@@ -39,8 +39,8 @@ module.exports = {
             } catch (error) {
                 console.log(error)
             }
-            var memberCount = guild.memberCount
-            var listchannels = await guild.channels.fetch()
+            var memberCount = oldMember.guild.memberCount
+            var listchannels = oldMember.guild.channels.cache
             var keyschannels = Array.from(listchannels.keys())
             for (let i = 0; i < keyschannels.length; i++) {
                 switch (true) {
@@ -58,7 +58,7 @@ module.exports = {
                     break;
                 }	
             }
-            console.log(`Presence updated in ${guild}`)
+            console.log(`Presence updated in ${oldMember.guild}`)
         } catch (error) {
             console.log(error)
         }

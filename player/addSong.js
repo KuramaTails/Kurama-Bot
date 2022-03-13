@@ -1,6 +1,6 @@
 module.exports = {
-	async execute(queue,player) {
-        var listchannels = await queue.clientMember.guild.channels.fetch()
+	execute(queue) {
+        var listchannels = queue.clientMember.guild.channels.cache
         var keyschannels = Array.from(listchannels.keys())
         for (let i = 0; i < keyschannels.length; i++) {
             switch (listchannels.get(keyschannels[i]).name) {

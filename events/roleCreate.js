@@ -1,14 +1,14 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 module.exports = {
-	async execute(guild) {
+	async execute(role) {
         try {
-            var listChannels = await guild.channels.fetch()
+            var listChannels = role.guild.channels.cache
             var keysChannels = Array.from(listChannels.keys())
             for (let i = 0; i < keysChannels.length; i++) {
                 switch (listChannels.get(keysChannels[i]).name) {
                     case "choose-role":
                         var selChannel = listChannels.get(keysChannels[i])
-                        var allMessages = await selChannel.messages.fetch()
+                        var allMessages = selChannel.messages.cache
                         var keysMessages = Array.from(allMessages.keys())
                         for (let i = 0; i < keysMessages.length; i++) {
                             if (allMessages.get(keysMessages[i]).embeds.MessageEmbed=== null) { return }

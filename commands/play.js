@@ -21,7 +21,10 @@ module.exports = {
             })
         }
         else {
-            interaction.send('You must join a voice channel first.')
+            interaction.reply({
+                content: "You must join a voice channel first.",
+                ephemeral: true
+            })
         }
 	},
 };

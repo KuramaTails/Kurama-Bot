@@ -1,7 +1,7 @@
 const { MessageEmbed} = require("discord.js");
 module.exports = {
-	async execute(queue,player) {
-        var listchannels = await queue.clientMember.guild.channels.fetch()
+	execute(queue,player) {
+        var listchannels = queue.clientMember.guild.channels.cache
         var keyschannels = Array.from(listchannels.keys())
         for (let i = 0; i < keyschannels.length; i++) {
             switch (listchannels.get(keyschannels[i]).name) {
@@ -17,7 +17,7 @@ module.exports = {
         .setThumbnail(`${playlist[0].thumbnail}`)
         .setURL(`${playlist[0].url}`)
         .setDescription(`Duration: \`${playlist[0].formattedDuration}\`\n`)
-        var allmessages = await textchannel.messages.fetch()
+        var allmessages = textchannel.messages.cache
         var keysmessages = Array.from(allmessages.keys())
         for (let i = 0; i < keysmessages.length; i++) {
             if (allmessages.get(keysmessages[i]).embeds.length > 0) {
