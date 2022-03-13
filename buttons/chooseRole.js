@@ -1,6 +1,6 @@
 module.exports = {
-	async execute(guild,interaction) {
-		var allRole = await guild.roles.fetch()
+	async execute(selChannel,interaction) {
+		var allRole = await selChannel.guild.roles.fetch()
         for (let i = 0; i < interaction.message.components[0].components.length; i++) {
             if (interaction.customId ==  interaction.message.components[0].components[i].customId) {
                 var nameRole = interaction.message.components[0].components[i].label
@@ -11,7 +11,7 @@ module.exports = {
             if (allRole.get(keysRole[i]).name == nameRole)
             {
                 var selRole = allRole.get(keysRole[i])
-                var selUser = await guild.members.fetch(interaction.user.id,true);
+                var selUser = await selChannel.guild.members.fetch(interaction.user.id,true);
                 if (!selUser.roles.cache.has(selRole.id)) {
                     selUser.roles.add(selRole);
                     interaction.reply({

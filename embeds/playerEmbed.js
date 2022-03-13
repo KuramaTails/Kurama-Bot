@@ -1,7 +1,18 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
-	async execute(messageCreate,helpButtons) {
-		messageCreate.edit({ embeds: [playerEmbed],components: [helpButtons]  })
+	async execute(messageCreate,helpButtons,pagNumber) {
+		switch (pagNumber) {
+			case 1:
+				helpButtons.components[pagNumber].setDisabled(true)
+				helpButtons.components[pagNumber+1].setDisabled(false)
+				messageCreate.edit({ embeds: [pages[pagNumber-1]],components: [helpButtons]  })
+				break;
+			case 2:
+				helpButtons.components[pagNumber-1].setDisabled(false)
+				helpButtons.components[pagNumber].setDisabled(true)
+				messageCreate.edit({ embeds: [pages[pagNumber-1]],components: [helpButtons]  })
+				break;
+		}	
 	}
 };
 
@@ -45,6 +56,5 @@ for (let i = 0; i < commands.length; i++) {
 			{ name: '\u200B', value: "\u200B", inline: true }
 			)
 	}
-	
-	
 }
+const pages = [playerEmbed,playerEmbed2]

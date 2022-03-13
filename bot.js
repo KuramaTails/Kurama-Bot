@@ -21,6 +21,9 @@ const playerButtons = require('./buttons/playerButtons')
 const helpButtons = require('./buttons/helpButtons')
 dotenv.config()
 
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord-api-types/v9');
+const rest = new REST({ version: '9' }).setToken(process.env.BOT_TOKEN);
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 bot.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -38,11 +41,12 @@ const player = new DisTube.DisTube(bot, {
 	  ],
   } ) 
 let timeoutID;
-
+const commands = [];
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	bot.commands.set(command.data.name, command);
+	commands.push(command.data.toJSON());
 	console.log(`Command loaded`);
 }
 
@@ -69,20 +73,18 @@ for (const file of featureFiles) {
 
 bot.on('interactionCreate', async interaction => {
 	if (interaction.isButton()) {
-		var guild= await bot.guilds.cache.get(interaction.guildId)
 		try {
-			var selChannel = await guild.channels.fetch(interaction.message.channelId)
+			var selChannel = await bot.channels.cache.get(interaction.message.channelId)
             switch (selChannel.name) {
 				case "choose-role":
-					chooseRole.execute(guild,interaction)
+					chooseRole.execute(selChannel,interaction)
 				break;
 				case "player-room":
 					const countVoiceChannels = bot.voice.adapters.size
-					playerButtons.execute(guild,interaction,player,selChannel,countVoiceChannels)
+					playerButtons.execute(interaction,player,selChannel,countVoiceChannels)
 				break;
 				default:
-					var allMessages = await selChannel.messages.fetch()
-					var selMessage = allMessages.get(interaction.message.id)
+					var selMessage = await selChannel.messages.fetch(interaction.message.id)
 					switch (true) {
 						case selMessage.embeds[0].title.includes("Help"):
 							helpButtons.execute(interaction,selMessage)
@@ -98,7 +100,7 @@ bot.on('interactionCreate', async interaction => {
 	const command = bot.commands.get(interaction.commandName);
 	if (!command) return;
 	try {
-		await command.execute(interaction);
+		await command.execute(interaction,player);
 	} catch (error) {
 		console.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
@@ -127,14 +129,12 @@ bot.on('messageCreate', async msg => {
 	}
 });
 player.on('playSong', async (queue) =>{
-	var guild= await bot.guilds.cache.get(queue.clientMember.guild.id)
-	playSong.execute(guild,player)
+	playSong.execute(queue,player)
 	clearTimeout(timeoutID)
 	timeoutID = undefined	
 });
 player.on('addSong', async (queue) => {
-	var guild= await bot.guilds.cache.get(queue.clientMember.guild.id)
-	addSong.execute(guild,player)
+	addSong.execute(queue,player)
 })
 player.on('finish', async (queue) => {
 	var guild= await bot.guilds.cache.get(queue.clientMember.guild.id)
@@ -154,7 +154,11 @@ bot.on('ready', async () => {
 	var guildsnames = []
 	for (let i = 0; i < guildskeys.length; i++) {
 		guildsnames.push(guilds.get(guildskeys[i]).name)
+		await rest.put(Routes.applicationGuildCommands(bot.user.id, guilds.get(guildskeys[i]).id), { body: commands })
+		.then(() => console.log('Successfully registered application commands.'))
+		.catch(console.error);
 	}
+	
     console.log(`Bot joined into ${guildsnames.toString()}`)
 });
 bot.on("presenceUpdate", async (oldMember, newMember) => {
@@ -200,5 +204,9 @@ bot.on("roleUpdate", async (role) => {
 	var guild = await bot.guilds.fetch(role.guild.id)
 	roleUpdate.execute(guild,role)
 })
+
+
+bot.on('debug', (...args) => console.log('debug', ...args));
+bot.on('rateLimit', (...args) => console.log('rateLimit', ...args));
 
 bot.login(process.env.BOT_TOKEN);

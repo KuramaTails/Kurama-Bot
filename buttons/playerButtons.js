@@ -1,14 +1,14 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 
 module.exports = {
-	async execute(guild,interaction,player,selChannel,countVoiceChannels) {
+	async execute(interaction,player,selChannel,countVoiceChannels) {
 		let playlist
         try {
             playlist = player.queues.collection.first().songs;
         } catch (error) {
             console.log(error)
         }
-        var voiceChannel = await (await guild.members.fetch(interaction.user.id)).voice.channel
+        var voiceChannel = await (await selChannel.guild.members.fetch(interaction.user.id)).voice.channel
         const Embedsearch = new MessageEmbed()
         if (playlist!= null) {
             Embedsearch.setColor('#0099ff')
