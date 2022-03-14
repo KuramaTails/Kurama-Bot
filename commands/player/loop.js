@@ -1,15 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-
-module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('loop')
-		.setDescription('Select loop mode!')
-        .addStringOption(option =>
-            option.setName("mode")
-            .setDescription("Select a repeat mode : DISABLED = 0, SONG = 1 , QUEUE = 2")
-            .setRequired(true)
-            ),
-        
+module.exports = { 
 	async execute(interaction,player) {
         try {
             var voiceChannel = interaction.member.voice.channel

@@ -38,24 +38,15 @@ const player = new DisTube.DisTube(bot, {
 	  ],
   } ) 
 let timeoutID;
-//const commands = [];
-const playerCommandsinteractions = [];
+const commands = [];
 
 
-/*const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	bot.commands.set(command.data.name, command);
 	commands.push(command.data.toJSON());
 	console.log(`Command loaded`);
-}*/
-
-const playerFiles = fs.readdirSync('./commands/player').filter(file => file.endsWith('.js'));
-for (const file of playerFiles) {
-	const playerinteraction = require(`./commands/player/${file}`);
-	bot.commands.set(playerinteraction.data.name, playerinteraction);
-	playerCommandsinteractions.push(playerinteraction.data.toJSON());
-	console.log(`Player Command loaded`);
 }
 
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
@@ -163,8 +154,7 @@ bot.on('ready', async () => {
 	var guildsnames = []
 	for (let i = 0; i < guildsKeys.length; i++) {
 		guildsnames.push(guilds.get(guildsKeys[i]).name)
-		//await rest.put(Routes.applicationGuildCommands(bot.user.id, guilds.get(guildsKeys[i]).id), { body: commands })
-		await rest.put(Routes.applicationGuildCommands(bot.user.id, guilds.get(guildsKeys[i]).id), { body: playerCommandsinteractions })
+		await rest.put(Routes.applicationGuildCommands(bot.user.id, guilds.get(guildsKeys[i]).id), { body: commands })
 		.then(() => console.log('Successfully registered application commands.'))
 		.catch(console.error);
 	}

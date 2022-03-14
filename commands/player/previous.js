@@ -1,9 +1,5 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
 
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('previous')
-		.setDescription('Bot will play previous song again!'),
 	async execute(interaction,player) {       
         try {
             var voiceChannel = interaction.member.voice.channel

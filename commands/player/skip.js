@@ -1,9 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('skip')
-		.setDescription('Bot will skip this song!'),
 	async execute(interaction,player) {       
         try {
             var voiceChannel = interaction.member.voice.channel

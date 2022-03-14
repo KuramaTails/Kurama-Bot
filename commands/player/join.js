@@ -1,9 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('join')
-		.setDescription('Bot will join your voice channel!'),
 	async execute(interaction,player) {
 		var voiceChannel = Array.from(player.voices.collection.keys())
 		for (let i = 0; i < voiceChannel.length; i++) {

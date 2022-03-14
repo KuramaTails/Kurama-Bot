@@ -1,9 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('resume')
-		.setDescription('Bot will resume playing!'),
 	async execute(interaction,player) {       
         try {
             var voiceChannel = interaction.member.voice.channel

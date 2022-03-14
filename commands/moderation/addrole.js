@@ -11,7 +11,7 @@ module.exports = {
     desc:"You can add a role to a user from this server",
     categ:"admin",
     example:"!addrole @User",
-	async execute(messageCreate, args) {
+	async execute(interaction) {
         var member = args[0].replace(/\D/g, "");
         await messageCreate.client.destroy();
         messageCreate.client.login(process.env.BOT_TOKEN);

@@ -1,9 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('shuffle')
-		.setDescription("Bot will shuffle song's queue!"),
 	async execute(interaction,player) {       
         try {
             var voiceChannel = interaction.member.voice.channel

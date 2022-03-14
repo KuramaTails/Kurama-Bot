@@ -1,16 +1,5 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('volume')
-		.setDescription("Select player's volume!")
-        .addStringOption(option =>
-            option.setName("volume")
-            .setDescription("Set volume percentage")
-            .setRequired(true)
-            ),
-        
-	async execute(interaction,player) {
+    async execute(interaction,player) {
         try {
             var voiceChannel = interaction.member.voice.channel
             if (voiceChannel) {

@@ -1,15 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('play')
-		.setDescription('Play a song!')
-        .addStringOption(option =>
-            option.setName("link")
-            .setDescription("Link or Title of your song")
-            .setRequired(true)
-            ),
-        
 	async execute(interaction,player) {
         var voicechannel = interaction.member.voice.channel
         if(voicechannel) {

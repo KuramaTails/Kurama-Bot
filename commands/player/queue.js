@@ -1,10 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
-
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('queue')
-		.setDescription('Bot will show the songs queue!'),
 	async execute(interaction,player) {       
         try {
             var voiceChannel = interaction.member.voice.channel
