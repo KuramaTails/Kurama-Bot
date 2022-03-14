@@ -1,22 +1,14 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 module.exports = {
-	async execute(role) {
+	async execute(guild) {
         try {
-            var listChannels = role.guild.channels.cache
+            var listChannels = await guild.channels.fetch()
             var keysChannels = Array.from(listChannels.keys())
             for (let i = 0; i < keysChannels.length; i++) {
                 switch (listChannels.get(keysChannels[i]).name) {
                     case "choose-role":
                         var selChannel = listChannels.get(keysChannels[i])
-                        var allMessages = await selChannel.messages.fetch()
-                        var keysMessages = Array.from(allMessages.keys())
-                        for (let i = 0; i < keysMessages.length; i++) {
-                            if(allMessages.get(keysMessages[i]).embeds[0] != null) {
-                                var selMessage = allMessages.get(keysMessages[i])
-                            }
-                        }
-                        console.log(selMessage)
-                        var roles = await role.guild.roles.fetch()
+                        var roles = await guild.roles.fetch()
                         let keys = Array.from( roles.keys() );
                         const filteredkeys = []
                         for (let i = 0; i < keys.length; i++) {
@@ -75,9 +67,7 @@ module.exports = {
                                 break;
                             }
                         }
-                        switch (keysMessages.length) {
-                            case 0:
-                                const newEmbed = new MessageEmbed()
+                        const newEmbed = new MessageEmbed()
                                 .setColor('#0099ff')
                                 .setTitle('Add Role')
                                 .setDescription(`Click on a button to get yourself a role`)
@@ -99,27 +89,6 @@ module.exports = {
                                         break;
                                 }
                                 break;
-                        
-                            default:
-                                switch (true) {
-                                    case button5.components.length!=0:
-                                        selMessage.edit({components: [button1,button2,button3,button4,button5] })
-                                        break;
-                                    case button4.components.length!=0:
-                                        selMessage.edit({components: [button1,button2,button3,button4] })
-                                        break;
-                                    case button3.components.length!=0:
-                                        selMessage.edit({components: [button1,button2,button3] })
-                                        break;
-                                    case button2.components.length!=0:
-                                        selMessage.edit({components: [button1,button2,] })
-                                        break;
-                                    case button1.components.length!=0:
-                                        selMessage.edit({components: [button1] })
-                                        break;
-                                }
-                                break;
-                        }
                     break;
                 }   
             }

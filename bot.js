@@ -197,6 +197,7 @@ bot.on("guildMemberRemove", async (member) => {
 
 bot.on("guildCreate", async (guild) => {
     console.log("Joined a new guild: " + guild.name);
+	await rest.put(Routes.applicationGuildCommands(bot.user.id, guild.id), { body: commands })
 	guildCreate.execute(guild)
 })
 
