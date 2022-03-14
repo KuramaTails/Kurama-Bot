@@ -4,7 +4,7 @@ module.exports = {
             var voiceChannel = interaction.member.voice.channel
             if (voiceChannel) {
                 if(player.getQueue(voiceChannel)) {
-                    let volume = interaction.options.getString("volume")
+                    let volume = interaction.options.getNumber("volume")
                     player.setVolume(voiceChannel, volume);
                     interaction.followUp({
                         content: "Set volume to `" + volume + "`",

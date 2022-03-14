@@ -99,6 +99,23 @@ bot.on('interactionCreate', async interaction => {
 	}
 	if (!interaction.isCommand()) return;
 	const command = bot.commands.get(interaction.commandName);
+	if (interaction.commandName="moderation") {
+		const roles = await interaction.guild.roles.cache;
+		for (role in roles) {
+			if (role.permissions.has('ADMINISTRATOR')) {
+				const permissions = [
+					{
+						id: role.id,
+						type: 'ROLE',
+						permission: true,
+					},
+				];
+				
+				await command.permissions.add({ permissions });
+			}
+		}
+		
+	}
 	try {
 		await interaction.deferReply( {ephemeral: true});
 		await command.execute(interaction,player);

@@ -3,7 +3,7 @@ module.exports = {
         try {
             var voiceChannel = interaction.member.voice.channel
             if (voiceChannel) {
-                let link = interaction.options.getString("newlink")
+                let link = interaction.options.getString("link")
                 await player.play(voiceChannel, link)
                 var queue = await player.queues.get(voiceChannel)
                 console.log(queue)

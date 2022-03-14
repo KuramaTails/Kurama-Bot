@@ -7,7 +7,7 @@ module.exports = {
 			subcommand
 				.setName('addsong')
 				.setDescription('Bot will add a song to queue!')
-				.addStringOption(option =>option.setName("newlink").setDescription("Link or Title of song/playlist you want to add to queue").setRequired(true))
+				.addStringOption(option =>option.setName("link").setDescription("Link or Title of song/playlist you want to add to queue").setRequired(true))
 		)
 		.addSubcommand(subcommand =>
 			subcommand
@@ -60,7 +60,7 @@ module.exports = {
 			subcommand
 				.setName('volume')
 				.setDescription("Select player's volume!")
-				.addStringOption(option =>option.setName("volume").setDescription("Set volume percentage").setRequired(true))
+				.addNumberOption(option =>option.setName("volume").setDescription("Set volume percentage").setRequired(true))
 		),
 	async execute(interaction,player) {
         const playerCommand = require(`../commands/player/${interaction.options.getSubcommand()}`);
