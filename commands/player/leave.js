@@ -2,21 +2,15 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('play')
-		.setDescription('Play a song!')
-        .addStringOption(option =>
-            option.setName("link")
-            .setDescription("Link or Title of your song")
-            .setRequired(true)
-            ),
+		.setName('leave')
+		.setDescription('Bot will leave your voice channel!'),
         
 	async execute(interaction,player) {
-        var member = await interaction.member.fetch(interaction.user.id)
+        var member = interaction.member.cache.get(interaction.user.id)
         if(member.voice.channel) {
-            let link = interaction.options.getString("link")
-            await player.play(member.voice.channel, link)
+            await player.leave(member.voice.channel)
             interaction.reply({
-                content: "Playing song",
+                content: "Player leaved",
                 ephemeral: true
             })
         }

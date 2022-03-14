@@ -38,15 +38,24 @@ const player = new DisTube.DisTube(bot, {
 	  ],
   } ) 
 let timeoutID;
-const commands = [];
+//const commands = [];
+const playerCommandsinteractions = [];
 
 
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+/*const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	bot.commands.set(command.data.name, command);
 	commands.push(command.data.toJSON());
 	console.log(`Command loaded`);
+}*/
+
+const playerFiles = fs.readdirSync('./commands/player').filter(file => file.endsWith('.js'));
+for (const file of playerFiles) {
+	const playerinteraction = require(`./commands/player/${file}`);
+	bot.commands.set(playerinteraction.data.name, playerinteraction);
+	playerCommandsinteractions.push(playerinteraction.data.toJSON());
+	console.log(`Player Command loaded`);
 }
 
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
@@ -99,12 +108,12 @@ bot.on('interactionCreate', async interaction => {
 	}
 	if (!interaction.isCommand()) return;
 	const command = bot.commands.get(interaction.commandName);
-	if (!command) return;
 	try {
+		await interaction.deferReply( {ephemeral: true});
 		await command.execute(interaction,player);
 	} catch (error) {
 		console.error(error);
-		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
 	
 });
@@ -128,7 +137,7 @@ bot.on('messageCreate', async msg => {
 		}
 	}
 });
-player.on('playSong', (queue) =>{
+player.on('playSong', async (queue) =>{
 	playSong.execute(queue,player)
 	clearTimeout(timeoutID)
 	timeoutID = undefined	
@@ -154,7 +163,8 @@ bot.on('ready', async () => {
 	var guildsnames = []
 	for (let i = 0; i < guildsKeys.length; i++) {
 		guildsnames.push(guilds.get(guildsKeys[i]).name)
-		await rest.put(Routes.applicationGuildCommands(bot.user.id, guilds.get(guildsKeys[i]).id), { body: commands })
+		//await rest.put(Routes.applicationGuildCommands(bot.user.id, guilds.get(guildsKeys[i]).id), { body: commands })
+		await rest.put(Routes.applicationGuildCommands(bot.user.id, guilds.get(guildsKeys[i]).id), { body: playerCommandsinteractions })
 		.then(() => console.log('Successfully registered application commands.'))
 		.catch(console.error);
 	}
