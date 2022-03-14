@@ -306,18 +306,16 @@ player.on('playSong', async (queue,song) =>{
 				break;
 		}	
 	}
-	bot.channels.fetch(textchannel.id).then(async channel => {
-		let playlist = player.queues.collection.first().songs;
-		const Embedsearch = new MessageEmbed()
-		.setColor('#0099ff')
-		.setTitle(`Playing: \`${playlist[0].name}\``)
-		.setThumbnail(`${playlist[0].thumbnail}`)
-		.setURL(`${playlist[0].url}`)
-		.setDescription(`Duration: \`${playlist[0].formattedDuration}\`\n`)
-		channel.send({ embeds: [Embedsearch] });	
-		clearTimeout(timeoutID)
-		timeoutID = undefined	
-    })
+	let playlist = player.queues.collection.first().songs;
+	const Embedsearch = new MessageEmbed()
+	.setColor('#0099ff')
+	.setTitle(`Playing: \`${playlist[0].name}\``)
+	.setThumbnail(`${playlist[0].thumbnail}`)
+	.setURL(`${playlist[0].url}`)
+	.setDescription(`Duration: \`${playlist[0].formattedDuration}\`\n`)
+	textchannel.send({ embeds: [Embedsearch] });	
+	clearTimeout(timeoutID)
+	timeoutID = undefined
 });
 player.on('addSong', async (queue,song) => {
 	var guild= await bot.guilds.cache.get(queue.clientMember.guild.id)
@@ -333,7 +331,7 @@ player.on('addSong', async (queue,song) => {
 	bot.channels.fetch(textchannel.id).then(async channel => {
 		let lenght = player.queues.collection.first().songs.length
 		let addedsong = player.queues.collection.first().songs[lenght-1]
-		channel.send(`Added ${addedsong.name} - \`${addedsong.formattedDuration}\` to the queue`);
+		textchannel.send(`Added ${addedsong.name} - \`${addedsong.formattedDuration}\` to the queue`);
     })
 })
 player.on('finish', async (queue) => {
