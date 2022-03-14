@@ -3,28 +3,35 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('resume')
-		.setDescription('Resume player!')
-        .addStringOption(option =>
-            option.setName("link")
-            .setDescription("Link or Title of your song")
-            .setRequired(true)
-            ),
-        
-	async execute(interaction,player) {
-        var member = await interaction.member.fetch(interaction.user.id)
-        if(member.voice.channel) {
-            let link = interaction.options.getString("link")
-            await player.play(member.voice.channel, link)
-            interaction.reply({
-                content: "Playing song",
-                ephemeral: true
-            })
-        }
-        else {
-            interaction.reply({
-                content: "You must join a voice channel first.",
-                ephemeral: true
-            })
-        }
+		.setDescription('Bot will resume playing!'),
+	async execute(interaction,player) {       
+        try {
+            var voiceChannel = interaction.member.voice.channel
+            if (voiceChannel) {
+                if(player.getQueue(voiceChannel)) {
+                    if (player.queues.collection.first().paused) {
+                        player.resume(voiceChannel)
+                        interaction.followUp({
+                            content: "Player resumed playing",
+                            ephemeral: true
+                        })
+                    }
+                }
+                else {
+                    interaction.followUp({
+                        content: "No songs in queue.",
+                        ephemeral: true
+                    })
+                }
+            }
+            else { 
+                interaction.followUp({
+                    content: "You must join a voice channel first.",
+                    ephemeral: true
+                })
+            }
+        } catch (error) {
+            console.log(error)
+        }   
 	},
 };

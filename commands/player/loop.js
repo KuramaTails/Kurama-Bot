@@ -12,13 +12,13 @@ module.exports = {
         
 	async execute(interaction,player) {
         try {
-            var member = interaction.member.cache.get(interaction.user.id)
+            var voiceChannel = interaction.member.voice.channel
             var mode
-            if (member.voice.channel) {
-                if(player.getQueue(member.voice.channel)) {
+            if (voiceChannel) {
+                if(player.getQueue(voiceChannel)) {
                     switch(parseInt(interaction.options.getString("mode"))) {
                         case 0:
-                            player.setRepeatMode(member.voice.channel, 1)
+                            player.setRepeatMode(voiceChannel, 1)
                             mode = "DISABLED"
                             interaction.followUp({
                                 content: "Set repeat mode to `" + mode + "`",
@@ -26,7 +26,7 @@ module.exports = {
                             })
                             break;
                         case 1:
-                            player.setRepeatMode(member.voice.channel, 2)
+                            player.setRepeatMode(voiceChannel, 2)
                             mode = "SONG"
                             interaction.followUp({
                                 content: "Set repeat mode to `" + mode + "`",
@@ -34,7 +34,7 @@ module.exports = {
                             })
                             break;
                         case 2:
-                            player.setRepeatMode(member.voice.channel, 0)
+                            player.setRepeatMode(voiceChannel, 0)
                             var mode = "QUEUE"
                             interaction.followUp({
                                 content: "Set repeat mode to `" + mode + "`",

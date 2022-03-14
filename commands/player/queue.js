@@ -1,30 +1,47 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('queue')
-		.setDescription('Display songs queue!')
-        .addStringOption(option =>
-            option.setName("link")
-            .setDescription("Link or Title of your song")
-            .setRequired(true)
-            ),
-        
-	async execute(interaction,player) {
-        var member = await interaction.member.fetch(interaction.user.id)
-        if(member.voice.channel) {
-            let link = interaction.options.getString("link")
-            await player.play(member.voice.channel, link)
-            interaction.reply({
-                content: "Playing song",
-                ephemeral: true
-            })
-        }
-        else {
-            interaction.reply({
-                content: "You must join a voice channel first.",
-                ephemeral: true
-            })
-        }
+		.setDescription('Bot will show the songs queue!'),
+	async execute(interaction,player) {       
+        try {
+            var voiceChannel = interaction.member.voice.channel
+            if (voiceChannel) {
+                if(player.getQueue(voiceChannel)) {
+                    var queue = player.queues.collection.first().songs
+                    const startEmbed = new MessageEmbed()
+                    .setColor('#0099ff')
+                    .setTitle('Current queue')
+                    for (let i = 0; i < queue.length; i++) {
+                        startEmbed.addFields(
+                            { name: "\u200B" , value: `${i+1}. ${queue[i].name} - \`${queue[i].formattedDuration}\``, inline: true },
+                            { name: '\u200B', value: "\u200B", inline: true },
+                            { name: '\u200B', value: "\u200B", inline: true }
+                            )
+                    }
+                    startEmbed.fields[0].value = "**Playing :   **" + startEmbed.fields[0].value
+                    interaction.followUp({
+                        embeds: [startEmbed],
+                        ephemeral: true
+                    })
+                }
+                else {
+                    interaction.followUp({
+                        content: "No songs in queue.",
+                        ephemeral: true
+                    })
+                }
+            }
+            else { 
+                interaction.followUp({
+                    content: "You must join a voice channel first.",
+                    ephemeral: true
+                })
+            }
+        } catch (error) {
+            console.log(error)
+        }   
 	},
 };

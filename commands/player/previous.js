@@ -2,17 +2,23 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('pause')
-		.setDescription('Bot will pause playing!'),
+		.setName('previous')
+		.setDescription('Bot will play previous song again!'),
 	async execute(interaction,player) {       
         try {
             var voiceChannel = interaction.member.voice.channel
             if (voiceChannel) {
                 if(player.getQueue(voiceChannel)) {
-                    if (!player.queues.collection.first().paused) {
-                        player.pause(voiceChannel)
+                    if (player.queues.collection.first().previousSongs.length) {
+                        player.previous(voiceChannel);
                         interaction.followUp({
-                            content: "Player paused",
+                            content: "Playing previous song",
+                            ephemeral: true
+                        })
+                    }
+                    else {
+                        interaction.followUp({
+                            content: "No previous songs in queue",
                             ephemeral: true
                         })
                     }

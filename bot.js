@@ -113,7 +113,7 @@ bot.on('interactionCreate', async interaction => {
 		await command.execute(interaction,player);
 	} catch (error) {
 		console.error(error);
-		interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
 	
 });
@@ -210,7 +210,7 @@ bot.on("roleUpdate", async (role) => {
 })
 
 
-//bot.on('debug', (...args) => console.log('debug', ...args));
+bot.on('debug', (...args) => console.log('debug', ...args));
 bot.on('rateLimit', (...args) => console.log('rateLimit', ...args));
 
 bot.login(process.env.BOT_TOKEN);

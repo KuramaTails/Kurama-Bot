@@ -5,26 +5,38 @@ module.exports = {
 		.setName('volume')
 		.setDescription("Select player's volume!")
         .addStringOption(option =>
-            option.setName("link")
-            .setDescription("Link or Title of your song")
+            option.setName("volume")
+            .setDescription("Set volume percentage")
             .setRequired(true)
             ),
         
 	async execute(interaction,player) {
-        var member = await interaction.member.fetch(interaction.user.id)
-        if(member.voice.channel) {
-            let link = interaction.options.getString("link")
-            await player.play(member.voice.channel, link)
-            interaction.reply({
-                content: "Playing song",
-                ephemeral: true
-            })
-        }
-        else {
-            interaction.reply({
-                content: "You must join a voice channel first.",
-                ephemeral: true
-            })
+        try {
+            var voiceChannel = interaction.member.voice.channel
+            if (voiceChannel) {
+                if(player.getQueue(voiceChannel)) {
+                    let volume = interaction.options.getString("volume")
+                    player.setVolume(voiceChannel, volume);
+                    interaction.followUp({
+                        content: "Set volume to `" + volume + "`",
+                        ephemeral: true
+                    })
+                }
+                else {
+                    interaction.followUp({
+                        content: "No songs in queue.",
+                        ephemeral: true
+                    })
+                }
+            }
+            else { 
+                interaction.followUp({
+                    content: "You must join a voice channel first.",
+                    ephemeral: true
+                })
+            }
+        } catch (error) {
+            console.log(error)
         }
 	},
 };
