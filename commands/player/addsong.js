@@ -6,7 +6,6 @@ module.exports = {
                 let link = interaction.options.getString("link")
                 await player.play(voiceChannel, link)
                 var queue = await player.queues.get(voiceChannel)
-                console.log(queue)
                 let addedsong = queue.songs[queue.songs.length-1]
                 interaction.followUp({
                     content: `Added ${addedsong.name} - \`${addedsong.formattedDuration}\` to the queue`,

@@ -17,7 +17,7 @@ module.exports = {
         .setThumbnail(`${playlist[0].thumbnail}`)
         .setURL(`${playlist[0].url}`)
         .setDescription(`Duration: \`${playlist[0].formattedDuration}\`\n`)
-        var allmessages = textchannel.messages.fetch()
+        var allmessages = await textchannel.messages.fetch()
         var keysmessages = Array.from(allmessages.keys())
         for (let i = 0; i < keysmessages.length; i++) {
             if (allmessages.get(keysmessages[i]).embeds.length > 0) {

@@ -26,6 +26,8 @@ const { Routes } = require('discord-api-types/v9');
 const rest = new REST({ version: '9' }).setToken(process.env.BOT_TOKEN);
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 bot.commands = new Collection();
+bot.cooldowns = new Collection();
+bot.COOLDOWN_SECONDS = 3;
 const player = new DisTube.DisTube(bot, {
 	leaveOnStop: false,
 	leaveOnEmpty: true,
@@ -73,57 +75,56 @@ for (const file of featureFiles) {
 }
 
 bot.on('interactionCreate', async interaction => {
-	if (interaction.isButton()) {
-		try {
-			var selChannel = await bot.channels.cache.get(interaction.message.channelId)
-            switch (selChannel.name) {
-				case "choose-role":
-					chooseRole.execute(selChannel,interaction)
-				break;
-				case "player-room":
-					const countVoiceChannels = bot.voice.adapters.size
-					playerButtons.execute(interaction,player,selChannel,countVoiceChannels)
-				break;
-				default:
-					var selMessage = await selChannel.messages.fetch(interaction.message.id)
-					switch (true) {
-						case selMessage.embeds[0].title.includes("Help"):
-							helpButtons.execute(interaction,selMessage)
-						break;
-					}
-				break;
-			}
-		}catch (error) {
-			console.log(error)
-		}
-	}
-	if (!interaction.isCommand()) return;
-	const command = bot.commands.get(interaction.commandName);
-	if (interaction.commandName="moderation") {
-		const roles = await interaction.guild.roles.cache;
-		for (role in roles) {
-			if (role.permissions.has('ADMINISTRATOR')) {
-				const permissions = [
-					{
-						id: role.id,
-						type: 'ROLE',
-						permission: true,
-					},
-				];
-				
-				await command.permissions.add({ permissions });
-			}
-		}
-		
-	}
 	try {
-		await interaction.deferReply( {ephemeral: true});
-		await command.execute(interaction,player);
+		if (bot.cooldowns.has(interaction.user.id)) {
+			interaction.reply({ content: "Please wait for cooldown to end", ephemeral: true });
+		} else {
+			if (interaction.isButton()) {
+				var selChannel = await bot.channels.cache.get(interaction.message.channelId)
+				switch (selChannel.name) {
+					case "choose-role":
+						bot.cooldowns.set(interaction.user.id, true);
+						chooseRole.execute(selChannel,interaction)
+						setTimeout(() => {
+							bot.cooldowns.delete(interaction.user.id);
+							}, bot.COOLDOWN_SECONDS * 1000);
+					break;
+					case "player-room":
+						const countVoiceChannels = bot.voice.adapters.size
+						bot.cooldowns.set(interaction.user.id, true);
+						playerButtons.execute(interaction,player,selChannel,countVoiceChannels)
+						setTimeout(() => {
+							bot.cooldowns.delete(interaction.user.id);
+							}, bot.COOLDOWN_SECONDS * 1000);
+					break;
+					default:
+						var selMessage = await selChannel.messages.fetch(interaction.message.id)
+						switch (true) {
+							case selMessage.embeds[0].title.includes("Help"):
+								bot.cooldowns.set(interaction.user.id, true);
+								helpButtons.execute(interaction,selMessage)
+								setTimeout(() => {
+									bot.cooldowns.delete(interaction.user.id);
+									}, bot.COOLDOWN_SECONDS * 1000);
+							break;
+						}
+					break;
+				}
+			}
+			if (!interaction.isCommand()) return;
+			const command = bot.commands.get(interaction.commandName);
+			bot.cooldowns.set(interaction.user.id, true);
+			await interaction.deferReply( {ephemeral: true});
+			await command.execute(interaction,player);
+			setTimeout(() => {
+				bot.cooldowns.delete(interaction.user.id);
+			  }, bot.COOLDOWN_SECONDS * 1000);
+		}
 	} catch (error) {
 		console.error(error);
-		interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+		interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
-	
+
 });
 
 bot.on('messageCreate', async msg => {
@@ -153,16 +154,18 @@ player.on('playSong', async (queue) =>{
 player.on('addSong', (queue) => {
 	addSong.execute(queue,player)
 })
-player.on('finish', (queue) => {
+player.on('finish', async (queue) => {
 	timeoutID = setTimeout(() => {
 		finish.execute(queue,player)
 	  }, 30 * 1000)
 });
-player.on('error', () => {
+player.on('error', async () => {
 	console.error(e)
 })
 player.on('empty', (queue) => {
-	empty.execute(queue,player)
+	timeoutID = setTimeout(() => {
+		empty.execute(queue,player)
+	  }, 30 * 1000)
 })
 
 bot.on('ready', async () => {
@@ -175,7 +178,6 @@ bot.on('ready', async () => {
 		.then(() => console.log('Successfully registered application commands.'))
 		.catch(console.error);
 	}
-	
     console.log(`Bot joined into ${guildsnames.toString()}`)
 });
 bot.on("presenceUpdate", async (oldMember, newMember) => {

@@ -2,33 +2,20 @@ const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 
 module.exports = {
 	async execute(interaction,player,selChannel,countVoiceChannels) {
-		let playlist
         try {
-            playlist = player.queues.collection.first().songs;
-        } catch (error) {
-            console.log(error)
-        }
-        var voiceChannel = await (await selChannel.guild.members.fetch(interaction.user.id)).voice.channel
-        const Embedsearch = new MessageEmbed()
-        if (playlist!= null) {
-            Embedsearch.setColor('#0099ff')
-            .setTitle(`Playing: \`${playlist[0].name}\``)
-            .setThumbnail(`${playlist[0].thumbnail}`)
-            .setURL(`${playlist[0].url}`)
-            .setDescription(`Duration: \`${playlist[0].formattedDuration}\`\n`)
-        }
-        else {
-            Embedsearch.setColor('#0099ff')
-            .setTitle(`No songs playing right now`)
-            .setThumbnail(``)
-            .setURL(``)
-            .setDescription(``)
-        }
-        for (let r = 0; r < interaction.message.components.length; r++) {
-            for (let i = 0; i < interaction.message.components[r].components.length; i++) {
-                if (interaction.customId ==  interaction.message.components[r].components[i].customId) {
-                    var playerCommandName = interaction.message.components[r].components[i].customId
-                    var secMessage = await selChannel.messages.fetch(interaction.message.id)
+            var voiceChannel = interaction.member.voice.channel
+            const Embedsearch = new MessageEmbed()
+            var playerCommandName = interaction.customId
+            if (voiceChannel) {
+                if(player.getQueue(voiceChannel)) {
+                    var queue = await player.queues.get(voiceChannel)
+                    let playingSong = queue.songs[0]
+                    Embedsearch.setColor('#0099ff')
+                    .setTitle(`Playing: \`${playingSong.name}\``)
+                    .setThumbnail(`${playingSong.thumbnail}`)
+                    .setURL(`${playingSong.url}`)
+                    .setDescription(`Duration: \`${playingSong.formattedDuration}\`\n`)
+                    var secMessage
                     var buttons = interaction.message.components[0]
                     var buttons2 = interaction.message.components[1]
                     switch (playerCommandName) {
@@ -101,7 +88,6 @@ module.exports = {
                         case "Next":
                             try {
                                 if (player.queues.collection.first().songs.length>1) {
-                                    console.log(player.queues.collection.first().songs.length)
                                     player.skip(voiceChannel)
                                     interaction.reply({
                                         content: "Song skipped",
@@ -145,6 +131,7 @@ module.exports = {
                         case "Less commands 🔼":
                             buttons2.components[0].setLabel("More commands 🔽")
                             buttons2.components[0].setCustomId("More commands 🔽")
+                            secMessage = await selChannel.messages.cache.get(interaction.message.id)
                             secMessage.edit({embeds: [Embedsearch],components: [buttons,buttons2] });
                             interaction.deferUpdate()
                         break;
@@ -167,6 +154,7 @@ module.exports = {
                             }
                             buttons2.components[0].setLabel("Less commands 🔼")
                             buttons2.components[0].setCustomId("Less commands 🔼")
+                            secMessage = await selChannel.messages.cache.get(interaction.message.id)
                             secMessage.edit({embeds: [Embedsearch],components: [buttons,buttons2,moreButtons] });
                             interaction.deferUpdate()
                         break;
@@ -283,7 +271,138 @@ module.exports = {
                         break;
                     }
                 }
+                else {
+                    Embedsearch.setColor('#0099ff')
+                    .setTitle(`No songs playing right now`)
+                    .setThumbnail(``)
+                    .setURL(``)
+                    .setDescription(``)
+                    var secMessage
+                    var buttons = interaction.message.components[0]
+                    var buttons2 = interaction.message.components[1]
+                    switch (playerCommandName) {
+                        case "Join":
+                            try {
+                                if (countVoiceChannels<1) {
+                                    player.voices.join(voiceChannel)
+                                    interaction.reply({
+                                        content: "Player joined your voice Channel",
+                                        ephemeral: true
+                                    })
+                                }
+                                else {
+                                    interaction.reply({
+                                        content: "Already joined",
+                                        ephemeral: true
+                                    })
+                                }
+                            } catch (error) {
+                                console.log(error)
+                            }
+                        break;
+                        case "Previous":
+                            interaction.reply({
+                                content: "No songs in queue",
+                                ephemeral: true
+                            })
+                        break;
+                        case "(Un)Pause":
+                            interaction.reply({
+                                content: "No songs in queue",
+                                ephemeral: true
+                            })
+                        break;
+                        case "Next":
+                            interaction.reply({
+                                content: "No songs in queue",
+                                ephemeral: true
+                            })
+                        break;
+                        case "Leave":
+                            try {
+                                if (countVoiceChannels!=0) {
+                                    player.voices.leave(voiceChannel)
+                                    interaction.reply({
+                                        content: "Leaving your voice Channel",
+                                        ephemeral: true
+                                    })
+                                }
+                                else {
+                                    interaction.reply({
+                                        content: "Already leaved",
+                                        ephemeral: true
+                                    })
+                                }
+                            } catch (error) {
+                                console.log(error)
+                            }
+                        break;
+                        case "Less commands 🔼":
+                            buttons2.components[0].setLabel("More commands 🔽")
+                            buttons2.components[0].setCustomId("More commands 🔽")
+                            secMessage = await selChannel.messages.cache.get(interaction.message.id)
+                            secMessage.edit({components: [buttons,buttons2] });
+                            interaction.deferUpdate()
+                        break;
+                        case "More commands 🔽":
+                            var moreButtonscommands = [
+                            {name:"Shuffle",emoji:"🔀",style:"SECONDARY"},
+                            {name:"Loop",emoji:"🔁",style:"SECONDARY"},
+                            {name:"Queue",emoji:"🔢",style:"SECONDARY"},
+                            {name:"Vol Down",emoji:"🔉",style:"SECONDARY"},
+                            {name:"Vol Up",emoji:"🔊",style:"SECONDARY"},
+                            ]
+                            const moreButtons = new MessageActionRow()
+                            for (let i = 0; i < moreButtonscommands.length; i++) {
+                                moreButtons.addComponents(
+                                    new MessageButton()
+                                    .setCustomId(`${moreButtonscommands[i].name}`)
+                                    .setLabel(`${moreButtonscommands[i].emoji}`)
+                                    .setStyle(`${moreButtonscommands[i].style}`),
+                                ); 
+                            }
+                            buttons2.components[0].setLabel("Less commands 🔼")
+                            buttons2.components[0].setCustomId("Less commands 🔼")
+                            secMessage = await selChannel.messages.cache.get(interaction.message.id)
+                            secMessage.edit({components: [buttons,buttons2,moreButtons] });
+                            interaction.deferUpdate()
+                        break;
+                        case "Shuffle":
+                            interaction.reply({
+                                content: "No songs in queue",
+                                ephemeral: true
+                            })
+                        break;
+                        case "Loop":
+                            interaction.reply({
+                                content: "No songs in queue",
+                                ephemeral: true
+                            })
+                        break;
+                        case "Queue":
+                            interaction.reply({
+                                content: "No songs in queue",
+                                ephemeral: true
+                            })
+                        break;
+                        case "Vol Down":
+                            interaction.reply({
+                                content: "No songs in queue",
+                                ephemeral: true
+                            })
+                        break;
+                        case "Vol Up":
+                            interaction.reply({
+                                content: "No songs in queue",
+                                ephemeral: true
+                            })
+                        break;
+                    }
+                }
             }
+
+        } catch (error) {
+            console.log(error)
         }
 	}
 };
