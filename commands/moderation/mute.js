@@ -1,50 +1,21 @@
-const { Permissions } = require('discord.js');
-const permissions = new Permissions([
-	Permissions.FLAGS.ADMINISTRATOR,
-]);
-
-
 module.exports = {
-	name: "mute",
-	ephemeral: "false",
-    command:"Mute",
-    desc:'Gives "Muted" role to quoted user',
-    categ:"admin",
-    example:"!mute @User minutes",
-	async execute(messageCreate, args) {
-        var mentionedMember;
-        var member = args[0].replace(/\D/g, "");
-        const duration = [...args]
-        duration.shift(1);
-        if (!messageCreate.member.permissions.has(permissions)) {
-            messageCreate.reply("You are not an Administrator!"); return;
+	async execute(interaction) {
+        var member = await interaction.guild.members.fetch(interaction.options.getUser("user"));
+        var reason = (interaction.options.getString("reason"));
+        var roles = await interaction.guild.roles.fetch()
+        let mutedRole = roles.find(roles => roles.name === "Muted")
+        member.roles.add(mutedRole);
+        if (reason!=null) {
+            interaction.followUp({
+                content: `<@${member.id}> got muted for ${reason}`,
+                ephemeral: true
+            })
         }
-        if (args.length === 0) { messageCreate.reply("Please provide an ID"); return };
-        try {
-            mentionedMember = await messageCreate.guild.members.fetch(member);
-            if (mentionedMember.permissions.has(permissions)) {
-                messageCreate.reply("You can't mute an Administrator!");
-                return;
-            }
-            else {
-                var muted = messageCreate.guild.roles.cache.find(role => role.name === 'Muted')
-                if (mentionedMember.roles.cache.has(muted)) {
-                    return;
-                }
-                else {
-                    mentionedMember.roles.add(muted);
-                    messageCreate.reply(`${mentionedMember} was muted`)
-                    setTimeout( unmute ,duration * 60 * 1000);
-                    function unmute() {
-                        mentionedMember.roles.remove(muted);
-                        messageCreate.reply(`${mentionedMember} has been unmuted`)
-                    }  
-                }
-            }
+        else {
+            interaction.followUp({
+                content: `<@${member.id}> got muted `,
+                ephemeral: true
+            })
         }
-        catch (e) {
-            messageCreate.reply("No member found"); 
-            return;
-        }
-	},
+    }
 };

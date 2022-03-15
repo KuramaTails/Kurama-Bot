@@ -23,11 +23,11 @@ dotenv.config()
 
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
+const rest = new REST({ version: '9' }).setToken(process.env.BOT_TOKEN);
 const { setTimeout } = require('timers/promises');
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 bot.commands = new Collection();
-bot.cooldowns = new Collection();
-bot.COOLDOWN_SECONDS = 3;
+cooldownUser = new Collection();
 const player = new DisTube.DisTube(bot, {
 	leaveOnStop: false,
 	leaveOnEmpty: true,
@@ -74,53 +74,40 @@ for (const file of featureFiles) {
 	console.log(`Feature loaded`);
 }
 
-const rest = new REST({ version: '9' }).setToken(process.env.BOT_TOKEN);
+
 
 bot.on('interactionCreate', async interaction => {
 	try {
-		if (bot.cooldowns.has(interaction.user.id)) {
-			interaction.reply({ content: "Please wait for cooldown to end", ephemeral: true });
+		if (cooldownUser.has(interaction.user.id)) {
+			await interaction.deferReply( {ephemeral: true});
+			await interaction.followUp({ content: "Please wait for cooldown to end", ephemeral: true });
 		} else {
+			cooldownUser.set(interaction.user.id, true);
 			if (interaction.isButton()) {
 				var selChannel = await bot.channels.cache.get(interaction.message.channelId)
 				switch (selChannel.name) {
 					case "choose-role":
-						bot.cooldowns.set(interaction.user.id, true);
-						chooseRole.execute(selChannel,interaction)
-						setTimeout(() => {
-							bot.cooldowns.delete(interaction.user.id);
-							}, bot.COOLDOWN_SECONDS * 1000);
+						chooseRole.execute(interaction,cooldownUser,interaction)
 					break;
 					case "player-room":
 						const countVoiceChannels = bot.voice.adapters.size
-						bot.cooldowns.set(interaction.user.id, true);
-						playerButtons.execute(interaction,player,selChannel,countVoiceChannels)
-						setTimeout(() => {
-							bot.cooldowns.delete(interaction.user.id);
-							}, bot.COOLDOWN_SECONDS * 1000);
+						playerButtons.execute(interaction,cooldownUser,player,selChannel,countVoiceChannels)
 					break;
 					default:
 						var selMessage = await selChannel.messages.fetch(interaction.message.id)
 						switch (true) {
 							case selMessage.embeds[0].title.includes("Help"):
-								bot.cooldowns.set(interaction.user.id, true);
-								helpButtons.execute(interaction,selMessage)
-								setTimeout(() => {
-									bot.cooldowns.delete(interaction.user.id);
-									}, bot.COOLDOWN_SECONDS * 1000);
+								helpButtons.execute(interaction,cooldownUser,selMessage)
 							break;
 						}
 					break;
 				}
 			}
-			if (!interaction.isCommand()) return;
-			const command = bot.commands.get(interaction.commandName);
-			bot.cooldowns.set(interaction.user.id, true);
-			await interaction.deferReply( {ephemeral: true});
-			await command.execute(interaction,player);
-			setTimeout(() => {
-				bot.cooldowns.delete(interaction.user.id);
-			  }, bot.COOLDOWN_SECONDS * 1000);
+			if (interaction.isCommand()) {
+				const command = bot.commands.get(interaction.commandName);
+				await interaction.deferReply( {ephemeral: true});
+				await command.execute(interaction,cooldownUser,player);
+			}
 		}
 	} catch (error) {
 		console.error(error);

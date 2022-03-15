@@ -71,24 +71,23 @@ module.exports = {
                                 .setColor('#0099ff')
                                 .setTitle('Add Role')
                                 .setDescription(`Click on a button to get yourself a role`)
-                                switch (true) {
-                                    case button5.components.length!=0:
-                                        selChannel.send({embeds: [newEmbed],components: [button1,button2,button3,button4,button5] })
-                                        break;
-                                    case button4.components.length!=0:
-                                        selChannel.send({embeds: [newEmbed],components: [button1,button2,button3,button4] })
-                                        break;
-                                    case button3.components.length!=0:
-                                        selChannel.send({embeds: [newEmbed],components: [button1,button2,button3] })
-                                        break;
-                                    case button2.components.length!=0:
-                                        selChannel.send({embeds: [newEmbed],components: [button1,button2,] })
-                                        break;
-                                    case button1.components.length!=0:
-                                        selChannel.send({embeds: [newEmbed],components: [button1] })
-                                        break;
-                                }
+                        switch (true) {
+                            case button5.components.length!=0:
+                                selChannel.send({embeds: [newEmbed],components: [button1,button2,button3,button4,button5] })
                                 break;
+                            case button4.components.length!=0:
+                                selChannel.send({embeds: [newEmbed],components: [button1,button2,button3,button4] })
+                                break;
+                            case button3.components.length!=0:
+                                selChannel.send({embeds: [newEmbed],components: [button1,button2,button3] })
+                                break;
+                            case button2.components.length!=0:
+                                selChannel.send({embeds: [newEmbed],components: [button1,button2,] })
+                                break;
+                            case button1.components.length!=0:
+                                selChannel.send({embeds: [newEmbed],components: [button1] })
+                                break;
+                        }
                     break;
                 }   
             }

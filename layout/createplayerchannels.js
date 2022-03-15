@@ -27,7 +27,7 @@ module.exports = {
                 guildChannels.create(`Room 2`,  {
                 type: 'GUILD_VOICE',parent: cat,
                 });
-                guildChannels.create(`Room3`,  {
+                guildChannels.create(`Room 3`,  {
             type: 'GUILD_VOICE',parent: cat,
             })
         });

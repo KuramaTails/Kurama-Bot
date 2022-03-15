@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 
 module.exports = {
-	async execute(interaction,player,selChannel,countVoiceChannels) {
+	async execute(interaction,cooldownUser,player,selChannel,countVoiceChannels) {
         try {
             var voiceChannel = interaction.member.voice.channel
             const Embedsearch = new MessageEmbed()
@@ -400,7 +400,9 @@ module.exports = {
                     }
                 }
             }
-
+            setTimeout(() => {
+                cooldownUser.delete(interaction.user.id);
+            }, 3*1000);
         } catch (error) {
             console.log(error)
         }

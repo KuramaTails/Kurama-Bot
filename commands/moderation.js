@@ -77,8 +77,11 @@ module.exports = {
 				.setDescription('Bot will unban mentioned user from your discord')
 				.addUserOption(user =>user.setName("user").setDescription("Select a user from this discord").setRequired(true))
 		),
-	async execute(interaction) {
+	async execute(interaction,cooldownUser) {
         const moderationCommand = require(`../commands/moderation/${interaction.options.getSubcommand()}`);
 		moderationCommand.execute(interaction)
+		setTimeout(() => {
+			cooldownUser.delete(interaction.user.id);
+		}, 3*1000);
 	},
 };

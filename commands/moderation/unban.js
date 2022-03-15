@@ -1,33 +1,20 @@
-const { Permissions } = require('discord.js');
-const permissions = new Permissions([
-	Permissions.FLAGS.ADMINISTRATOR,
-]);
-
-
 module.exports = {
-	name: "unban",
-	ephemeral: "false",
-    command:"Unban",
-    desc:"Unban previous banned members",
-    categ:"admin",
-    example:"!unban @User",
-	async execute(messageCreate, args) {
-        var mentionedMemberId; 
-        var member = args[0].replace(/\D/g, "");
-        const banList = await messageCreate.guild.bans.fetch();
-        const bannedUser = banList.find(user => user.id === mentionedMemberId);
-        if (!messageCreate.member.permissions.has(permissions)) {
-            messageCreate.reply("You are not an Administrator!"); return;
+    async execute(interaction) {
+        var member = await interaction.guild.members.fetch(interaction.options.getUser("user"));
+        var reason = (interaction.options.getString("reason"));
+        interaction.guild.members.unban(member)
+        if (reason!=null) {
+            interaction.followUp({
+                content: `<@${member.id}> was unbanned for ${reason}`,
+                ephemeral: true
+            })
         }
-        if (args.length === 0) { messageCreate.reply("Please provide an ID"); return };    
-        mentionedMemberId = member;
-        if (bannedUser)
-            {
-                messageCreate.guild.members.unban(mentionedMemberId);
-                messageCreate.reply(`${mentionedMemberId} was unbanned `);
-            }
-            else {
-                messageCreate.reply(`${mentionedMemberId} is not a banned user `)
-            }
-	},
+        else {
+            interaction.followUp({
+                content: `<@${member.id}> was unbanned `,
+                ephemeral: true
+            })
+        }
+        
+    }
 };
