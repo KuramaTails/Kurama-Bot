@@ -3,7 +3,6 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('moderation')
 		.setDescription('All moderation commands!')
-		.setDefaultPermission(false)
 		.addSubcommand(subcommand =>
 			subcommand
 				.setName('addrole')
@@ -16,6 +15,7 @@ module.exports = {
 				.setName('ban')
 				.setDescription('Bot will ban mentioned user from your discord!')
 				.addUserOption(user =>user.setName("user").setDescription("Select a user from this discord").setRequired(true))
+				.addStringOption(reason =>reason.setName("reason").setDescription("Select a reason for the ban"))
 		)
 		.addSubcommand(subcommand =>
 			subcommand
@@ -28,6 +28,7 @@ module.exports = {
 				.setName('kick')
 				.setDescription('Bot will kick mentioned user from your discord!')
 				.addUserOption(user =>user.setName("user").setDescription("Select a user from this discord").setRequired(true))
+				.addStringOption(reason =>reason.setName("reason").setDescription("Select a reason for the ban"))
 
 		)
 		.addSubcommand(subcommand =>
@@ -40,6 +41,7 @@ module.exports = {
 				.setName('mute')
 				.setDescription('Bot will mute mentioned user from your discord!')
 				.addUserOption(user =>user.setName("user").setDescription("Select a user from this discord").setRequired(true))
+				.addStringOption(reason =>reason.setName("reason").setDescription("Select a reason for the ban"))
 
 		)
 		.addSubcommand(subcommand =>
