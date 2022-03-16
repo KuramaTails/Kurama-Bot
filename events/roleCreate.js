@@ -15,7 +15,6 @@ module.exports = {
                                 var selMessage = allMessages.get(keysMessages[i])
                             }
                         }
-                        console.log(selMessage)
                         var roles = await role.guild.roles.fetch()
                         let keys = Array.from( roles.keys() );
                         const filteredkeys = []
@@ -26,6 +25,30 @@ module.exports = {
                                 }
                             }
                         }
+                        let commandsList = await role.guild.commands.fetch()
+                        let moderationCommand = commandsList.find(command => command.name === "moderation")
+                        var allPermissions = []
+                        for (let y = 0; y < keys.length; y++) {
+                            if (roles.get(keys[y]).permissions.has("ADMINISTRATOR")) {
+                                const permissions = [{
+                                    id: roles.get(keys[y]).id,
+                                        type: 'ROLE',
+                                        permission: true,
+                                }];
+                                allPermissions.push.apply(allPermissions,permissions)
+                            }
+                            else {
+                                const permissions = [{
+                                    id: roles.get(keys[y]).id,
+                                        type: 'ROLE',
+                                        permission: false,
+                                }];
+                                allPermissions.push.apply(allPermissions,permissions)
+                            }
+                        }
+                        await moderationCommand.permissions.add({ command: moderationCommand.id,permissions: allPermissions})
+                            .then(console.log(`Set permissions in ${role.guild.name}`))
+                            .catch(console.error);
                         var button1 = new MessageActionRow()
                         var button2 = new MessageActionRow()
                         var button3 = new MessageActionRow()
