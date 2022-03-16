@@ -16,15 +16,19 @@ const presenceUpdate = require('./events/presenceUpdate');
 const chooseRole = require('./buttons/chooseRole')
 const playerButtons = require('./buttons/playerButtons')
 const helpButtons = require('./buttons/helpButtons')
+const deleteCooldown = require('./events/deleteCooldown')
 dotenv.config()
 
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const rest = new REST({ version: '9' }).setToken(process.env.BOT_TOKEN);
 const { setTimeout } = require('timers/promises');
+const poll = require('./commands/poll');
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 bot.commands = new Collection();
 cooldownUser = new Collection();
+pollUser = new Collection();
+pollCounter = [0,0,0,0,0]
 const player = new DisTube.DisTube(bot, {
 	leaveOnStop: false,
 	leaveOnEmpty: true,
@@ -59,20 +63,6 @@ for (const file of eventFiles) {
 	console.log(`Event loaded`); 
 }
 
-const featureFiles = fs.readdirSync('./feature').filter(file => file.endsWith('.js'));
-for (const file of featureFiles) {
-	const feature = require(`./feature/${file}`);
-	bot.commands.set(feature.name, feature);
-	if (feature.once) {
-		bot.once(feature.name, (...args) => feature.execute(...args));
-	} else {
-		bot.on(feature.name, (...args) => feature.execute(...args));
-	}
-	console.log(`Feature loaded`);
-}
-
-
-
 bot.on('interactionCreate', async interaction => {
 	try {
 		if (cooldownUser.has(interaction.user.id)) {
@@ -95,6 +85,35 @@ bot.on('interactionCreate', async interaction => {
 							case interaction.message.embeds[0].title.includes("Help"):
 								helpButtons.execute(interaction,cooldownUser)
 							break;
+							case interaction.message.embeds[0].title.includes("**__Poll__**"):
+								await interaction.deferReply( {ephemeral: true});
+								if (pollUser.has(interaction.user.id)) {
+									await deleteCooldown.execute(interaction,cooldownUser);
+									await interaction.followUp({ content: "You have choosed already one option!", ephemeral: true });
+								}
+								else {
+									pollUser.set(interaction.user.id, true);
+									switch (interaction.customId) {
+										case `Option 1`:
+											pollCounter[0] = pollCounter[0]+1
+										break;
+										case `Option 2`:
+											pollCounter[1] = pollCounter[1]+1
+										break;
+										case `Option 3`:
+											pollCounter[2] = pollCounter[2]+1
+										break;
+										case `Option 4`:
+											pollCounter[3] = pollCounter[3]+1
+										break;
+										case `Option 5`:
+											pollCounter[4] = pollCounter[4]+1
+										break;
+									}
+									await deleteCooldown.execute(interaction,cooldownUser);
+									await interaction.followUp({ content: "Thank you for having participate!", ephemeral: true });
+								}
+							break;
 						}
 					break;
 				}
@@ -103,7 +122,10 @@ bot.on('interactionCreate', async interaction => {
 				const command = bot.commands.get(interaction.commandName);
 				switch (true) {
 					case interaction.commandName=="poll":
-						await command.execute(interaction,cooldownUser,player);
+						pollUser.clear(); 
+						pollCounter = [0,0,0,0,0]
+						await deleteCooldown.execute(interaction,cooldownUser);
+						await command.execute(interaction,pollCounter);
 					break;
 				
 					default:

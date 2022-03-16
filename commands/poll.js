@@ -11,7 +11,7 @@ module.exports = {
         .addStringOption(option4 =>option4.setName("option4").setDescription("Set an option for this poll"))
         .addStringOption(option5 =>option5.setName("option5").setDescription("Set an option for this poll")),
 
-	async execute(interaction,cooldownUser) {
+	async execute(interaction,poolCounter) {
         let title = interaction.options.getString("title")
         var listOptions = []
         listOptions.push(interaction.options.getString("option1"))
@@ -29,13 +29,13 @@ module.exports = {
             for (let i = 0; i < listOptions.length; i++) {
                 if (listOptions[i]!= null) {
                     poll.addFields(
-                        { name: `Option ${i}` , value: listOptions[i], inline: true },
+                        { name: `Option ${i+1}` , value: listOptions[i], inline: true },
                         { name: '\u200B', value: "\u200B", inline: true },
                         { name: '\u200B', value: "\u200B", inline: true }
                     ) 
                     optionButton.addComponents(
                         new MessageButton()
-                        .setCustomId(listOptions[i])
+                        .setCustomId(`Option ${i+1}`)
                         .setLabel(listOptions[i])
                         .setStyle("SECONDARY"),
                         );
@@ -47,11 +47,17 @@ module.exports = {
                 .setColor('#0099ff')
                 .setTitle(`**__Poll__**`)
                 .setDescription(`Poll ended! Thank you for your participation.\nFollowing are the results:`)
-                
+                for (let i = 0; i < listOptions.length; i++) {
+                    if (listOptions[i]!= null) {
+                        resultspoll.addFields(
+                            { name: `${listOptions[i]}` , value: `${poolCounter[i]}`, inline: true },
+                            { name: '\u200B', value: "\u200B", inline: true },
+                            { name: '\u200B', value: "\u200B", inline: true }
+                        )
+                    }
+                }
                 interaction.editReply({embeds: [resultspoll], components: []})
-            }, 5*1000);
-		setTimeout(() => {
-			cooldownUser.delete(interaction.user.id);
-		}, 3*1000);
+            }, 30*1000);
+		
 	},
 };
