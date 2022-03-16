@@ -1,4 +1,8 @@
 module.exports = {
+	name: "leave",
+    command:"leave",
+    desc:'Bot will leave your voice channel!',
+    example:"/player leave",
 	async execute(interaction,player) {       
 		var voiceChannel = Array.from(player.voices.collection.keys())
 		for (let i = 0; i < voiceChannel.length; i++) {

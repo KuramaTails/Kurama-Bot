@@ -1,7 +1,8 @@
 const Canvas = require('canvas');
 const { MessageAttachment, MessageEmbed } = require('discord.js');
 module.exports = {
-    async execute(member) {
+    async execute(member,add) {
+        console.log(add)
         let members = await member.guild.members.fetch()
         var memberskeys = Array.from(members.keys())
         var memberCount = member.guild.memberCount 
@@ -13,18 +14,34 @@ module.exports = {
         context.strokeStyle = '#0099ff';
         context.strokeRect(0, 0, canvas.width, canvas.height);
 
-        context.font = '28px sans-serif';
-        context.fillStyle = '#ffffff';
-        context.fillText('Welcome!', canvas.width / 2.5, canvas.height / 3.5);
+        if (add===true) {
+            context.font = '28px sans-serif';
+            context.fillStyle = '#ffffff';
+            context.fillText('Welcome!', canvas.width / 2.5, canvas.height / 3.5);
+        }
+        else {
+            context.font = '28px sans-serif';
+            context.fillStyle = '#ffffff';
+            context.fillText('Oh no!', canvas.width / 2.5, canvas.height / 3.5);
+        }
+
+
 
         context.font = applyText(canvas, `${member.user.username}!`);
         context.fillStyle = '#ffffff';
         context.fillText(`${member.user.username}`, canvas.width / 2.5, canvas.height / 1.8);
 
-        context.font = '22px sans-serif';
-        context.fillStyle = '#ffffff';
-        context.fillText('Please read #rules-channel first!', canvas.width / 2.5, canvas.height / 1.4);
-
+        if (add===true) {
+            context.font = '22px sans-serif';
+            context.fillStyle = '#ffffff';
+            context.fillText('Please choose a role in #choose-role!', canvas.width / 2.5, canvas.height / 1.4);
+        }
+        else {
+            context.font = '22px sans-serif';
+            context.fillStyle = '#ffffff';
+            context.fillText('Just left this discord!', canvas.width / 2.5, canvas.height / 1.4);
+        }
+        
         context.beginPath();
         context.arc(125, 125, 100, 0, Math.PI * 2, true);
         context.closePath();
@@ -34,12 +51,21 @@ module.exports = {
         const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ format: 'jpg' }));
         context.drawImage(avatar, 25, 25, 200, 200);  
                 
+
         const attachment = new MessageAttachment(canvas.toBuffer(), 'profile-image.png');
-        const embed = new MessageEmbed() // Create A New Embed
-                        .setColor('#36393e')
-                        .setDescription(`Welcome <@${member.user.id}> . You are the ${memberCount}th member !`)
-                        .setImage('attachment://profile-image.png');
-        
+        const embed = new MessageEmbed()
+        if (add===true) {
+            embed.setColor('#36393e')
+            .setDescription(`Welcome <@${member.user.id}> . You are the ${memberCount}th member !`)
+            .setImage('attachment://profile-image.png');
+            let selrole = member.guild.roles.cache.find(command => command.name === "Member")
+            member.roles.add(selrole)
+        }
+        else {
+            embed.setColor('#36393e')
+            .setDescription(`<@${member.user.id}> just left this discord. There are now ${memberCount} members !`)
+            .setImage('attachment://profile-image.png');
+        }
         
         let onlineMembers = []
         let offlineMembers = []
@@ -97,16 +123,8 @@ module.exports = {
                 var welcomeChannel = listchannels.get(keyschannels[i]).id
                 member.guild.channels.cache.get(welcomeChannel).send({embeds: [embed],files: [attachment] });
                 break;
-            }	
+            }		
         }
-        var roles = guild.roles.cache
-        var keysRoles = Array.from(roles.keys())
-        for (let i = 0; i < keysRoles.length; i++) {
-            if (roles.get(keysRoles[i]).name == "Member") {
-                var selrole = roles.get(keysRoles[i])
-                member.roles.add(selrole)
-            }
-        }	
     }
 };
    

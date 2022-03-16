@@ -16,6 +16,11 @@ module.exports = {
 		)
 		.addSubcommand(subcommand =>
 			subcommand
+				.setName('leave')
+				.setDescription('Bot will leave your vocal channel!')
+		)
+		.addSubcommand(subcommand =>
+			subcommand
 				.setName('loop')
 				.setDescription('Select loop mode!')
 				.addStringOption(option =>option.setName("mode").setDescription("Select a repeat mode : DISABLED = 0, SONG = 1 , QUEUE = 2").setRequired(true))
@@ -31,20 +36,20 @@ module.exports = {
 				.setDescription('Bot will play a song!')
 				.addStringOption(option =>option.setName("link").setDescription("Link or Title of song/playlist you want to play").setRequired(true))
 		)
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName('previous')
+				.setDescription('Bot will play previous song again')
+		)
 		.addSubcommand(subcommand=>
 			subcommand
 				.setName('queue')
-				.setDescription('Bot will play previous song again!')
-		)
-		.addSubcommand(subcommand =>
-			subcommand
-				.setName('resume')
 				.setDescription('Bot will show the songs queue!')
 		)
 		.addSubcommand(subcommand =>
 			subcommand
-				.setName('leave')
-				.setDescription('Bot will leave your vocal channel!')
+				.setName('resume')
+				.setDescription('Bot will resume playing!')
 		)
 		.addSubcommand(subcommand =>
 			subcommand

@@ -1,4 +1,8 @@
 module.exports = {
+    name: "resume",
+    command:"resume",
+    desc:"Bot will resume playing!",
+    example:"/player resume",
 	async execute(interaction,player) {       
         try {
             var voiceChannel = interaction.member.voice.channel

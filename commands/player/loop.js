@@ -1,4 +1,8 @@
 module.exports = { 
+    name: "loop",
+    command:"loop",
+    desc:'You can select loop mode!',
+    example:"/player loop [0,1,2]",
 	async execute(interaction,player) {
         try {
             var voiceChannel = interaction.member.voice.channel

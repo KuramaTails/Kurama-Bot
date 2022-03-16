@@ -1,4 +1,8 @@
 module.exports = {
+    name: "volume",
+    command:"volume",
+    desc:"Select player's volume!",
+    example:"/player volume [0-100]",
     async execute(interaction,player) {
         try {
             var voiceChannel = interaction.member.voice.channel

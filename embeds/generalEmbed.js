@@ -1,8 +1,8 @@
 const { MessageEmbed } = require('discord.js');
 const fs= require('fs');
 module.exports = {
-	async execute(messageCreate,helpButtons) {
-		messageCreate.edit({ embeds: [generalEmbed],components: [helpButtons] })
+	async execute(interaction,helpButtons) {
+		interaction.update({ embeds: [generalEmbed],components: [helpButtons] })
 	}
 };
 

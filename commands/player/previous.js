@@ -1,5 +1,8 @@
-
 module.exports = {
+    name: "previous",
+    command:"previous",
+    desc:'Bot will play previous song!',
+    example:"/player previous",
 	async execute(interaction,player) {       
         try {
             var voiceChannel = interaction.member.voice.channel

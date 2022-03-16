@@ -1,4 +1,8 @@
 module.exports = {
+    name: "play",
+    command:"play",
+    desc:'Bot will play a song!',
+    example:"/player play <link or title>",
 	async execute(interaction,player) {
         var voicechannel = interaction.member.voice.channel
         if(voicechannel) {

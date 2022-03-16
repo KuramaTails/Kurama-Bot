@@ -1,4 +1,8 @@
 module.exports = {
+    name: "queue",
+    command:"queue",
+    desc:"Bot will show the songs queue!",
+    example:"/player queue",
 	async execute(interaction,player) {       
         try {
             var voiceChannel = interaction.member.voice.channel

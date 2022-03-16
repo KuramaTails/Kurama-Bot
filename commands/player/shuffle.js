@@ -1,5 +1,9 @@
 module.exports = {
-	async execute(interaction,player) {       
+    name: "shuffle",
+    command:"shuffle",
+    desc:"Bot will shuffle song's queue!",
+    example:"/player shuffle",
+	async execute(interaction,player) {   
         try {
             var voiceChannel = interaction.member.voice.channel
             if (voiceChannel) {

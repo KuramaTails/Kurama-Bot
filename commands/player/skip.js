@@ -1,4 +1,8 @@
 module.exports = {
+    name: "skip",
+    command:"skip",
+    desc:'Bot will skip this song!',
+    example:"/player skip",
 	async execute(interaction,player) {       
         try {
             var voiceChannel = interaction.member.voice.channel

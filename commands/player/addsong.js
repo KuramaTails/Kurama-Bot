@@ -1,4 +1,8 @@
 module.exports = {
+    name: "addsong",
+    command:"Addsong",
+    desc:'Bot will add a song to queue',
+    example:"/player addsong <link or title>",
 	async execute(interaction,player) {
         try {
             var voiceChannel = interaction.member.voice.channel

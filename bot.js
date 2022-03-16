@@ -9,11 +9,8 @@ const finish = require('./player/finish');
 const empty = require('./player/empty');
 const addSong = require('./player/addSong');
 const playerCommands = require('./player/playerCommands');
-const roleUpdate = require('./events/roleUpdate');
-const roleDelete = require('./events/roleDelete');
-const roleCreate = require('./events/roleCreate');
-const guildMemberRemove = require('./events/guildMemberRemove');
-const guildMemberAdd = require('./events/guildMemberAdd');
+const roleEvents = require('./events/roleEvents');
+const guildMemberEvents = require('./events/guildMemberEvents');
 const guildCreate = require('./events/guildCreate')
 const presenceUpdate = require('./events/presenceUpdate');
 const chooseRole = require('./buttons/chooseRole')
@@ -87,17 +84,16 @@ bot.on('interactionCreate', async interaction => {
 				var selChannel = await bot.channels.cache.get(interaction.message.channelId)
 				switch (selChannel.name) {
 					case "choose-role":
-						chooseRole.execute(interaction,cooldownUser,interaction)
+						chooseRole.execute(interaction,cooldownUser,selChannel)
 					break;
 					case "player-room":
 						const countVoiceChannels = bot.voice.adapters.size
 						playerButtons.execute(interaction,cooldownUser,player,selChannel,countVoiceChannels)
 					break;
 					default:
-						var selMessage = await selChannel.messages.fetch(interaction.message.id)
 						switch (true) {
-							case selMessage.embeds[0].title.includes("Help"):
-								helpButtons.execute(interaction,cooldownUser,selMessage)
+							case interaction.message.embeds[0].title.includes("Help"):
+								helpButtons.execute(interaction,cooldownUser)
 							break;
 						}
 					break;
@@ -105,13 +101,21 @@ bot.on('interactionCreate', async interaction => {
 			}
 			if (interaction.isCommand()) {
 				const command = bot.commands.get(interaction.commandName);
-				await interaction.deferReply( {ephemeral: true});
-				await command.execute(interaction,cooldownUser,player);
+				switch (true) {
+					case interaction.commandName=="poll":
+						await command.execute(interaction,cooldownUser,player);
+					break;
+				
+					default:
+						await interaction.deferReply( {ephemeral: true});
+						await command.execute(interaction,cooldownUser,player);
+					break;
+				}
 			}
 		}
 	} catch (error) {
 		console.error(error);
-		interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
 
 });
@@ -170,7 +174,7 @@ bot.on('ready', async () => {
 		await rest.put(Routes.applicationGuildCommands(bot.user.id, guild.id), { body: commands })
 		.then(() => console.log('Successfully registered application commands.'))
 		.catch(console.error);
-		let moderationCommand = commandsList.find(command => command.name === "moderation")
+		let moderation = commandsList.find(command => command.name === "moderation")
 		let keys = Array.from( roles.keys() );
 		var allPermissions = []
 		for (let i = 0; i < keys.length; i++) {
@@ -191,7 +195,7 @@ bot.on('ready', async () => {
 				allPermissions.push.apply(allPermissions,permissions)
 			}			
 		}
-		await moderationCommand.permissions.add({ command: moderationCommand.id,
+		await moderation.permissions.add({ command: moderation.id,
             permissions: allPermissions})
 				.then(console.log(`Set permissions in ${guild.name}`))
 				.catch(console.error);
@@ -208,11 +212,13 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
 });      
 
 bot.on("guildMemberAdd", async (member) => {
-	guildMemberAdd.execute(member)
+	var add=true
+	guildMemberEvents.execute(member,add)
 });
 
 bot.on("guildMemberRemove", async (member) => {
-	guildMemberRemove.execute(member)
+	var add=false
+	guildMemberEvents.execute(member,add)
 });
 
 bot.on("guildCreate", async (guild) => {
@@ -222,7 +228,7 @@ bot.on("guildCreate", async (guild) => {
 		await rest.put(Routes.applicationGuildCommands(bot.user.id, guild.id), { body: commands })
 		.then(() => console.log('Successfully registered application commands.'))
 		.catch(console.error);
-		let moderationCommand = commandsList.find(command => command.name === "moderation")
+		let moderation = commandsList.find(command => command.name === "moderation")
 		let keys = Array.from( roles.keys() );
 		var allPermissions = []
 		for (let i = 0; i < keys.length; i++) {
@@ -243,7 +249,7 @@ bot.on("guildCreate", async (guild) => {
 				allPermissions.push.apply(allPermissions,permissions)
 			}			
 		}
-		await moderationCommand.permissions.add({ command: moderationCommand.id,
+		await moderation.permissions.add({ command: moderation.id,
             permissions: allPermissions})
 				.then(console.log(`Set permissions in ${guild.name}`))
 				.catch(console.error);
@@ -255,18 +261,9 @@ bot.on("guildDelete", async (guild) => {
     console.log("Left a guild: " + guild.name);
 })
 
-bot.on("roleCreate", async (role) => {
-	roleCreate.execute(role)
+bot.on("roleDelete" || "roleCreate" || "roleUpdate", async (role) => {
+	roleEvents.execute(role)		
 })
-
-bot.on("roleDelete", async (role) => {
-	roleDelete.execute(role)		
-})
-
-bot.on("roleUpdate", async (role) => {
-	roleUpdate.execute(role)
-})
-
 
 bot.on('debug', (...args) => console.log('debug', ...args));
 bot.on('rateLimit', (...args) => console.log('rateLimit', ...args));

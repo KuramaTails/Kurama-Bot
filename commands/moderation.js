@@ -29,7 +29,6 @@ module.exports = {
 				.setDescription('Bot will kick mentioned user from your discord!')
 				.addUserOption(user =>user.setName("user").setDescription("Select a user from this discord").setRequired(true))
 				.addStringOption(reason =>reason.setName("reason").setDescription("Select a reason for the ban"))
-
 		)
 		.addSubcommand(subcommand =>
 			subcommand
@@ -46,16 +45,10 @@ module.exports = {
 		)
 		.addSubcommand(subcommand =>
 			subcommand
-				.setName('poll')
-				.setDescription('Bot will create a poll!')
-		)
-		.addSubcommand(subcommand =>
-			subcommand
 				.setName('removerole')
 				.setDescription('Bot will remove a role to mentioned user!')
 				.addUserOption(user =>user.setName("user").setDescription("Select a user from this discord").setRequired(true))
 				.addRoleOption(role =>role.setName("role").setDescription("Select a role from this discord").setRequired(true))
-
 		)
 		.addSubcommand(subcommand =>
 			subcommand

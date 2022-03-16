@@ -1,9 +1,11 @@
 module.exports = {
-	async execute(selChannel,interaction) {
+	async execute(interaction,cooldownUser,selChannel) {
 		var allRole = await selChannel.guild.roles.fetch()
-        for (let i = 0; i < interaction.message.components[0].components.length; i++) {
-            if (interaction.customId ==  interaction.message.components[0].components[i].customId) {
-                var nameRole = interaction.message.components[0].components[i].label
+        for (let y = 0; y < interaction.message.components.length; y++) {
+            for (let i = 0; i < interaction.message.components[y].components.length; i++) {
+                if (interaction.customId ==  interaction.message.components[y].components[i].customId) {
+                    var nameRole = interaction.message.components[y].components[i].label
+                }
             }
         }
         let keysRole = Array.from( allRole.keys() );
@@ -29,6 +31,9 @@ module.exports = {
                 
             }
         }
+        setTimeout(() => {
+            cooldownUser.delete(interaction.user.id);
+        }, 3*1000);
 	}
 };
 

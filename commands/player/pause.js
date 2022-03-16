@@ -1,4 +1,8 @@
 module.exports = {
+    name: "pause",
+    command:"pause",
+    desc:'Bot will pause playing!',
+    example:"/player pause",
 	async execute(interaction,player) {       
         try {
             var voiceChannel = interaction.member.voice.channel

@@ -1,19 +1,20 @@
 const adminEmbed = require('../embeds/adminEmbed')
+const baseEmbed = require('../embeds/baseEmbed');
 const helpEmbed = require('../embeds/helpEmbed')
 const generalEmbed = require('../embeds/generalEmbed')
 const playerEmbed = require('../embeds/playerEmbed');
-const helpBase = require('../feature/help');
 const { MessageButton, MessageActionRow } = require('discord.js');
 
+
 module.exports = {
-	async execute(interaction,selMessage) {
+	async execute(interaction,cooldownUser,selMessage) {
         var pagNumber = 1
-        if (selMessage.embeds[0].title.includes("/")) {
+        if (interaction.message.embeds[0].title.includes("/")) {
             switch (true) {
-                case selMessage.embeds[0].title.includes("1/2"):
+                case interaction.message.embeds[0].title.includes("1/2"):
                     pagNumber = 1
                     break;
-                case selMessage.embeds[0].title.includes("2/2"):
+                case interaction.message.embeds[0].title.includes("2/2"):
                     pagNumber = 2
                     break;
             }
@@ -42,70 +43,96 @@ module.exports = {
         );
 		switch (interaction.customId) {
             case "Back":
-                await helpBase.execute(selMessage)
-                interaction.deferUpdate()
+                await baseEmbed.execute(interaction)
+                setTimeout(() => {
+                    cooldownUser.delete(interaction.user.id);
+                }, 3*1000);
             break;
             case "Admin":
-                await adminEmbed.execute(selMessage,newButtons)
-                interaction.deferUpdate()
+                await adminEmbed.execute(interaction,newButtons)
+                setTimeout(() => {
+                    cooldownUser.delete(interaction.user.id);
+                }, 3*1000);
             break;
             case "General":
-                await generalEmbed.execute(selMessage,newButtons)
-                interaction.deferUpdate()
+                await generalEmbed.execute(interaction,newButtons)
+                setTimeout(() => {
+                    cooldownUser.delete(interaction.user.id);
+                }, 3*1000);
             break;
             case "Utility":
-                await helpEmbed.execute(selMessage,newButtons)
-                interaction.deferUpdate()
+                await helpEmbed.execute(interaction,newButtons)
+                setTimeout(() => {
+                    cooldownUser.delete(interaction.user.id);
+                }, 3*1000);
             break;
             case "Music Player":
-                await playerEmbed.execute(selMessage,newButtons,pagNumber)
-                interaction.deferUpdate()
+                await playerEmbed.execute(interaction,newButtons,pagNumber)
+                setTimeout(() => {
+                    cooldownUser.delete(interaction.user.id);
+                }, 3*1000);
             break;
             case "Down":
                 switch (true) {
-                    case selMessage.embeds[0].title.includes("Admin"):
+                    case interaction.message.embeds[0].title.includes("Admin"):
                         pagNumber = pagNumber+1
-                        await adminEmbed.execute(selMessage,newButtons,pagNumber)
-                        interaction.deferUpdate()    
+                        await adminEmbed.execute(interaction,newButtons,pagNumber)
+                        setTimeout(() => {
+                            cooldownUser.delete(interaction.user.id);
+                        }, 3*1000);  
                     break;
-                    case selMessage.embeds[0].title.includes("General"):
+                    case interaction.message.embeds[0].title.includes("General"):
                         pagNumber = pagNumber+1
-                        await generalEmbed.execute(selMessage,newButtons,pagNumber)
-                        interaction.deferUpdate()
+                        await generalEmbed.execute(interaction,newButtons,pagNumber)
+                        setTimeout(() => {
+                            cooldownUser.delete(interaction.user.id);
+                        }, 3*1000);
                     break;
-                    case selMessage.embeds[0].title.includes("Utility"):
+                    case interaction.message.embeds[0].title.includes("Utility"):
                         pagNumber = pagNumber+1
-                        await helpEmbed.execute(selMessage,newButtons,pagNumber)
-                        interaction.deferUpdate()
+                        await helpEmbed.execute(interaction,newButtons,pagNumber)
+                        setTimeout(() => {
+                            cooldownUser.delete(interaction.user.id);
+                        }, 3*1000);
                     break;
-                    case selMessage.embeds[0].title.includes("Player"):
+                    case interaction.message.embeds[0].title.includes("Player"):
                         pagNumber = pagNumber+1
-                        await playerEmbed.execute(selMessage,newButtons,pagNumber)
-                        interaction.deferUpdate()
+                        await playerEmbed.execute(interaction,newButtons,pagNumber)
+                        setTimeout(() => {
+                            cooldownUser.delete(interaction.user.id);
+                        }, 3*1000);
                     break;
                 }
             break;
             case "Up":
                 switch (true) {
-                    case selMessage.embeds[0].title.includes("Admin"):
+                    case interaction.message.embeds[0].title.includes("Admin"):
                         pagNumber = pagNumber-1
-                        await adminEmbed.execute(selMessage,newButtons,pagNumber)
-                        interaction.deferUpdate()    
+                        await adminEmbed.execute(interaction,newButtons,pagNumber)
+                        setTimeout(() => {
+                            cooldownUser.delete(interaction.user.id);
+                        }, 3*1000);
                     break;
-                    case selMessage.embeds[0].title.includes("General"):
+                    case interaction.message.embeds[0].title.includes("General"):
                         pagNumber = pagNumber-1
-                        await generalEmbed.execute(selMessage,newButtons,pagNumber)
-                        interaction.deferUpdate()
+                        await generalEmbed.execute(interaction,newButtons,pagNumber)
+                        setTimeout(() => {
+                            cooldownUser.delete(interaction.user.id);
+                        }, 3*1000);
                     break;
-                    case selMessage.embeds[0].title.includes("Utility"):
+                    case interaction.message.embeds[0].title.includes("Utility"):
                         pagNumber = pagNumber-1
-                        await helpEmbed.execute(selMessage,newButtons,pagNumber)
-                        interaction.deferUpdate()
+                        await helpEmbed.execute(interaction,newButtons,pagNumber)
+                        setTimeout(() => {
+                            cooldownUser.delete(interaction.user.id);
+                        }, 3*1000);
                     break;
-                    case selMessage.embeds[0].title.includes("Player"):
+                    case interaction.message.embeds[0].title.includes("Player"):
                         pagNumber = pagNumber-1
-                        await playerEmbed.execute(selMessage,newButtons,pagNumber)
-                        interaction.deferUpdate()
+                        await playerEmbed.execute(interaction,newButtons,pagNumber)
+                        setTimeout(() => {
+                            cooldownUser.delete(interaction.user.id);
+                        }, 3*1000);
                     break;
                 }
             break;

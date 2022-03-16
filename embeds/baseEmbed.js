@@ -1,20 +1,11 @@
-const { MessageEmbed , MessageActionRow , MessageButton } = require('discord.js');
+const { MessageButton, MessageActionRow, MessageEmbed } = require("discord.js");
+
 module.exports = {
-	name: "help",
-	ephemeral: "false",
-	command:"Help",
-	desc:"Gives you a list of all commands available",
-	categ:"help",
-	example:"!help",
-	async execute(messageCreate) {
-		if (messageCreate.embeds.length<1) {
-			messageCreate.reply({embeds: [startEmbed],components: [helpButtons] })
-		}
-		else {
-			messageCreate.edit({embeds: [startEmbed],components: [helpButtons]})
-		}
-	}
+    async execute(interaction) {
+		interaction.update({embeds: [startEmbed],components: [helpButtons]})
+    }
 };
+
 const startEmbed = new MessageEmbed()
 .setColor('#0099ff')
 .setTitle('Help List')
@@ -78,4 +69,3 @@ for (let i = 0; i < startEmbed.fields.length; i++) {
 		break;		
 	}
 }
-	
