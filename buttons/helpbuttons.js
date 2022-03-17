@@ -1,8 +1,8 @@
-const adminEmbed = require('../embeds/adminembeds')
-const baseEmbed = require('../embeds/baseembeds');
-const helpEmbed = require('../embeds/helpembeds')
-const generalEmbed = require('../embeds/generalembeds')
-const playerEmbed = require('../embeds/playerembeds');
+const adminEmbed = require('../embeds/adminembed')
+const baseEmbed = require('../embeds/baseembed');
+const helpEmbed = require('../embeds/helpembed')
+const generalEmbed = require('../embeds/generalembed')
+const playerEmbed = require('../embeds/playerembed');
 const { MessageButton, MessageActionRow } = require('discord.js');
 
 

@@ -1,4 +1,4 @@
-const playerEmbed = require('./createplayerembeds')
+const playerEmbed = require('./createplayerembed')
 const { Permissions } = require('discord.js');
 const channelpermissions = new Permissions([
     Permissions.FLAGS.CONNECT,

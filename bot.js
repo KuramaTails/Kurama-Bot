@@ -4,24 +4,24 @@ const { Client, Collection, Intents} = require('discord.js');
 const prefix = "?";
 const DisTube = require('distube')
 const { YtDlpPlugin } = require('@distube/yt-dlp')
-const playSong = require('./player/playsongs');
+const playSong = require('./player/playsong');
 const finish = require('./player/finish');
 const empty = require('./player/empty');
-const addSong = require('./player/addsongs');
-const playerCommands = require('./player/playercommandss');
-const roleEvents = require('./events/roleeventss');
-const guildMemberEvents = require('./events/guildmembereventss');
-const guildCreate = require('./events/guildcreates')
+const addSong = require('./player/addsong');
+const playerCommands = require('./player/playercommands');
+const roleEvents = require('./events/roleevents');
+const guildMemberEvents = require('./events/guildmemberevents');
+const guildCreate = require('./events/guildcreate')
 const presenceUpdate = require('./events/presenceupdates');
 const chooseRole = require('./buttons/chooseroles')
-const playerButtons = require('./buttons/playerbuttonss')
-const helpButtons = require('./buttons/helpbuttonss')
-const deleteCooldown = require('./events/deletecooldowns')
+const playerButtons = require('./buttons/playerbuttons')
+const helpButtons = require('./buttons/helpbuttons')
+const deleteCooldown = require('./events/deletecooldown')
 dotenv.config()
 
 
 const { setTimeout } = require('timers/promises');
-const registerPermissions = require('./events/registerpermissionss');
+const registerPermissions = require('./events/registerpermissions');
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 bot.commands = new Collection();
 cooldownUser = new Collection();

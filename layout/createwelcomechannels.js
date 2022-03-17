@@ -4,7 +4,7 @@ const channelpermissions = new Permissions([
 ]);
 
 const createEmbedRole = require('./createembedroles')
-const createBasicRoles = require('./createbasicroless')
+const createBasicRoles = require('./createbasicroles')
 
 module.exports = {
 	async execute(messageCreate) {
