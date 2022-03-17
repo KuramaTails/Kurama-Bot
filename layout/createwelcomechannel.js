@@ -1,23 +1,15 @@
-const { Permissions, MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
-const permissions = new Permissions([
-	Permissions.FLAGS.ADMINISTRATOR,
-]);
+const { Permissions} = require('discord.js');
 const channelpermissions = new Permissions([
     Permissions.FLAGS.SEND_MESSAGES,
 ]);
 
+const createEmbedRole = require('./createEmbedRole')
+const createBasicRoles = require('./createBasicRoles')
+
 module.exports = {
 	async execute(messageCreate) {
-        var guild = await messageCreate.guild.channels;
-        const newEmbed = new MessageEmbed()
-        .setColor('#0099ff')
-        .setTitle('Add Role')
-        .setAuthor({ name: 'Command : Add Role', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
-        .setDescription(`Click on a button for receiving a role`)
-        var roles = await messageCreate.guild.roles.fetch()
         let everyone = messageCreate.guild.roles.cache.find(r => r.name === "@everyone");
-        let keys = Array.from( roles.keys() );
-        const filteredkeys = []
+        var guild = await messageCreate.guild.channels;
         guild.create('Welcomer', {
             type: 'GUILD_CATEGORY',
             position: 0,
@@ -32,5 +24,13 @@ module.exports = {
             guild.create(`welcome`,  {type: 'GUILD_TEXT',parent: cat});
             guild.create(`Choose-role`,  {type: 'GUILD_TEXT',parent: cat,})
         })
+        setTimeout( async() => {
+            await createEmbedRole.execute(guild)
+            console.log(`Created rolesEmbed in ${guild.name}`)
+        }, 2000);
+        setTimeout(async () => {
+            await createBasicRoles.execute(guild);
+            console.log(`Created roles in ${guild.name}`)
+        }, 10000);
     }
 };

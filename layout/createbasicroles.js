@@ -1,8 +1,3 @@
-const { Permissions } = require('discord.js');
-const permissions = new Permissions([
-	Permissions.FLAGS.SEND_MESSAGES,
-]);
-
 module.exports = {
 	async execute(messageCreate) {
         var guild = await messageCreate.guild;

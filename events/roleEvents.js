@@ -43,7 +43,6 @@ module.exports = {
                             }
                             else {
                                 buttons[buttons.length] = new MessageActionRow()
-                                console.log(buttons)
                                 buttons[buttons.length-1].addComponents(
                                     new MessageButton()
                                         .setCustomId(`${role.id}`)

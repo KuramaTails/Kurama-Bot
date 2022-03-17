@@ -1,11 +1,9 @@
+const playerEmbed = require('./createplayerembed')
 const { Permissions } = require('discord.js');
-const permissions = new Permissions([
-	Permissions.FLAGS.ADMINISTRATOR,
-]);
 const channelpermissions = new Permissions([
     Permissions.FLAGS.CONNECT,
 ]);
-const playerEmbed = require('./createplayerembed')
+
 module.exports = {
 	async execute(messageCreate) {
         let everyone = messageCreate.guild.roles.cache.find(r => r.name === "@everyone");
@@ -31,6 +29,10 @@ module.exports = {
             type: 'GUILD_VOICE',parent: cat,
             })
         });
-        playerEmbed.execute(guild)
+        setTimeout(async () => {
+            await playerEmbed.execute(guild)
+            console.log(`Created playerEmbed in ${guild.name}`)
+        }, 20000);
+        
     }
 };

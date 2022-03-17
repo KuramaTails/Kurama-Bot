@@ -72,7 +72,11 @@ module.exports = {
 		),
 	async execute(interaction,cooldownUser) {
         const moderationCommand = require(`../commands/moderation/${interaction.options.getSubcommand()}`);
-		moderationCommand.execute(interaction)
+		try {
+			moderationCommand.execute(interaction)
+		} catch (error) {
+			await interaction.deferUpdate()
+		}
 		setTimeout(() => {
 			cooldownUser.delete(interaction.user.id);
 		}, 3*1000);

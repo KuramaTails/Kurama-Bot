@@ -1,61 +1,42 @@
 module.exports = {
 	async execute(interaction) { 
-        var listchannels = await interaction.guild.channels.fetch()
-        var keyschannels = Array.from(listchannels.keys())
         try {
-            for (let i = 0; i < keyschannels.length; i++) {
-                switch (true) {
-                    case listchannels.get(keyschannels[i]).name.includes("Serverstats"):
-                        await listchannels.get(keyschannels[i]).delete()
-                    break;
-                    case listchannels.get(keyschannels[i]).name.includes("Welcomer"):
-                        await listchannels.get(keyschannels[i]).delete()
-                    break;
-                    case listchannels.get(keyschannels[i]).name.includes("Music-Zone"):
-                        await listchannels.get(keyschannels[i]).delete()
-                    break;            
-                    case listchannels.get(keyschannels[i]).name.includes("Members"):
-                        await listchannels.get(keyschannels[i]).delete()
-                    break;
-                    case listchannels.get(keyschannels[i]).name.includes("Online"):
-                        await listchannels.get(keyschannels[i]).delete()
-                    break;
-                    case listchannels.get(keyschannels[i]).name.includes("Offline"):
-                        await listchannels.get(keyschannels[i]).delete()
-                    break;
-                    case listchannels.get(keyschannels[i]).name.includes("welcome"):
-                        await listchannels.get(keyschannels[i]).delete()
-                    break;
-                    case listchannels.get(keyschannels[i]).name.includes("choose-role"):
-                        await listchannels.get(keyschannels[i]).delete()
-                    break;
-                    case listchannels.get(keyschannels[i]).name.includes("player-room"):
-                        await listchannels.get(keyschannels[i]).delete()
-                    break;
-                    case listchannels.get(keyschannels[i]).name.includes("Room 1"):
-                        await listchannels.get(keyschannels[i]).delete()
-                    break;
-                    case listchannels.get(keyschannels[i]).name.includes("Room 2"):
-                        await listchannels.get(keyschannels[i]).delete()
-                    break;
-                    case listchannels.get(keyschannels[i]).name.includes("Room 3"):
-                        await listchannels.get(keyschannels[i]).delete()
-                    break;
-                    default:
-                    break;
-                }
-                
-            }	
-            var newlistchannels = await interaction.guild.channels.fetch()
-            var newkeyschannels = Array.from(newlistchannels.keys())
-            
-            for (let i = 0; i < newkeyschannels.length; i++) {
-                if (listchannels.get(keyschannels[i]).type== "GUILD_TEXT"){
-                    await listchannels.get(keyschannels[i]).send("I'm sorry😢, admin wants me to drop this discord! Goodbye😋 ")
-                    await interaction.guild.leave();
-                    return
-                }
+            var listChannels = await interaction.guild.channels.fetch()
+            var listRoles = await interaction.guild.roles.fetch()
+            try {
+                await listRoles.find(role => role.name.includes("Member")).delete()
+                await listRoles.find(role => role.name.includes("Muted")).delete()
+            } catch (error) {
+              console.log(error)  
             }
+            
+            setTimeout(async () => {
+                try {
+                    await listChannels.find(channel => channel.name.includes("Serverstats")).delete()
+                    await listChannels.find(channel => channel.name.includes("Welcomer")).delete()
+                    await listChannels.find(channel => channel.name.includes("Music-Zone")).delete()
+                    await listChannels.find(channel => channel.name.includes("Members")).delete()
+                    await listChannels.find(channel => channel.name.includes("Online")).delete()
+                    await listChannels.find(channel => channel.name.includes("Offline")).delete()
+                    await listChannels.find(channel => channel.name.includes("welcome")).delete()
+                    await listChannels.find(channel => channel.name.includes("choose-role")).delete()
+                    await listChannels.find(channel => channel.name.includes("player-room")).delete()
+                    await listChannels.find(channel => channel.name.includes("Room 1")).delete()
+                    await listChannels.find(channel => channel.name.includes("Room 2")).delete()
+                    await listChannels.find(channel => channel.name.includes("Room 3")).delete()
+                } catch (error) {
+                    console.log(error)
+                }
+                var newChannels = await interaction.guild.channels.fetch()
+                var newKeys = Array.from(newChannels.keys())
+                for (let i = 0; i < newKeys.length; i++) {
+                    if (newChannels.get(newKeys[i]).type== "GUILD_TEXT"){
+                        await newChannels.get(newKeys[i]).send("I'm sorry😢, admin wants me to drop this discord! Goodbye😋 ")
+                        await interaction.guild.leave();
+                        return
+                    }
+                }
+            }, 2000);
         } catch (error) {
             console.log(error)
         }

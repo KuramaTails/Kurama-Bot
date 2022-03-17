@@ -1,16 +1,10 @@
 const { Permissions } = require('discord.js');
-const permissions = new Permissions([
-	Permissions.FLAGS.ADMINISTRATOR,
-]);
 const channelpermissions = new Permissions([
     Permissions.FLAGS.CONNECT,
 ]);
 
 module.exports = {
 	async execute(messageCreate) {
-        if (!messageCreate.member.permissions.has(permissions)) {
-            messageCreate.reply("You are not an Administrator!"); return;
-        }
         var guild = await messageCreate.guild.channels;
         let everyone = messageCreate.guild.roles.cache.find(r => r.name === "@everyone");
         let members = await messageCreate.guild.members.fetch()

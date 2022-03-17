@@ -1,95 +1,57 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 module.exports = {
-	async execute(guild) {
+	async execute(messageCreate) {
         try {
-            var listChannels = await guild.channels.fetch()
-            var keysChannels = Array.from(listChannels.keys())
-            for (let i = 0; i < keysChannels.length; i++) {
-                switch (listChannels.get(keysChannels[i]).name) {
-                    case "choose-role":
-                        var selChannel = listChannels.get(keysChannels[i])
-                        var roles = await guild.roles.fetch()
-                        let keys = Array.from( roles.keys() );
-                        const filteredkeys = []
-                        for (let i = 0; i < keys.length; i++) {
-                            if (!roles.get(keys[i]).managed ){
-                                if (roles.get(keys[i]).name != "@everyone"){
-                                    filteredkeys.push(keys[i])
-                                }
-                            }
-                        }
-                        var button1 = new MessageActionRow()
-                        var button2 = new MessageActionRow()
-                        var button3 = new MessageActionRow()
-                        var button4 = new MessageActionRow()
-                        var button5 = new MessageActionRow()
-                        for (let i = 0; i < filteredkeys.length; i++) {
-                            switch (true) {
-                                case button1.components.length<5:
-                                    button1.addComponents(
-                                        new MessageButton()
-                                            .setCustomId(`${roles.get(filteredkeys[i]).id}`)
-                                            .setLabel(`${roles.get(filteredkeys[i]).name}`)
-                                            .setStyle("PRIMARY"),
-                                    );
-                                break;
-                                case button2.components.length<5:
-                                    button2.addComponents(
-                                        new MessageButton()
-                                            .setCustomId(`${roles.get(filteredkeys[i]).id}`)
-                                            .setLabel(`${roles.get(filteredkeys[i]).name}`)
-                                            .setStyle("PRIMARY"),
-                                    );
-                                break;
-                                case button3.components.length<5:
-                                    button3.addComponents(
-                                        new MessageButton()
-                                            .setCustomId(`${roles.get(filteredkeys[i]).id}`)
-                                            .setLabel(`${roles.get(filteredkeys[i]).name}`)
-                                            .setStyle("PRIMARY"),
-                                    );
-                                break;
-                                case button4.components.length<5:
-                                    button4.addComponents(
-                                        new MessageButton()
-                                            .setCustomId(`${roles.get(filteredkeys[i]).id}`)
-                                            .setLabel(`${roles.get(filteredkeys[i]).name}`)
-                                            .setStyle("PRIMARY"),
-                                    );
-                                break;
-                                case button5.components.length<5:
-                                    button5.addComponents(
-                                        new MessageButton()
-                                            .setCustomId(`${roles.get(filteredkeys[i]).id}`)
-                                            .setLabel(`${roles.get(filteredkeys[i]).name}`)
-                                            .setStyle("PRIMARY"),
-                                    );
-                                break;
-                            }
-                        }
-                        const newEmbed = new MessageEmbed()
+            var listChannels = await messageCreate.guild.channels.fetch()
+            let selChannel = await listChannels.find(channel => channel.name.includes("choose-role"))
+            var roles = await messageCreate.guild.roles.fetch()
+            var buttons = [new MessageActionRow()]
+            const rolesEmbed = new MessageEmbed()
                                 .setColor('#0099ff')
                                 .setTitle('Add Role')
                                 .setDescription(`Click on a button to get yourself a role`)
-                        switch (true) {
-                            case button5.components.length!=0:
-                                selChannel.send({embeds: [newEmbed],components: [button1,button2,button3,button4,button5] })
-                                break;
-                            case button4.components.length!=0:
-                                selChannel.send({embeds: [newEmbed],components: [button1,button2,button3,button4] })
-                                break;
-                            case button3.components.length!=0:
-                                selChannel.send({embeds: [newEmbed],components: [button1,button2,button3] })
-                                break;
-                            case button2.components.length!=0:
-                                selChannel.send({embeds: [newEmbed],components: [button1,button2,] })
-                                break;
-                            case button1.components.length!=0:
-                                selChannel.send({embeds: [newEmbed],components: [button1] })
-                                break;
+            roles.forEach(role => {
+                if (!role.permissions.has("ADMINISTRATOR")) {
+                    if (!role.managed) {
+                        if(role.name != "@everyone") {
+                            if (buttons[buttons.length-1].components.length<5) {
+                                buttons[buttons.length-1].addComponents(
+                                    new MessageButton()
+                                        .setCustomId(`${role.id}`)
+                                        .setLabel(`${role.name}`)
+                                        .setStyle("PRIMARY"),
+                                ); 
+                            }
+                            else {
+                                buttons[buttons.length] = new MessageActionRow()
+                                console.log(buttons)
+                                buttons[buttons.length-1].addComponents(
+                                    new MessageButton()
+                                        .setCustomId(`${role.id}`)
+                                        .setLabel(`${role.name}`)
+                                        .setStyle("PRIMARY"),
+                                );
+                            }
                         }
-                    break;
-                }   
+                    }
+                }
+            });
+            switch (buttons.length-1) {
+                case 0:
+                    selChannel.send({embeds: [rolesEmbed],components: [buttons[0]]})
+                break;
+                case 1:
+                    selChannel.send({embeds: [rolesEmbed],components: [buttons[0],buttons[1]]})
+                break;
+                case 2:
+                    selChannel.send({embeds: [rolesEmbed],components: [buttons[0],buttons[1],buttons[2]]})
+                break;
+                case 3:
+                    selChannel.send({embeds: [rolesEmbed],components: [buttons[0],buttons[1],buttons[2],buttons[3]]})
+                break;
+                case 4:
+                    selChannel.send({embeds: [rolesEmbed],components: [buttons[0],buttons[1],buttons[2],buttons[3],buttons[4]]})
+                break;
             }
         } catch (error) {
             console.log(error)
