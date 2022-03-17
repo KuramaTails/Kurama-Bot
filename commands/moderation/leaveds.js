@@ -51,7 +51,7 @@ module.exports = {
             
             for (let i = 0; i < newkeyschannels.length; i++) {
                 if (listchannels.get(keyschannels[i]).type== "GUILD_TEXT"){
-                    await interaction.followUp("I'm sorry😢, admin wants me to drop this discord! Goodbye😋 ")
+                    await listchannels.get(keyschannels[i]).send("I'm sorry😢, admin wants me to drop this discord! Goodbye😋 ")
                     await interaction.guild.leave();
                     return
                 }

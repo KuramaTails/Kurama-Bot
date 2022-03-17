@@ -3,6 +3,7 @@ module.exports = {
         try {
             let members = oldMember.guild.members.cache
             let memberskeys = Array.from(members.keys())
+            var memberCount = memberskeys.length
             let onlineMembers = []
             let offlineMembers = []
             for (let i = 0; i < memberskeys.length; i++) {
@@ -39,24 +40,16 @@ module.exports = {
             } catch (error) {
                 console.log(error)
             }
-            var memberCount = oldMember.guild.memberCount
-            var listchannels = oldMember.guild.channels.cache
-            var keyschannels = Array.from(listchannels.keys())
-            for (let i = 0; i < keyschannels.length; i++) {
-                switch (true) {
-                    case listchannels.get(keyschannels[i]).name.includes("Member"):
-                    listchannels.get(keyschannels[i]).setName(`Member : ${memberCount}`)
-                    console.log(`Member : ${memberCount}`)
-                    break;
-                    case listchannels.get(keyschannels[i]).name.includes("Online"):
-                    listchannels.get(keyschannels[i]).setName(`Online : ${onlineMembers.length}`)
-                    console.log(`Online : ${onlineMembers.length}`)
-                    break;
-                    case listchannels.get(keyschannels[i]).name.includes("Offline"):
-                    listchannels.get(keyschannels[i]).setName(`Offline : ${offlineMembers.length}`)
-                    console.log(`Offline : ${offlineMembers.length}`)
-                    break;
-                }	
+            try {
+                var listchannels = oldMember.guild.channels.cache
+                let memberChannel = await listchannels.find(channel => channel.name.includes("Member"))
+                let onlineChannel = await listchannels.find(channel => channel.name.includes("Online"))
+                let offlineChannel = await listchannels.find(channel => channel.name.includes("Offline"))
+                memberChannel.setName(`Member : ${memberCount}`)
+                onlineChannel.setName(`Online : ${onlineMembers.length}`)
+                offlineChannel.setName(`Offline : ${offlineMembers.length}`)
+            } catch (error) {
+                console.log(error)
             }
             console.log(`Presence updated in ${oldMember.guild}`)
         } catch (error) {

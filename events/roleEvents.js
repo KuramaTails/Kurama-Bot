@@ -3,149 +3,76 @@ module.exports = {
 	async execute(role) {
         try {
             var listChannels = role.guild.channels.cache
-            var keysChannels = Array.from(listChannels.keys())
-            for (let i = 0; i < keysChannels.length; i++) {
-                switch (listChannels.get(keysChannels[i]).name) {
-                    case "choose-role":
-                        var selChannel = listChannels.get(keysChannels[i])
-                        var allMessages = await selChannel.messages.fetch()
-                        var keysMessages = Array.from(allMessages.keys())
-                        for (let i = 0; i < keysMessages.length; i++) {
-                            if(allMessages.get(keysMessages[i]).embeds[0] != null) {
-                                var selMessage = allMessages.get(keysMessages[i])
-                            }
-                        }
-                        var roles = await role.guild.roles.fetch()
-                        let keys = Array.from( roles.keys() );
-                        const filteredkeys = []
-                        for (let i = 0; i < keys.length; i++) {
-                            if (!roles.get(keys[i]).managed ){
-                                if (roles.get(keys[i]).name != "@everyone"){
-                                    filteredkeys.push(keys[i])
-                                }
-                            }
-                        }
-                        let commandsList = await role.guild.commands.fetch()
-                        let moderationCommand = commandsList.find(command => command.name === "moderation")
-                        var allPermissions = []
-                        for (let y = 0; y < keys.length; y++) {
-                            if (roles.get(keys[y]).permissions.has("ADMINISTRATOR")) {
-                                const permissions = [{
-                                    id: roles.get(keys[y]).id,
-                                        type: 'ROLE',
-                                        permission: true,
-                                }];
-                                allPermissions.push.apply(allPermissions,permissions)
+            let selChannel = await listChannels.find(channel => channel.name.includes("choose-role"))
+            var allMessages = await selChannel.messages.fetch()
+            let selMessage = await allMessages.find(message => message.embeds[0] != null)
+            let commandsList = await role.guild.commands.fetch()
+            let moderationCommandId = await commandsList.find(command => command.name === "moderation").id
+            var permissions = []
+            
+            if (role.permissions.has("ADMINISTRATOR")) {
+                permissions = [{
+                    id: role.id,
+                        type: 'ROLE',
+                        permission: true,
+                }];
+            }
+            else {
+                permissions = [{
+                    id: role.id,
+                        type: 'ROLE',
+                        permission: false,
+                }];
+            }
+            await role.guild.commands.permissions.add({ command: moderationCommandId,permissions: permissions})
+                .then(console.log(`Set permissions in ${role.guild.name}`))
+                .catch(console.error);
+            var roles = await role.guild.roles.fetch()
+            var buttons = [new MessageActionRow()]
+            roles.forEach(role => {
+                if (!role.permissions.has("ADMINISTRATOR")) {
+                    if (!role.managed) {
+                        if(role.name != "@everyone") {
+                            if (buttons[buttons.length-1].components.length<5) {
+                                buttons[buttons.length-1].addComponents(
+                                    new MessageButton()
+                                        .setCustomId(`${role.id}`)
+                                        .setLabel(`${role.name}`)
+                                        .setStyle("PRIMARY"),
+                                ); 
                             }
                             else {
-                                const permissions = [{
-                                    id: roles.get(keys[y]).id,
-                                        type: 'ROLE',
-                                        permission: false,
-                                }];
-                                allPermissions.push.apply(allPermissions,permissions)
+                                buttons[buttons.length] = new MessageActionRow()
+                                console.log(buttons)
+                                buttons[buttons.length-1].addComponents(
+                                    new MessageButton()
+                                        .setCustomId(`${role.id}`)
+                                        .setLabel(`${role.name}`)
+                                        .setStyle("PRIMARY"),
+                                );
                             }
                         }
-                        await moderationCommand.permissions.add({ command: moderationCommand.id,permissions: allPermissions})
-                            .then(console.log(`Set permissions in ${role.guild.name}`))
-                            .catch(console.error);
-                        var button1 = new MessageActionRow()
-                        var button2 = new MessageActionRow()
-                        var button3 = new MessageActionRow()
-                        var button4 = new MessageActionRow()
-                        var button5 = new MessageActionRow()
-                        for (let i = 0; i < filteredkeys.length; i++) {
-                            switch (true) {
-                                case button1.components.length<5:
-                                    button1.addComponents(
-                                        new MessageButton()
-                                            .setCustomId(`${roles.get(filteredkeys[i]).id}`)
-                                            .setLabel(`${roles.get(filteredkeys[i]).name}`)
-                                            .setStyle("PRIMARY"),
-                                    );
-                                break;
-                                case button2.components.length<5:
-                                    button2.addComponents(
-                                        new MessageButton()
-                                            .setCustomId(`${roles.get(filteredkeys[i]).id}`)
-                                            .setLabel(`${roles.get(filteredkeys[i]).name}`)
-                                            .setStyle("PRIMARY"),
-                                    );
-                                break;
-                                case button3.components.length<5:
-                                    button3.addComponents(
-                                        new MessageButton()
-                                            .setCustomId(`${roles.get(filteredkeys[i]).id}`)
-                                            .setLabel(`${roles.get(filteredkeys[i]).name}`)
-                                            .setStyle("PRIMARY"),
-                                    );
-                                break;
-                                case button4.components.length<5:
-                                    button4.addComponents(
-                                        new MessageButton()
-                                            .setCustomId(`${roles.get(filteredkeys[i]).id}`)
-                                            .setLabel(`${roles.get(filteredkeys[i]).name}`)
-                                            .setStyle("PRIMARY"),
-                                    );
-                                break;
-                                case button5.components.length<5:
-                                    button5.addComponents(
-                                        new MessageButton()
-                                            .setCustomId(`${roles.get(filteredkeys[i]).id}`)
-                                            .setLabel(`${roles.get(filteredkeys[i]).name}`)
-                                            .setStyle("PRIMARY"),
-                                    );
-                                break;
-                            }
-                        }
-                        switch (keysMessages.length) {
-                            case 0:
-                                const newEmbed = new MessageEmbed()
-                                .setColor('#0099ff')
-                                .setTitle('Add Role')
-                                .setDescription(`Click on a button to get yourself a role`)
-                                switch (true) {
-                                    case button5.components.length!=0:
-                                        selChannel.send({embeds: [newEmbed],components: [button1,button2,button3,button4,button5] })
-                                        break;
-                                    case button4.components.length!=0:
-                                        selChannel.send({embeds: [newEmbed],components: [button1,button2,button3,button4] })
-                                        break;
-                                    case button3.components.length!=0:
-                                        selChannel.send({embeds: [newEmbed],components: [button1,button2,button3] })
-                                        break;
-                                    case button2.components.length!=0:
-                                        selChannel.send({embeds: [newEmbed],components: [button1,button2,] })
-                                        break;
-                                    case button1.components.length!=0:
-                                        selChannel.send({embeds: [newEmbed],components: [button1] })
-                                        break;
-                                }
-                                break;
-                        
-                            default:
-                                switch (true) {
-                                    case button5.components.length!=0:
-                                        selMessage.edit({components: [button1,button2,button3,button4,button5] })
-                                        break;
-                                    case button4.components.length!=0:
-                                        selMessage.edit({components: [button1,button2,button3,button4] })
-                                        break;
-                                    case button3.components.length!=0:
-                                        selMessage.edit({components: [button1,button2,button3] })
-                                        break;
-                                    case button2.components.length!=0:
-                                        selMessage.edit({components: [button1,button2,] })
-                                        break;
-                                    case button1.components.length!=0:
-                                        selMessage.edit({components: [button1] })
-                                        break;
-                                }
-                                break;
-                        }
-                    break;
-                }   
+                    }
+                }
+            });
+            switch (buttons.length-1) {
+                case 0:
+                    selMessage.edit({components: [buttons[0]]})
+                break;
+                case 1:
+                    selMessage.edit({components: [buttons[0],buttons[1]]})
+                break;
+                case 2:
+                    selMessage.edit({components: [buttons[0],buttons[1],buttons[2]]})
+                break;
+                case 3:
+                    selMessage.edit({components: [buttons[0],buttons[1],buttons[2],buttons[3]]})
+                break;
+                case 4:
+                    selMessage.edit({components: [buttons[0],buttons[1],buttons[2],buttons[3],buttons[4]]})
+                break;
             }
+            console.log(`Roles updated in ${role.guild.name}`)
         } catch (error) {
             console.log(error)
         }

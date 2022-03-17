@@ -12,17 +12,23 @@ module.exports = {
                 listchannels.get(keyschannels[i]).send("Hi! I've just joined your channel. Please check the newly created channels").then(async msg => {
                     await createserverstats.execute(msg);
                     console.log(`Created server stats in ${guild.name}`)
+                setTimeout( async () => {
                     await createwelcomechannel.execute(msg);
-                    console.log(`Created welcome rooms in ${guild.name}`)
+                    console.log(`Created welcome rooms in ${guild.name}`) 
+                }, 3000);
+                setTimeout(async () => {
                     await createplayerchannels.execute(msg);
                     console.log(`Created player rooms in ${guild.name}`)
+                }, 6000);
+                setTimeout(async () => {
                     await createbasicroles.execute(msg);
-                        console.log(`Created roles in ${guild.name}`)
-                    setTimeout( async() => {
-                        createEmbedRole.execute(guild)
-                    }, 10*1000);
-                    return })
-                    return
+                    console.log(`Created roles in ${guild.name}`)
+                }, 9000);
+                 setTimeout( async() => {
+                    await createEmbedRole.execute(guild)
+                }, 12000);
+                })
+                return
             }
         }
     }

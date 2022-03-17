@@ -2,10 +2,9 @@ const Canvas = require('canvas');
 const { MessageAttachment, MessageEmbed } = require('discord.js');
 module.exports = {
     async execute(member,add) {
-        console.log(add)
         let members = await member.guild.members.fetch()
         var memberskeys = Array.from(members.keys())
-        var memberCount = member.guild.memberCount 
+        var memberCount = memberskeys.length 
         const canvas = Canvas.createCanvas(700, 250);
         const context = canvas.getContext('2d');
 
@@ -90,7 +89,7 @@ module.exports = {
             }
         }
         var oldOnlineMembers = onlineMembers.length
-        var oldOfflineMembers = offlineMembers.lengthù
+        var oldOfflineMembers = offlineMembers.length
         try {
             if (oldMember.status=="online"){
                 oldOnlineMembers=oldOnlineMembers+1
@@ -103,27 +102,19 @@ module.exports = {
         } catch (error) {
             console.log(error)
         }
-        var listchannels = member.guild.channels.cache
-        var keyschannels = Array.from(listchannels.keys())
-        for (let i = 0; i < keyschannels.length; i++) {
-            switch (true) {
-                case listchannels.get(keyschannels[i]).name.includes("Member"):
-                listchannels.get(keyschannels[i]).setName(`Member : ${memberCount}`)
-                console.log(`Member : ${memberCount}`)
-                break;
-                case listchannels.get(keyschannels[i]).name.includes("Online"):
-                listchannels.get(keyschannels[i]).setName(`Online : ${onlineMembers.length}`)
-                console.log(`Online : ${onlineMembers.length}`)
-                break;
-                case listchannels.get(keyschannels[i]).name.includes("Offline"):
-                listchannels.get(keyschannels[i]).setName(`Offline : ${offlineMembers.length}`)
-                console.log(`Offline : ${offlineMembers.length}`)
-                break;
-                case listchannels.get(keyschannels[i]).name.includes("welcome"):
-                var welcomeChannel = listchannels.get(keyschannels[i]).id
-                member.guild.channels.cache.get(welcomeChannel).send({embeds: [embed],files: [attachment] });
-                break;
-            }		
+
+        try {
+            var listchannels = member.guild.channels.cache
+            let memberChannel = await listchannels.find(channel => channel.name.includes("Member"))
+            let onlineChannel = await listchannels.find(channel => channel.name.includes("Online"))
+            let offlineChannel = await listchannels.find(channel => channel.name.includes("Offline"))
+            let welcomeChannel = await listchannels.find(channel => channel.name.includes("welcome"))
+            memberChannel.setName(`Member : ${memberCount}`)
+            onlineChannel.setName(`Online : ${onlineMembers.length}`)
+            offlineChannel.setName(`Offline : ${offlineMembers.length}`)
+            welcomeChannel.send({embeds: [embed],files: [attachment] });
+        } catch (error) {
+            console.log(error)
         }
     }
 };

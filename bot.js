@@ -19,11 +19,9 @@ const helpButtons = require('./buttons/helpButtons')
 const deleteCooldown = require('./events/deleteCooldown')
 dotenv.config()
 
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
-const rest = new REST({ version: '9' }).setToken(process.env.BOT_TOKEN);
+
 const { setTimeout } = require('timers/promises');
-const poll = require('./commands/poll');
+const registerPermissions = require('./events/registerPermissions');
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 bot.commands = new Collection();
 cooldownUser = new Collection();
@@ -187,50 +185,18 @@ bot.on('ready', async () => {
 	if (!bot.application?.owner) await bot.application?.fetch();
 	var guilds= await bot.guilds.fetch()
 	var guildsKeys= Array.from(guilds.keys())
+	var botId = bot.user.id
 	var guildsnames = []
 	for (let i = 0; i < guildsKeys.length; i++) {
 		var guild = bot.guilds.cache.get(guilds.get(guildsKeys[i]).id)
-		let commandsList = await guild.commands.fetch()
-		var roles = await guild.roles.fetch()
+		await registerPermissions.execute(guild,botId,commands)
 		guildsnames.push(guilds.get(guildsKeys[i]).name)
-		await rest.put(Routes.applicationGuildCommands(bot.user.id, guild.id), { body: commands })
-		.then(() => console.log('Successfully registered application commands.'))
-		.catch(console.error);
-		let moderation = commandsList.find(command => command.name === "moderation")
-		let keys = Array.from( roles.keys() );
-		var allPermissions = []
-		for (let i = 0; i < keys.length; i++) {
-			if (roles.get(keys[i]).permissions.has("ADMINISTRATOR")) {
-				const permissions = [{
-					id: roles.get(keys[i]).id,
-						type: 'ROLE',
-						permission: true,
-				}];
-				allPermissions.push.apply(allPermissions,permissions)
-			}
-			else {
-				const permissions = [{
-					id: roles.get(keys[i]).id,
-						type: 'ROLE',
-						permission: false,
-				}];
-				allPermissions.push.apply(allPermissions,permissions)
-			}			
-		}
-		await moderation.permissions.add({ command: moderation.id,
-            permissions: allPermissions})
-				.then(console.log(`Set permissions in ${guild.name}`))
-				.catch(console.error);
 	}
     console.log(`Bot joined into ${guildsnames.toString()}`)
 });
 bot.on("presenceUpdate", async (oldMember, newMember) => {
 	if (oldMember=== null || oldMember.status == newMember.status) { return}
-	try {
-		await presenceUpdate.execute(oldMember)
-	} catch (error) {
-		console.log(error)
-	}
+	await presenceUpdate.execute(oldMember)
 });      
 
 bot.on("guildMemberAdd", async (member) => {
@@ -244,38 +210,9 @@ bot.on("guildMemberRemove", async (member) => {
 });
 
 bot.on("guildCreate", async (guild) => {
-	let commandsList = await guild.commands.fetch()
-		var roles = await guild.roles.fetch()
-		guildsnames.push(guilds.get(guildsKeys[i]).name)
-		await rest.put(Routes.applicationGuildCommands(bot.user.id, guild.id), { body: commands })
-		.then(() => console.log('Successfully registered application commands.'))
-		.catch(console.error);
-		let moderation = commandsList.find(command => command.name === "moderation")
-		let keys = Array.from( roles.keys() );
-		var allPermissions = []
-		for (let i = 0; i < keys.length; i++) {
-			if (roles.get(keys[i]).permissions.has("ADMINISTRATOR")) {
-				const permissions = [{
-					id: roles.get(keys[i]).id,
-						type: 'ROLE',
-						permission: true,
-				}];
-				allPermissions.push.apply(allPermissions,permissions)
-			}
-			else {
-				const permissions = [{
-					id: roles.get(keys[i]).id,
-						type: 'ROLE',
-						permission: false,
-				}];
-				allPermissions.push.apply(allPermissions,permissions)
-			}			
-		}
-		await moderation.permissions.add({ command: moderation.id,
-            permissions: allPermissions})
-				.then(console.log(`Set permissions in ${guild.name}`))
-				.catch(console.error);
+	var botId = bot.user.id
     console.log("Joined a new guild: " + guild.name);
+	registerPermissions.execute(guild,botId,commands)
 	guildCreate.execute(guild)
 })
 
@@ -283,7 +220,16 @@ bot.on("guildDelete", async (guild) => {
     console.log("Left a guild: " + guild.name);
 })
 
-bot.on("roleDelete" || "roleCreate" || "roleUpdate", async (role) => {
+bot.on("roleCreate", async (role) => {
+	await roleEvents.execute(role)	
+		
+})
+
+bot.on("roleDelete", async (role) => {
+	await roleEvents.execute(role)		
+})
+
+bot.on("roleUpdate", async (role) => {
 	roleEvents.execute(role)		
 })
 
