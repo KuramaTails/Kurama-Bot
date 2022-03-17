@@ -182,6 +182,7 @@ player.on('empty', (queue) => {
 })
 
 bot.on('ready', async () => {
+	
 	if (!bot.application?.owner) await bot.application?.fetch();
 	var guilds= await bot.guilds.fetch()
 	var guildsKeys= Array.from(guilds.keys())
