@@ -3,8 +3,8 @@ const channelpermissions = new Permissions([
     Permissions.FLAGS.SEND_MESSAGES,
 ]);
 
-const createEmbedRole = require('./createEmbedRole')
-const createBasicRoles = require('./createBasicRoles')
+const createEmbedRole = require('./createembedrole')
+const createBasicRoles = require('./createbasicroles')
 
 module.exports = {
 	async execute(messageCreate) {

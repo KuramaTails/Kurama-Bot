@@ -4,24 +4,24 @@ const { Client, Collection, Intents} = require('discord.js');
 const prefix = "?";
 const DisTube = require('distube')
 const { YtDlpPlugin } = require('@distube/yt-dlp')
-const playSong = require('./player/playSong');
+const playSong = require('./player/playsong');
 const finish = require('./player/finish');
 const empty = require('./player/empty');
 const addSong = require('./player/addSong');
-const playerCommands = require('./player/playerCommands');
-const roleEvents = require('./events/roleEvents');
-const guildMemberEvents = require('./events/guildMemberEvents');
-const guildCreate = require('./events/guildCreate')
-const presenceUpdate = require('./events/presenceUpdate');
-const chooseRole = require('./buttons/chooseRole')
-const playerButtons = require('./buttons/playerButtons')
-const helpButtons = require('./buttons/helpButtons')
-const deleteCooldown = require('./events/deleteCooldown')
+const playerCommands = require('./player/playercommands');
+const roleEvents = require('./events/roleevents');
+const guildMemberEvents = require('./events/guildmemberevents');
+const guildCreate = require('./events/guildcreate')
+const presenceUpdate = require('./events/presenceupdate');
+const chooseRole = require('./buttons/chooserole')
+const playerButtons = require('./buttons/playerbuttons')
+const helpButtons = require('./buttons/helpbuttons')
+const deleteCooldown = require('./events/deletecooldown')
 dotenv.config()
 
 
 const { setTimeout } = require('timers/promises');
-const registerPermissions = require('./events/registerPermissions');
+const registerPermissions = require('./events/registerpermissions');
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 bot.commands = new Collection();
 cooldownUser = new Collection();
