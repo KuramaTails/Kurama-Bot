@@ -25,6 +25,7 @@ const registerPermissions = require('./events/registerpermissions');
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 bot.commands = new Collection();
 cooldownUser = new Collection();
+cooldownPresence = new Collection();
 pollUser = new Collection();
 pollCounter = [0,0,0,0,0]
 const player = new DisTube.DisTube(bot, {
@@ -197,7 +198,8 @@ bot.on('ready', async () => {
 });
 bot.on("presenceUpdate", async (oldMember, newMember) => {
 	if (oldMember=== null || oldMember.status == newMember.status) { return}
-	await presenceUpdate.execute(oldMember)
+	if (cooldownPresence.has(oldMember.guild.id)) {return}
+	await presenceUpdate.execute(oldMember,cooldownPresence)
 });      
 
 bot.on("guildMemberAdd", async (member) => {

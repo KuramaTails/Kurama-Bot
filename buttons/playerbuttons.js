@@ -4,6 +4,12 @@ module.exports = {
 	async execute(interaction,cooldownUser,player,selChannel,countVoiceChannels) {
         try {
             var voiceChannel = interaction.member.voice.channel
+            if(!voiceChannel) {
+                return interaction.reply({
+                    content: "Please join a vocal channel first!",
+                    ephemeral: true
+                })
+            }
             const Embedsearch = new MessageEmbed()
             var playerCommandName = interaction.customId
             if (voiceChannel) {

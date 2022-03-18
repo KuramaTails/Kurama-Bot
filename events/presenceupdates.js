@@ -1,6 +1,7 @@
 module.exports = {
-    async execute(oldMember) {
+    async execute(oldMember,cooldownPresence) {
         try {
+            cooldownPresence.set(oldMember.guild.id, true);
             let members = oldMember.guild.members.cache
             let memberskeys = Array.from(members.keys())
             var memberCount = memberskeys.length
@@ -52,6 +53,9 @@ module.exports = {
                 console.log(error)
             }
             console.log(`Presence updated in ${oldMember.guild}`)
+            setTimeout(() => {
+                cooldownPresence.delete(oldMember.guild.id);
+            }, 5*60*1000);
         } catch (error) {
             console.log(error)
         }
