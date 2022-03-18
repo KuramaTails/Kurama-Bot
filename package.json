@@ -12,7 +12,8 @@
     "distube": "^3.3.2",
     "dotenv": "^16.0.0",
     "ffmpeg-static": "^4.4.1",
-    "libsodium-wrappers": "^0.7.9"
+    "libsodium-wrappers": "^0.7.9",
+    "mongoose": "^6.2.7"
   },
   "name": "discord-bot-test",
   "version": "1.0.0",

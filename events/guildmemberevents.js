@@ -91,7 +91,7 @@ module.exports = {
         var oldOnlineMembers = onlineMembers.length
         var oldOfflineMembers = offlineMembers.length
         try {
-            if (oldMember.status=="online"){
+            if (member.status=="online"){
                 oldOnlineMembers=oldOnlineMembers+1
                 oldOfflineMembers=oldOfflineMembers-1
             }

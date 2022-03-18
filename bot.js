@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 const fs= require('fs');
 const { Client, Collection, Intents} = require('discord.js');
+const mongoose = require('mongoose')
 const prefix = "?";
 const DisTube = require('distube')
 const { YtDlpPlugin } = require('@distube/yt-dlp')
@@ -22,6 +23,7 @@ dotenv.config()
 
 const { setTimeout } = require('timers/promises');
 const registerPermissions = require('./events/registerpermissions');
+const pollbuttons = require('./buttons/pollbuttons');
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 bot.commands = new Collection();
 cooldownUser = new Collection();
@@ -86,32 +88,7 @@ bot.on('interactionCreate', async interaction => {
 							break;
 							case interaction.message.embeds[0].title.includes("**__Poll__**"):
 								await interaction.deferReply( {ephemeral: true});
-								if (pollUser.has(interaction.user.id)) {
-									await deleteCooldown.execute(interaction,cooldownUser);
-									await interaction.followUp({ content: "You have choosed already one option!", ephemeral: true });
-								}
-								else {
-									pollUser.set(interaction.user.id, true);
-									switch (interaction.customId) {
-										case `Option 1`:
-											pollCounter[0] = pollCounter[0]+1
-										break;
-										case `Option 2`:
-											pollCounter[1] = pollCounter[1]+1
-										break;
-										case `Option 3`:
-											pollCounter[2] = pollCounter[2]+1
-										break;
-										case `Option 4`:
-											pollCounter[3] = pollCounter[3]+1
-										break;
-										case `Option 5`:
-											pollCounter[4] = pollCounter[4]+1
-										break;
-									}
-									await deleteCooldown.execute(interaction,cooldownUser);
-									await interaction.followUp({ content: "Thank you for having participate!", ephemeral: true });
-								}
+								await pollbuttons.execute(interaction,cooldownUser,pollUser)
 							break;
 						}
 					break;
@@ -183,7 +160,18 @@ player.on('empty', (queue) => {
 })
 
 bot.on('ready', async () => {
-	
+	if (!process.env.DATABASE_TOKEN) {return console.log("Error,no db found")}
+	try {
+		mongoose.connect(process.env.DATABASE_TOKEN,{
+			useNewUrlParser: true,
+			useUnifiedTopology: true
+		})
+		console.log(`Connected to database`)
+	} finally {
+		mongoose.connection.close()
+		console.log(`Disconnected from to database`)
+	}
+
 	if (!bot.application?.owner) await bot.application?.fetch();
 	var guilds= await bot.guilds.fetch()
 	var guildsKeys= Array.from(guilds.keys())
@@ -197,7 +185,8 @@ bot.on('ready', async () => {
     console.log(`Bot joined into ${guildsnames.toString()}`)
 });
 bot.on("presenceUpdate", async (oldMember, newMember) => {
-	if (oldMember=== null || oldMember.status == newMember.status) { return}
+	if (oldMember=== null) { return}
+	if(oldMember.status == newMember.status) {return}
 	if (cooldownPresence.has(oldMember.guild.id)) {return}
 	await presenceUpdate.execute(oldMember,cooldownPresence)
 });      
