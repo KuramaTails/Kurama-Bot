@@ -15,7 +15,6 @@ const roleEvents = require('./events/roleevents');
 const guildMemberEvents = require('./events/guildmemberevent');
 const guildCreate = require('./events/guildcreate')
 const presenceUpdate = require('./events/presenceupdates');
-
 const deleteCooldown = require('./events/deletecooldown')
 dotenv.config()
 
@@ -23,7 +22,6 @@ dotenv.config()
 const { setTimeout } = require('timers/promises');
 const registerPermissions = require('./events/registerpermissions');
 const pollbuttons = require('./buttons/pollbuttons');
-const dbconnect = require('./events/dbconnect');
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 bot.commands = new Collection();
 cooldownUser = new Collection();
@@ -43,7 +41,7 @@ const player = new DisTube.DisTube(bot, {
   } ) 
 let timeoutID;
 const commands = [];
-
+const cache = {}
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
