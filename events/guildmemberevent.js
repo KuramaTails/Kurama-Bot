@@ -1,7 +1,45 @@
 const Canvas = require('canvas');
 const { MessageAttachment, MessageEmbed } = require('discord.js');
+const welcomeSchema = require('../schemas/welcome-schema');
+const dbconnect = require('./dbconnect');
+const cache = {}
 module.exports = {
     async execute(member,add) {
+        let data = cache[member.guild.id]
+        if (!data) {
+            console.log("Fetching from db")
+            await dbconnect().then( async mongoose => {
+                try {
+                    const result = await welcomeSchema.findOne({_id:member.guild.id})
+                    if (result) {
+                        cache[member.guild.id] = data = [result.active,result.channelId,result.text,result.leaver,result.leavertext]
+                    }
+                    else {
+                        console.log(`No data set for ${member.guild.name}`)
+                        
+                    }
+                } finally {
+                    mongoose.connection.close()
+                    console.log("Closing connection to database")
+                }
+            })
+        }
+        for (let i = 0; i < data.length; i++) {
+            if (data[i]==null){
+                return console.log(`Welcomer hasn't been set in ${member.guild.name}`)
+            }
+        }
+        const active= data[0]
+        const channelId = data[1]
+        const text= data[2]
+        const leaver = data[3]
+        const leavertext= data[4]
+        if (add==true && active == false) {
+            return console.log("Welcomer disabled in this guild")
+        }
+        if (add==false && leaver == false) {
+            return console.log("Leaver disabled in this guild")
+        }
         let members = await member.guild.members.fetch()
         var memberskeys = Array.from(members.keys())
         var memberCount = memberskeys.length 
@@ -33,12 +71,12 @@ module.exports = {
         if (add===true) {
             context.font = '22px sans-serif';
             context.fillStyle = '#ffffff';
-            context.fillText('Please choose a role in #choose-role!', canvas.width / 2.5, canvas.height / 1.4);
+            context.fillText(`${text}`, canvas.width / 2.5, canvas.height / 1.4);
         }
         else {
             context.font = '22px sans-serif';
             context.fillStyle = '#ffffff';
-            context.fillText('Just left this discord!', canvas.width / 2.5, canvas.height / 1.4);
+            context.fillText(`${leavertext}`, canvas.width / 2.5, canvas.height / 1.4);
         }
         
         context.beginPath();
@@ -57,7 +95,7 @@ module.exports = {
             embed.setColor('#36393e')
             .setDescription(`Welcome <@${member.user.id}> . You are the ${memberCount}th member !`)
             .setImage('attachment://profile-image.png');
-            let selrole = member.guild.roles.cache.find(command => command.name === "Member")
+            let selrole = member.guild.roles.cache.find(command => command.name === "👤Member")
             member.roles.add(selrole)
         }
         else {
@@ -108,7 +146,7 @@ module.exports = {
             let memberChannel = await listchannels.find(channel => channel.name.includes("Member"))
             let onlineChannel = await listchannels.find(channel => channel.name.includes("Online"))
             let offlineChannel = await listchannels.find(channel => channel.name.includes("Offline"))
-            let welcomeChannel = await listchannels.find(channel => channel.name.includes("welcome"))
+            let welcomeChannel = await listchannels.find(channel => channel.id === channelId )
             memberChannel.setName(`Member : ${memberCount}`)
             onlineChannel.setName(`Online : ${onlineMembers.length}`)
             offlineChannel.setName(`Offline : ${offlineMembers.length}`)

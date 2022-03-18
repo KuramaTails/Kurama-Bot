@@ -5,18 +5,17 @@ const mongoose = require('mongoose')
 const prefix = "?";
 const DisTube = require('distube')
 const { YtDlpPlugin } = require('@distube/yt-dlp')
-const playSong = require('./player/playsong');
-const finish = require('./player/finish');
-const empty = require('./player/empty');
-const addSong = require('./player/addsong');
-const playerCommands = require('./player/playercommands');
-const roleEvents = require('./events/roleevents');
-const guildMemberEvents = require('./events/guildmemberevents');
-const guildCreate = require('./events/guildcreate')
-const presenceUpdate = require('./events/presenceupdates');
 const chooseRole = require('./buttons/chooseroles')
 const playerButtons = require('./buttons/playerbuttons')
 const helpButtons = require('./buttons/helpbuttons')
+const playSong = require('./events/playsong');
+const finish = require('./events/finish');
+const addSong = require('./events/addsong');
+const roleEvents = require('./events/roleevents');
+const guildMemberEvents = require('./events/guildmemberevent');
+const guildCreate = require('./events/guildcreate')
+const presenceUpdate = require('./events/presenceupdates');
+
 const deleteCooldown = require('./events/deletecooldown')
 dotenv.config()
 
@@ -24,6 +23,7 @@ dotenv.config()
 const { setTimeout } = require('timers/promises');
 const registerPermissions = require('./events/registerpermissions');
 const pollbuttons = require('./buttons/pollbuttons');
+const dbconnect = require('./events/dbconnect');
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 bot.commands = new Collection();
 cooldownUser = new Collection();
@@ -132,8 +132,7 @@ bot.on('messageCreate', async msg => {
 					await feature.execute(msg , args);
 					return
 				}
-			}
-			playerCommands.execute(msg ,msgfeature, args ,player)		
+			}	
 		}
 	}
 });
@@ -147,7 +146,7 @@ player.on('addSong', (queue) => {
 })
 player.on('finish', async (queue) => {
 	timeoutID = setTimeout(() => {
-		finish.execute(queue,player)
+		finish.execute(queue)
 	  }, 30 * 1000)
 });
 player.on('error', async () => {
@@ -155,23 +154,22 @@ player.on('error', async () => {
 })
 player.on('empty', (queue) => {
 	timeoutID = setTimeout(() => {
-		empty.execute(queue,player)
+		finish.execute(queue)
 	  }, 30 * 1000)
 })
 
 bot.on('ready', async () => {
 	if (!process.env.DATABASE_TOKEN) {return console.log("Error,no db found")}
-	try {
-		mongoose.connect(process.env.DATABASE_TOKEN,{
-			useNewUrlParser: true,
-			useUnifiedTopology: true
-		})
-		console.log(`Connected to database`)
-	} finally {
-		mongoose.connection.close()
-		console.log(`Disconnected from to database`)
-	}
-
+    try {
+        mongoose.connect(process.env.DATABASE_TOKEN,{
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        })
+        console.log(`Connected to database`)
+    } finally {
+        mongoose.connection.close()
+        console.log(`Disconnected from database`)
+    }
 	if (!bot.application?.owner) await bot.application?.fetch();
 	var guilds= await bot.guilds.fetch()
 	var guildsKeys= Array.from(guilds.keys())
