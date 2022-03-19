@@ -22,6 +22,9 @@ dotenv.config()
 const { setTimeout } = require('timers/promises');
 const registerPermissions = require('./events/registerpermissions');
 const pollbuttons = require('./buttons/pollbuttons');
+const fetchchannels = require('./events/fetchchannels');
+const fetchguild = require('./events/fetchguild');
+const fetchmembers = require('./events/fetchmembers');
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 bot.commands = new Collection();
 cooldownUser = new Collection();
@@ -119,6 +122,7 @@ bot.on('interactionCreate', async interaction => {
 bot.on('messageCreate', async msg => {
 	if (msg.author.username!=bot.user.username)
 	{
+		fetchmembers.execute(msg.guild)
 		if(msg.content.startsWith(prefix)){
 			const [msgfeature, ...args] = msg.content
 			.trim()
