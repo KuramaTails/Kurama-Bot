@@ -1,7 +1,7 @@
 const Canvas = require('canvas');
 const { MessageAttachment, MessageEmbed } = require('discord.js');
 const welcomeSchema = require('../schemas/welcome-schema');
-const dbconnect = require('./dbconnect');
+const dbconnect = require('../db/dbconnect');
 const cache = {}
 module.exports = {
     async execute(member,add) {

@@ -1,6 +1,5 @@
 module.exports = {
-	async execute(messageCreate) {
-        var guild = await messageCreate.guild;
+	async execute(guild) {
         muteRole = await guild.roles.create({
             name: 'Muted',
             color: 'NAVY',

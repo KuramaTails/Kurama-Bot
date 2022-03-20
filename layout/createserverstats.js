@@ -4,10 +4,9 @@ const channelpermissions = new Permissions([
 ]);
 
 module.exports = {
-	async execute(messageCreate) {
-        var guild = await messageCreate.guild.channels;
-        let everyone = messageCreate.guild.roles.cache.find(r => r.name === "@everyone");
-        let members = await messageCreate.guild.members.fetch()
+	async execute(guild) {
+        let everyone = guild.roles.cache.find(r => r.name === "@everyone");
+        let members = await guild.members.fetch()
         let countMembers = Array.from(members.keys())
         let onlineMembers = []
         let offlineMembers = []
@@ -31,20 +30,20 @@ module.exports = {
                 offlineMembers.push(members.get(countMembers[i]))
             }
         }
-        guild.create('Serverstats', {
+        guild.channels.create('Serverstats', {
             type: 'GUILD_CATEGORY',
             position: 0,
             permissionOverwrites: [{id: everyone.id,deny: [channelpermissions]}
             ],
         })
         .then(cat => {
-            guild.create(`Members : ${countMembers.length}`,  {
+            guild.channels.create(`Members : ${countMembers.length}`,  {
                 type: 'GUILD_VOICE',parent: cat,
                 });
-            guild.create(`Online : ${onlineMembers.length}`,  {
+                guild.channels.create(`Online : ${onlineMembers.length}`,  {
                 type: 'GUILD_VOICE',parent: cat,
                 });
-            guild.create(`Offline : ${offlineMembers.length}`,  {
+                guild.channels.create(`Offline : ${offlineMembers.length}`,  {
                 type: 'GUILD_VOICE',parent: cat,
                 })
         });

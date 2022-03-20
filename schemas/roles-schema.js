@@ -3,14 +3,13 @@ const reqString = {
     type: String,
     required: true,
 }
-const reqObjectId = {
-    type: mongoose.Schema.Types.Array,
-    of: mongoose.Schema.Types.String,
+const reqMap = {
+    type: Map,
     required: true,
 }
 const rolesSchema = mongoose.Schema({
     _id:reqString,
-    roles: reqObjectId    
+    roles: reqMap,   
 })
 
 module.exports = mongoose.model('roles' , rolesSchema)

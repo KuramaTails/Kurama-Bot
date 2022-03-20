@@ -1,36 +1,53 @@
 const createserverstats = require("../layout/createserverstats")
 const createwelcomechannel = require("../layout/createwelcomechannels")
 const createplayerchannels = require("../layout/createplayerchannels");
-const fetchguild = require("./fetchguild");
+const fetchAll = require("../fetch/fetchAll");
+const dbconnect = require("../db/dbconnect");
+const dbdisconnnect = require("../db/dbdisconnnect");
+const channelsSchema = require("../schemas/channels-schema");
+const createembedroles = require("../layout/createembedroles");
+const createbasicroles = require("../layout/createbasicroles");
+const createplayerembed = require("../layout/createplayerembed");
 module.exports = {
     async execute(guild) {
-        await fetchguild.execute(guild);
-        console.log(`${guild.name} fetched`)
-        /*var listChannels = await guild.channels.fetch()
-        let selChannel = await listChannels.find(channel => channel.type.includes("GUILD_TEXT"))
-        await selChannel.send("Hi! I've just joined your channel. Please check the newly created channels")
-        
-                .then(async msg => {
-            
-            setTimeout(async () => {
-                
-                await createserverstats.execute(msg);
+        await fetchAll.execute(guild)
+        await dbconnect()
+        var selectGuild = await channelsSchema.find({ "_id" : guild.id})
+		var keysChannels = Array.from(selectGuild[0].channels.keys())
+		var listTextChannels = []
+		for (let i = 0; i < keysChannels.length; i++) {
+			if (selectGuild[0].channels.get(keysChannels[i]).type == "GUILD_TEXT") {
+				listTextChannels.push(keysChannels[i])
+			}
+		}
+        var selectedChannel = await guild.channels.resolve(listTextChannels[0])
+        await selectedChannel.send("Hi! I've just joined your channel. Please check the newly created channels")
+        // WORKING TILL HERE
+        setTimeout(async () => {
+            await createserverstats.execute(guild)
             console.log(`Created server stats in ${guild.name}`)
-            }, 2000);
-            
-            setTimeout( async () => {
-                await createwelcomechannel.execute(msg);
-                console.log(`Created welcome rooms in ${guild.name}`) 
-            }, 5000);
-            setTimeout(async () => {
-                await createplayerchannels.execute(msg);
-                console.log(`Created player rooms in ${guild.name}`)
-            }, 17000);
-            
-            return
-            })
-        return
-    }*/
+        }, 5000);
+        setTimeout(async () => {
+            await createwelcomechannel.execute(guild);
+            console.log(`Created welcome rooms in ${guild.name}`)
+        }, 10000);
+        setTimeout( async() => {
+            await createembedroles.execute(guild)
+            console.log(`Created rolesEmbed in ${guild.name}`)
+        }, 15000);
+        setTimeout(async () => {
+            await createbasicroles.execute(guild);
+            console.log(`Created roles in ${guild.name}`)
+        }, 20000);
+        setTimeout(async () => {
+            await createplayerchannels.execute(msg);
+            console.log(`Created player rooms in ${guild.name}`)
+        }, 25000);
+        setTimeout(async () => {
+            await createplayerembed.execute(guild)
+            console.log(`Created playerEmbed in ${guild.name}`)
+        }, 30000);
+        await dbdisconnnect()
     }
 };
     

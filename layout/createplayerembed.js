@@ -1,8 +1,15 @@
 const { MessageEmbed, MessageActionRow, MessageButton} = require("discord.js");
 module.exports = {
 	async execute(guild) {
-        var listChannels = await guild.channels.fetch()
-        let selChannel = await listChannels.find(channel => channel.name.includes("player-room"))
+        var selectGuild = await channelsSchema.find({ "_id" : guild.id})
+		var keysChannels = Array.from(selectGuild[0].channels.keys())
+		var listTextChannels = []
+		for (let i = 0; i < keysChannels.length; i++) {
+			if (selectGuild[0].channels.get(keysChannels[i]).name == "player-room") {
+				listTextChannels.push(keysChannels[i])
+			}
+		}
+        var selectedChannel = await guild.channels.resolve(listTextChannels[0])
         const Embedsearch = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle(`No songs playing right now`)
@@ -38,6 +45,6 @@ module.exports = {
             .setCustomId(`More commands 🔽`)
             .setLabel("More commands 🔽")
             .setStyle(`SECONDARY`),);
-        selChannel.send({embeds: [Embedsearch],components:[buttons1,moreButton]})
+        selectedChannel.send({embeds: [Embedsearch],components:[buttons1,moreButton]})
     }
 };
