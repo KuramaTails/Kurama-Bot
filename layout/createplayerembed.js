@@ -1,4 +1,5 @@
 const { MessageEmbed, MessageActionRow, MessageButton} = require("discord.js");
+const channelsSchema = require("../schemas/channels-schema");
 module.exports = {
 	async execute(guild) {
         var selectGuild = await channelsSchema.find({ "_id" : guild.id})

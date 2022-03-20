@@ -11,7 +11,7 @@ const createplayerembed = require("../layout/createplayerembed");
 module.exports = {
     async execute(guild) {
         await fetchAll.execute(guild)
-        await dbconnect()
+        var db = await dbconnect() 
         var selectGuild = await channelsSchema.find({ "_id" : guild.id})
 		var keysChannels = Array.from(selectGuild[0].channels.keys())
 		var listTextChannels = []
@@ -22,31 +22,30 @@ module.exports = {
 		}
         var selectedChannel = await guild.channels.resolve(listTextChannels[0])
         await selectedChannel.send("Hi! I've just joined your channel. Please check the newly created channels")
-        // WORKING TILL HERE
-        setTimeout(async () => {
-            await createserverstats.execute(guild)
-            console.log(`Created server stats in ${guild.name}`)
-        }, 5000);
+        await createserverstats.execute(guild)
+        console.log(`Created server stats in ${guild.name}`)
         setTimeout(async () => {
             await createwelcomechannel.execute(guild);
             console.log(`Created welcome rooms in ${guild.name}`)
-        }, 10000);
+        }, 5000);
         setTimeout( async() => {
-            await createembedroles.execute(guild)
-            console.log(`Created rolesEmbed in ${guild.name}`)
-        }, 15000);
+            if (db.connection.readyState === 1) {
+                await createembedroles.execute(guild)
+                console.log(`Created rolesEmbed in ${guild.name}`)
+               }
+        }, 10000);
         setTimeout(async () => {
             await createbasicroles.execute(guild);
             console.log(`Created roles in ${guild.name}`)
-        }, 20000);
+        }, 15000);
         setTimeout(async () => {
-            await createplayerchannels.execute(msg);
+            await createplayerchannels.execute(guild);
             console.log(`Created player rooms in ${guild.name}`)
-        }, 25000);
+        }, 20000);
         setTimeout(async () => {
             await createplayerembed.execute(guild)
             console.log(`Created playerEmbed in ${guild.name}`)
-        }, 30000);
+        }, 25000);
         await dbdisconnnect()
     }
 };

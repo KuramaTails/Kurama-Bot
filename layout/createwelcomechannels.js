@@ -6,7 +6,7 @@ const channelpermissions = new Permissions([
 module.exports = {
 	async execute(guild) {
         let everyone = guild.roles.cache.find(r => r.name === "@everyone");
-        guild.create('Welcomer', {
+        guild.channels.create('Welcomer', {
             type: 'GUILD_CATEGORY',
             position: 0,
             permissionOverwrites: [

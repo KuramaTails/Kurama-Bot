@@ -6,7 +6,7 @@ const channelpermissions = new Permissions([
 
 module.exports = {
 	async execute(guild) {
-        let everyone = messageCreate.guild.roles.cache.find(r => r.name === "@everyone");
+        let everyone = guild.roles.cache.find(r => r.name === "@everyone");
 
         guild.channels.create('Music-Zone', {
             type: 'GUILD_CATEGORY',

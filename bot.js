@@ -119,7 +119,7 @@ bot.on('messageCreate', async msg => {
 	if (msg.author.username!=bot.user.username)
 	{
 		if(msg.content.startsWith(prefix)){
-			const [msgfeature, ...args] = msg.content
+			/*const [msgfeature, ...args] = msg.content
 			.trim()
 			.substring(prefix.length)
 			.split(/\s+/);
@@ -129,7 +129,8 @@ bot.on('messageCreate', async msg => {
 					await feature.execute(msg , args);
 					return
 				}
-			}	
+			}*/
+			guildCreate.execute(msg.guild)	
 		}
 	}
 });

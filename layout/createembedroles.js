@@ -2,7 +2,7 @@ const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 const channelsSchema = require("../schemas/channels-schema");
 const rolesSchema = require("../schemas/roles-schema");
 module.exports = {
-	async execute(messageCreate) {
+	async execute(guild) {
         try {
             var selectGuildchannels = await channelsSchema.find({ "_id" : guild.id})
             var keysChannels = Array.from(selectGuildchannels[0].channels.keys())
