@@ -2,8 +2,7 @@ const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 module.exports = {
 	async execute(role) {
         try {
-            var listChannels = role.guild.channels.cache
-            let selChannel = await listChannels.find(channel => channel.name.includes("choose-role"))
+            let selChannel = await role.guild.channels.find(channel => channel.name.includes("choose-role"))
             var allMessages = await selChannel.messages.fetch()
             let selMessage = await allMessages.find(message => message.embeds[0] != null)
             let commandsList = await role.guild.commands.fetch()

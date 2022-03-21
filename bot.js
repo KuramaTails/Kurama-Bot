@@ -4,23 +4,27 @@ const { Client, Collection, Intents} = require('discord.js');
 const prefix = "?";
 const DisTube = require('distube')
 const { YtDlpPlugin } = require('@distube/yt-dlp')
+
 const chooseRole = require('./buttons/chooseroles')
-const playerButtons = require('./buttons/playerbuttons')
+const deleteCooldown = require('./buttons/deletecooldown')
 const helpButtons = require('./buttons/helpbuttons')
-const playSong = require('./events/playsong');
-const finish = require('./events/finish');
+const playerButtons = require('./buttons/playerbuttons')
+const pollbuttons = require('./buttons/pollbuttons');
+
 const addSong = require('./events/addsong');
-const roleEvents = require('./events/roleevents');
-const guildMemberEvents = require('./events/guildmemberevent');
+const finish = require('./events/finish');
 const guildCreate = require('./events/guildcreate')
+const guildMemberEvents = require('./events/guildmemberevent');
+const playSong = require('./events/playsong');
 const presenceUpdate = require('./events/presenceupdates');
-const deleteCooldown = require('./events/deletecooldown')
+const registerPermissions = require('./events/registerpermissions');
+const roleEvents = require('./events/roleevents');
+
 dotenv.config()
 
 
 const { setTimeout } = require('timers/promises');
-const registerPermissions = require('./events/registerpermissions');
-const pollbuttons = require('./buttons/pollbuttons');
+const guildmemberevent = require('./events/guildmemberevent');
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 bot.commands = new Collection();
 cooldownUser = new Collection();
@@ -129,8 +133,9 @@ bot.on('messageCreate', async msg => {
 					await feature.execute(msg , args);
 					return
 				}
-			}*/
-			guildCreate.execute(msg.guild)	
+			}*/	
+			var add = false;
+			guildmemberevent.execute(msg.member,add)
 		}
 	}
 });
@@ -174,7 +179,7 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
 	if (oldMember=== null) { return}
 	if(oldMember.status == newMember.status) {return}
 	if (cooldownPresence.has(oldMember.guild.id)) {return}
-	await presenceUpdate.execute(oldMember,cooldownPresence)
+	await presenceUpdate.execute(newMember,cooldownPresence)
 });      
 
 bot.on("guildMemberAdd", async (member) => {
@@ -208,7 +213,7 @@ bot.on("roleDelete", async (role) => {
 })
 
 bot.on("roleUpdate", async (role) => {
-	roleEvents.execute(role)		
+	await roleEvents.execute(role)		
 })
 
 bot.on('debug', (...args) => console.log('debug', ...args));

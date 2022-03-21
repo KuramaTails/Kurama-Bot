@@ -10,8 +10,18 @@ module.exports = {
                 .addBooleanOption(option =>option.setName("active").setDescription("Link or Title of song/playlist you want to add to queue"))
 				.addChannelOption(option =>option.setName("channel").setDescription("Link or Title of song/playlist you want to add to queue"))
 				.addStringOption(option =>option.setName("text").setDescription("Link or Title of song/playlist you want to add to queue"))
-				.addBooleanOption(option =>option.setName("leaver").setDescription("Link or Title of song/playlist you want to add to queue"))
-                .addStringOption(option =>option.setName("textleaver").setDescription("Link or Title of song/playlist you want to add to queue"))
+				.addStringOption(option =>option.setName("background").setDescription("Link or Title of song/playlist you want to add to queue"))
+				
+		)
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName('leave')
+				.setDescription('Bot will add a song to queue!')
+                .addBooleanOption(option =>option.setName("active").setDescription("Link or Title of song/playlist you want to add to queue"))
+				.addChannelOption(option =>option.setName("channel").setDescription("Link or Title of song/playlist you want to add to queue"))
+				.addStringOption(option =>option.setName("text").setDescription("Link or Title of song/playlist you want to add to queue"))
+				.addStringOption(option =>option.setName("background").setDescription("Link or Title of song/playlist you want to add to queue"))
+				
 		)
 		.addSubcommand(subcommand =>
 			subcommand
@@ -20,7 +30,7 @@ module.exports = {
 				.addChannelOption(option =>option.setName("channel").setDescription("Link or Title of song/playlist you want to add to queue"))
 
 		),
-	async execute(interaction,cooldownUser,player) {
+	async execute(interaction,cooldownUser) {
         const setCommands = require(`../commands/set/${interaction.options.getSubcommand()}`);
 		try {
 			setCommands.execute(interaction)

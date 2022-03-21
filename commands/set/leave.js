@@ -1,13 +1,13 @@
 const dbdisconnnect = require('../../db/dbdisconnnect');
 const dbconnect = require('../../db/dbconnect');
-const welcomeSchema = require('../../schemas/welcome-schema')
+const leaveSchema = require('../../schemas/leave-schema')
 module.exports = {
 	async execute(interaction) {
         await dbconnect()
         switch (true) {
             case interaction.options.getBoolean("active")!=null:
                 var active =interaction.options.getBoolean("active")
-                await welcomeSchema.findOneAndUpdate({
+                await leaveSchema.findOneAndUpdate({
                     _id: interaction.guild.id,
                 }, {
                     active,
@@ -18,7 +18,7 @@ module.exports = {
             break;
             case interaction.options.getChannel("channel")!=null:
                 var channel = interaction.options.getChannel("channel")
-                await welcomeSchema.findOneAndUpdate({
+                await leaveSchema.findOneAndUpdate({
                     _id: interaction.guild.id,
                 }, {
                     channelId:channel,
@@ -29,7 +29,7 @@ module.exports = {
             break;
             case interaction.options.getString("text")!=null:
                 var text = interaction.options.getString("text")
-                await welcomeSchema.findOneAndUpdate({
+                await leaveSchema.findOneAndUpdate({
                     _id: interaction.guild.id,
                 }, {
                     _id: interaction.guild.id,
@@ -41,7 +41,7 @@ module.exports = {
             break;
             case interaction.options.getString("background")!=null:
                 var background = interaction.options.getString("background")
-                await welcomeSchema.findOneAndUpdate({
+                await leaveSchema.findOneAndUpdate({
                     _id: interaction.guild.id,
                 }, {
                     _id: interaction.guild.id,

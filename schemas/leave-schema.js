@@ -7,7 +7,7 @@ const reqBoolean= {
     type: Boolean,
     required: true
 }
-const welcomeSchema = mongoose.Schema({
+const leaveSchema = mongoose.Schema({
     _id: reqString,
     active: reqBoolean,
     channelId: reqString,
@@ -15,4 +15,4 @@ const welcomeSchema = mongoose.Schema({
     background:reqString,
 })
 
-module.exports = mongoose.model('welcome-channels' , welcomeSchema)
+module.exports = mongoose.model('leave-channels' , leaveSchema)

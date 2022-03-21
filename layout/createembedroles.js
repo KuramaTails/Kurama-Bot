@@ -19,21 +19,18 @@ module.exports = {
                                 .setTitle('Add Role')
                                 .setDescription(`Click on a button to get yourself a role`)
             var selectGuildroles = await rolesSchema.find({ "_id" : guild.id})
-            var keysRoles = Array.from(selectGuildroles[0].channels.keys())
+            var keysRoles = Array.from(selectGuildroles[0].roles.keys())
             var listTextChannels = []
             for (let i = 0; i < keysRoles.length; i++) {
-                if (selectGuildroles[0].channels.get(keysRoles[i]).name == "choose-role") {
-                    listTextChannels.push(keysChannels[i])
-                }
-                if (selectGuildroles[0].channels.get(keysRoles[i]).admin== false) {
-                    if (selectGuildroles[0].channels.get(keysRoles[i]).managed== false) {
-                        if(selectGuildroles[0].channels.get(keysRoles[i]).name != "@everyone") 
+                if (selectGuildroles[0].roles.get(keysRoles[i]).admin== false) {
+                    if (selectGuildroles[0].roles.get(keysRoles[i]).managed== false) {
+                        if(selectGuildroles[0].roles.get(keysRoles[i]).name != "@everyone") 
                         {
                             if (buttons[buttons.length-1].components.length<5) {
                                 buttons[buttons.length-1].addComponents(
                                     new MessageButton()
                                         .setCustomId(`${keysRoles[i]}`)
-                                        .setLabel(`${selectGuildroles[0].channels.get(keysRoles[i]).name}`)
+                                        .setLabel(`${selectGuildroles[0].roles.get(keysRoles[i]).name}`)
                                         .setStyle("PRIMARY"),
                                 ); 
                             }
@@ -42,7 +39,7 @@ module.exports = {
                                 buttons[buttons.length-1].addComponents(
                                     new MessageButton()
                                         .setCustomId(`${keysRoles[i]}`)
-                                        .setLabel(`${selectGuildroles[0].channels.get(keysRoles[i]).name}`)
+                                        .setLabel(`${selectGuildroles[0].roles.get(keysRoles[i]).name}`)
                                         .setStyle("PRIMARY"),
                                 );
                             }

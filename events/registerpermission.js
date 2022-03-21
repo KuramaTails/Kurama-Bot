@@ -3,10 +3,10 @@ const { Routes } = require('discord-api-types/v9');
 const dbconnect = require('../db/dbconnect');
 const dbdisconnnect = require('../db/dbdisconnnect');
 const rolesSchema = require('../schemas/roles-schema');
-const rest = new REST({ version: '9' }).setToken(process.env.BOT_TOKEN);
 module.exports = {
     async execute(guild,botId,commands) {
         try {
+            const rest = new REST({ version: '9' }).setToken(process.env.BOT_TOKEN);
             await rest.put(Routes.applicationGuildCommands(botId, guild.id), { body: commands })
                 .then(() => console.log('Successfully registered application commands.'))
                 .catch(console.error);

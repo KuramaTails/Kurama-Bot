@@ -1,60 +1,40 @@
 module.exports = {
-    async execute(oldMember,cooldownPresence) {
+    async execute(newMember,cooldownPresence) {
         try {
-            cooldownPresence.set(oldMember.guild.id, true);
-            let members = oldMember.guild.members.cache
-            let memberskeys = Array.from(members.keys())
-            var memberCount = memberskeys.length
-            let onlineMembers = []
-            let offlineMembers = []
-            for (let i = 0; i < memberskeys.length; i++) {
+            cooldownPresence.set(newMember.guild.id, true);
+            let onlineChannel = await newMember.guild.channels.cache.find(channel => channel.name.includes("Online"))
+            let offlineChannel = await newMember.guild.channels.cache.find(channel => channel.name.includes("Offline"))
+            var members = newMember.guild.members.cache
+            var memberKeys = Array.from(members.keys())
+            var onlineCount = 0
+            var offlineCount = 0
+            for (let i = 0; i < memberKeys.length; i++) {
                 try {
-                    switch (members.get(memberskeys[i]).presence.status) {
+                    switch (members.get(memberKeys[i]).presence.status) {
                         case "online":
-                            onlineMembers.push(members.get(memberskeys[i]))
+                            onlineCount=onlineCount+1
                         break;
                         case "idle":
-                            onlineMembers.push(members.get(memberskeys[i]))
-                        break;    
-                        case "dnd":
-                            onlineMembers.push(members.get(memberskeys[i]))
-                        break;    
-                        case "offline":
-                            offlineMembers.push(members.get(memberskeys[i]))
+                            onlineCount=onlineCount+1
                         break;
+                        case "dnd":
+                            onlineCount=onlineCount+1
+                        break;
+                        case "offline":
+                            offlineCount=offlineCount+1
+                        break;
+    
                     }
                 } catch (error) {
-                    offlineMembers.push(members.get(memberskeys[i]))
+                    offlineCount=offlineCount+1 
                 }
+                
             }
-            var oldOnlineMembers = onlineMembers.length
-            var oldOfflineMembers = offlineMembers.lengthù
-            try {
-                if (oldMember.status=="online"){
-                    oldOnlineMembers=oldOnlineMembers+1
-                    oldOfflineMembers=oldOfflineMembers-1
-                }
-                else {
-                    oldOnlineMembers=oldOnlineMembers-1
-                    oldOfflineMembers=oldOfflineMembers+1
-                }
-            } catch (error) {
-                console.log(error)
-            }
-            try {
-                var listchannels = oldMember.guild.channels.cache
-                let memberChannel = await listchannels.find(channel => channel.name.includes("Member"))
-                let onlineChannel = await listchannels.find(channel => channel.name.includes("Online"))
-                let offlineChannel = await listchannels.find(channel => channel.name.includes("Offline"))
-                memberChannel.setName(`Member : ${memberCount}`)
-                onlineChannel.setName(`Online : ${onlineMembers.length}`)
-                offlineChannel.setName(`Offline : ${offlineMembers.length}`)
-            } catch (error) {
-                console.log(error)
-            }
-            console.log(`Presence updated in ${oldMember.guild}`)
+            onlineChannel.setName(`Online : ${onlineCount}`)
+            offlineChannel.setName(`Offline : ${offlineCount}`)
+            console.log("Presence Updated")
             setTimeout(() => {
-                cooldownPresence.delete(oldMember.guild.id);
+                cooldownPresence.clear()
             }, 5*60*1000);
         } catch (error) {
             console.log(error)
