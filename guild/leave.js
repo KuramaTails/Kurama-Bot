@@ -1,5 +1,5 @@
 const leaveSchema= require ('../schemas/leave-schema')
-const createcanvas = require('./createcanvas');
+const createcanvas = require('../events/createcanvas');
 module.exports = {
     async execute(member,add) {
         var selectGuildLeave = await leaveSchema.find({ "_id" : member.guild.id})

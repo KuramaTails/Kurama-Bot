@@ -13,18 +13,18 @@ const pollbuttons = require('./buttons/pollbuttons');
 
 const addSong = require('./events/addsong');
 const finish = require('./events/finish');
-const guildCreate = require('./events/guildcreate')
-const guildMemberEvents = require('./events/guildmemberevent');
+const guildCreate = require('./guild/guildcreate')
+const guildMemberEvents = require('./guild/guildmemberevent');
 const playSong = require('./events/playsong');
-const presenceUpdate = require('./events/presenceupdates');
-const registerPermissions = require('./events/registerpermissions');
-const roleEvents = require('./events/roleevents');
+const presenceUpdate = require('./guild/presenceupdates');
+const registerPermissions = require('./guild/registerpermissions');
+const roleEvents = require('./guild/roleevents');
 
 dotenv.config()
 
 
 const { setTimeout } = require('timers/promises');
-const guildmemberevent = require('./events/guildmemberevent');
+const roleevents = require('./guild/roleevents');
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 bot.commands = new Collection();
 cooldownUser = new Collection();
@@ -134,8 +134,9 @@ bot.on('messageCreate', async msg => {
 					return
 				}
 			}*/	
-			var add = false;
-			guildmemberevent.execute(msg.member,add)
+			let role = await msg.member.roles.cache
+			var secrole = role.find(role => role.name== "Admin")
+			roleevents.execute(secrole)
 		}
 	}
 });
@@ -212,8 +213,8 @@ bot.on("roleDelete", async (role) => {
 	await roleEvents.execute(role)		
 })
 
-bot.on("roleUpdate", async (role) => {
-	await roleEvents.execute(role)		
+bot.on("roleUpdate", async (oldRole,newRole) => {
+	await roleEvents.execute(newRole)		
 })
 
 bot.on('debug', (...args) => console.log('debug', ...args));

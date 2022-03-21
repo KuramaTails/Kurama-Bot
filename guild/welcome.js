@@ -1,5 +1,5 @@
 const welcomeSchema= require ('../schemas/welcome-schema')
-const createcanvas = require('./createcanvas');
+const createcanvas = require('../events/createcanvas');
 module.exports = {
     async execute(member,add) {
         var selectGuildwelcome = await welcomeSchema.find({ "_id" : member.guild.id})

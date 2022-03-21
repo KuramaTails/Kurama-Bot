@@ -1,12 +1,16 @@
-const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
+const {  MessageButton, MessageActionRow } = require("discord.js");
+const dbconnect = require("../db/dbconnect");
+const dbdisconnnect = require("../db/dbdisconnnect");
+const fetchroles = require("../fetch/fetchroles");
+const rolesSchema = require("../schemas/roles-schema");
 module.exports = {
 	async execute(role) {
         try {
-            let selChannel = await role.guild.channels.find(channel => channel.name.includes("choose-role"))
+            var guild = await role.guild
+            let selChannel = await guild.channels.cache.find(channel => channel.name.includes("choose-role"))
             var allMessages = await selChannel.messages.fetch()
             let selMessage = await allMessages.find(message => message.embeds[0] != null)
-            let commandsList = await role.guild.commands.fetch()
-            let moderationCommandId = await commandsList.find(command => command.name === "moderation").id
+            let moderationCommandId = await guild.commands.cache.find(command => command.name === "moderation").id
             var permissions = []
             
             if (role.permissions.has("ADMINISTRATOR")) {
@@ -23,19 +27,24 @@ module.exports = {
                         permission: false,
                 }];
             }
-            await role.guild.commands.permissions.add({ command: moderationCommandId,permissions: permissions})
+            await guild.commands.permissions.add({ command: moderationCommandId,permissions: permissions})
                 .then(console.log(`Set permissions in ${role.guild.name}`))
                 .catch(console.error);
-            var roles = await role.guild.roles.fetch()
+            await dbconnect()
+            await fetchroles.execute(role.guild)
+            var selectGuildRoles = await rolesSchema.find({ "_id" : role.guild.id})
+            await dbdisconnnect()
+            var keysRoles = Array.from(selectGuildRoles[0].roles.keys())
             var buttons = [new MessageActionRow()]
-            roles.forEach(role => {
-                if (!role.permissions.has("ADMINISTRATOR")) {
-                    if (!role.managed) {
+            for (let i = 0; i < keysRoles.length; i++) {
+                var role = await selectGuildRoles[0].roles.get(keysRoles[i])
+                if (role.admin!= true) {
+                    if (role.managed!= true) {
                         if(role.name != "@everyone") {
                             if (buttons[buttons.length-1].components.length<5) {
                                 buttons[buttons.length-1].addComponents(
                                     new MessageButton()
-                                        .setCustomId(`${role.id}`)
+                                        .setCustomId(`${keysRoles[i]}`)
                                         .setLabel(`${role.name}`)
                                         .setStyle("PRIMARY"),
                                 ); 
@@ -44,7 +53,7 @@ module.exports = {
                                 buttons[buttons.length] = new MessageActionRow()
                                 buttons[buttons.length-1].addComponents(
                                     new MessageButton()
-                                        .setCustomId(`${role.id}`)
+                                        .setCustomId(`${keysRoles[i]}`)
                                         .setLabel(`${role.name}`)
                                         .setStyle("PRIMARY"),
                                 );
@@ -52,7 +61,7 @@ module.exports = {
                         }
                     }
                 }
-            });
+            }
             switch (buttons.length-1) {
                 case 0:
                     selMessage.edit({components: [buttons[0]]})
@@ -70,7 +79,7 @@ module.exports = {
                     selMessage.edit({components: [buttons[0],buttons[1],buttons[2],buttons[3],buttons[4]]})
                 break;
             }
-            console.log(`Roles updated in ${role.guild.name}`)
+            console.log(`Roles updated in ${guild.name}`)
         } catch (error) {
             console.log(error)
         }

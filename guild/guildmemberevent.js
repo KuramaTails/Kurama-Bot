@@ -2,7 +2,7 @@ const dbconnect = require('../db/dbconnect');
 const dbdisconnnect = require('../db/dbdisconnnect');
 const fetchmembers = require('../fetch/fetchmembers');
 const leave = require('./leave');
-const welcome = require('./welcome');
+const welcome = require('../guild/welcome');
 
 module.exports = {
     async execute(member,add) {
