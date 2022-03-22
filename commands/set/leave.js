@@ -1,51 +1,29 @@
 const dbdisconnnect = require('../../db/dbdisconnnect');
 const dbconnect = require('../../db/dbconnect');
-const leaveSchema = require('../../schemas/leave-schema')
+const welcomeSchema = require('../../schemas/welcome-schema');
+
 module.exports = {
 	async execute(interaction) {
         await dbconnect()
         switch (true) {
-            case interaction.options.getBoolean("active")!=null:
-                var active =interaction.options.getBoolean("active")
-                await leaveSchema.findOneAndUpdate({
+            case interaction.options.getBoolean("activeleave")!=null:
+                var activeLeave =interaction.options.getBoolean("activeleave")
+                await welcomeSchema.findOneAndUpdate({
                     _id: interaction.guild.id,
                 }, {
-                    active,
+                    activeLeave,
                 },
                 {
                     upsert:true,
                 })
             break;
-            case interaction.options.getChannel("channel")!=null:
-                var channel = interaction.options.getChannel("channel")
-                await leaveSchema.findOneAndUpdate({
-                    _id: interaction.guild.id,
-                }, {
-                    channelId:channel,
-                },
-                {
-                    upsert:true,
-                })
-            break;
-            case interaction.options.getString("text")!=null:
-                var text = interaction.options.getString("text")
-                await leaveSchema.findOneAndUpdate({
+            case interaction.options.getString("textleave")!=null:
+                var textLeave = interaction.options.getString("textleave")
+                await welcomeSchema.findOneAndUpdate({
                     _id: interaction.guild.id,
                 }, {
                     _id: interaction.guild.id,
-                    text,
-                },
-                {
-                    upsert:true,
-                })
-            break;
-            case interaction.options.getString("background")!=null:
-                var background = interaction.options.getString("background")
-                await leaveSchema.findOneAndUpdate({
-                    _id: interaction.guild.id,
-                }, {
-                    _id: interaction.guild.id,
-                    background,
+                    textLeave,
                 },
                 {
                     upsert:true,

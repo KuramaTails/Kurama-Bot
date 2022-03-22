@@ -9,9 +9,11 @@ const reqBoolean= {
 }
 const welcomeSchema = mongoose.Schema({
     _id: reqString,
-    active: reqBoolean,
     channelId: reqString,
-    text: reqString,
+    activeWelcome: reqBoolean,
+    textWelcome: reqString,
+    activeLeave: reqBoolean,
+    textLeave: reqString,
     background:reqString,
 })
 

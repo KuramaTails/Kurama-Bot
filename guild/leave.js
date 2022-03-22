@@ -1,24 +1,24 @@
-const leaveSchema= require ('../schemas/leave-schema')
 const createcanvas = require('../events/createcanvas');
+const welcomeSchema = require('../schemas/welcome-schema');
 module.exports = {
     async execute(member,add) {
-        var selectGuildLeave = await leaveSchema.find({ "_id" : member.guild.id})
+        var selectGuildLeave = await welcomeSchema.find({ "_id" : member.guild.id})
+        console.log(selectGuildLeave)
         var leaveText
         var leaveBackground
         var selectedChannel
         if (!selectGuildLeave[0]) {return}
-        if (selectGuildLeave[0].active=true) {
+        if (selectGuildLeave[0].activeLeave==true) {
             if (!selectGuildLeave[0].channelId) {
-                selectedChannel = await member.guild.channels.cache.find(c => c.type === "GUILD_TEXT");
-                return selectedChannel.send("Please select a channel to receive leave messages when a member leaves or disable welcomer")
+                return
             }
             else {
                 selectedChannel = await member.guild.channels.resolve(selectGuildLeave[0].channelId)
-                if (!selectGuildLeave[0].text) {
+                if (!selectGuildLeave[0].textLeave) {
                     return selectedChannel.send("Please select a text to have inside your leave message")
                 }
                 else {
-                    leaveText = selectGuildLeave[0].text
+                    leaveText = selectGuildLeave[0].textLeave
                 }
             }
         }

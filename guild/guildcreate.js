@@ -4,9 +4,15 @@ const dbdisconnnect = require("../db/dbdisconnnect");
 const createembedroles = require("../layout/createembedroles");
 const createplayerembed = require("../layout/createplayerembed");
 const createbases = require("../layout/createbases");
+const tutorial = require("../tutorial/tutorial");
 module.exports = {
     async execute(guild) {
-        var db= await dbconnect()
+        await dbconnect()
+        await fetchAll.execute(guild) 
+        console.log("Fetched all!")
+        await dbdisconnnect()
+        await tutorial.execute(guild)
+        /*var db= await dbconnect()
         await createbases.execute(guild)
         setTimeout(async () => {
             if (db.connection.readyState === 1) {
@@ -34,7 +40,7 @@ module.exports = {
                 console.log(`Created playerEmbed in ${guild.name}`)
                 await dbdisconnnect()
             }
-        }, 10000);
+        }, 10000);*/
     }
 };
     

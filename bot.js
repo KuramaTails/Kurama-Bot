@@ -5,6 +5,8 @@ const prefix = "?";
 const DisTube = require('distube')
 const { YtDlpPlugin } = require('@distube/yt-dlp')
 
+const guildcreate = require('./guild/guildcreate');
+
 const chooseRole = require('./buttons/chooseroles')
 const deleteCooldown = require('./buttons/deletecooldown')
 const helpButtons = require('./buttons/helpbuttons')
@@ -20,17 +22,34 @@ const presenceUpdate = require('./guild/presenceupdates');
 const registerPermissions = require('./guild/registerpermissions');
 const roleEvents = require('./guild/roleevents');
 
-dotenv.config()
+const starttutorial = require('./tutorial/part 1');
+const serverstats = require('./layout/serverstats');
+const welcometutorial = require('./tutorial/part 2');
+const welcomechannels = require('./layout/welcomechannels');
+const playertutorial = require('./tutorial/part 3');
+const playerchannels = require('./layout/playerchannels');
+const welcomertutorial = require('./tutorial/part 4');
+const welcomeSchema = require('./schemas/welcome-schema');
 
 
 const { setTimeout } = require('timers/promises');
-const roleevents = require('./guild/roleevents');
+const dbconnect = require('./db/dbconnect');
+const dbdisconnnect = require('./db/dbdisconnnect');
+const welcomer = require('./layout/welcomerchannel');
+const part5 = require('./tutorial/part 5');
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
+
+
 bot.commands = new Collection();
 cooldownUser = new Collection();
 cooldownPresence = new Collection();
 pollUser = new Collection();
 pollCounter = [0,0,0,0,0]
+
+dotenv.config()
+
+
+
 const player = new DisTube.DisTube(bot, {
 	leaveOnStop: false,
 	leaveOnEmpty: true,
@@ -44,7 +63,6 @@ const player = new DisTube.DisTube(bot, {
   } ) 
 let timeoutID;
 const commands = [];
-const cache = {}
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
@@ -91,6 +109,70 @@ bot.on('interactionCreate', async interaction => {
 								await interaction.deferReply( {ephemeral: true});
 								await pollbuttons.execute(interaction,cooldownUser,pollUser)
 							break;
+							case interaction.message.embeds[0].title.includes("Start"):
+								await starttutorial.execute(interaction)
+								deleteCooldown.execute(interaction,cooldownUser)
+							break;
+							case interaction.message.embeds[0].title.includes("Serverstats"):
+								if (interaction.customId== "Tutorialno") {
+									deleteCooldown.execute(interaction,cooldownUser)
+									await welcometutorial.execute(interaction)
+									return
+								}
+								await serverstats.execute(interaction)
+								deleteCooldown.execute(interaction,cooldownUser)
+								await welcometutorial.execute(interaction)
+							break;
+							case interaction.message.embeds[0].title.includes("Welcome"):
+								if (interaction.customId== "Tutorialno") {
+									deleteCooldown.execute(interaction,cooldownUser)
+									await playertutorial.execute(interaction)
+									return
+								}
+								await welcomechannels.execute(interaction)
+								deleteCooldown.execute(interaction,cooldownUser)
+								await playertutorial.execute(interaction)
+							break;
+							case interaction.message.embeds[0].title.includes("Player"):
+								if (interaction.customId== "Tutorialno") {
+									deleteCooldown.execute(interaction,cooldownUser)
+									welcomertutorial.execute(interaction)
+									return
+								}
+								await playerchannels.execute(interaction)
+								deleteCooldown.execute(interaction,cooldownUser)
+								welcomertutorial.execute(interaction)
+							break;
+							case interaction.message.embeds[0].title.includes("Set up welcomer"):
+								if (interaction.customId== "Tutorialno") {
+									await dbconnect()
+									await welcomeSchema.findOneAndUpdate({
+										_id: interaction.guild.id,
+									}, {
+										activeWelcome:false,
+									},
+									{
+										upsert:true,
+									})
+									await dbdisconnnect()
+									deleteCooldown.execute(interaction,cooldownUser)
+									part5.execute(interaction)
+									return
+								}
+								await dbconnect()
+								await welcomeSchema.findOneAndUpdate({
+									_id: interaction.guild.id,
+								}, {
+									activeWelcome:true,
+								},
+								{
+									upsert:true,
+								})
+								await dbdisconnnect()
+								await welcomer.execute(interaction)
+								deleteCooldown.execute(interaction,cooldownUser)
+								part5.execute(interaction)
+							break;
 						}
 					break;
 				}
@@ -123,20 +205,7 @@ bot.on('messageCreate', async msg => {
 	if (msg.author.username!=bot.user.username)
 	{
 		if(msg.content.startsWith(prefix)){
-			/*const [msgfeature, ...args] = msg.content
-			.trim()
-			.substring(prefix.length)
-			.split(/\s+/);
-			for (const file of featureFiles) {
-				const feature = require(`./feature/${file}`);
-				if (msgfeature== feature.name) {
-					await feature.execute(msg , args);
-					return
-				}
-			}*/	
-			let role = await msg.member.roles.cache
-			var secrole = role.find(role => role.name== "Admin")
-			roleevents.execute(secrole)
+			guildcreate.execute(msg.guild)
 		}
 	}
 });
@@ -201,7 +270,19 @@ bot.on("guildCreate", async (guild) => {
 })
 
 bot.on("guildDelete", async (guild) => {
-    console.log("Left a guild: " + guild.name);
+	await dbconnect()
+	try {
+		await guildSchema.deleteOne({ "_id" : guild.id})
+		await channelsSchema.deleteOne({ "_id" : guild.id})
+		await membersSchema.deleteOne({ "_id" : guild.id})
+		await playerSchema.deleteOne({ "_id" : guild.id})
+		await rolesSchema.deleteOne({ "_id" : guild.id})
+		await welcomeSchema.deleteOne({ "_id" : guild.id})
+	} catch (error) {
+		console.log(error)
+	}
+	await dbdisconnnect()
+	console.log("Left a guild: " + guild.name);
 })
 
 bot.on("roleCreate", async (role) => {

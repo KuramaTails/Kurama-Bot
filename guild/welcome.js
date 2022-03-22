@@ -7,18 +7,17 @@ module.exports = {
         var welcomeBackground
         var selectedChannel
         if (!selectGuildwelcome) {return}
-        if (selectGuildwelcome[0].active=true) {
+        if (selectGuildwelcome[0].activeWelcome==true) {
             if (!selectGuildwelcome[0].channelId) {
-                selectedChannel = await member.guild.channels.cache.find(c => c.type === "GUILD_TEXT");
-                return selectedChannel.send("Please select a channel to receive welcome messages when a member joins or disable welcomer")
+                return
             }
             else {
                 selectedChannel = await member.guild.channels.resolve(selectGuildwelcome[0].channelId)
-                if (!selectGuildwelcome[0].text) {
+                if (!selectGuildwelcome[0].textWelcome) {
                     return selectedChannel.send("Please select a text to have inside your welcome message")
                 }
                 else {
-                    welcomeText = selectGuildwelcome[0].text
+                    welcomeText = selectGuildwelcome[0].textWelcome
                 }
             }
         }
@@ -31,7 +30,7 @@ module.exports = {
         }
 
         createcanvas.execute(member,welcomeText,selectedChannel,welcomeBackground,add)
-        let selrole = member.guild.roles.cache.find(command => command.name === "👤Member")
+        let selrole = member.guild.roles.cache.find(role => role.name === "Member")
         member.roles.add(selrole)
     }
 };

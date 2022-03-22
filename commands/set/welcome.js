@@ -5,12 +5,12 @@ module.exports = {
 	async execute(interaction) {
         await dbconnect()
         switch (true) {
-            case interaction.options.getBoolean("active")!=null:
-                var active =interaction.options.getBoolean("active")
+            case interaction.options.getBoolean("activewelcome")!=null:
+                var activeWelcome =interaction.options.getBoolean("activewelcome")
                 await welcomeSchema.findOneAndUpdate({
                     _id: interaction.guild.id,
                 }, {
-                    active,
+                    activeWelcome,
                 },
                 {
                     upsert:true,
@@ -27,13 +27,13 @@ module.exports = {
                     upsert:true,
                 })
             break;
-            case interaction.options.getString("text")!=null:
-                var text = interaction.options.getString("text")
+            case interaction.options.getString("textwelcome")!=null:
+                var textWelcome = interaction.options.getString("textwelcome")
                 await welcomeSchema.findOneAndUpdate({
                     _id: interaction.guild.id,
                 }, {
                     _id: interaction.guild.id,
-                    text,
+                    textWelcome,
                 },
                 {
                     upsert:true,

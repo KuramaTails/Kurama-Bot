@@ -7,9 +7,9 @@ module.exports = {
 			subcommand
 				.setName('welcome')
 				.setDescription('Bot will add a song to queue!')
-                .addBooleanOption(option =>option.setName("active").setDescription("Link or Title of song/playlist you want to add to queue"))
+                .addBooleanOption(option =>option.setName("activewelcome").setDescription("Link or Title of song/playlist you want to add to queue"))
 				.addChannelOption(option =>option.setName("channel").setDescription("Link or Title of song/playlist you want to add to queue"))
-				.addStringOption(option =>option.setName("text").setDescription("Link or Title of song/playlist you want to add to queue"))
+				.addStringOption(option =>option.setName("textwelcome").setDescription("Link or Title of song/playlist you want to add to queue"))
 				.addStringOption(option =>option.setName("background").setDescription("Link or Title of song/playlist you want to add to queue"))
 				
 		)
@@ -17,10 +17,8 @@ module.exports = {
 			subcommand
 				.setName('leave')
 				.setDescription('Bot will add a song to queue!')
-                .addBooleanOption(option =>option.setName("active").setDescription("Link or Title of song/playlist you want to add to queue"))
-				.addChannelOption(option =>option.setName("channel").setDescription("Link or Title of song/playlist you want to add to queue"))
-				.addStringOption(option =>option.setName("text").setDescription("Link or Title of song/playlist you want to add to queue"))
-				.addStringOption(option =>option.setName("background").setDescription("Link or Title of song/playlist you want to add to queue"))
+                .addBooleanOption(option =>option.setName("activeleave").setDescription("Link or Title of song/playlist you want to add to queue"))
+				.addStringOption(option =>option.setName("textleave").setDescription("Link or Title of song/playlist you want to add to queue"))
 				
 		)
 		.addSubcommand(subcommand =>
