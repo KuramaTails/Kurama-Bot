@@ -43,6 +43,7 @@ const welcomer = require('./layout/setwelcomerchannel');
 const createplayerembed = require('./layout/createplayerembed');
 const playerchannel = require('./layout/setplayerchannel');
 const setautorole = require('./layout/setautorole');
+const settingswelcomer = require('./buttons/settingswelcomer');
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 
 
@@ -106,15 +107,8 @@ bot.on('interactionCreate', async interaction => {
 						const countVoiceChannels = bot.voice.adapters.size
 						playerButtons.execute(interaction,cooldownUser,player,selChannel,countVoiceChannels)
 					break;
-					default:
+					case "start-with-kurama":
 						switch (true) {
-							case interaction.message.embeds[0].title.includes("Help"):
-								helpButtons.execute(interaction,cooldownUser)
-							break;
-							case interaction.message.embeds[0].title.includes("**__Poll__**"):
-								await interaction.deferReply( {ephemeral: true});
-								await pollbuttons.execute(interaction,cooldownUser,pollUser)
-							break;
 							case interaction.message.embeds[0].title.includes("Start"):
 								await starttutorial.execute(interaction)
 								deleteCooldown.execute(interaction,cooldownUser)
@@ -156,13 +150,14 @@ bot.on('interactionCreate', async interaction => {
 										_id: interaction.guild.id,
 									}, {
 										activeWelcome:false,
+										activeLeave:false,
 									},
 									{
 										upsert:true,
 									})
 									await dbdisconnnect()
 									deleteCooldown.execute(interaction,cooldownUser)
-									await part5.execute(interaction)
+									//await part5.execute(interaction)
 									return
 								}
 								await dbconnect()
@@ -170,6 +165,7 @@ bot.on('interactionCreate', async interaction => {
 									_id: interaction.guild.id,
 								}, {
 									activeWelcome:true,
+									activeLeave:false,
 								},
 								{
 									upsert:true,
@@ -177,7 +173,7 @@ bot.on('interactionCreate', async interaction => {
 								await dbdisconnnect()
 								await welcomer.execute(interaction)
 								deleteCooldown.execute(interaction,cooldownUser)
-								await part5.execute(interaction)
+								//await part5.execute(interaction)
 							break;
 							case interaction.message.embeds[0].title.includes("Autorole"):
 								if (interaction.customId== "Tutorialno") {
@@ -192,6 +188,78 @@ bot.on('interactionCreate', async interaction => {
 							case interaction.message.embeds[0].title.includes("End"):
 								deleteCooldown.execute(interaction,cooldownUser)
 								await interaction.guild.channels.cache.find(c => c.name == "start-with-kurama").delete()
+							break;
+						}
+					break;
+					case "welcomer-settings":
+						switch (interaction.customId) {
+							case "enableWelcomer":
+								await dbconnect()
+								await welcomeSchema.findOneAndUpdate({
+									_id: interaction.guild.id,
+								}, {
+									activeWelcome:true,
+								},
+								{
+									upsert:true,
+								})
+								await dbdisconnnect()
+								deleteCooldown.execute(interaction,cooldownUser)
+								await settingswelcomer.execute(interaction,interaction.channel,4)
+							break;
+							case "disableWelcomer":
+								await dbconnect()
+								await welcomeSchema.findOneAndUpdate({
+									_id: interaction.guild.id,
+								}, {
+									activeWelcome:false,
+									activeLeave:false,
+								},
+								{
+									upsert:true,
+								})
+								await dbdisconnnect()
+								deleteCooldown.execute(interaction,cooldownUser)
+								await settingswelcomer.execute(interaction,interaction.channel,4)
+							break;
+							case "enableLeaver":
+								await dbconnect()
+								await welcomeSchema.findOneAndUpdate({
+									_id: interaction.guild.id,
+								}, {
+									activeLeave:true,
+								},
+								{
+									upsert:true,
+								})
+								await dbdisconnnect()
+								deleteCooldown.execute(interaction,cooldownUser)
+								await settingswelcomer.execute(interaction,interaction.channel,1)
+							break;
+							case "disableLeaver":
+								await dbconnect()
+								await welcomeSchema.findOneAndUpdate({
+									_id: interaction.guild.id,
+								}, {
+									activeLeave:false,
+								},
+								{
+									upsert:true,
+								})
+								await dbdisconnnect()
+								deleteCooldown.execute(interaction,cooldownUser)
+								await settingswelcomer.execute(interaction,interaction.channel,1)
+							break;
+						}
+					break;
+					default:
+						switch (true) {
+							case interaction.message.embeds[0].title.includes("Help"):
+								helpButtons.execute(interaction,cooldownUser)
+							break;
+							case interaction.message.embeds[0].title.includes("**__Poll__**"):
+								await interaction.deferReply( {ephemeral: true});
+								await pollbuttons.execute(interaction,cooldownUser,pollUser)
 							break;
 						}
 					break;
@@ -214,7 +282,7 @@ bot.on('interactionCreate', async interaction => {
 				}
 			}
 			if(interaction.isSelectMenu()) {
-				if(interaction.customId=="select") {
+				if(interaction.customId=="selectPlayerChannel") {
 					var selectedChannelId = interaction.values[0]
 					await dbconnect()
 						await playerSchema.findOneAndUpdate({
@@ -230,6 +298,42 @@ bot.on('interactionCreate', async interaction => {
 					createplayerembed.execute(interaction.guild,selectedChannelId)
 					playerchannel.execute(interaction)
 					await part6.execute(interaction)
+				}
+				if(interaction.customId=="selectWelcomerChannel") {
+					var selectedChannelId = interaction.values[0]
+					await dbconnect()
+						await welcomeSchema.findOneAndUpdate({
+							_id: interaction.guild.id,
+						}, {
+							channelId:selectedChannelId
+						},
+						{
+							upsert:true,
+						})
+					await dbdisconnnect()
+					deleteCooldown.execute(interaction,cooldownUser)
+					interaction.reply({
+						content: `Welcomer channel set`,
+						ephemeral: true
+					})
+				}
+				if(interaction.customId=="selectWelcomerBackground") {
+					var background = interaction.values[0]
+					await dbconnect()
+						await welcomeSchema.findOneAndUpdate({
+							_id: interaction.guild.id,
+						}, {
+							background
+						},
+						{
+							upsert:true,
+						})
+					await dbdisconnnect()
+					deleteCooldown.execute(interaction,cooldownUser)
+					interaction.reply({
+						content: `Welcomer background set`,
+						ephemeral: true
+					})
 				}
 			}
 		}
