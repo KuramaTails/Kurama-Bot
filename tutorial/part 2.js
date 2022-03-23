@@ -6,7 +6,7 @@ module.exports = {
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Welcome Channels")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .addField("Do you want to have a section to welcome new members and let them choose a role for themselves?","(e.g. welcome and choose-roles channels)")
+        .addField("Do you want to have a section to welcome new members and let them choose a role for themselves?","(Welcome and choose-roles channels will be created)")
         const button1 = new MessageActionRow()
         button1.addComponents(
             new MessageButton()

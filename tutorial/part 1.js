@@ -7,7 +7,7 @@ module.exports = {
         .setTitle("Bot Kurama : Serverstats")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
         .setDescription("Thanks for starting the tutorial. Let's start")
-        .addField("Do you want to have a section regarding your server statistics?","(e.g. number of members, online and offline members)")
+        .addField("Do you want to have a section regarding your server statistics?","(Members, Online and Offline channels will be created)")
         const button1 = new MessageActionRow()
         button1.addComponents(
             new MessageButton()

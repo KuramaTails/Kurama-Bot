@@ -1,16 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton} = require("discord.js");
-const channelsSchema = require("../schemas/channels-schema");
 module.exports = {
-	async execute(guild) {
-        var selectGuild = await channelsSchema.find({ "_id" : guild.id})
-		var keysChannels = Array.from(selectGuild[0].channels.keys())
-		var listTextChannels = []
-		for (let i = 0; i < keysChannels.length; i++) {
-			if (selectGuild[0].channels.get(keysChannels[i]).name == "player-room") {
-				listTextChannels.push(keysChannels[i])
-			}
-		}
-        var selectedChannel = await guild.channels.resolve(listTextChannels[0])
+	async execute(guild,selectedChannelId) {
+        var selectedChannel = await guild.channels.resolve(selectedChannelId)
         const Embedsearch = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle(`No songs playing right now`)

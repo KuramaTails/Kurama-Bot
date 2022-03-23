@@ -23,20 +23,26 @@ const registerPermissions = require('./guild/registerpermissions');
 const roleEvents = require('./guild/roleevents');
 
 const starttutorial = require('./tutorial/part 1');
-const serverstats = require('./layout/serverstats');
+const serverstats = require('./layout/createserverstats');
 const welcometutorial = require('./tutorial/part 2');
-const welcomechannels = require('./layout/welcomechannels');
+const welcomechannels = require('./layout/createwelcomezone');
 const playertutorial = require('./tutorial/part 3');
-const playerchannels = require('./layout/playerchannels');
+const playerchannels = require('./layout/createplayerzone');
 const welcomertutorial = require('./tutorial/part 4');
 const welcomeSchema = require('./schemas/welcome-schema');
+const part5 = require('./tutorial/part 5');
+const playerSchema = require('./schemas/player-schema');
+const part6 = require('./tutorial/part 6');
+const endtutorial = require('./tutorial/endtutorial');
 
 
 const { setTimeout } = require('timers/promises');
 const dbconnect = require('./db/dbconnect');
 const dbdisconnnect = require('./db/dbdisconnnect');
-const welcomer = require('./layout/welcomerchannel');
-const part5 = require('./tutorial/part 5');
+const welcomer = require('./layout/setwelcomerchannel');
+const createplayerembed = require('./layout/createplayerembed');
+const playerchannel = require('./layout/setplayerchannel');
+const setautorole = require('./layout/setautorole');
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 
 
@@ -156,7 +162,7 @@ bot.on('interactionCreate', async interaction => {
 									})
 									await dbdisconnnect()
 									deleteCooldown.execute(interaction,cooldownUser)
-									part5.execute(interaction)
+									await part5.execute(interaction)
 									return
 								}
 								await dbconnect()
@@ -171,7 +177,21 @@ bot.on('interactionCreate', async interaction => {
 								await dbdisconnnect()
 								await welcomer.execute(interaction)
 								deleteCooldown.execute(interaction,cooldownUser)
-								part5.execute(interaction)
+								await part5.execute(interaction)
+							break;
+							case interaction.message.embeds[0].title.includes("Autorole"):
+								if (interaction.customId== "Tutorialno") {
+									deleteCooldown.execute(interaction,cooldownUser)
+									await endtutorial.execute(interaction)
+									return
+								}
+								await setautorole.execute(interaction)
+								deleteCooldown.execute(interaction,cooldownUser)
+								await endtutorial.execute(interaction)
+							break;
+							case interaction.message.embeds[0].title.includes("End"):
+								deleteCooldown.execute(interaction,cooldownUser)
+								await interaction.guild.channels.cache.find(c => c.name == "start-with-kurama").delete()
 							break;
 						}
 					break;
@@ -191,6 +211,25 @@ bot.on('interactionCreate', async interaction => {
 						await interaction.deferReply( {ephemeral: true});
 						await command.execute(interaction,cooldownUser,player);
 					break;
+				}
+			}
+			if(interaction.isSelectMenu()) {
+				if(interaction.customId=="select") {
+					var selectedChannelId = interaction.values[0]
+					await dbconnect()
+						await playerSchema.findOneAndUpdate({
+							_id: interaction.guild.id,
+						}, {
+							channelId:selectedChannelId
+						},
+						{
+							upsert:true,
+						})
+					await dbdisconnnect()
+					deleteCooldown.execute(interaction,cooldownUser)
+					createplayerembed.execute(interaction.guild,selectedChannelId)
+					playerchannel.execute(interaction)
+					await part6.execute(interaction)
 				}
 			}
 		}

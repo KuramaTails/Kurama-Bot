@@ -6,7 +6,7 @@ module.exports = {
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Player Channels")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .addField("Do you want to have a section for giving commands to the music player and listening to music?","(e.g. player-room and music channels)")
+        .addField("Do you want to have a section for giving commands to the music player and listening to music?","(Player-room and music channels will be created)")
         const button1 = new MessageActionRow()
         button1.addComponents(
             new MessageButton()

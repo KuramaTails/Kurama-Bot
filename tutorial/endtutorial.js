@@ -4,21 +4,16 @@ module.exports = {
         await interaction.message.delete()
         const TutorialEmbed = new MessageEmbed()
         .setColor('#0099ff')
-        .setTitle("Bot Kurama : Set up welcomer")
+        .setTitle("Bot Kurama : End Tutorial")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .addField("Do you want to activate the welcomer?","Welcome messages will be send when new members will join")
+        .setDescription("Everything set up. \n Below you will find other text channels where you can set me up in the future. This channel will be deleted after clicking on the button below")
+        .addField("Tip: Use the / for a complete list of all usable commands, otherwise use /help to get a list with all categories","For problems or suggestions join into my discord")
         const button1 = new MessageActionRow()
         button1.addComponents(
             new MessageButton()
-            .setCustomId(`Tutorialyes`)
-            .setLabel("Yes")
-            .setStyle(`SUCCESS`),
-        )
-        button1.addComponents(
-            new MessageButton()
-            .setCustomId(`Tutorialno`)
-            .setLabel("No")
-            .setStyle(`DANGER`),
+            .setCustomId(`Tutorialstart`)
+            .setLabel("🏁")
+            .setStyle(`SECONDARY`),
         )
         interaction.channel.send({embeds:[TutorialEmbed],components:[button1]})
     }
