@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 const fs= require('fs');
-const { Client, Collection, Intents,Formatters} = require('discord.js');
+const { Client, Collection} = require('discord.js');
 const { Modal, TextInputComponent, showModal } = require('discord-modals')
 const discordModals = require('discord-modals')
 const prefix = "?";
@@ -44,8 +44,12 @@ const dbdisconnnect = require('./db/dbdisconnnect');
 const welcomer = require('./layout/setwelcomerchannel');
 const createplayerembed = require('./layout/createplayerembed');
 const playerchannel = require('./layout/setplayerchannel');
-const setautorole = require('./layout/setautorole');
-const settingswelcomer = require('./buttons/settingswelcomer');
+const setautorole = require('./layout/setbotchannel');
+const settingswelcomer = require('./settings/settingswelcomer');
+const settingsplayer = require('./settings/settingsplayer');
+const setbotchannel = require('./layout/setbotchannel');
+const autoroleSchema = require('./schemas/autorole-schema');
+const settingsbot = require('./settings/settingsbot');
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 discordModals(bot);
 
@@ -158,8 +162,9 @@ bot.on('interactionCreate', async interaction => {
 										upsert:true,
 									})
 									await dbdisconnnect()
+									await welcomer.execute(interaction)
 									deleteCooldown.execute(interaction,cooldownUser)
-									//await part5.execute(interaction)
+									await part5.execute(interaction)
 									return
 								}
 								await dbconnect()
@@ -175,15 +180,38 @@ bot.on('interactionCreate', async interaction => {
 								await dbdisconnnect()
 								await welcomer.execute(interaction)
 								deleteCooldown.execute(interaction,cooldownUser)
-								//await part5.execute(interaction)
+								await part5.execute(interaction)
 							break;
 							case interaction.message.embeds[0].title.includes("Autorole"):
 								if (interaction.customId== "Tutorialno") {
 									deleteCooldown.execute(interaction,cooldownUser)
+									await dbconnect()
+									await autoroleSchema.findOneAndUpdate({
+										_id: interaction.guild.id,
+									}, {
+										active:false,
+									},
+									{
+										upsert:true,
+									})
+									await dbdisconnnect()
+									await setbotchannel.execute(interaction)
+									await settingsbot.execute(interaction)
 									await endtutorial.execute(interaction)
 									return
 								}
-								await setautorole.execute(interaction)
+								await dbconnect()
+									await autoroleSchema.findOneAndUpdate({
+										_id: interaction.guild.id,
+									}, {
+										active:true,
+									},
+									{
+										upsert:true,
+									})
+									await dbdisconnnect()
+								await setbotchannel.execute(interaction)
+								await settingsbot.execute(interaction)
 								deleteCooldown.execute(interaction,cooldownUser)
 								await endtutorial.execute(interaction)
 							break;
@@ -299,6 +327,40 @@ bot.on('interactionCreate', async interaction => {
 							break;
 						}
 					break;
+					case "bot-settings":
+						switch (interaction.customId) {
+							case "enableAutorole":
+								await dbconnect()
+								await autoroleSchema.findOneAndUpdate({
+									_id: interaction.guild.id,
+								}, {
+									active:true,
+								},
+								{
+									upsert:true,
+								})
+								await dbdisconnnect()
+								deleteCooldown.execute(interaction,cooldownUser,5)
+								await interaction.channel.bulkDelete(1)
+								await settingsbot.execute(interaction)
+							break;
+							case "disableAutorole":
+								await dbconnect()
+								await autoroleSchema.findOneAndUpdate({
+									_id: interaction.guild.id,
+								}, {
+									active:false,
+								},
+								{
+									upsert:true,
+								})
+								await dbdisconnnect()
+								deleteCooldown.execute(interaction,cooldownUser,5)
+								await interaction.channel.bulkDelete(2)
+								await settingsbot.execute(interaction)
+							break;
+						}
+					break;
 					default:
 						switch (true) {
 							case interaction.message.embeds[0].title.includes("Help"):
@@ -329,6 +391,24 @@ bot.on('interactionCreate', async interaction => {
 				}
 			}
 			if(interaction.isSelectMenu()) {
+				if(interaction.customId=="tutorialSelectPlayerChannel") {
+					var selectedChannelId = interaction.values[0]
+					await dbconnect()
+						await playerSchema.findOneAndUpdate({
+							_id: interaction.guild.id,
+						}, {
+							channelId:selectedChannelId
+						},
+						{
+							upsert:true,
+						})
+					await dbdisconnnect()
+					deleteCooldown.execute(interaction,cooldownUser)
+					await createplayerembed.execute(interaction.guild,selectedChannelId)
+					await playerchannel.execute(interaction)
+					await settingsplayer.execute(interaction)
+					await part6.execute(interaction)
+				}
 				if(interaction.customId=="selectPlayerChannel") {
 					var selectedChannelId = interaction.values[0]
 					await dbconnect()
@@ -342,9 +422,7 @@ bot.on('interactionCreate', async interaction => {
 						})
 					await dbdisconnnect()
 					deleteCooldown.execute(interaction,cooldownUser)
-					createplayerembed.execute(interaction.guild,selectedChannelId)
-					playerchannel.execute(interaction)
-					await part6.execute(interaction)
+					await createplayerembed.execute(interaction.guild,selectedChannelId)
 				}
 				if(interaction.customId=="selectWelcomerChannel") {
 					var selectedChannelId = interaction.values[0]
@@ -382,6 +460,25 @@ bot.on('interactionCreate', async interaction => {
 						ephemeral: true
 					})
 				}
+				if(interaction.customId=="selectRoleChannel") {
+					var role = interaction.values[0]
+					await dbconnect()
+						await autoroleSchema.findOneAndUpdate({
+							_id: interaction.guild.id,
+						}, {
+							roleId: role
+						},
+						{
+							upsert:true,
+						})
+					await dbdisconnnect()
+					deleteCooldown.execute(interaction,cooldownUser)
+					interaction.reply({
+						content: `Autorole set to role <@&${interaction.values[0]}>`,
+						ephemeral: true
+					})
+				}
+				
 			}
 		}
 	} catch (error) {

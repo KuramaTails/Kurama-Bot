@@ -1,4 +1,4 @@
-const settingswelcomer = require("../buttons/settingswelcomer");
+const settingswelcomer = require("../settings/settingswelcomer");
 
 module.exports = {
 	async execute(interaction) {
