@@ -6,7 +6,7 @@ const welcomeSchema = require("../schemas/welcome-schema");
 
 module.exports = {
 	async execute(interaction,channel,selectedMessages) {
-        if (!selectedMessages) { selectedMessages=4}
+        if (!selectedMessages) { selectedMessages=5}
         try {
             channel.bulkDelete(selectedMessages)
         } catch (error) {
@@ -15,25 +15,14 @@ module.exports = {
         await dbconnect()
         var selectGuildWelcomer = await welcomeSchema.find({ "_id" : interaction.guild.id})
         await dbdisconnnect()
-        switch (selectedMessages) {
+        switch (selectedMessages) { 
             case 1:
                 var Leaver = new MessageEmbed()
                 .setColor('#0099ff')
                 .setTitle("Bot Kurama : Leaver enabler")
                 .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
                 var buttonLeaver = new MessageActionRow()
-                if (selectGuildWelcomer[0].activeLeave== false) {
-                    Leaver.addField(`Leaver set to \`${selectGuildWelcomer[0].activeLeave}\``,"Click button below to enable")
-                    buttonLeaver.addComponents(
-                        new MessageButton()
-                        .setCustomId(`enableLeaver`)
-                        .setLabel("🟢Enable")
-                        .setStyle(`SECONDARY`),
-                    )
-                    await channel.send({embeds:[Leaver],components:[buttonLeaver]})
-                }
-                else {
-                    Leaver.addField(`Leaver set to \`${selectGuildWelcomer[0].activeLeave}\``,"Click button below to disable")
+                Leaver.addField(`Leaver set to \`${selectGuildWelcomer[0].activeLeave}\``,"Click button below to disable")
                     buttonLeaver.addComponents(
                         new MessageButton()
                         .setCustomId(`disableLeaver`)
@@ -41,9 +30,37 @@ module.exports = {
                         .setStyle(`SECONDARY`),
                     )
                     await channel.send({embeds:[Leaver],components:[buttonLeaver]})
-                }
+
+                    var textLeaverEmbed = new MessageEmbed()
+                        .setColor('#0099ff')
+                        .setTitle("Bot Kurama : Leaver Text")
+                        .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
+                    var buttonLeavertext = new MessageActionRow()
+                    textLeaverEmbed.addField(`Leaver text set to \`${selectGuildWelcomer[0].textLeave}\``,"Click button below to change it")
+                    buttonLeavertext.addComponents(
+                        new MessageButton()
+                        .setCustomId(`textLeaver`)
+                        .setLabel("Change text Leaver")
+                        .setStyle(`SECONDARY`),
+                    )
+                    await channel.send({embeds:[textLeaverEmbed],components:[buttonLeavertext]})
             break;
-            case 4:
+            case 2:
+                var Leaver = new MessageEmbed()
+                .setColor('#0099ff')
+                .setTitle("Bot Kurama : Leaver enabler")
+                .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
+                var buttonLeaver = new MessageActionRow()
+                Leaver.addField(`Leaver set to \`${selectGuildWelcomer[0].activeLeave}\``,"Click button below to enable")
+                buttonLeaver.addComponents(
+                    new MessageButton()
+                    .setCustomId(`enableLeaver`)
+                    .setLabel("🟢Enable")
+                    .setStyle(`SECONDARY`),
+                )
+                await channel.send({embeds:[Leaver],components:[buttonLeaver]})
+            break;
+            case 5:
                 const enablerWelcomer = new MessageEmbed()
                 .setColor('#0099ff')
                 .setTitle("Bot Kurama : Welcomer enabler")
@@ -67,7 +84,6 @@ module.exports = {
                         .setLabel("🔴Disable")
                         .setStyle(`SECONDARY`),
                     )
-                    await channel.send({embeds:[enablerWelcomer],components:[button1]})
 
                     const channelEmbed = new MessageEmbed()
                     .setColor('#0099ff')
@@ -90,8 +106,20 @@ module.exports = {
                             },
                         ])
                     });
-                    await channel.send({embeds:[channelEmbed],components:[button2]})
                 
+                    var textWelcomerEmbed = new MessageEmbed()
+                    .setColor('#0099ff')
+                    .setTitle("Bot Kurama : Welcomer Text")
+                    .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
+                    var buttonWelcomertext = new MessageActionRow()
+                    textWelcomerEmbed.addField(`Welcome text set to \`${selectGuildWelcomer[0].textWelcome}\``,"Click button below to change it")
+                    buttonWelcomertext.addComponents(
+                        new MessageButton()
+                        .setCustomId(`textWelcomer`)
+                        .setLabel("Change text Welcomer")
+                        .setStyle(`SECONDARY`),
+                    )
+
                     const backgroundEmbed = new MessageEmbed()
                     .setColor('#0099ff')
                     .setTitle("Bot Kurama : Choose Background")
@@ -113,6 +141,11 @@ module.exports = {
                             },
                         ])
                     });
+
+                    
+                    await channel.send({embeds:[enablerWelcomer],components:[button1]})
+                    await channel.send({embeds:[channelEmbed],components:[button2]})
+                    await channel.send({embeds:[textWelcomerEmbed],components:[buttonWelcomertext]})
                     await channel.send({embeds:[backgroundEmbed],components:[button3]})
 
                     var Leaver = new MessageEmbed()
@@ -138,7 +171,22 @@ module.exports = {
                             .setLabel("🔴Disable")
                             .setStyle(`SECONDARY`),
                         )
+                        
+                        var textLeaverEmbed = new MessageEmbed()
+                        .setColor('#0099ff')
+                        .setTitle("Bot Kurama : Leaver Text")
+                        .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
+                        var buttonLeavertext = new MessageActionRow()
+                        textLeaverEmbed.addField(`Leaver text set to \`${selectGuildWelcomer[0].textLeave}\``,"Click button below to change it")
+                        buttonLeavertext.addComponents(
+                            new MessageButton()
+                            .setCustomId(`textLeaver`)
+                            .setLabel("Change text Leaver")
+                            .setStyle(`SECONDARY`),
+                        )
+
                         await channel.send({embeds:[Leaver],components:[buttonLeaver]})
+                        await channel.send({embeds:[textLeaverEmbed],components:[buttonLeavertext]})
                     }
                 }
             break;

@@ -1,6 +1,8 @@
 const dotenv = require('dotenv');
 const fs= require('fs');
-const { Client, Collection, Intents} = require('discord.js');
+const { Client, Collection, Intents,Formatters} = require('discord.js');
+const { Modal, TextInputComponent, showModal } = require('discord-modals')
+const discordModals = require('discord-modals')
 const prefix = "?";
 const DisTube = require('distube')
 const { YtDlpPlugin } = require('@distube/yt-dlp')
@@ -44,8 +46,8 @@ const createplayerembed = require('./layout/createplayerembed');
 const playerchannel = require('./layout/setplayerchannel');
 const setautorole = require('./layout/setautorole');
 const settingswelcomer = require('./buttons/settingswelcomer');
-const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: [ [Intents.FLAGS.GUILD_PRESENCES],[Intents.FLAGS.GUILD_MEMBERS] ,[Intents.FLAGS.DIRECT_MESSAGES] , [Intents.FLAGS.DIRECT_MESSAGE_REACTIONS], [Intents.FLAGS.GUILDS], [Intents.FLAGS.GUILD_VOICE_STATES], [Intents.FLAGS.GUILD_MESSAGES] , [Intents.FLAGS.GUILD_MESSAGE_REACTIONS]], partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
-
+const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
+discordModals(bot);
 
 bot.commands = new Collection();
 cooldownUser = new Collection();
@@ -204,8 +206,8 @@ bot.on('interactionCreate', async interaction => {
 									upsert:true,
 								})
 								await dbdisconnnect()
-								deleteCooldown.execute(interaction,cooldownUser)
-								await settingswelcomer.execute(interaction,interaction.channel,4)
+								deleteCooldown.execute(interaction,cooldownUser,5)
+								await settingswelcomer.execute(interaction,interaction.channel)
 							break;
 							case "disableWelcomer":
 								await dbconnect()
@@ -214,13 +216,17 @@ bot.on('interactionCreate', async interaction => {
 								}, {
 									activeWelcome:false,
 									activeLeave:false,
+									channelId: null,
+									background: null,
+									textWelcome:null,
+									textLeave: null,
 								},
 								{
 									upsert:true,
 								})
 								await dbdisconnnect()
-								deleteCooldown.execute(interaction,cooldownUser)
-								await settingswelcomer.execute(interaction,interaction.channel,4)
+								deleteCooldown.execute(interaction,cooldownUser,5)
+								await settingswelcomer.execute(interaction,interaction.channel)
 							break;
 							case "enableLeaver":
 								await dbconnect()
@@ -233,7 +239,7 @@ bot.on('interactionCreate', async interaction => {
 									upsert:true,
 								})
 								await dbdisconnnect()
-								deleteCooldown.execute(interaction,cooldownUser)
+								deleteCooldown.execute(interaction,cooldownUser,5)
 								await settingswelcomer.execute(interaction,interaction.channel,1)
 							break;
 							case "disableLeaver":
@@ -242,13 +248,54 @@ bot.on('interactionCreate', async interaction => {
 									_id: interaction.guild.id,
 								}, {
 									activeLeave:false,
+									textLeave: null,
 								},
 								{
 									upsert:true,
 								})
 								await dbdisconnnect()
+								deleteCooldown.execute(interaction,cooldownUser,5)
+								await settingswelcomer.execute(interaction,interaction.channel,2)
+							break;
+							case "textWelcomer":
+								var modal = new Modal()
+									.setCustomId('modal-welcomer')
+									.setTitle('Set Welcomer Text!')
+									.addComponents([
+									new TextInputComponent()
+									.setCustomId('textinput-customid')
+									.setLabel('Please enter welcome text here')
+									.setStyle('SHORT') 
+									.setMinLength(1)
+									.setMaxLength(1024)
+									.setPlaceholder('Write a text here')
+									.setRequired(true) 
+									]);
+									showModal(modal, {
+										client: bot, 
+										interaction: interaction 
+									  })
 								deleteCooldown.execute(interaction,cooldownUser)
-								await settingswelcomer.execute(interaction,interaction.channel,1)
+							break;
+							case "textLeaver":
+								var modal = new Modal()
+									.setCustomId('modal-leaver')
+									.setTitle('Set Leaver Text!')
+									.addComponents([
+									new TextInputComponent()
+									.setCustomId('textinput-customid')
+									.setLabel('Please enter leave text here')
+									.setStyle('SHORT') 
+									.setMinLength(1)
+									.setMaxLength(1024)
+									.setPlaceholder('Write a text here')
+									.setRequired(true) 
+									]);
+									showModal(modal, {
+										client: bot, 
+										interaction: interaction 
+									  })
+								deleteCooldown.execute(interaction,cooldownUser)
 							break;
 						}
 					break;
@@ -352,6 +399,44 @@ bot.on('messageCreate', async msg => {
 		}
 	}
 });
+
+bot.on('modalSubmit', async (modal) => {
+	if(modal.customId === 'modal-welcomer'){
+		const textWelcome = modal.getTextInputValue('textinput-customid')
+		await dbconnect()
+		await welcomeSchema.findOneAndUpdate({
+			_id: modal.member.guild.id,
+			}, {
+				textWelcome
+			},
+			{
+				upsert:true,
+			})
+		await dbdisconnnect()
+		var channel = modal.member.guild.channels.resolve(modal.channelId)
+		await settingswelcomer.execute(modal,channel)
+		await modal.deferReply({ ephemeral: true })
+    	await modal.followUp({ content: `Welcomer text has been set to ${textWelcome}.`, ephemeral: true })
+	} 
+	if(modal.customId === 'modal-leaver'){
+		const textLeave = modal.getTextInputValue('textinput-customid')
+		await dbconnect()
+		await welcomeSchema.findOneAndUpdate({
+			_id: modal.member.guild.id,
+			}, {
+				textLeave
+			},
+			{
+				upsert:true,
+			})
+		await dbdisconnnect()
+		var channel = modal.member.guild.channels.resolve(modal.channelId)
+		await settingswelcomer.execute(modal,channel,2)
+		await modal.deferReply({ ephemeral: true })
+    	await modal.followUp({ content: `Leave text has been set to ${textLeave}.`, ephemeral: true })
+	}  
+  });
+
 player.on('playSong', async (queue) =>{
 	playSong.execute(queue,player)
 	clearTimeout(timeoutID)

@@ -1,8 +1,11 @@
 module.exports = {
-    async execute(interaction,cooldownUser) {
+    async execute(interaction,cooldownUser,duration) {
+        if (!duration) {
+            duration=3
+        }
         setTimeout(() => {
             cooldownUser.delete(interaction.user.id);
-        }, 3*1000);
+        }, duration*1000);
     }
 };
     
