@@ -1,19 +1,15 @@
 const dotenv = require('dotenv');
 const fs= require('fs');
 const { Client, Collection} = require('discord.js');
-const { Modal, TextInputComponent, showModal } = require('discord-modals')
-const discordModals = require('discord-modals')
 const prefix = "?";
 const DisTube = require('distube')
 const { YtDlpPlugin } = require('@distube/yt-dlp')
 
+const discordModals = require('discord-modals')
+const isButton = require('./interactions/isButton');
+const isCommand = require('./interactions/isCommand');
+const isselectmenu = require('./interactions/isselectmenu');
 const guildcreate = require('./guild/guildcreate');
-
-const chooseRole = require('./buttons/chooseroles')
-const deleteCooldown = require('./buttons/deletecooldown')
-const helpButtons = require('./buttons/helpbuttons')
-const playerButtons = require('./buttons/playerbuttons')
-const pollbuttons = require('./buttons/pollbuttons');
 
 const addSong = require('./events/addsong');
 const finish = require('./events/finish');
@@ -24,35 +20,17 @@ const presenceUpdate = require('./guild/presenceupdates');
 const registerPermissions = require('./guild/registerpermissions');
 const roleEvents = require('./guild/roleevents');
 
-const starttutorial = require('./tutorial/part 1');
-const serverstats = require('./layout/createserverstats');
-const welcometutorial = require('./tutorial/part 2');
-const welcomechannels = require('./layout/createwelcomezone');
-const playertutorial = require('./tutorial/part 3');
-const playerchannels = require('./layout/createplayerzone');
-const welcomertutorial = require('./tutorial/part 4');
 const welcomeSchema = require('./schemas/welcome-schema');
-const part5 = require('./tutorial/part 5');
 const playerSchema = require('./schemas/player-schema');
-const part6 = require('./tutorial/part 6');
-const endtutorial = require('./tutorial/endtutorial');
-
 
 const { setTimeout } = require('timers/promises');
 const dbconnect = require('./db/dbconnect');
 const dbdisconnnect = require('./db/dbdisconnnect');
-const welcomer = require('./layout/setwelcomerchannel');
-const createplayerembed = require('./layout/createplayerembed');
-const playerchannel = require('./layout/setplayerchannel');
-const setautorole = require('./layout/setbotchannel');
 const settingswelcomer = require('./settings/settingswelcomer');
-const settingsplayer = require('./settings/settingsplayer');
-const setbotchannel = require('./layout/setbotchannel');
-const autoroleSchema = require('./schemas/autorole-schema');
-const settingsbot = require('./settings/settingsbot');
+const { default: mongoose } = require('mongoose');
+
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 discordModals(bot);
-
 bot.commands = new Collection();
 cooldownUser = new Collection();
 cooldownPresence = new Collection();
@@ -60,8 +38,6 @@ pollUser = new Collection();
 pollCounter = [0,0,0,0,0]
 
 dotenv.config()
-
-
 
 const player = new DisTube.DisTube(bot, {
 	leaveOnStop: false,
@@ -104,381 +80,14 @@ bot.on('interactionCreate', async interaction => {
 		} else {
 			cooldownUser.set(interaction.user.id, true);
 			if (interaction.isButton()) {
-				var selChannel = await bot.channels.cache.get(interaction.message.channelId)
-				switch (selChannel.name) {
-					case "choose-role":
-						chooseRole.execute(interaction,cooldownUser,selChannel)
-					break;
-					case "player-room":
-						const countVoiceChannels = bot.voice.adapters.size
-						playerButtons.execute(interaction,cooldownUser,player,selChannel,countVoiceChannels)
-					break;
-					case "start-with-kurama":
-						switch (true) {
-							case interaction.message.embeds[0].title.includes("Start"):
-								await starttutorial.execute(interaction)
-								deleteCooldown.execute(interaction,cooldownUser)
-							break;
-							case interaction.message.embeds[0].title.includes("Serverstats"):
-								if (interaction.customId== "Tutorialno") {
-									deleteCooldown.execute(interaction,cooldownUser)
-									await welcometutorial.execute(interaction)
-									return
-								}
-								await serverstats.execute(interaction)
-								deleteCooldown.execute(interaction,cooldownUser)
-								await welcometutorial.execute(interaction)
-							break;
-							case interaction.message.embeds[0].title.includes("Welcome"):
-								if (interaction.customId== "Tutorialno") {
-									deleteCooldown.execute(interaction,cooldownUser)
-									await playertutorial.execute(interaction)
-									return
-								}
-								await welcomechannels.execute(interaction)
-								deleteCooldown.execute(interaction,cooldownUser)
-								await playertutorial.execute(interaction)
-							break;
-							case interaction.message.embeds[0].title.includes("Player"):
-								if (interaction.customId== "Tutorialno") {
-									deleteCooldown.execute(interaction,cooldownUser)
-									welcomertutorial.execute(interaction)
-									return
-								}
-								await playerchannels.execute(interaction)
-								deleteCooldown.execute(interaction,cooldownUser)
-								welcomertutorial.execute(interaction)
-							break;
-							case interaction.message.embeds[0].title.includes("Set up welcomer"):
-								if (interaction.customId== "Tutorialno") {
-									await dbconnect()
-									await welcomeSchema.findOneAndUpdate({
-										_id: interaction.guild.id,
-									}, {
-										activeWelcome:false,
-										activeLeave:false,
-									},
-									{
-										upsert:true,
-									})
-									await dbdisconnnect()
-									await welcomer.execute(interaction)
-									deleteCooldown.execute(interaction,cooldownUser)
-									await part5.execute(interaction)
-									return
-								}
-								await dbconnect()
-								await welcomeSchema.findOneAndUpdate({
-									_id: interaction.guild.id,
-								}, {
-									activeWelcome:true,
-									activeLeave:false,
-								},
-								{
-									upsert:true,
-								})
-								await dbdisconnnect()
-								await welcomer.execute(interaction)
-								deleteCooldown.execute(interaction,cooldownUser)
-								await part5.execute(interaction)
-							break;
-							case interaction.message.embeds[0].title.includes("Autorole"):
-								if (interaction.customId== "Tutorialno") {
-									deleteCooldown.execute(interaction,cooldownUser)
-									await dbconnect()
-									await autoroleSchema.findOneAndUpdate({
-										_id: interaction.guild.id,
-									}, {
-										active:false,
-									},
-									{
-										upsert:true,
-									})
-									await dbdisconnnect()
-									await setbotchannel.execute(interaction)
-									await settingsbot.execute(interaction)
-									await endtutorial.execute(interaction)
-									return
-								}
-								await dbconnect()
-									await autoroleSchema.findOneAndUpdate({
-										_id: interaction.guild.id,
-									}, {
-										active:true,
-									},
-									{
-										upsert:true,
-									})
-									await dbdisconnnect()
-								await setbotchannel.execute(interaction)
-								await settingsbot.execute(interaction)
-								deleteCooldown.execute(interaction,cooldownUser)
-								await endtutorial.execute(interaction)
-							break;
-							case interaction.message.embeds[0].title.includes("End"):
-								deleteCooldown.execute(interaction,cooldownUser)
-								await interaction.guild.channels.cache.find(c => c.name == "start-with-kurama").delete()
-							break;
-						}
-					break;
-					case "welcomer-settings":
-						switch (interaction.customId) {
-							case "enableWelcomer":
-								await dbconnect()
-								await welcomeSchema.findOneAndUpdate({
-									_id: interaction.guild.id,
-								}, {
-									activeWelcome:true,
-								},
-								{
-									upsert:true,
-								})
-								await dbdisconnnect()
-								deleteCooldown.execute(interaction,cooldownUser,5)
-								await settingswelcomer.execute(interaction,interaction.channel)
-							break;
-							case "disableWelcomer":
-								await dbconnect()
-								await welcomeSchema.findOneAndUpdate({
-									_id: interaction.guild.id,
-								}, {
-									activeWelcome:false,
-									activeLeave:false,
-									channelId: null,
-									background: null,
-									textWelcome:null,
-									textLeave: null,
-								},
-								{
-									upsert:true,
-								})
-								await dbdisconnnect()
-								deleteCooldown.execute(interaction,cooldownUser,5)
-								await settingswelcomer.execute(interaction,interaction.channel)
-							break;
-							case "enableLeaver":
-								await dbconnect()
-								await welcomeSchema.findOneAndUpdate({
-									_id: interaction.guild.id,
-								}, {
-									activeLeave:true,
-								},
-								{
-									upsert:true,
-								})
-								await dbdisconnnect()
-								deleteCooldown.execute(interaction,cooldownUser,5)
-								await settingswelcomer.execute(interaction,interaction.channel,1)
-							break;
-							case "disableLeaver":
-								await dbconnect()
-								await welcomeSchema.findOneAndUpdate({
-									_id: interaction.guild.id,
-								}, {
-									activeLeave:false,
-									textLeave: null,
-								},
-								{
-									upsert:true,
-								})
-								await dbdisconnnect()
-								deleteCooldown.execute(interaction,cooldownUser,5)
-								await settingswelcomer.execute(interaction,interaction.channel,2)
-							break;
-							case "textWelcomer":
-								var modal = new Modal()
-									.setCustomId('modal-welcomer')
-									.setTitle('Set Welcomer Text!')
-									.addComponents([
-									new TextInputComponent()
-									.setCustomId('textinput-customid')
-									.setLabel('Please enter welcome text here')
-									.setStyle('SHORT') 
-									.setMinLength(1)
-									.setMaxLength(1024)
-									.setPlaceholder('Write a text here')
-									.setRequired(true) 
-									]);
-									showModal(modal, {
-										client: bot, 
-										interaction: interaction 
-									  })
-								deleteCooldown.execute(interaction,cooldownUser)
-							break;
-							case "textLeaver":
-								var modal = new Modal()
-									.setCustomId('modal-leaver')
-									.setTitle('Set Leaver Text!')
-									.addComponents([
-									new TextInputComponent()
-									.setCustomId('textinput-customid')
-									.setLabel('Please enter leave text here')
-									.setStyle('SHORT') 
-									.setMinLength(1)
-									.setMaxLength(1024)
-									.setPlaceholder('Write a text here')
-									.setRequired(true) 
-									]);
-									showModal(modal, {
-										client: bot, 
-										interaction: interaction 
-									  })
-								deleteCooldown.execute(interaction,cooldownUser)
-							break;
-						}
-					break;
-					case "bot-settings":
-						switch (interaction.customId) {
-							case "enableAutorole":
-								await dbconnect()
-								await autoroleSchema.findOneAndUpdate({
-									_id: interaction.guild.id,
-								}, {
-									active:true,
-								},
-								{
-									upsert:true,
-								})
-								await dbdisconnnect()
-								deleteCooldown.execute(interaction,cooldownUser,5)
-								await interaction.channel.bulkDelete(1)
-								await settingsbot.execute(interaction)
-							break;
-							case "disableAutorole":
-								await dbconnect()
-								await autoroleSchema.findOneAndUpdate({
-									_id: interaction.guild.id,
-								}, {
-									active:false,
-								},
-								{
-									upsert:true,
-								})
-								await dbdisconnnect()
-								deleteCooldown.execute(interaction,cooldownUser,5)
-								await interaction.channel.bulkDelete(2)
-								await settingsbot.execute(interaction)
-							break;
-						}
-					break;
-					default:
-						switch (true) {
-							case interaction.message.embeds[0].title.includes("Help"):
-								helpButtons.execute(interaction,cooldownUser)
-							break;
-							case interaction.message.embeds[0].title.includes("**__Poll__**"):
-								await interaction.deferReply( {ephemeral: true});
-								await pollbuttons.execute(interaction,cooldownUser,pollUser)
-							break;
-						}
-					break;
-				}
+				await isButton.execute(interaction,cooldownUser,bot,player)
 			}
 			if (interaction.isCommand()) {
 				const command = bot.commands.get(interaction.commandName);
-				switch (true) {
-					case interaction.commandName=="poll":
-						pollUser.clear(); 
-						pollCounter = [0,0,0,0,0]
-						await deleteCooldown.execute(interaction,cooldownUser);
-						await command.execute(interaction,pollCounter);
-					break;
-				
-					default:
-						await interaction.deferReply( {ephemeral: true});
-						await command.execute(interaction,cooldownUser,player);
-					break;
-				}
+				await isCommand.execute(interaction,command,pollUser,pollCounter,cooldownUser)
 			}
 			if(interaction.isSelectMenu()) {
-				if(interaction.customId=="tutorialSelectPlayerChannel") {
-					var selectedChannelId = interaction.values[0]
-					await dbconnect()
-						await playerSchema.findOneAndUpdate({
-							_id: interaction.guild.id,
-						}, {
-							channelId:selectedChannelId
-						},
-						{
-							upsert:true,
-						})
-					await dbdisconnnect()
-					deleteCooldown.execute(interaction,cooldownUser)
-					await createplayerembed.execute(interaction.guild,selectedChannelId)
-					await playerchannel.execute(interaction)
-					await settingsplayer.execute(interaction)
-					await part6.execute(interaction)
-				}
-				if(interaction.customId=="selectPlayerChannel") {
-					var selectedChannelId = interaction.values[0]
-					await dbconnect()
-						await playerSchema.findOneAndUpdate({
-							_id: interaction.guild.id,
-						}, {
-							channelId:selectedChannelId
-						},
-						{
-							upsert:true,
-						})
-					await dbdisconnnect()
-					deleteCooldown.execute(interaction,cooldownUser)
-					await createplayerembed.execute(interaction.guild,selectedChannelId)
-				}
-				if(interaction.customId=="selectWelcomerChannel") {
-					var selectedChannelId = interaction.values[0]
-					await dbconnect()
-						await welcomeSchema.findOneAndUpdate({
-							_id: interaction.guild.id,
-						}, {
-							channelId:selectedChannelId
-						},
-						{
-							upsert:true,
-						})
-					await dbdisconnnect()
-					deleteCooldown.execute(interaction,cooldownUser)
-					interaction.reply({
-						content: `Welcomer channel set`,
-						ephemeral: true
-					})
-				}
-				if(interaction.customId=="selectWelcomerBackground") {
-					var background = interaction.values[0]
-					await dbconnect()
-						await welcomeSchema.findOneAndUpdate({
-							_id: interaction.guild.id,
-						}, {
-							background
-						},
-						{
-							upsert:true,
-						})
-					await dbdisconnnect()
-					deleteCooldown.execute(interaction,cooldownUser)
-					interaction.reply({
-						content: `Welcomer background set`,
-						ephemeral: true
-					})
-				}
-				if(interaction.customId=="selectRoleChannel") {
-					var role = interaction.values[0]
-					await dbconnect()
-						await autoroleSchema.findOneAndUpdate({
-							_id: interaction.guild.id,
-						}, {
-							roleId: role
-						},
-						{
-							upsert:true,
-						})
-					await dbdisconnnect()
-					deleteCooldown.execute(interaction,cooldownUser)
-					interaction.reply({
-						content: `Autorole set to role <@&${interaction.values[0]}>`,
-						ephemeral: true
-					})
-				}
-				
+				await isselectmenu.execute(interaction,cooldownUser)
 			}
 		}
 	} catch (error) {
@@ -500,16 +109,29 @@ bot.on('messageCreate', async msg => {
 bot.on('modalSubmit', async (modal) => {
 	if(modal.customId === 'modal-welcomer'){
 		const textWelcome = modal.getTextInputValue('textinput-customid')
-		await dbconnect()
-		await welcomeSchema.findOneAndUpdate({
-			_id: modal.member.guild.id,
-			}, {
-				textWelcome
-			},
-			{
-				upsert:true,
-			})
-		await dbdisconnnect()
+		if (mongoose.connection.state= 1) {
+			await welcomeSchema.findOneAndUpdate({
+				_id: modal.member.guild.id,
+				}, {
+					textWelcome
+				},
+				{
+					upsert:true,
+				})
+		}
+		else {
+			await dbconnect()
+			await welcomeSchema.findOneAndUpdate({
+				_id: modal.member.guild.id,
+				}, {
+					textWelcome
+				},
+				{
+					upsert:true,
+				})
+			await dbdisconnnect()
+		}
+		
 		var channel = modal.member.guild.channels.resolve(modal.channelId)
 		await settingswelcomer.execute(modal,channel)
 		await modal.deferReply({ ephemeral: true })
