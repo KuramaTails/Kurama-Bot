@@ -1,6 +1,6 @@
 const fetchAll = require("../fetch/fetchAll");
 const dbconnect = require("../db/dbconnect");
-const dbdisconnnect = require("../db/dbdisconnnect");
+const dbdisconnnect = require("../db/dbdisconnect");
 const starttutorial = require("../tutorial/starttutorial");
 module.exports = {
     async execute(guild) {

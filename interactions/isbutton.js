@@ -1,6 +1,6 @@
 const { Modal, TextInputComponent, showModal } = require('discord-modals')
 const dbconnect = require("../db/dbconnect");
-const dbdisconnnect = require("../db/dbdisconnnect");
+const dbdisconnect = require("../db/dbdisconnect");
 const deleteCooldown = require('../buttons/deletecooldown')
 const discordModals = require('discord-modals')
 
@@ -88,7 +88,7 @@ module.exports = {
 									{
 										upsert:true,
 									})
-									await dbdisconnnect()
+									await dbdisconnect()
 									await setwelcomerchannel.execute(interaction)
 									deleteCooldown.execute(interaction,cooldownUser)
 									await part5.execute(interaction)
@@ -104,7 +104,7 @@ module.exports = {
 								{
 									upsert:true,
 								})
-								await dbdisconnnect()
+								await dbdisconnect()
 								await setwelcomerchannel.execute(interaction)
 								deleteCooldown.execute(interaction,cooldownUser)
 								await part5.execute(interaction)
@@ -121,7 +121,7 @@ module.exports = {
 									{
 										upsert:true,
 									})
-									await dbdisconnnect()
+									await dbdisconnect()
 									await setbotchannel.execute(interaction)
 									await settingsbot.execute(interaction)
 									await endtutorial.execute(interaction)
@@ -136,7 +136,7 @@ module.exports = {
 									{
 										upsert:true,
 									})
-									await dbdisconnnect()
+									await dbdisconnect()
 								await setbotchannel.execute(interaction)
 								await settingsbot.execute(interaction)
 								deleteCooldown.execute(interaction,cooldownUser)
@@ -160,7 +160,7 @@ module.exports = {
 								{
 									upsert:true,
 								})
-								await dbdisconnnect()
+								await dbdisconnect()
 								deleteCooldown.execute(interaction,cooldownUser,5)
 								await settingswelcomer.execute(interaction,interaction.channel)
 							break;
@@ -179,7 +179,7 @@ module.exports = {
 								{
 									upsert:true,
 								})
-								await dbdisconnnect()
+								await dbdisconnect()
 								deleteCooldown.execute(interaction,cooldownUser,5)
 								await settingswelcomer.execute(interaction,interaction.channel)
 							break;
@@ -193,7 +193,7 @@ module.exports = {
 								{
 									upsert:true,
 								})
-								await dbdisconnnect()
+								await dbdisconnect()
 								deleteCooldown.execute(interaction,cooldownUser,5)
 								await settingswelcomer.execute(interaction,interaction.channel,1)
 							break;
@@ -208,7 +208,7 @@ module.exports = {
 								{
 									upsert:true,
 								})
-								await dbdisconnnect()
+								await dbdisconnect()
 								deleteCooldown.execute(interaction,cooldownUser,5)
 								await settingswelcomer.execute(interaction,interaction.channel,2)
 							break;
@@ -219,7 +219,7 @@ module.exports = {
 									.addComponents([
 									new TextInputComponent()
 									.setCustomId('textinput-customid')
-									.setLabel('Please enter welcome text here')
+									.setLabel('Please enter welcomer text here')
 									.setStyle('SHORT') 
 									.setMinLength(1)
 									.setMaxLength(1024)
@@ -230,7 +230,7 @@ module.exports = {
 										client: bot, 
 										interaction: interaction 
 									  })
-								deleteCooldown.execute(interaction,cooldownUser)
+								deleteCooldown.execute(interaction,cooldownUser,5)
 							break;
 							case "textLeaver":
 								var modal = new Modal()
@@ -266,7 +266,7 @@ module.exports = {
 								{
 									upsert:true,
 								})
-								await dbdisconnnect()
+								await dbdisconnect()
 								deleteCooldown.execute(interaction,cooldownUser,5)
 								await interaction.channel.bulkDelete(1)
 								await settingsbot.execute(interaction)
@@ -281,7 +281,7 @@ module.exports = {
 								{
 									upsert:true,
 								})
-								await dbdisconnnect()
+								await dbdisconnect()
 								deleteCooldown.execute(interaction,cooldownUser,5)
 								await interaction.channel.bulkDelete(2)
 								await settingsbot.execute(interaction)

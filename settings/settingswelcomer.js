@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu } = require("discord.js");
 const fs= require('fs');
 const dbconnect = require("../db/dbconnect")
-const dbdisconnnect = require("../db/dbdisconnnect")
+const dbdisconnnect = require("../db/dbdisconnect")
 const welcomeSchema = require("../schemas/welcome-schema");
 
 module.exports = {

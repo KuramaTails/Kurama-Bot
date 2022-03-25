@@ -1,5 +1,5 @@
 const dbconnect = require('../db/dbconnect');
-const dbdisconnnect = require('../db/dbdisconnnect');
+const dbdisconnnect = require('../db/dbdisconnect');
 const fetchmembers = require('../fetch/fetchmembers');
 const leave = require('./leave');
 const welcome = require('../guild/welcome');

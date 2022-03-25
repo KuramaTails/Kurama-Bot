@@ -1,7 +1,5 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const dbconnect = require('../db/dbconnect');
-const dbdisconnnect = require('../db/dbdisconnnect');
 const rolesSchema = require('../schemas/roles-schema');
 module.exports = {
     async execute(guild,botId,commands) {
@@ -12,7 +10,6 @@ module.exports = {
                 .catch(console.error);
             let commandsList = await guild.commands.fetch()
             let moderation = await commandsList.find(command => command.name === "moderation")
-            await dbconnect()
             var selectGuildroles = await rolesSchema.find({ "_id" : guild.id})
             var keysChannelsroles = Array.from(selectGuildroles[0].roles.keys())
             var allPermissions = []
@@ -34,7 +31,6 @@ module.exports = {
                     allPermissions.push.apply(allPermissions,permissions)
                 }
             }
-            await dbdisconnnect()
             await moderation.permissions.add({ command: moderation.id,
                 permissions: allPermissions})
                     .then(console.log(`Set permissions in ${guild.name}`))

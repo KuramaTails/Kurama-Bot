@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton} = require("discord.js");
 const playerSchema = require('../schemas/player-schema');
 const dbconnect = require('../db/dbconnect');
-const dbdisconnnect = require("../db/dbdisconnnect");
+const dbdisconnnect = require("../db/dbdisconnect");
 module.exports = {
 	async execute(queue,player) {
         dbconnect()

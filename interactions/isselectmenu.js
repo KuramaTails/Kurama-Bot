@@ -1,5 +1,5 @@
 const dbconnect = require('../db/dbconnect');
-const dbdisconnnect = require('../db/dbdisconnnect');
+const dbdisconnnect = require('../db/dbdisconnect');
 
 const playerSchema = require('../schemas/player-schema');
 const welcomeSchema = require('../schemas/welcome-schema');

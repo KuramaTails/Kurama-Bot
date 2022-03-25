@@ -1,6 +1,6 @@
 const {  MessageButton, MessageActionRow } = require("discord.js");
 const dbconnect = require("../db/dbconnect");
-const dbdisconnnect = require("../db/dbdisconnnect");
+const dbdisconnnect = require("../db/dbdisconnect");
 const fetchroles = require("../fetch/fetchroles");
 const rolesSchema = require("../schemas/roles-schema");
 module.exports = {

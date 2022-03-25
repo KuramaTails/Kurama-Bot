@@ -25,9 +25,12 @@ const playerSchema = require('./schemas/player-schema');
 
 const { setTimeout } = require('timers/promises');
 const dbconnect = require('./db/dbconnect');
-const dbdisconnnect = require('./db/dbdisconnnect');
+const dbdisconnect = require('./db/dbdisconnect');
 const settingswelcomer = require('./settings/settingswelcomer');
 const { default: mongoose } = require('mongoose');
+const updatewelcomer = require('./welcomer/updatewelcomer');
+const deletecooldown = require('./buttons/deletecooldown');
+const updateleaver = require('./welcomer/updateleaver');
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 discordModals(bot);
@@ -92,7 +95,7 @@ bot.on('interactionCreate', async interaction => {
 		}
 	} catch (error) {
 		console.error(error);
-		interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+		await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
 
 });
@@ -108,53 +111,20 @@ bot.on('messageCreate', async msg => {
 
 bot.on('modalSubmit', async (modal) => {
 	if(modal.customId === 'modal-welcomer'){
-		const textWelcome = modal.getTextInputValue('textinput-customid')
-		if (mongoose.connection.state= 1) {
-			await welcomeSchema.findOneAndUpdate({
-				_id: modal.member.guild.id,
-				}, {
-					textWelcome
-				},
-				{
-					upsert:true,
-				})
+		try {
+			await updatewelcomer.execute(modal)
+		} catch (error) {
+			console.error(error);
 		}
-		else {
-			await dbconnect()
-			await welcomeSchema.findOneAndUpdate({
-				_id: modal.member.guild.id,
-				}, {
-					textWelcome
-				},
-				{
-					upsert:true,
-				})
-			await dbdisconnnect()
-		}
-		
-		var channel = modal.member.guild.channels.resolve(modal.channelId)
-		await settingswelcomer.execute(modal,channel)
-		await modal.deferReply({ ephemeral: true })
-    	await modal.followUp({ content: `Welcomer text has been set to ${textWelcome}.`, ephemeral: true })
 	} 
 	if(modal.customId === 'modal-leaver'){
-		const textLeave = modal.getTextInputValue('textinput-customid')
-		await dbconnect()
-		await welcomeSchema.findOneAndUpdate({
-			_id: modal.member.guild.id,
-			}, {
-				textLeave
-			},
-			{
-				upsert:true,
-			})
-		await dbdisconnnect()
-		var channel = modal.member.guild.channels.resolve(modal.channelId)
-		await settingswelcomer.execute(modal,channel,2)
-		await modal.deferReply({ ephemeral: true })
-    	await modal.followUp({ content: `Leave text has been set to ${textLeave}.`, ephemeral: true })
-	}  
-  });
+		try {
+			await updateleaver.execute(modal)
+		} catch (error) {
+			console.error(error);
+		}
+	} 
+});
 
 player.on('playSong', async (queue) =>{
 	playSong.execute(queue,player)
@@ -185,11 +155,13 @@ bot.on('ready', async () => {
 	var guildsKeys= Array.from(guilds.keys())
 	var botId = bot.user.id
 	var guildsnames = []
+	await dbconnect()
 	for (let i = 0; i < guildsKeys.length; i++) {
 		var guild = bot.guilds.cache.get(guilds.get(guildsKeys[i]).id)
 		await registerPermissions.execute(guild,botId,commands)
 		guildsnames.push(guilds.get(guildsKeys[i]).name)
 	}
+	await dbdisconnect()
     console.log(`Bot joined into ${guildsnames.toString()}`)
 });
 bot.on("presenceUpdate", async (oldMember, newMember) => {
@@ -332,7 +304,7 @@ bot.on("roleUpdate", async (oldRole,newRole) => {
 	await roleEvents.execute(newRole)		
 })
 
-bot.on('debug', (...args) => console.log('debug', ...args));
-bot.on('rateLimit', (...args) => console.log('rateLimit', ...args));
+//bot.on('debug', (...args) => console.log('debug', ...args));
+//bot.on('rateLimit', (...args) => console.log('rateLimit', ...args));
 
 bot.login(process.env.BOT_TOKEN);
