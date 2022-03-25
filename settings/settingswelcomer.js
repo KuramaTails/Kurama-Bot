@@ -5,17 +5,18 @@ const dbdisconnnect = require("../db/dbdisconnect")
 const welcomeSchema = require("../schemas/welcome-schema");
 
 module.exports = {
-	async execute(interaction,channel,selectedMessages) {
-        if (!selectedMessages) { selectedMessages=5}
+	async execute(interaction,channel,bulkSelected) {
+        if(bulkSelected==0) {return}
+        if (!bulkSelected) { bulkSelected=5}
         try {
-            channel.bulkDelete(selectedMessages)
+            channel.bulkDelete(bulkSelected)
         } catch (error) {
             console.log(error)
         }
         await dbconnect()
         var selectGuildWelcomer = await welcomeSchema.find({ "_id" : interaction.guild.id})
         await dbdisconnnect()
-        switch (selectedMessages) { 
+        switch (bulkSelected) { 
             case 1:
                 var Leaver = new MessageEmbed()
                 .setColor('#0099ff')
@@ -25,7 +26,7 @@ module.exports = {
                 Leaver.addField(`Leaver set to \`${selectGuildWelcomer[0].activeLeave}\``,"Click button below to disable")
                     buttonLeaver.addComponents(
                         new MessageButton()
-                        .setCustomId(`disableLeaver`)
+                        .setCustomId(`welcomer-disableLeaver`)
                         .setLabel("🔴Disable")
                         .setStyle(`SECONDARY`),
                     )
@@ -39,7 +40,7 @@ module.exports = {
                     textLeaverEmbed.addField(`Leaver text set to \`${selectGuildWelcomer[0].textLeave}\``,"Click button below to change it")
                     buttonLeavertext.addComponents(
                         new MessageButton()
-                        .setCustomId(`textLeaver`)
+                        .setCustomId(`welcomer-textLeaver`)
                         .setLabel("Change text Leaver")
                         .setStyle(`SECONDARY`),
                     )
@@ -54,7 +55,7 @@ module.exports = {
                 Leaver.addField(`Leaver set to \`${selectGuildWelcomer[0].activeLeave}\``,"Click button below to enable")
                 buttonLeaver.addComponents(
                     new MessageButton()
-                    .setCustomId(`enableLeaver`)
+                    .setCustomId(`welcomer-enableLeaver`)
                     .setLabel("🟢Enable")
                     .setStyle(`SECONDARY`),
                 )
@@ -70,7 +71,7 @@ module.exports = {
                     enablerWelcomer.addField(`Welcomer set to \`${selectGuildWelcomer[0].activeWelcome}\``,"Click button below to enable")
                     button1.addComponents(
                         new MessageButton()
-                        .setCustomId(`enableWelcomer`)
+                        .setCustomId(`welcomer-enableWelcomer`)
                         .setLabel("🟢Enable")
                         .setStyle(`SECONDARY`),
                     )
@@ -80,7 +81,7 @@ module.exports = {
                     enablerWelcomer.addField(`Welcomer set to \`${selectGuildWelcomer[0].activeWelcome}\``,"Click button below to disable")
                     button1.addComponents(
                         new MessageButton()
-                        .setCustomId(`disableWelcomer`)
+                        .setCustomId(`welcomer-disableWelcomer`)
                         .setLabel("🔴Disable")
                         .setStyle(`SECONDARY`),
                     )
@@ -93,7 +94,7 @@ module.exports = {
                     const button2 = new MessageActionRow()
                     button2.addComponents(
                         new MessageSelectMenu()
-                            .setCustomId('selectWelcomerChannel')
+                            .setCustomId('welcomer-selectWelcomerChannel')
                             .setPlaceholder('Nothing selected')
                             
                     )
@@ -115,7 +116,7 @@ module.exports = {
                     textWelcomerEmbed.addField(`Welcome text set to \`${selectGuildWelcomer[0].textWelcome}\``,"Click button below to change it")
                     buttonWelcomertext.addComponents(
                         new MessageButton()
-                        .setCustomId(`textWelcomer`)
+                        .setCustomId(`welcomer-textWelcomer`)
                         .setLabel("Change text Welcomer")
                         .setStyle(`SECONDARY`),
                     )
@@ -128,7 +129,7 @@ module.exports = {
                     const button3 = new MessageActionRow()
                     button3.addComponents(
                         new MessageSelectMenu()
-                            .setCustomId('selectWelcomerBackground')
+                            .setCustomId('welcomer-selectWelcomerBackground')
                             .setPlaceholder('Nothing selected')
                             
                     )
@@ -157,7 +158,7 @@ module.exports = {
                         Leaver.addField(`Leaver set to \`${selectGuildWelcomer[0].activeLeave}\``,"Click button below to enable")
                         buttonLeaver.addComponents(
                             new MessageButton()
-                            .setCustomId(`enableLeaver`)
+                            .setCustomId(`welcomer-enableLeaver`)
                             .setLabel("🟢Enable")
                             .setStyle(`SECONDARY`),
                         )
@@ -167,7 +168,7 @@ module.exports = {
                         Leaver.addField(`Leaver set to \`${selectGuildWelcomer[0].activeLeave}\``,"Click button below to disable")
                         buttonLeaver.addComponents(
                             new MessageButton()
-                            .setCustomId(`disableLeaver`)
+                            .setCustomId(`welcomer-disableLeaver`)
                             .setLabel("🔴Disable")
                             .setStyle(`SECONDARY`),
                         )
@@ -180,7 +181,7 @@ module.exports = {
                         textLeaverEmbed.addField(`Leaver text set to \`${selectGuildWelcomer[0].textLeave}\``,"Click button below to change it")
                         buttonLeavertext.addComponents(
                             new MessageButton()
-                            .setCustomId(`textLeaver`)
+                            .setCustomId(`welcomer-textLeaver`)
                             .setLabel("Change text Leaver")
                             .setStyle(`SECONDARY`),
                         )

@@ -141,110 +141,109 @@ module.exports = {
 						}
 					}
 				break;
-				case "welcomer-settings":
-					switch (interaction.customId) {
-						case "enableWelcomer":
-							await dbconnect()
-							await welcomeSchema.findOneAndUpdate({
-								_id: interaction.guild.id,
-							}, {
-								activeWelcome:true,
-							},
-							{
-								upsert:true,
-							})
-							await dbdisconnect()
-							deleteCooldown.execute(interaction,cooldownUser,5)
-							await settingswelcomer.execute(interaction,interaction.channel)
-						break;
-						case "disableWelcomer":
-							await dbconnect()
-							await welcomeSchema.findOneAndUpdate({
-								_id: interaction.guild.id,
-							}, {
-								activeWelcome:false,
-								activeLeave:false,
-								channelId: null,
-								background: null,
-								textWelcome:null,
-								textLeave: null,
-							},
-							{
-								upsert:true,
-							})
-							await dbdisconnect()
-							deleteCooldown.execute(interaction,cooldownUser,5)
-							await settingswelcomer.execute(interaction,interaction.channel)
-						break;
-						case "enableLeaver":
-							await dbconnect()
-							await welcomeSchema.findOneAndUpdate({
-								_id: interaction.guild.id,
-							}, {
-								activeLeave:true,
-							},
-							{
-								upsert:true,
-							})
-							await dbdisconnect()
-							deleteCooldown.execute(interaction,cooldownUser,5)
-							await settingswelcomer.execute(interaction,interaction.channel,1)
-						break;
-						case "disableLeaver":
-							await dbconnect()
-							await welcomeSchema.findOneAndUpdate({
-								_id: interaction.guild.id,
-							}, {
-								activeLeave:false,
-								textLeave: null,
-							},
-							{
-								upsert:true,
-							})
-							await dbdisconnect()
-							deleteCooldown.execute(interaction,cooldownUser,5)
-							await settingswelcomer.execute(interaction,interaction.channel,2)
-						break;
-						case "textWelcomer":
-							var modal = new Modal()
-								.setCustomId('modal-welcomer')
-								.setTitle('Set Welcomer Text!')
-								.addComponents([
-								new TextInputComponent()
-								.setCustomId('textinput-customid')
-								.setLabel('Please enter welcomer text here')
-								.setStyle('SHORT') 
-								.setMinLength(1)
-								.setMaxLength(1024)
-								.setPlaceholder('Write a text here')
-								.setRequired(true) 
-								]);
-								showModal(modal, {
-									client: bot, 
-									interaction: interaction 
-								  })
-							deleteCooldown.execute(interaction,cooldownUser,5)
-						break;
-						case "textLeaver":
-							var modal = new Modal()
-								.setCustomId('modal-leaver')
-								.setTitle('Set Leaver Text!')
-								.addComponents([
-								new TextInputComponent()
-								.setCustomId('textinput-customid')
-								.setLabel('Please enter leave text here')
-								.setStyle('SHORT') 
-								.setMinLength(1)
-								.setMaxLength(1024)
-								.setPlaceholder('Write a text here')
-								.setRequired(true) 
-								]);
-								showModal(modal, {
-									client: bot, 
-									interaction: interaction 
-								  })
-							deleteCooldown.execute(interaction,cooldownUser)
-						break;
+				case "welcomer":
+					var bulkSelected
+					try {
+						switch (separateCustomId[1]) {
+							case "enableWelcomer":
+								await dbconnect()
+								await welcomeSchema.findOneAndUpdate({
+									_id: interaction.guild.id,
+								}, {
+									activeWelcome:true,
+								},
+								{
+									upsert:true,
+								})
+								await dbdisconnect()
+							break;
+							case "disableWelcomer":
+								await dbconnect()
+								await welcomeSchema.findOneAndUpdate({
+									_id: interaction.guild.id,
+								}, {
+									activeWelcome:false,
+									activeLeave:false,
+									channelId: null,
+									background: null,
+									textWelcome:null,
+									textLeave: null,
+								},
+								{
+									upsert:true,
+								})
+								await dbdisconnect()
+							break;
+							case "enableLeaver":
+								bulkSelected=1
+								await dbconnect()
+								await welcomeSchema.findOneAndUpdate({
+									_id: interaction.guild.id,
+								}, {
+									activeLeave:true,
+								},
+								{
+									upsert:true,
+								})
+								await dbdisconnect()
+							break;
+							case "disableLeaver":
+								bulkSelected=2
+								await dbconnect()
+								await welcomeSchema.findOneAndUpdate({
+									_id: interaction.guild.id,
+								}, {
+									activeLeave:false,
+									textLeave: null,
+								},
+								{
+									upsert:true,
+								})
+								await dbdisconnect()
+							break;
+							case "textWelcomer":
+								bulkSelected=0
+								var modal = new Modal()
+									.setCustomId('modal-welcomer')
+									.setTitle('Set Welcomer Text!')
+									.addComponents([
+									new TextInputComponent()
+									.setCustomId('textinput-customid')
+									.setLabel('Please enter welcomer text here')
+									.setStyle('SHORT') 
+									.setMinLength(1)
+									.setMaxLength(1024)
+									.setPlaceholder('Write a text here')
+									.setRequired(true) 
+									]);
+									showModal(modal, {
+										client: bot, 
+										interaction: interaction 
+									  })
+							break;
+							case "textLeaver":
+								bulkSelected=0
+								var modal = new Modal()
+									.setCustomId('modal-leaver')
+									.setTitle('Set Leaver Text!')
+									.addComponents([
+									new TextInputComponent()
+									.setCustomId('textinput-customid')
+									.setLabel('Please enter leave text here')
+									.setStyle('SHORT') 
+									.setMinLength(1)
+									.setMaxLength(1024)
+									.setPlaceholder('Write a text here')
+									.setRequired(true) 
+									]);
+									showModal(modal, {
+										client: bot, 
+										interaction: interaction 
+									  })
+							break;
+						}
+					} finally {
+						await settingswelcomer.execute(interaction,interaction.channel,bulkSelected)
 					}
 				break;
 				case "bot-settings":
@@ -260,7 +259,6 @@ module.exports = {
 								upsert:true,
 							})
 							await dbdisconnect()
-							deleteCooldown.execute(interaction,cooldownUser,5)
 							await interaction.channel.bulkDelete(1)
 							await settingsbot.execute(interaction)
 						break;
@@ -275,7 +273,6 @@ module.exports = {
 								upsert:true,
 							})
 							await dbdisconnect()
-							deleteCooldown.execute(interaction,cooldownUser,5)
 							await interaction.channel.bulkDelete(2)
 							await settingsbot.execute(interaction)
 						break;
