@@ -40,7 +40,7 @@ module.exports = {
 				break;
 				case "player-room":
 					const countVoiceChannels = bot.voice.adapters.size
-					playerButtons.execute(interaction,cooldownUser,player,selChannel,countVoiceChannels)
+					playerButtons.execute(interaction,player,countVoiceChannels)
 				break;
 				case "start-with-kurama":
 					switch (true) {
