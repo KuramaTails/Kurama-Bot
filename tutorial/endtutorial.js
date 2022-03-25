@@ -11,7 +11,7 @@ module.exports = {
         const button1 = new MessageActionRow()
         button1.addComponents(
             new MessageButton()
-            .setCustomId(`Tutorialstart`)
+            .setCustomId(`tutorial-end`)
             .setLabel("🏁")
             .setStyle(`SECONDARY`),
         )

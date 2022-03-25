@@ -21,7 +21,7 @@ const createplayerzone = require('../layout/createplayerzone');
 const part4 = require('../tutorial/part 4');
 const part5 = require('../tutorial/part 5');
 const endtutorial = require('../tutorial/endtutorial');
-
+const tutorialparts = [part2,part3,part4,part5,0,endtutorial]
 const setwelcomerchannel = require('../layout/setwelcomerchannel');
 const setbotchannel = require('../layout/setbotchannel');
 
@@ -31,123 +31,114 @@ const deletecooldown = require('../buttons/deletecooldown');
 
 module.exports = {
 	async execute(interaction,cooldownUser,bot,player) {
+		var separateCustomId = interaction.customId.split("-")
         discordModals(bot);
-        var selChannel = await interaction.guild.channels.resolve(interaction.channelId)
 		try {
-			switch (selChannel.name) {
-				case "choose-role":
-					chooseRole.execute(interaction,cooldownUser,selChannel)
+			switch (separateCustomId[0]) {
+				case "role":
+					chooseRole.execute(interaction)
 				break;
-				case "player-room":
+				case "player":
 					const countVoiceChannels = bot.voice.adapters.size
 					playerButtons.execute(interaction,player,countVoiceChannels)
 				break;
-				case "start-with-kurama":
-					switch (true) {
-						case interaction.message.embeds[0].title.includes("Start"):
-							await part1.execute(interaction)
-							deleteCooldown.execute(interaction,cooldownUser)
-						break;
-						case interaction.message.embeds[0].title.includes("Serverstats"):
-							if (interaction.customId== "Tutorialno") {
-								deleteCooldown.execute(interaction,cooldownUser)
-								await part2.execute(interaction)
-								return
+				case "tutorial":
+					var regExp = /\(([^)]+)\)/;
+					var matches = regExp.exec(interaction.message.embeds[0].title);
+					if (!matches) {
+						switch (separateCustomId[1]) {
+							case "start":
+								await part1.execute(interaction)
+							break;
+							case "end":
+								await interaction.guild.channels.cache.find(c => c.name == "start-with-kurama").delete()
+							break;
+						}
+					}
+					else {
+						var splitParts = matches[1].split("/")
+						var part = parseInt(splitParts[0])
+						try {
+							switch (separateCustomId[1]) {
+								case "yes":
+									switch (part) {
+										case 1:
+											await createserverstats.execute(interaction)
+										break;
+										case 2:
+											await createwelcomezone.execute(interaction)
+										break;
+										case 3:
+											await createplayerzone.execute(interaction)
+										break;
+										case 4:
+											await dbconnect()
+											await welcomeSchema.findOneAndUpdate({
+												_id: interaction.guild.id,
+											}, {
+												activeWelcome:true,
+												activeLeave:false,
+											},
+											{
+												upsert:true,
+											})
+											await dbdisconnect()
+											await setwelcomerchannel.execute(interaction)
+										break;
+										case 6:
+											await dbconnect()
+												await autoroleSchema.findOneAndUpdate({
+													_id: interaction.guild.id,
+												}, {
+													active:true,
+												},
+												{
+													upsert:true,
+												})
+												await dbdisconnect()
+											await setbotchannel.execute(interaction)
+											await settingsbot.execute(interaction)
+										break;
+									}
+								break;
+								case "no":
+									switch (part) {
+										case 4:
+											await dbconnect()
+											await welcomeSchema.findOneAndUpdate({
+												_id: interaction.guild.id,
+											}, {
+												activeWelcome:false,
+												activeLeave:false,
+											},
+											{
+												upsert:true,
+											})
+											await dbdisconnect()
+											await setwelcomerchannel.execute(interaction)
+										break;
+										case 6:
+											await dbconnect()
+											await autoroleSchema.findOneAndUpdate({
+												_id: interaction.guild.id,
+											}, {
+												active:false,
+											},
+											{
+												upsert:true,
+											})
+											await dbdisconnect()
+											await setbotchannel.execute(interaction)
+											await settingsbot.execute(interaction)
+										break;
+									}
+								break;
 							}
-							await createserverstats.execute(interaction)
-							deleteCooldown.execute(interaction,cooldownUser)
-							await part2.execute(interaction)
-						break;
-						case interaction.message.embeds[0].title.includes("Welcome"):
-							if (interaction.customId== "Tutorialno") {
-								deleteCooldown.execute(interaction,cooldownUser)
-								await part3.execute(interaction)
-								return
+						} finally {
+							if (part<7) {
+								await tutorialparts[part-1].execute(interaction)
 							}
-							await createwelcomezone.execute(interaction)
-							deleteCooldown.execute(interaction,cooldownUser)
-							await part3.execute(interaction)
-						break;
-						case interaction.message.embeds[0].title.includes("Player"):
-							if (interaction.customId== "Tutorialno") {
-								deleteCooldown.execute(interaction,cooldownUser)
-								part4.execute(interaction)
-								return
-							}
-							await createplayerzone.execute(interaction)
-							deleteCooldown.execute(interaction,cooldownUser)
-							part4.execute(interaction)
-						break;
-						case interaction.message.embeds[0].title.includes("Set up welcomer"):
-							if (interaction.customId== "Tutorialno") {
-								await dbconnect()
-								await welcomeSchema.findOneAndUpdate({
-									_id: interaction.guild.id,
-								}, {
-									activeWelcome:false,
-									activeLeave:false,
-								},
-								{
-									upsert:true,
-								})
-								await dbdisconnect()
-								await setwelcomerchannel.execute(interaction)
-								deleteCooldown.execute(interaction,cooldownUser)
-								await part5.execute(interaction)
-								return
-							}
-							await dbconnect()
-							await welcomeSchema.findOneAndUpdate({
-								_id: interaction.guild.id,
-							}, {
-								activeWelcome:true,
-								activeLeave:false,
-							},
-							{
-								upsert:true,
-							})
-							await dbdisconnect()
-							await setwelcomerchannel.execute(interaction)
-							deleteCooldown.execute(interaction,cooldownUser)
-							await part5.execute(interaction)
-						break;
-						case interaction.message.embeds[0].title.includes("Autorole"):
-							if (interaction.customId== "Tutorialno") {
-								deleteCooldown.execute(interaction,cooldownUser)
-								await dbconnect()
-								await autoroleSchema.findOneAndUpdate({
-									_id: interaction.guild.id,
-								}, {
-									active:false,
-								},
-								{
-									upsert:true,
-								})
-								await dbdisconnect()
-								await setbotchannel.execute(interaction)
-								await settingsbot.execute(interaction)
-								await endtutorial.execute(interaction)
-								return
-							}
-							await dbconnect()
-								await autoroleSchema.findOneAndUpdate({
-									_id: interaction.guild.id,
-								}, {
-									active:true,
-								},
-								{
-									upsert:true,
-								})
-								await dbdisconnect()
-							await setbotchannel.execute(interaction)
-							await settingsbot.execute(interaction)
-							deleteCooldown.execute(interaction,cooldownUser)
-							await endtutorial.execute(interaction)
-						break;
-						case interaction.message.embeds[0].title.includes("End"):
-							deleteCooldown.execute(interaction,cooldownUser)
-							await interaction.guild.channels.cache.find(c => c.name == "start-with-kurama").delete()
-						break;
+						}
 					}
 				break;
 				case "welcomer-settings":

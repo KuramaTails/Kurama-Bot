@@ -13,7 +13,7 @@ const deletecooldown = require('../buttons/deletecooldown');
 
 module.exports = {
 	async execute(interaction,cooldownUser) {
-        if(interaction.customId=="tutorialSelectPlayerChannel") {
+        if(interaction.customId=="tutorial-SelectPlayerChannel") {
             var selectedChannelId = interaction.values[0]
             await dbconnect()
                 await playerSchema.findOneAndUpdate({

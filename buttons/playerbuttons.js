@@ -30,7 +30,7 @@ module.exports = {
             var buttons = interaction.message.components[0]
             var buttons2 = interaction.message.components[1]
             switch (interaction.customId) {
-                case "Join":
+                case "player-join":
                     try {
                         if (countVoiceChannels<1) {
                             player.voices.join(voiceChannel)
@@ -52,7 +52,7 @@ module.exports = {
                         })
                     }
                 break;
-                case "Previous":
+                case "player-previous":
                     try {
                         if (player.queues.collection.first().previousSongs.length) {
                             player.previous(voiceChannel);
@@ -74,7 +74,7 @@ module.exports = {
                         })
                     }
                 break;
-                case "(Un)Pause":
+                case "player-pause":
                     try {
                         if (!player.queues.collection.first().paused) {
                             player.pause(voiceChannel)
@@ -97,7 +97,7 @@ module.exports = {
                         })
                     }
                 break;
-                case "Next":
+                case "player-next":
                     try {
                         if (player.queues.collection.first().songs.length>1) {
                             player.skip(voiceChannel)
@@ -120,7 +120,7 @@ module.exports = {
                         })
                     } 
                 break;
-                case "Leave":
+                case "player-leave":
                     try {
                         if (countVoiceChannels!=0) {
                             player.voices.leave(voiceChannel)
@@ -142,13 +142,13 @@ module.exports = {
                         })
                     }
                 break;
-                case "Less commands 🔼":
+                case "player-lesscommands":
                     buttons2.components[0].setLabel("More commands 🔽")
-                    buttons2.components[0].setCustomId("More commands 🔽")
+                    buttons2.components[0].setCustomId("player-morecommands")
                     secMessage.edit({embeds: [Embedsearch],components: [buttons,buttons2] });
                     interaction.deferUpdate()
                 break;
-                case "More commands 🔽":
+                case "player-morecommands":
                     var moreButtonscommands = [
                     {name:"Shuffle",emoji:"🔀",style:"SECONDARY"},
                     {name:"Loop",emoji:"🔁",style:"SECONDARY"},
@@ -158,19 +158,20 @@ module.exports = {
                     ]
                     const moreButtons = new MessageActionRow()
                     for (let i = 0; i < moreButtonscommands.length; i++) {
+                        var customId = moreButtonscommands[i].name.toLowerCase()
                         moreButtons.addComponents(
                             new MessageButton()
-                            .setCustomId(`${moreButtonscommands[i].name}`)
+                            .setCustomId(`player-${customId}`)
                             .setLabel(`${moreButtonscommands[i].emoji}`)
                             .setStyle(`${moreButtonscommands[i].style}`),
                         ); 
                     }
                     buttons2.components[0].setLabel("Less commands 🔼")
-                    buttons2.components[0].setCustomId("Less commands 🔼")
+                    buttons2.components[0].setCustomId("player-lesscommands")
                     secMessage.edit({embeds: [Embedsearch],components: [buttons,buttons2,moreButtons] });
                     interaction.deferUpdate()
                 break;
-                case "Shuffle":
+                case "player-shuffle":
                     try {
                         player.shuffle(voiceChannel);
                         interaction.reply({
@@ -184,7 +185,7 @@ module.exports = {
                         })
                     }
                 break;
-                case "Loop":
+                case "player-loop":
                     try {
                         var queue = player.getQueue(voiceChannel)
                         var mode
@@ -222,7 +223,7 @@ module.exports = {
                         })
                     }
                 break;
-                case "Queue":
+                case "player-queue":
                     try {
                         interaction.reply({
                             content: `Current queue:\n${player.queues.collection.first().songs
@@ -238,7 +239,7 @@ module.exports = {
                         })
                     }
                 break;
-                case "Vol Down":
+                case "player-vol Down":
                     var queue = player.getQueue(voiceChannel)
                     if (queue) {
                         var volume = queue.volume
@@ -254,7 +255,7 @@ module.exports = {
                         ephemeral: true
                     })}
                 break;
-                case "Vol Up":
+                case "player-vol Up":
                     var queue = player.getQueue(voiceChannel)
                     if (queue) {
                         var volume = queue.volume
