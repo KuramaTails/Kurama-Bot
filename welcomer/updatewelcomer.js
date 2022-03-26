@@ -1,14 +1,9 @@
-var mongoose = require('mongoose');
 const dbconnect = require('../db/dbconnect');
 const dbdisconnect = require("../db/dbdisconnect")
 const welcomeSchema = require("../schemas/welcome-schema");
 
 module.exports = {
 	async execute(modal) {
-        while (mongoose.connection.readyState == 1 ) {
-            await dbdisconnect()
-            return
-            }
         await dbconnect()
         var textWelcome = modal.getTextInputValue('textinput-customid')
         await welcomeSchema.findOneAndUpdate({
@@ -26,6 +21,7 @@ module.exports = {
         updateEmbed.fields[0].name = `Welcome text set to \`${textWelcome}\``
         await selectedMessage.edit({embeds:[updateEmbed]})
         await modal.deferReply({ ephemeral: true });
-        await modal.editReply({ content: `Welcomer text has been set to ${textWelcome}.`, ephemeral: true })    
+        await modal.editReply({ content: `Welcomer text has been set to ${textWelcome}.`, ephemeral: true })  
+        console.log(`Changed welcomer text in ${modal.guild.name}`)  
 	}
 };

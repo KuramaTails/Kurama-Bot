@@ -27,5 +27,6 @@ module.exports = {
         
         await modal.deferReply({ ephemeral: true });
         await modal.editReply({ content: `Welcomer text has been set to ${textLeave}.`, ephemeral: true })
+        console.log(`Changed leaver text in ${modal.guild.name}`)  
 	}
 };

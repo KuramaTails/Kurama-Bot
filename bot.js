@@ -31,6 +31,7 @@ const { default: mongoose } = require('mongoose');
 const updatewelcomer = require('./welcomer/updatewelcomer');
 const deletecooldown = require('./buttons/deletecooldown');
 const updateleaver = require('./welcomer/updateleaver');
+const setwelcomerchannel = require('./layout/setwelcomerchannel');
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 discordModals(bot);
@@ -104,26 +105,29 @@ bot.on('messageCreate', async msg => {
 	if (msg.author.username!=bot.user.username)
 	{
 		if(msg.content.startsWith(prefix)){
-			guildcreate.execute(msg.guild)
+			await setwelcomerchannel.execute(msg)
 		}
 	}
 });
 
 bot.on('modalSubmit', async (modal) => {
-	if(modal.customId === 'modal-welcomer'){
-		try {
-			await updatewelcomer.execute(modal)
-		} catch (error) {
-			console.error(error);
+	try {
+		if (cooldownUser.has(modal.user.id)) {
+			return
+		} else {
+			cooldownUser.set(modal.user.id, true);
+			if(modal.customId === 'modal-welcomer'){
+				await updatewelcomer.execute(modal)
+			} 
+			if(modal.customId === 'modal-leaver'){
+				await updateleaver.execute(modal)
+			} 
+			deletecooldown.execute(modal,cooldownUser)
 		}
-	} 
-	if(modal.customId === 'modal-leaver'){
-		try {
-			await updateleaver.execute(modal)
-		} catch (error) {
-			console.error(error);
-		}
-	} 
+	} catch (error) {
+		console.log(error)
+	}
+	
 });
 
 player.on('playSong', async (queue) =>{
@@ -304,7 +308,7 @@ bot.on("roleUpdate", async (oldRole,newRole) => {
 	await roleEvents.execute(newRole)		
 })
 
-//bot.on('debug', (...args) => console.log('debug', ...args));
-//bot.on('rateLimit', (...args) => console.log('rateLimit', ...args));
+bot.on('debug', (...args) => console.log('debug', ...args));
+bot.on('rateLimit', (...args) => console.log('rateLimit', ...args));
 
 bot.login(process.env.BOT_TOKEN);

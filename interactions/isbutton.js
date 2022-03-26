@@ -1,7 +1,6 @@
 const { Modal, TextInputComponent, showModal } = require('discord-modals')
 const dbconnect = require("../db/dbconnect");
 const dbdisconnect = require("../db/dbdisconnect");
-const deleteCooldown = require('../buttons/deletecooldown')
 const discordModals = require('discord-modals')
 
 const welcomeSchema = require('../schemas/welcome-schema');
@@ -28,6 +27,8 @@ const setbotchannel = require('../layout/setbotchannel');
 const settingswelcomer = require('../settings/settingswelcomer');
 const settingsbot = require('../settings/settingsbot');
 const deletecooldown = require('../buttons/deletecooldown');
+const activewelcomer = require('../welcomer/activewelcomer');
+const activeleaver = require('../welcomer/activeleaver');
 
 module.exports = {
 	async execute(interaction,cooldownUser,bot,player) {
@@ -142,11 +143,50 @@ module.exports = {
 					}
 				break;
 				case "welcomer":
-					var bulkSelected
 					try {
 						switch (separateCustomId[1]) {
+							case "textWelcomer":
+								var modal = new Modal()
+								.setCustomId('modal-welcomer')
+								.setTitle('Set Welcomer Text!')
+								.addComponents([
+								new TextInputComponent()
+								.setCustomId('textinput-customid')
+								.setLabel('Please enter welcomer text here')
+								.setStyle('SHORT') 
+								.setMinLength(1)
+								.setMaxLength(1024)
+								.setPlaceholder('Write a text here')
+								.setRequired(true) 
+								]);
+								showModal(modal, {
+									client: bot, 
+									interaction: interaction 
+									})
+							return;
+							case "textLeaver":
+								var modal = new Modal()
+								.setCustomId('modal-leaver')
+								.setTitle('Set Leaver Text!')
+								.addComponents([
+								new TextInputComponent()
+								.setCustomId('textinput-customid')
+								.setLabel('Please enter leave text here')
+								.setStyle('SHORT') 
+								.setMinLength(1)
+								.setMaxLength(1024)
+								.setPlaceholder('Write a text here')
+								.setRequired(true) 
+								]);
+								showModal(modal, {
+									client: bot, 
+									interaction: interaction 
+									})
+							return;
+						}
+						await dbconnect()
+						switch (separateCustomId[1]) {
 							case "enableWelcomer":
-								await dbconnect()
 								await welcomeSchema.findOneAndUpdate({
 									_id: interaction.guild.id,
 								}, {
@@ -155,10 +195,10 @@ module.exports = {
 								{
 									upsert:true,
 								})
-								await dbdisconnect()
+								await interaction.deferUpdate()
+								await activewelcomer.execute(interaction)
 							break;
 							case "disableWelcomer":
-								await dbconnect()
 								await welcomeSchema.findOneAndUpdate({
 									_id: interaction.guild.id,
 								}, {
@@ -172,11 +212,10 @@ module.exports = {
 								{
 									upsert:true,
 								})
-								await dbdisconnect()
+								await interaction.deferUpdate()
+								await activewelcomer.execute(interaction)
 							break;
 							case "enableLeaver":
-								bulkSelected=1
-								await dbconnect()
 								await welcomeSchema.findOneAndUpdate({
 									_id: interaction.guild.id,
 								}, {
@@ -185,11 +224,10 @@ module.exports = {
 								{
 									upsert:true,
 								})
-								await dbdisconnect()
+								await interaction.deferUpdate()
+								await activeleaver.execute(interaction)
 							break;
 							case "disableLeaver":
-								bulkSelected=2
-								await dbconnect()
 								await welcomeSchema.findOneAndUpdate({
 									_id: interaction.guild.id,
 								}, {
@@ -199,51 +237,14 @@ module.exports = {
 								{
 									upsert:true,
 								})
-								await dbdisconnect()
+								await interaction.deferUpdate()
+								await activeleaver.execute(interaction)
 							break;
-							case "textWelcomer":
-								bulkSelected=0
-								var modal = new Modal()
-									.setCustomId('modal-welcomer')
-									.setTitle('Set Welcomer Text!')
-									.addComponents([
-									new TextInputComponent()
-									.setCustomId('textinput-customid')
-									.setLabel('Please enter welcomer text here')
-									.setStyle('SHORT') 
-									.setMinLength(1)
-									.setMaxLength(1024)
-									.setPlaceholder('Write a text here')
-									.setRequired(true) 
-									]);
-									showModal(modal, {
-										client: bot, 
-										interaction: interaction 
-									  })
-							break;
-							case "textLeaver":
-								bulkSelected=0
-								var modal = new Modal()
-									.setCustomId('modal-leaver')
-									.setTitle('Set Leaver Text!')
-									.addComponents([
-									new TextInputComponent()
-									.setCustomId('textinput-customid')
-									.setLabel('Please enter leave text here')
-									.setStyle('SHORT') 
-									.setMinLength(1)
-									.setMaxLength(1024)
-									.setPlaceholder('Write a text here')
-									.setRequired(true) 
-									]);
-									showModal(modal, {
-										client: bot, 
-										interaction: interaction 
-									  })
-							break;
+							
 						}
-					} finally {
-						await settingswelcomer.execute(interaction,interaction.channel,bulkSelected)
+						await dbdisconnect()
+					} catch (error) {
+						console.log(error)
 					}
 				break;
 				case "bot-settings":
