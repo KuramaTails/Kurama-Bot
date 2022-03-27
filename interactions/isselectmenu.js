@@ -5,7 +5,7 @@ const playerSchema = require('../schemas/player-schema');
 const welcomeSchema = require('../schemas/welcome-schema');
 const autoroleSchema = require('../schemas/autorole-schema');
 
-const createplayerembed = require('../layout/createplayerembed');
+const createplayerembed = require('../create/createplayerembed');
 const setplayerchannel = require('../layout/setplayerchannel');
 const settingsplayer = require('../settings/settingsplayer');
 const part6 = require('../tutorial/part 6');

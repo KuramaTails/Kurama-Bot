@@ -1,17 +1,17 @@
 module.exports = {
-	async execute(interaction) {
-        var selectedRole = await interaction.member.roles.cache.find(role => role.id == interaction.customId)
-        if (!selectedRole) {
-            interaction.member.roles.add(interaction.customId);
+	async execute(interaction,roleId) {
+        var memberRole = await interaction.member.roles.cache.find(role => role.id == roleId)
+        if (!memberRole) {
+            interaction.member.roles.add(roleId);
             interaction.reply({
-                content: `Role <@&${interaction.customId}> added`,
+                content: `Role <@&${roleId}> added`,
                 ephemeral: true
             })
         }
         else {
-            interaction.member.roles.remove(interaction.customId);
+            interaction.member.roles.remove(roleId);
             interaction.reply({
-                content: `Role <@&${interaction.customId}> removed`,
+                content: `Role <@&${roleId}> removed`,
                 ephemeral: true
             })
         }

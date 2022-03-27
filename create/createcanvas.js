@@ -1,11 +1,11 @@
 const Canvas = require ('canvas');
 const { MessageAttachment, MessageEmbed } = require('discord.js');
 module.exports = {
-    async execute(member,welcomeText,selectedChannel,welcomeBackground,add) {
+    async execute(member,selectGuildWelcomer,selectedChannel,add) {
         const canvas = Canvas.createCanvas(700,250);
         const context = canvas.getContext('2d');
 
-        const background = await Canvas.loadImage(`./welcomer/${welcomeBackground}.jpg`);
+        const background = await Canvas.loadImage(`./welcomer/${selectGuildWelcomer[0].background}.jpg`);
         context.drawImage(background, 0, 0, canvas.width, canvas.height);
         context.strokeStyle = '#ffffff';
         context.lineWidth = 5;
@@ -26,7 +26,7 @@ module.exports = {
 
         context.font = '22px sans-serif';
         context.fillStyle = '#ffffff';
-        context.fillText(`${welcomeText}`, canvas.width / 2.5, canvas.height / 1.4);
+        context.fillText(`${selectGuildWelcomer[0].textWelcome}`, canvas.width / 2.5, canvas.height / 1.4);
         
         context.beginPath();
         context.arc(125, 125, 100, 0, Math.PI * 2, true);
@@ -50,8 +50,7 @@ module.exports = {
             .setDescription(`<@${member.user.id}> leaved. We now have ${member.guild.memberCount} members left!`)
             .setImage('attachment://profile-image.png');
         }
-        
-        selectedChannel.send({embeds: [embed],files: [attachment] });
+        await selectedChannel.send({embeds: [embed],files: [attachment] });
     }
 };
    

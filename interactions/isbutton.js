@@ -12,11 +12,11 @@ const playerButtons = require('../buttons/playerbuttons')
 const pollbuttons = require('../buttons/pollbuttons');
 
 const part1 = require('../tutorial/part 1');
-const createserverstats = require('../layout/createserverstats');
+const createserverstats = require('../create/createserverstats');
 const part2 = require('../tutorial/part 2');
-const createwelcomezone = require('../layout/createwelcomezone');
+const createwelcomezone = require('../create/createwelcomezone');
 const part3 = require('../tutorial/part 3');
-const createplayerzone = require('../layout/createplayerzone');
+const createplayerzone = require('../create/createplayerzone');
 const part4 = require('../tutorial/part 4');
 const part5 = require('../tutorial/part 5');
 const endtutorial = require('../tutorial/endtutorial');
@@ -26,8 +26,9 @@ const setbotchannel = require('../layout/setbotchannel');
 
 const settingsbot = require('../settings/settingsbot');
 const deletecooldown = require('../buttons/deletecooldown');
-const activewelcomer = require('../welcomer/activewelcomer');
-const activeleaver = require('../welcomer/activeleaver');
+
+const activewelcomer = require('../update/activewelcomer');
+const activeleaver = require('../update/activeleaver');
 const botsettings = require('../update/botsettings')
 module.exports = {
 	async execute(interaction,cooldownUser,bot,player) {
@@ -36,7 +37,7 @@ module.exports = {
 		try {
 			switch (separateCustomId[0]) {
 				case "role":
-					chooseRole.execute(interaction)
+					chooseRole.execute(interaction,separateCustomId[1])
 				break;
 				case "player":
 					const countVoiceChannels = bot.voice.adapters.size

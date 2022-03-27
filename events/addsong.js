@@ -3,9 +3,9 @@ const playerSchema = require('../schemas/player-schema');
 const dbconnect = require('../db/dbconnect');
 module.exports = {
 	async execute(queue,player) {
-        dbconnect()
+        await dbconnect()
         var selectGuild = await playerSchema.find({ "_id" : queue.clientMember.guild.id})
-        dbdisconnnect()
+        await dbdisconnnect()
         if (!selectGuild) {return}
         else {
             var textChannel = selectGuild[9].channelId

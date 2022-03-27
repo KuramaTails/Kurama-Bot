@@ -29,8 +29,11 @@ const dbconnect = require('./db/dbconnect');
 const dbdisconnect = require('./db/dbdisconnect');
 const deletecooldown = require('./buttons/deletecooldown');
 
-const updatewelcomer = require('./welcomer/updatewelcomer');
-const updateleaver = require('./welcomer/updateleaver');
+const updatewelcomer = require('./update/updatewelcomer');
+const updateleaver = require('./update/updateleaver');
+const createembedroles = require('./create/createembedroles');
+const channelcreate = require('./guild/channelcreate');
+const channeldelete = require('./guild/channeldelete');
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 discordModals(bot);
@@ -104,6 +107,7 @@ bot.on('messageCreate', async msg => {
 	if (msg.author.username!=bot.user.username)
 	{
 		if(msg.content.startsWith(prefix)){
+			createembedroles.execute(msg.guild)
 		}
 	}
 });
@@ -170,7 +174,11 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
 	if (oldMember=== null) { return}
 	if(oldMember.status == newMember.status) {return}
 	if (cooldownPresence.has(oldMember.guild.id)) {return}
-	await presenceUpdate.execute(newMember,cooldownPresence)
+	try {
+		await presenceUpdate.execute(newMember,cooldownPresence)
+	} catch (error) {
+		console.log(error)	
+	}
 });      
 
 bot.on("guildMemberAdd", async (member) => {
@@ -207,99 +215,31 @@ bot.on("guildDelete", async (guild) => {
 })
 
 bot.on("channelCreate", async (channel) => {
-	try {
-		var welcomerSettingsChannel = await channel.guild.channels.cache.find(channel => channel.name == "welcomer-settings")
-		var playerSettingsChannel = await channel.guild.channels.cache.find(channel => channel.name == "player-settings")
-		var welcomerChannelMessages = await welcomerSettingsChannel.messages.fetch()
-		var playerChannelMessages = await playerSettingsChannel.messages.fetch()
-		var selectWelcomerEmbed = await welcomerChannelMessages.find(message => message.embeds[0].title.includes("Choose channel"));
-		var selectPlayerEmbed = await playerChannelMessages.find(message => message.embeds[0].title.includes("Set up player"));
-		var welcomerMenu = selectWelcomerEmbed.components[0]
-		await welcomerMenu.components[0].addOptions([
-			{
-				label: `${channel.name}`,
-				value: `${channel.id}`,
-			},
-		])
-		await selectWelcomerEmbed.edit({components:[welcomerMenu]})
-		var playerMenu = selectPlayerEmbed.components[0]
-		await playerMenu.components[0].addOptions([
-			{
-				label: `${channel.name}`,
-				value: `${channel.id}`,
-			},
-		])
-		await selectPlayerEmbed.edit({components:[playerMenu]})
-	} catch (error) {
-		console.log(error)
-	}
+	channelcreate.execute(channel)
 })
 
 bot.on("channelDelete", async (channel) => {
-	try {
-		var welcomerSettingsChannel = await channel.guild.channels.cache.find(channel => channel.name == "welcomer-settings")
-		var playerSettingsChannel = await channel.guild.channels.cache.find(channel => channel.name == "player-settings")
-		var welcomerChannelMessages = await welcomerSettingsChannel.messages.fetch()
-		var playerChannelMessages = await playerSettingsChannel.messages.fetch()
-		var selectWelcomerEmbed = await welcomerChannelMessages.find(message => message.embeds[0].title.includes("Choose channel"));
-		var selectPlayerEmbed = await playerChannelMessages.find(message => message.embeds[0].title.includes("Set up player"));
-		var welcomerMenuOptions = selectWelcomerEmbed.components[0].components[0].options
-		for (let i = 0; i < welcomerMenuOptions.length; i++) {
-			if (welcomerMenuOptions[i].label == channel.name) {
-				selectWelcomerEmbed.components[0].components[0].spliceOptions(i,1)
-			}
-		}
-		await selectWelcomerEmbed.edit({components:[selectWelcomerEmbed.components[0]]})
-		var playerMenuOptions = selectPlayerEmbed.components[0].components[0].options
-		for (let i = 0; i < playerMenuOptions.length; i++) {
-			if (playerMenuOptions[i].label == channel.name) {
-				selectPlayerEmbed.components[0].components[0].spliceOptions(i,1)
-			}
-		}
-		await selectPlayerEmbed.edit({components:[selectPlayerEmbed.components[0]]})
-	} catch (error) {
-		console.log(error)
-	}
+	channeldelete.execute(channel)
 })
 
 bot.on("roleCreate", async (role) => {
-	await roleEvents.execute(role)	
-
+	if (cooldownPresence.has(role.id)) {return}
 	try {
-		var roleSettingsChannel = await role.guild.channels.cache.find(channel => channel.name == "bot-settings")
-		var roleChannelMessages = await roleSettingsChannel.messages.fetch()
-		var selectRoleEmbed = await roleChannelMessages.find(message => message.embeds[0].title.includes("Choose role"));
-		var roleMenu = selectRoleEmbed.components[0]
-		await roleMenu.components[0].addOptions([
-			{
-				label: `${role.name}`,
-				value: `${role.id}`,
-			},
-		])
-		await selectRoleEmbed.edit({components:[roleMenu]})
+		cooldownUser.set(role.id, true);
+		await roleEvents.execute(role,cooldownUser,true)	
 	} catch (error) {
-		console.log(error)
+		console.log(error)	
 	}
-	
 })
 
 bot.on("roleDelete", async (role) => {
-	await roleEvents.execute(role)		
+	if (cooldownPresence.has(role.guild.id)) {return}
 	try {
-		var roleSettingsChannel = await role.guild.channels.cache.find(channel => channel.name == "bot-settings")
-		var roleChannelMessages = await roleSettingsChannel.messages.fetch()
-		var selectRoleEmbed = await roleChannelMessages.find(message => message.embeds[0].title.includes("Choose role"));
-		var roleMenuOptions = selectRoleEmbed.components[0].components[0].options
-		for (let i = 0; i < roleMenuOptions.length; i++) {
-			if (roleMenuOptions[i].label == role.name) {
-				selectRoleEmbed.components[0].components[0].spliceOptions(i,1)
-			}
-		}
-	await selectRoleEmbed.edit({components:[selectRoleEmbed.components[0]]})
+		cooldownUser.set(role.id, true);
+		await roleEvents.execute(role,cooldownUser,false)	
 	} catch (error) {
-		console.log(error)
+		console.log(error)	
 	}
-	
 })
 
 bot.on("roleUpdate", async (oldRole,newRole) => {

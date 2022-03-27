@@ -1,35 +1,20 @@
-const createcanvas = require('../events/createcanvas');
-const welcomeSchema = require('../schemas/welcome-schema');
+const createcanvas = require('../create/createcanvas');
 module.exports = {
-    async execute(member,add) {
-        var selectGuildLeave = await welcomeSchema.find({ "_id" : member.guild.id})
-        console.log(selectGuildLeave)
-        var leaveText
-        var leaveBackground
-        var selectedChannel
-        if (!selectGuildLeave[0]) {return}
-        if (selectGuildLeave[0].activeLeave==true) {
-            if (!selectGuildLeave[0].channelId) {
-                return
-            }
-            else {
-                selectedChannel = await member.guild.channels.resolve(selectGuildLeave[0].channelId)
-                if (!selectGuildLeave[0].textLeave) {
-                    return selectedChannel.send("Please select a text to have inside your leave message")
-                }
-                else {
-                    leaveText = selectGuildLeave[0].textLeave
-                }
-            }
-        }
-        else {return}
-        if (!selectGuildLeave[0].background) {
-            leaveBackground = 'canvas'
+    async execute(member,add,selectGuildWelcomer) {
+        if (!selectGuildwelcome[0].channelId) {
+            return
         }
         else {
-            leaveBackground = selectGuildLeave[0].background
+            var selectedChannel = await member.guild.channels.resolve(selectGuildwelcome[0].channelId)
+            if (!selectGuildwelcome[0].textLeave) {
+                return selectedChannel.send("Please select a text to have inside your leave message in #welcomer-setting")
+            }
+            else {
+                if (!selectGuildwelcome[0].background) {
+                    return selectedChannel.send("Please select a background for your leave message in #welcomer-setting")
+                }        
+                await createcanvas.execute(member,selectGuildWelcomer,selectedChannel,add)
+            }
         }
-
-        createcanvas.execute(member,leaveText,selectedChannel,leaveBackground,add)
     }
 };
