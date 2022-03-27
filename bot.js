@@ -4,18 +4,19 @@ const { Client, Collection} = require('discord.js');
 const prefix = "?";
 const DisTube = require('distube')
 const { YtDlpPlugin } = require('@distube/yt-dlp')
-
 const discordModals = require('discord-modals')
+const { setTimeout } = require('timers/promises');
+
 const isButton = require('./interactions/isButton');
 const isCommand = require('./interactions/isCommand');
 const isselectmenu = require('./interactions/isselectmenu');
-const guildcreate = require('./guild/guildcreate');
 
 const addSong = require('./events/addsong');
 const finish = require('./events/finish');
+const playSong = require('./events/playsong');
+
 const guildCreate = require('./guild/guildcreate')
 const guildMemberEvents = require('./guild/guildmemberevent');
-const playSong = require('./events/playsong');
 const presenceUpdate = require('./guild/presenceupdates');
 const registerPermissions = require('./guild/registerpermissions');
 const roleEvents = require('./guild/roleevents');
@@ -23,15 +24,13 @@ const roleEvents = require('./guild/roleevents');
 const welcomeSchema = require('./schemas/welcome-schema');
 const playerSchema = require('./schemas/player-schema');
 
-const { setTimeout } = require('timers/promises');
+
 const dbconnect = require('./db/dbconnect');
 const dbdisconnect = require('./db/dbdisconnect');
-const settingswelcomer = require('./settings/settingswelcomer');
-const { default: mongoose } = require('mongoose');
-const updatewelcomer = require('./welcomer/updatewelcomer');
 const deletecooldown = require('./buttons/deletecooldown');
+
+const updatewelcomer = require('./welcomer/updatewelcomer');
 const updateleaver = require('./welcomer/updateleaver');
-const setwelcomerchannel = require('./layout/setwelcomerchannel');
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 discordModals(bot);
@@ -88,7 +87,7 @@ bot.on('interactionCreate', async interaction => {
 			}
 			if (interaction.isCommand()) {
 				const command = bot.commands.get(interaction.commandName);
-				await isCommand.execute(interaction,command,pollUser,pollCounter,cooldownUser)
+				await isCommand.execute(interaction,command,player,pollUser,pollCounter,cooldownUser)
 			}
 			if(interaction.isSelectMenu()) {
 				await isselectmenu.execute(interaction,cooldownUser)
@@ -105,7 +104,6 @@ bot.on('messageCreate', async msg => {
 	if (msg.author.username!=bot.user.username)
 	{
 		if(msg.content.startsWith(prefix)){
-			await setwelcomerchannel.execute(msg)
 		}
 	}
 });

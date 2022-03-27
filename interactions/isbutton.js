@@ -24,12 +24,11 @@ const tutorialparts = [part2,part3,part4,part5,0,endtutorial]
 const setwelcomerchannel = require('../layout/setwelcomerchannel');
 const setbotchannel = require('../layout/setbotchannel');
 
-const settingswelcomer = require('../settings/settingswelcomer');
 const settingsbot = require('../settings/settingsbot');
 const deletecooldown = require('../buttons/deletecooldown');
 const activewelcomer = require('../welcomer/activewelcomer');
 const activeleaver = require('../welcomer/activeleaver');
-
+const botsettings = require('../update/botsettings')
 module.exports = {
 	async execute(interaction,cooldownUser,bot,player) {
 		var separateCustomId = interaction.customId.split("-")
@@ -247,10 +246,10 @@ module.exports = {
 						console.log(error)
 					}
 				break;
-				case "bot-settings":
-					switch (interaction.customId) {
+				case "bot":
+					await dbconnect()
+					switch (separateCustomId[1]) {
 						case "enableAutorole":
-							await dbconnect()
 							await autoroleSchema.findOneAndUpdate({
 								_id: interaction.guild.id,
 							}, {
@@ -259,12 +258,10 @@ module.exports = {
 							{
 								upsert:true,
 							})
-							await dbdisconnect()
-							await interaction.channel.bulkDelete(1)
-							await settingsbot.execute(interaction)
+							await interaction.deferUpdate()
+							await botsettings.execute(interaction)
 						break;
 						case "disableAutorole":
-							await dbconnect()
 							await autoroleSchema.findOneAndUpdate({
 								_id: interaction.guild.id,
 							}, {
@@ -273,11 +270,11 @@ module.exports = {
 							{
 								upsert:true,
 							})
-							await dbdisconnect()
-							await interaction.channel.bulkDelete(2)
-							await settingsbot.execute(interaction)
+							await interaction.deferUpdate()
+							await botsettings.execute(interaction)
 						break;
 					}
+					await dbdisconnect()
 				break;
 				default:
 					switch (true) {

@@ -8,10 +8,10 @@ module.exports = {
         var selectChannel = await interaction.guild.channels.resolve(interaction.channelId)
         var selectedMessage = await selectChannel.messages.resolve(interaction.message.id)
         var updateEmbed = selectedMessage.embeds[0]
-        updateEmbed.fields[0].value = "Click button below to enable"
         updateEmbed.fields[0].name = `Welcomer set to \`${selectGuildWelcomer[0].activeWelcome}\``
         const newButton = new MessageActionRow()
         if (selectGuildWelcomer[0].activeWelcome==true) {
+            updateEmbed.fields[0].value = "Click button below to disable"
             newButton.addComponents(
                 new MessageButton()
                 .setCustomId(`welcomer-disableWelcomer`)
@@ -89,6 +89,7 @@ module.exports = {
                 await selectChannel.send({embeds:[Leaver],components:[buttonLeaver]})
             })
         } else {
+            updateEmbed.fields[0].value = "Click button below to enable"
             newButton.addComponents(
                 new MessageButton()
                 .setCustomId(`welcomer-enableWelcomer`)

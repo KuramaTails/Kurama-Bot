@@ -9,7 +9,7 @@ module.exports = {
         const button1 = new MessageActionRow()
         button1.addComponents(
             new MessageSelectMenu()
-                .setCustomId('selectPlayerChannel')
+                .setCustomId('player-selectPlayerChannel')
                 .setPlaceholder('Nothing selected')
                 
         )

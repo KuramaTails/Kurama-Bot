@@ -11,14 +11,14 @@ module.exports = {
         var settingsChannel = channels.find(c => c.name == "bot-settings" && c.type == "GUILD_TEXT")
         const enablerAutorole = new MessageEmbed()
         .setColor('#0099ff')
-        .setTitle("Bot Kurama : Autorole enabler")
+        .setTitle("Bot Kurama : Autorole Enabler")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
         const button1 = new MessageActionRow()
         if (selectGuildAutorole[0].active== false) {
             enablerAutorole.addField(`Autorole set to \`${selectGuildAutorole[0].active}\``,"Click button below to enable")
             button1.addComponents(
                 new MessageButton()
-                .setCustomId(`enableAutorole`)
+                .setCustomId(`bot-enableAutorole`)
                 .setLabel("🟢Enable")
                 .setStyle(`SECONDARY`),
             )
@@ -28,7 +28,7 @@ module.exports = {
             enablerAutorole.addField(`Autorole set to \`${selectGuildAutorole[0].active}\``,"Click button below to disable")
             button1.addComponents(
                 new MessageButton()
-                .setCustomId(`disableAutorole`)
+                .setCustomId(`bot-disableAutorole`)
                 .setLabel("🔴Disable")
                 .setStyle(`SECONDARY`),
             )
@@ -41,7 +41,7 @@ module.exports = {
             const button2 = new MessageActionRow()
             button2.addComponents(
                 new MessageSelectMenu()
-                    .setCustomId('selectRoleChannel')
+                    .setCustomId('bot-selectAutoroleRole')
                     .setPlaceholder('Nothing selected')
                     
             )

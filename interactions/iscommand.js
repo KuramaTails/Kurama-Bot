@@ -1,7 +1,7 @@
 const deletecooldown = require("../buttons/deletecooldown");
 
 module.exports = {
-	async execute(interaction,command,pollUser,pollCounter,cooldownUser) {
+	async execute(interaction,command,player,pollUser,pollCounter,cooldownUser) {
         switch (true) {
             case interaction.commandName=="poll":
                 pollUser.clear(); 
