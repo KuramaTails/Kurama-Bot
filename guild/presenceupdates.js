@@ -1,5 +1,3 @@
-const deletecooldown = require("../buttons/deletecooldown");
-
 module.exports = {
     async execute(newMember,cooldownPresence) {
         try {
@@ -35,8 +33,13 @@ module.exports = {
             onlineChannel.setName(`Online : ${onlineCount}`)
             offlineChannel.setName(`Offline : ${offlineCount}`)
             console.log("Presence Updated")
+        } catch(error) {
+            console.log(error)
         } finally {
-            deletecooldown.execute(interaction,cooldownUser)
+            setTimeout(() => {
+                console.log("Deleted cooldown")
+                cooldownPresence.delete(newMember.guild.id);
+            }, 5*1000);
         }
     }
 };

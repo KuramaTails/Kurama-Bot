@@ -5,7 +5,7 @@ module.exports = {
         const canvas = Canvas.createCanvas(700,250);
         const context = canvas.getContext('2d');
 
-        const background = await Canvas.loadImage(`./welcomer/${selectGuildWelcomer[0].background}.jpg`);
+        const background = await Canvas.loadImage(`${selectGuildWelcomer[0].background}.jpg`);
         context.drawImage(background, 0, 0, canvas.width, canvas.height);
         context.strokeStyle = '#ffffff';
         context.lineWidth = 5;

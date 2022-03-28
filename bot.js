@@ -34,6 +34,7 @@ const updateleaver = require('./update/updateleaver');
 const createembedroles = require('./create/createembedroles');
 const channelcreate = require('./guild/channelcreate');
 const channeldelete = require('./guild/channeldelete');
+const ready = require('./events/ready');
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 discordModals(bot);
@@ -79,35 +80,36 @@ for (const file of eventFiles) {
 }
 
 bot.on('interactionCreate', async interaction => {
+	if (cooldownUser.has(interaction.user.id)) {
+		await interaction.deferReply( {ephemeral: true});
+		await interaction.followUp({ content: "Please wait for cooldown to end", ephemeral: true });
+		return
+	}
 	try {
-		if (cooldownUser.has(interaction.user.id)) {
-			await interaction.deferReply( {ephemeral: true});
-			await interaction.followUp({ content: "Please wait for cooldown to end", ephemeral: true });
-		} else {
-			cooldownUser.set(interaction.user.id, true);
-			if (interaction.isButton()) {
-				await isButton.execute(interaction,cooldownUser,bot,player)
-			}
-			if (interaction.isCommand()) {
-				const command = bot.commands.get(interaction.commandName);
-				await isCommand.execute(interaction,command,player,pollUser,pollCounter,cooldownUser)
-			}
-			if(interaction.isSelectMenu()) {
-				await isselectmenu.execute(interaction,cooldownUser)
-			}
+		cooldownUser.set(interaction.user.id, true);
+		if (interaction.isButton()) {
+			await isButton.execute(interaction,bot,player)
+		}
+		if (interaction.isCommand()) {
+			const command = bot.commands.get(interaction.commandName);
+			await isCommand.execute(interaction,command,player,pollUser,pollCounter)
+		}
+		if(interaction.isSelectMenu()) {
+			await isselectmenu.execute(interaction)
 		}
 	} catch (error) {
 		console.error(error);
 		await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+	} finally {
+		deletecooldown.execute(interaction,cooldownUser)
 	}
-
 });
 
 bot.on('messageCreate', async msg => {
 	if (msg.author.username!=bot.user.username)
 	{
 		if(msg.content.startsWith(prefix)){
-			createembedroles.execute(msg.guild)
+			await guildCreate.execute(guild)
 		}
 	}
 });
@@ -155,25 +157,12 @@ player.on('empty', (queue) => {
 })
 
 bot.on('ready', async () => {
-	if (!process.env.DATABASE_TOKEN) {return console.log("Error,no db found")}
-	if (!bot.application?.owner) await bot.application?.fetch();
-	var guilds= await bot.guilds.fetch()
-	var guildsKeys= Array.from(guilds.keys())
-	var botId = bot.user.id
-	var guildsnames = []
-	await dbconnect()
-	for (let i = 0; i < guildsKeys.length; i++) {
-		var guild = bot.guilds.cache.get(guilds.get(guildsKeys[i]).id)
-		await registerPermissions.execute(guild,botId,commands)
-		guildsnames.push(guilds.get(guildsKeys[i]).name)
-	}
-	await dbdisconnect()
-    console.log(`Bot joined into ${guildsnames.toString()}`)
+	await ready.execute(bot,commands)
 });
 bot.on("presenceUpdate", async (oldMember, newMember) => {
 	if (oldMember=== null) { return}
 	if(oldMember.status == newMember.status) {return}
-	if (cooldownPresence.has(oldMember.guild.id)) {return}
+	if (cooldownPresence.has(newMember.guild.id)) {return}
 	try {
 		await presenceUpdate.execute(newMember,cooldownPresence)
 	} catch (error) {
@@ -184,18 +173,20 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
 bot.on("guildMemberAdd", async (member) => {
 	var add=true
 	guildMemberEvents.execute(member,add)
+	console.log(`Member joined in ${member.guild.name}`)
 });
 
 bot.on("guildMemberRemove", async (member) => {
 	var add=false
 	guildMemberEvents.execute(member,add)
+	console.log(`Member leaved from ${member.guild.name}`)
 });
 
 bot.on("guildCreate", async (guild) => {
 	var botId = bot.user.id
-    console.log("Joined a new guild: " + guild.name);
-	registerPermissions.execute(guild,botId,commands)
-	guildCreate.execute(guild)
+	await registerPermissions.execute(guild,botId,commands)
+	await guildCreate.execute(guild)
+	console.log("Joined a new guild: " + guild.name);
 })
 
 bot.on("guildDelete", async (guild) => {
@@ -215,11 +206,13 @@ bot.on("guildDelete", async (guild) => {
 })
 
 bot.on("channelCreate", async (channel) => {
-	channelcreate.execute(channel)
+	await channelcreate.execute(channel)
+	console.log(`Channel created in ${channel.guild.name}`)
 })
 
 bot.on("channelDelete", async (channel) => {
-	channeldelete.execute(channel)
+	await channeldelete.execute(channel)
+	console.log(`Channel deleted in ${channel.guild.name}`)
 })
 
 bot.on("roleCreate", async (role) => {
@@ -230,6 +223,8 @@ bot.on("roleCreate", async (role) => {
 	} catch (error) {
 		console.log(error)	
 	}
+	console.log(`Role created in ${role.guild.name}`)
+
 })
 
 bot.on("roleDelete", async (role) => {
@@ -240,12 +235,14 @@ bot.on("roleDelete", async (role) => {
 	} catch (error) {
 		console.log(error)	
 	}
+	console.log(`Role deleted in ${role.guild.name}`)
+
 })
 
 bot.on("roleUpdate", async (oldRole,newRole) => {
-	await roleEvents.execute(newRole)		
+	//	
 })
-
+bot.on('warning', console.warn);
 bot.on('debug', (...args) => console.log('debug', ...args));
 bot.on('rateLimit', (...args) => console.log('rateLimit', ...args));
 

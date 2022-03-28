@@ -1,5 +1,5 @@
 module.exports = {
-	async execute(interaction,cooldownUser,pollUser) {
+	async execute(interaction,pollUser) {
         if (pollUser.has(interaction.user.id)) {
             await interaction.followUp({ content: "You have choosed already one option!", ephemeral: true });
         }
@@ -25,7 +25,7 @@ module.exports = {
             await interaction.followUp({ content: "Thank you for having participate!", ephemeral: true });
         }
         setTimeout(() => {
-            cooldownUser.delete(interaction.user.id);
+            pollUser.delete(interaction.user.id);
         }, 3*1000);
 	}
 };

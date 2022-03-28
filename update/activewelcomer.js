@@ -64,10 +64,11 @@ module.exports = {
                 )
                 const background = fs.readdirSync('./welcomer').filter(file => file.endsWith('.jpg'));
                 background.forEach(image => {
+                    var fullName = image.split(".")
                     button3.components[0].addOptions([
                         {
-                            label: `${image}`,
-                            value: `./welcomer/${image}`,
+                            label: `${fullName[0]}`,
+                            value: `./welcomer/${fullName[0]}`,
                         },
                     ])
                 });
