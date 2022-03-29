@@ -39,7 +39,7 @@ module.exports = {
             setTimeout(() => {
                 console.log("Deleted cooldown")
                 cooldownPresence.delete(newMember.guild.id);
-            }, 5*1000);
+            }, 5*60*1000);
         }
     }
 };
