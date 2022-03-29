@@ -1,6 +1,6 @@
-const createserverstats = require("../layout/createserverstats")
-const createwelcomechannel = require("../layout/createwelcomechannels")
-const createplayerchannels = require("../layout/createplayerchannels");
+const createserverstats = require("../create/createserverstats")
+const createwelcomechannel = require("../create/createwelcomezone")
+const createplayerchannels = require("../create/createplayerzone");
 module.exports = {
     async execute(guild) {
         var listChannels = await guild.channels.fetch()
