@@ -1,4 +1,5 @@
 const { Permissions } = require('discord.js');
+const createembedroles = require('./createembedroles');
 const welcomePermissions = new Permissions([
     Permissions.FLAGS.SEND_MESSAGES,
 ]);
@@ -18,7 +19,7 @@ module.exports = {
         })
         .then(cat => {
             guild.channels.create(`welcome`,  {type: 'GUILD_TEXT',parent: cat});
-            guild.channels.create(`Choose-role`,  {type: 'GUILD_TEXT',parent: cat,})
+            guild.channels.create(`Choose-role`,  {type: 'GUILD_TEXT',parent: cat,}).then (channel => createembedroles.execute(channel))
         })
         console.log(`Created welcome rooms in ${guild.name}`)
     }

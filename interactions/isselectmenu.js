@@ -6,8 +6,8 @@ const welcomeSchema = require('../schemas/welcome-schema');
 const autoroleSchema = require('../schemas/autorole-schema');
 
 const createplayerembed = require('../create/createplayerembed');
-const setplayerchannel = require('../layout/setplayerchannel');
-const settingsplayer = require('../settings/settingsplayer');
+const createplayersettings = require('../create/createplayersettings');
+const createplayersettingsembed = require('../create/createplayersettingsembed');
 const part6 = require('../tutorial/part 6');
 
 module.exports = {
@@ -28,8 +28,8 @@ module.exports = {
                 })
             
                 await createplayerembed.execute(interaction.guild,selectedChannelId)
-                await setplayerchannel.execute(interaction)
-                await settingsplayer.execute(interaction)
+                await createplayersettings.execute(interaction)
+                await createplayersettingsembed.execute(interaction)
                 await part6.execute(interaction)
             break;
             case "welcomer":

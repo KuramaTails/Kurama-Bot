@@ -1,7 +1,6 @@
 const dbconnect = require('../db/dbconnect');
 const dbdisconnnect = require('../db/dbdisconnect');
-const leave = require('./leave');
-const welcome = require('../guild/welcome');
+const welcomer = require('../guild/welcomer');
 const autoroleSchema = require('../schemas/autorole-schema');
 const welcomeSchema = require('../schemas/welcome-schema');
 
@@ -11,18 +10,7 @@ module.exports = {
         await dbconnect()
         var selectGuildWelcomer = await welcomeSchema.find({ "_id" : member.guild.id})
         var selectGuildAutorole = await autoroleSchema.find({ "_id" : member.guild.id})
-        switch (add) {
-            case true:
-                if (selectGuildWelcomer[0].activeWelcome ==true) {
-                    await welcome.execute(member,add,selectGuildWelcomer)
-                }
-            break;
-            case false:
-                if (selectGuildWelcomer[0].activeWelcome ==true) {
-                    await welcome.execute(member,add,selectGuildWelcomer)
-                }
-            break;
-        }
+        await welcomer.execute(member,add,selectGuildWelcomer)
         switch (selectGuildAutorole[0].active) {
             case true:
                 if (selectGuildAutorole[0].roleId) {

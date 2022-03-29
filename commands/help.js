@@ -4,11 +4,8 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('help')
 		.setDescription('All help commands!'),
-	async execute(interaction,cooldownUser) {
+	async execute(interaction) {
         interaction.followUp({embeds: [startEmbed],components: [helpButtons]})
-		setTimeout(() => {
-			cooldownUser.delete(interaction.user.id);
-		}, 3*1000);
 	},
 };
 

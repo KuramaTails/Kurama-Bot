@@ -11,9 +11,9 @@ const isButton = require('./interactions/isButton');
 const isCommand = require('./interactions/isCommand');
 const isselectmenu = require('./interactions/isselectmenu');
 
-const addSong = require('./events/addsong');
-const finish = require('./events/finish');
-const playSong = require('./events/playsong');
+const addSong = require('./player/addsong');
+const finish = require('./player/finish');
+const playSong = require('./player/playsong');
 
 const guildCreate = require('./guild/guildcreate')
 const guildMemberEvents = require('./guild/guildmemberevent');
@@ -109,7 +109,6 @@ bot.on('messageCreate', async msg => {
 	if (msg.author.username!=bot.user.username)
 	{
 		if(msg.content.startsWith(prefix)){
-			await guildCreate.execute(guild)
 		}
 	}
 });
@@ -172,13 +171,13 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
 
 bot.on("guildMemberAdd", async (member) => {
 	var add=true
-	guildMemberEvents.execute(member,add)
+	await guildMemberEvents.execute(member,add)
 	console.log(`Member joined in ${member.guild.name}`)
 });
 
 bot.on("guildMemberRemove", async (member) => {
 	var add=false
-	guildMemberEvents.execute(member,add)
+	await guildMemberEvents.execute(member,add)
 	console.log(`Member leaved from ${member.guild.name}`)
 });
 

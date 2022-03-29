@@ -1,17 +1,13 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
-const channelsSchema = require("../schemas/channels-schema");
-const rolesSchema = require("../schemas/roles-schema");
 module.exports = {
-	async execute(guild) {
+	async execute(channel) {
         try {
-            var channelId = await guild.channels.cache.find(channel => channel.name == "choose-role")
-            var selectedChannel = await guild.channels.resolve(channelId)
             var buttons = [new MessageActionRow()]
             const rolesEmbed = new MessageEmbed()
                                 .setColor('#0099ff')
                                 .setTitle('Add Role')
                                 .setDescription(`Click on a button to get yourself a role`)
-            await guild.roles.cache.forEach(role => {
+            await channel.guild.roles.cache.forEach(role => {
                 if (role.permissions.has("ADMINISTRATOR")== false) {
                     if (role.managed== false) {
                         if(role.name != "@everyone") 
@@ -37,7 +33,7 @@ module.exports = {
                     }
                 }
             });
-            await selectedChannel.send({embeds: [rolesEmbed],components: buttons})
+            await channel.send({embeds: [rolesEmbed],components: buttons})
         } catch (error) {
             console.log(error)
         }

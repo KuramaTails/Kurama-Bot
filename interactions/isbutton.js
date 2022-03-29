@@ -1,7 +1,6 @@
 const { Modal, TextInputComponent, showModal } = require('discord-modals')
 const dbconnect = require("../db/dbconnect");
 const dbdisconnect = require("../db/dbdisconnect");
-const discordModals = require('discord-modals')
 
 const welcomeSchema = require('../schemas/welcome-schema');
 const autoroleSchema = require('../schemas/autorole-schema');
@@ -21,10 +20,10 @@ const part4 = require('../tutorial/part 4');
 const part5 = require('../tutorial/part 5');
 const endtutorial = require('../tutorial/endtutorial');
 const tutorialparts = [part2,part3,part4,part5,0,endtutorial]
-const setwelcomerchannel = require('../layout/setwelcomerchannel');
-const setbotchannel = require('../layout/setbotchannel');
 
-const settingsbot = require('../settings/settingsbot');
+const createwelcomersettings = require('../create/createwelcomersettings');
+const createbotsettings = require('../create/createbotsettings');
+const createbotsettingsembed = require('../create/createbotsettingsembed');
 
 const activewelcomer = require('../update/activewelcomer');
 const activeleaver = require('../update/activeleaver');
@@ -81,7 +80,7 @@ module.exports = {
 											upsert:true,
 										})
 										await dbdisconnect()
-										await setwelcomerchannel.execute(interaction)
+										await createwelcomersettings.execute(interaction)
 									break;
 									case 6:
 										await dbconnect()
@@ -94,8 +93,8 @@ module.exports = {
 												upsert:true,
 											})
 											await dbdisconnect()
-										await setbotchannel.execute(interaction)
-										await settingsbot.execute(interaction)
+										await createbotsettings.execute(interaction)
+										await createbotsettingsembed.execute(interaction)
 									break;
 								}
 							break;
@@ -113,7 +112,7 @@ module.exports = {
 											upsert:true,
 										})
 										await dbdisconnect()
-										await setwelcomerchannel.execute(interaction)
+										await createwelcomersettings.execute(interaction)
 									break;
 									case 6:
 										await dbconnect()
@@ -126,8 +125,8 @@ module.exports = {
 											upsert:true,
 										})
 										await dbdisconnect()
-										await setbotchannel.execute(interaction)
-										await settingsbot.execute(interaction)
+										await createbotsettings.execute(interaction)
+										await createbotsettingsembed.execute(interaction)
 									break;
 								}
 							break;

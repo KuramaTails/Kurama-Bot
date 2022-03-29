@@ -67,12 +67,9 @@ module.exports = {
 				.setDescription("Select player's volume!")
 				.addNumberOption(option =>option.setName("volume").setDescription("Set volume percentage").setRequired(true))
 		),
-	async execute(interaction,cooldownUser,player) {
+	async execute(interaction,player) {
         const playerCommand = require(`../commands/player/${interaction.options.getSubcommand()}`);
 		playerCommand.execute(interaction,player)
-		setTimeout(() => {
-			cooldownUser.delete(interaction.user.id);
-		}, 3*1000);
 	},
 };
 
