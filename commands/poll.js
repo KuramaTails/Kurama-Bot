@@ -11,7 +11,7 @@ module.exports = {
         .addStringOption(option4 =>option4.setName("option4").setDescription("Set an option for this poll"))
         .addStringOption(option5 =>option5.setName("option5").setDescription("Set an option for this poll")),
 
-	async execute(interaction,poolCounter) {
+	async execute(interaction,poolCounter) {/*
         let title = interaction.options.getString("title")
         var listOptions = []
         listOptions.push(interaction.options.getString("option1"))
@@ -57,7 +57,6 @@ module.exports = {
                     }
                 }
                 interaction.editReply({embeds: [resultspoll], components: []})
-            }, 30*1000);
-		
+            }, 30*1000);*/
 	},
 };

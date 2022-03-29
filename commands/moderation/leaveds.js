@@ -1,8 +1,29 @@
+const dbconnect = require("../../db/dbconnect");
+const dbdisconnnect = require("../../db/dbdisconnnect");
+const channelsSchema = require("../../schemas/channels-schema");
+const guildSchema = require("../../schemas/guild-schema");
+const membersSchema = require("../../schemas/members-schema");
+const playerSchema = require("../../schemas/player-schema");
+const rolesSchema = require("../../schemas/roles-schema");
+const welcomeSchema = require("../../schemas/welcome-schema");
+
 module.exports = {
 	async execute(interaction) { 
         try {
-            var listChannels = await interaction.guild.channels.fetch()
-            var listRoles = await interaction.guild.roles.fetch()
+            await dbconnect()
+            try {
+                await guildSchema.deleteOne({ "_id" : interaction.guild.id})
+                await channelsSchema.deleteOne({ "_id" : interaction.guild.id})
+                await membersSchema.deleteOne({ "_id" : interaction.guild.id})
+                await playerSchema.deleteOne({ "_id" : interaction.guild.id})
+                await rolesSchema.deleteOne({ "_id" : interaction.guild.id})
+                await welcomeSchema.deleteOne({ "_id" : interaction.guild.id})
+            } catch (error) {
+                console.log(error)
+            }
+            await dbdisconnnect()
+            var listChannels = await interaction.guild.channels.cache
+            var listRoles = await interaction.guild.roles.cache
             try {
                 await listRoles.find(role => role.name.includes("Member")).delete()
                 await listRoles.find(role => role.name.includes("Muted")).delete()

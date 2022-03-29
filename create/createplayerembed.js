@@ -1,8 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton} = require("discord.js");
 module.exports = {
-	async execute(guild) {
-        var listChannels = await guild.channels.fetch()
-        let selChannel = await listChannels.find(channel => channel.name.includes("player-room"))
+	async execute(guild,selectedChannelId) {
+        var selectedChannel = await guild.channels.resolve(selectedChannelId)
         const Embedsearch = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle(`No songs playing right now`)
@@ -13,31 +12,31 @@ module.exports = {
         const moreButton = new MessageActionRow()
         buttons1.addComponents(
             new MessageButton()
-            .setCustomId(`Join`)
+            .setCustomId(`player-join`)
             .setLabel("✅")
             .setStyle(`SUCCESS`),
             new MessageButton()
-            .setCustomId(`Previous`)
+            .setCustomId(`player-previous`)
             .setLabel(`⏮`)
             .setStyle(`SECONDARY`),
             new MessageButton()
-            .setCustomId(`(Un)Pause`)
+            .setCustomId(`player-pause`)
             .setLabel(`⏯`)
             .setStyle(`SECONDARY`),
             new MessageButton()
-            .setCustomId(`Next`)
+            .setCustomId(`player-next`)
             .setLabel(`⏭`)
             .setStyle(`SECONDARY`),
             new MessageButton()
-            .setCustomId(`Leave`)
+            .setCustomId(`player-leave`)
             .setLabel("❌")
             .setStyle(`DANGER`),
         );
         moreButton.addComponents(
             new MessageButton()
-            .setCustomId(`More commands 🔽`)
+            .setCustomId(`player-morecommands`)
             .setLabel("More commands 🔽")
             .setStyle(`SECONDARY`),);
-        selChannel.send({embeds: [Embedsearch],components:[buttons1,moreButton]})
+        selectedChannel.send({embeds: [Embedsearch],components:[buttons1,moreButton]})
     }
 };
