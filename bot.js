@@ -8,8 +8,8 @@ const { YtDlpPlugin } = require('@distube/yt-dlp')
 const discordModals = require('discord-modals')
 const { setTimeout } = require('timers/promises');
 
-const isButton = require('./interactions/isButton');
-const isCommand = require('./interactions/isCommand');
+const isButton = require('./interactions/isbutton');
+const isCommand = require('./interactions/iscommand');
 const isselectmenu = require('./interactions/isselectmenu');
 
 const addSong = require('./player/addsong');
@@ -34,7 +34,6 @@ const deletecooldown = require('./buttons/deletecooldown');
 
 const updatewelcomer = require('./update/updatewelcomer');
 const updateleaver = require('./update/updateleaver');
-const createembedroles = require('./create/createembedroles');
 const channelcreate = require('./guild/channelcreate');
 const channeldelete = require('./guild/channeldelete');
 const ready = require('./events/ready');
@@ -203,7 +202,7 @@ bot.on("guildDelete", async (guild) => {
 	} catch (error) {
 		console.log(error)
 	}
-	await dbdisconnnect()
+	await dbdisconnect()
 	console.log("Left a guild: " + guild.name);
 })
 
