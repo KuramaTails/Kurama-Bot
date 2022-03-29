@@ -32,7 +32,7 @@ module.exports = {
             }
             onlineChannel.setName(`Online : ${onlineCount}`)
             offlineChannel.setName(`Offline : ${offlineCount}`)
-            console.log("Presence Updated")
+            console.log(`Presence Updated in ${newMember.guild.name}`)
         } catch(error) {
             console.log(error)
         } finally {
