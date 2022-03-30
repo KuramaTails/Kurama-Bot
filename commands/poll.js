@@ -11,7 +11,7 @@ module.exports = {
         .addStringOption(option4 =>option4.setName("option4").setDescription("Set an option for this poll"))
         .addStringOption(option5 =>option5.setName("option5").setDescription("Set an option for this poll")),
 
-	async execute(interaction,poolCounter) {/*
+	async execute(interaction,pollCounter) {
         let title = interaction.options.getString("title")
         var listOptions = []
         listOptions.push(interaction.options.getString("option1"))
@@ -42,21 +42,21 @@ module.exports = {
                 }
             }  
             interaction.reply({ embeds: [poll] , components:[optionButton],ephemeral: false})
-            setTimeout(() => {
-                const resultspoll = new MessageEmbed() // Create A New Embed
-                .setColor('#0099ff')
-                .setTitle(`**__Poll__**`)
-                .setDescription(`Poll ended! Thank you for your participation.\nFollowing are the results:`)
-                for (let i = 0; i < listOptions.length; i++) {
-                    if (listOptions[i]!= null) {
-                        resultspoll.addFields(
-                            { name: `${listOptions[i]}` , value: `${poolCounter[i]}`, inline: true },
-                            { name: '\u200B', value: "\u200B", inline: true },
-                            { name: '\u200B', value: "\u200B", inline: true }
-                        )
+            setTimeout(async () => {
+                const resultspoll = new MessageEmbed()
+                    .setColor('#0099ff')
+                    .setTitle(`**__Poll__**`)
+                    .setDescription(`Poll ended! Thank you for your participation.\nFollowing are the results:`)
+                    for (let i = 0; i < listOptions.length; i++) {
+                        if (listOptions[i]!= null) {
+                            resultspoll.addFields(
+                                { name: `${listOptions[i]}` , value: `${pollCounter[i]}`, inline: true },
+                                { name: '\u200B', value: "\u200B", inline: true },
+                                { name: '\u200B', value: "\u200B", inline: true }
+                            )
+                        }
                     }
-                }
-                interaction.editReply({embeds: [resultspoll], components: []})
-            }, 30*1000);*/
+                    await interaction.editReply({embeds: [resultspoll], components: []})
+            }, 10*1000);
 	},
 };

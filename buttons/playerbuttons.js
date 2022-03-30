@@ -239,7 +239,7 @@ module.exports = {
                         })
                     }
                 break;
-                case "player-vol Down":
+                case "player-vol down":
                     var queue = player.getQueue(voiceChannel)
                     if (queue) {
                         var volume = queue.volume
@@ -255,7 +255,7 @@ module.exports = {
                         ephemeral: true
                     })}
                 break;
-                case "player-vol Up":
+                case "player-vol up":
                     var queue = player.getQueue(voiceChannel)
                     if (queue) {
                         var volume = queue.volume
