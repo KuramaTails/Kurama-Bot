@@ -1,12 +1,12 @@
 const { MessageEmbed, MessageActionRow, MessageButton} = require("discord.js");
 const playerSchema = require('../schemas/player-schema');
 const dbconnect = require('../db/dbconnect');
-const dbdisconnnect = require("../db/dbdisconnect");
+const dbdisconnect = require("../db/dbdisconnect");
 module.exports = {
 	async execute(queue,player) {
         await dbconnect()
         var selectGuild = await playerSchema.find({ "_id" : queue.clientMember.guild.id})
-        await dbdisconnnect()
+        await dbdisconnect()
         if (!selectGuild) {return}
         else {
             var textChannel = selectGuild[0].channelId
