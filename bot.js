@@ -21,6 +21,10 @@ const guildMemberEvents = require('./guild/guildmemberevent');
 const presenceUpdate = require('./guild/presenceupdates');
 const registerPermissions = require('./guild/registerpermissions');
 const roleEvents = require('./guild/roleevents');
+const channelcreate = require('./guild/channelcreate');
+const channeldelete = require('./guild/channeldelete');
+const roleupdate = require('./guild/roleupdate');
+const channelupdate = require('./guild/channelupdate');
 
 const welcomeSchema = require('./schemas/welcome-schema');
 const playerSchema = require('./schemas/player-schema');
@@ -35,10 +39,8 @@ const deletecooldown = require('./buttons/deletecooldown');
 
 const updatewelcomer = require('./update/updatewelcomer');
 const updateleaver = require('./update/updateleaver');
-const channelcreate = require('./guild/channelcreate');
-const channeldelete = require('./guild/channeldelete');
-const ready = require('./events/ready');
 
+const ready = require('./events/ready');
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 discordModals(bot);
@@ -220,7 +222,11 @@ bot.on("channelDelete", async (channel) => {
 	await channeldelete.execute(channel)
 	console.log(`Channel deleted in ${channel.guild.name}`)
 })
-
+bot.on("channelUpdate", async (oldChannel,newChannel) => {
+	if (oldChannel.name != newChannel.name) {
+		channelupdate.execute(oldChannel,newChannel)
+	}
+})
 bot.on("roleCreate", async (role) => {
 	if (cooldownPresence.has(role.id)) {return}
 	try {
@@ -246,7 +252,9 @@ bot.on("roleDelete", async (role) => {
 })
 
 bot.on("roleUpdate", async (oldRole,newRole) => {
-	//	
+	if (oldRole.name != newRole.name) {
+		roleupdate.execute(oldRole,newRole)
+	}
 })
 bot.on("error", async (error) => {
     console.error(`Bot encountered a connection error: ${error}`);
