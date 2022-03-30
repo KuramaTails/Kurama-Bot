@@ -46,7 +46,7 @@ module.exports = {
                 await baseEmbed.execute(interaction)
             break;
             case "Admin":
-                await adminEmbed.execute(interaction,newButtons)
+                await adminEmbed.execute(interaction,newButtons,pagNumber)
             break;
             case "General":
                 await generalEmbed.execute(interaction,newButtons)

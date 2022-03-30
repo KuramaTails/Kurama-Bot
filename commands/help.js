@@ -21,16 +21,6 @@ const startEmbed = new MessageEmbed()
 	{ name: '\u200B', value: "\u200B", inline: true }
 	)
 .addFields(
-	{ name: "\u200B" , value: "🆘", inline: true },
-	{ name: '\u200B', value: "General", inline: true },
-	{ name: '\u200B', value: "\u200B", inline: true }
-	)
-.addFields(
-	{ name: "\u200B" , value: "🔨", inline: true },
-	{ name: '\u200B', value: "Utility", inline: true },
-	{ name: '\u200B', value: "\u200B", inline: true }
-	)
-.addFields(
 	{ name: "\u200B" , value: "🎵", inline: true },
 	{ name: '\u200B', value: "Music Player", inline: true },
 	{ name: '\u200B', value: "\u200B", inline: true }

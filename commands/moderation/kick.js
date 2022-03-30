@@ -1,4 +1,8 @@
 module.exports = {
+    name: "kick",
+    command:"kick",
+    desc:'Bot will kick a member!',
+    example:"/moderation kick",
     async execute(interaction) {
         var member = await interaction.guild.members.fetch(interaction.options.getUser("user"));
         var reason = (interaction.options.getString("reason"));

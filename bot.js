@@ -16,17 +16,22 @@ const addSong = require('./player/addsong');
 const finish = require('./player/finish');
 const playSong = require('./player/playsong');
 
-
 const guildCreate = require('./guild/guildcreate')
 const guildMemberEvents = require('./guild/guildmemberevent');
 const presenceUpdate = require('./guild/presenceupdates');
 const registerPermissions = require('./guild/registerpermissions');
 const roleEvents = require('./guild/roleevents');
-
+const channelcreate = require('./guild/channelcreate');
+const channeldelete = require('./guild/channeldelete');
+const roleupdate = require('./guild/roleupdate');
+const channelupdate = require('./guild/channelupdate');
 
 const welcomeSchema = require('./schemas/welcome-schema');
 const playerSchema = require('./schemas/player-schema');
-
+const guildSchema = require('./schemas/guild-schema');
+const channelsSchema = require('./schemas/channels-schema');
+const membersSchema = require('./schemas/members-schema');
+const rolesSchema = require('./schemas/roles-schema');
 
 const dbconnect = require('./db/dbconnect');
 const dbdisconnect = require('./db/dbdisconnect');
@@ -34,8 +39,7 @@ const deletecooldown = require('./buttons/deletecooldown');
 
 const updatewelcomer = require('./update/updatewelcomer');
 const updateleaver = require('./update/updateleaver');
-const channelcreate = require('./guild/channelcreate');
-const channeldelete = require('./guild/channeldelete');
+
 const ready = require('./events/ready');
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
@@ -44,7 +48,7 @@ bot.commands = new Collection();
 cooldownUser = new Collection();
 cooldownPresence = new Collection();
 pollUser = new Collection();
-pollCounter = [0,0,0,0,0]
+var pollCounter = [0,0,0,0,0]
 
 dotenv.config()
 
@@ -90,11 +94,13 @@ bot.on('interactionCreate', async interaction => {
 	try {
 		cooldownUser.set(interaction.user.id, true);
 		if (interaction.isButton()) {
-			await isButton.execute(interaction,bot,player)
+			await isButton.execute(interaction,bot,player,pollUser,pollCounter)
 		}
 		if (interaction.isCommand()) {
+			pollUser.clear(); 
+			pollCounter = [0,0,0,0,0]
 			const command = bot.commands.get(interaction.commandName);
-			await isCommand.execute(interaction,command,player,pollUser,pollCounter)
+			await isCommand.execute(interaction,command,player,pollCounter)
 		}
 		if(interaction.isSelectMenu()) {
 			await isselectmenu.execute(interaction)
@@ -103,6 +109,7 @@ bot.on('interactionCreate', async interaction => {
 		console.error(error);
 		await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
 	} finally {
+		
 		deletecooldown.execute(interaction,cooldownUser)
 	}
 });
@@ -111,6 +118,7 @@ bot.on('messageCreate', async msg => {
 	if (msg.author.username!=bot.user.username)
 	{
 		if(msg.content.startsWith(prefix)){
+			console.log(pollCounter)
 		}
 	}
 });
@@ -132,7 +140,6 @@ bot.on('modalSubmit', async (modal) => {
 	} catch (error) {
 		console.log(error)
 	}
-	
 });
 
 player.on('playSong', async (queue) =>{
@@ -215,7 +222,11 @@ bot.on("channelDelete", async (channel) => {
 	await channeldelete.execute(channel)
 	console.log(`Channel deleted in ${channel.guild.name}`)
 })
-
+bot.on("channelUpdate", async (oldChannel,newChannel) => {
+	if (oldChannel.name != newChannel.name) {
+		channelupdate.execute(oldChannel,newChannel)
+	}
+})
 bot.on("roleCreate", async (role) => {
 	if (cooldownPresence.has(role.id)) {return}
 	try {
@@ -241,8 +252,13 @@ bot.on("roleDelete", async (role) => {
 })
 
 bot.on("roleUpdate", async (oldRole,newRole) => {
-	//	
+	if (oldRole.name != newRole.name) {
+		roleupdate.execute(oldRole,newRole)
+	}
 })
+bot.on("error", async (error) => {
+    console.error(`Bot encountered a connection error: ${error}`);
+});
 bot.on('warning', console.warn);
 bot.on('debug', (...args) => console.log('debug', ...args));
 bot.on('rateLimit', (...args) => console.log('rateLimit', ...args));

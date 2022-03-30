@@ -29,7 +29,7 @@ const activewelcomer = require('../update/activewelcomer');
 const activeleaver = require('../update/activeleaver');
 const botsettings = require('../update/botsettings')
 module.exports = {
-	async execute(interaction,bot,player) {
+	async execute(interaction,bot,player,pollUser,pollCounter) {
 		var separateCustomId = interaction.customId.split("-")
         switch (separateCustomId[0]) {
 			case "role":
@@ -280,7 +280,7 @@ module.exports = {
 					break;
 					case interaction.message.embeds[0].title.includes("**__Poll__**"):
 						await interaction.deferReply( {ephemeral: true});
-						await pollbuttons.execute(interaction,pollUser)
+						await pollbuttons.execute(interaction,pollUser,pollCounter)
 					break;
 				}
 			break;
