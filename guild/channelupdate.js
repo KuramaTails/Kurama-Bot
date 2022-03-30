@@ -2,6 +2,8 @@ module.exports = {
 	async execute(oldChannel,newChannel) {
         var welcomerSettingsChannel = await newChannel.guild.channels.cache.find(channel => channel.name == "welcomer-settings")
         var playerSettingsChannel = await newChannel.guild.channels.cache.find(channel => channel.name == "player-settings")
+        if (!welcomerChannelMessages) return
+        if (!playerSettingsChannel) return
         var welcomerChannelMessages = await welcomerSettingsChannel.messages.fetch()
         var playerChannelMessages = await playerSettingsChannel.messages.fetch()
         var selectWelcomerEmbed = await welcomerChannelMessages.find(message => message.embeds[0].title.includes("Choose channel"));
