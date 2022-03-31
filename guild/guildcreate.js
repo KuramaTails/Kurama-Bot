@@ -8,6 +8,7 @@ module.exports = {
         await fetchAll.execute(guild) 
         console.log("Fetched all!")
         await dbdisconnnect()
+        guild.lang = "en"
         await starttutorial.execute(guild)
     }
 };

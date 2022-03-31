@@ -23,11 +23,12 @@ const tutorialparts = [part2,part3,part4,part5,0,endtutorial]
 
 const createwelcomersettings = require('../create/createwelcomersettings');
 const createbotsettings = require('../create/createbotsettings');
-const createbotsettingsembed = require('../create/createbotsettingsembed');
 
 const activewelcomer = require('../update/activewelcomer');
 const activeleaver = require('../update/activeleaver');
-const botsettings = require('../update/botsettings')
+const botsettings = require('../update/botsettings');
+const selectlang = require('../tutorial/selectlang');
+const guildSchema = require('../schemas/guild-schema');
 module.exports = {
 	async execute(interaction,bot,player,pollUser,pollCounter) {
 		var separateCustomId = interaction.customId.split("-")
@@ -45,10 +46,24 @@ module.exports = {
 				if (!matches) {
 					switch (separateCustomId[1]) {
 						case "start":
-							await part1.execute(interaction)
+							await selectlang.execute(interaction)
 						break;
 						case "end":
 							await interaction.guild.channels.cache.find(c => c.name == "start-with-kurama").delete()
+						break;
+						default:
+							await dbconnect()
+							await guildSchema.findOneAndUpdate({
+								_id: interaction.guild.id,
+							}, {
+								guildLang: separateCustomId[1]
+							},
+							{
+								upsert:true,
+							})
+							await dbdisconnect()
+							await part1.execute(interaction)
+							
 						break;
 					}
 				}
@@ -94,7 +109,6 @@ module.exports = {
 											})
 											await dbdisconnect()
 										await createbotsettings.execute(interaction)
-										await createbotsettingsembed.execute(interaction)
 									break;
 								}
 							break;
@@ -126,7 +140,6 @@ module.exports = {
 										})
 										await dbdisconnect()
 										await createbotsettings.execute(interaction)
-										await createbotsettingsembed.execute(interaction)
 									break;
 								}
 							break;
@@ -269,6 +282,21 @@ module.exports = {
 						})
 						await interaction.deferUpdate()
 						await botsettings.execute(interaction)
+					break;
+					default:
+						await guildSchema.findOneAndUpdate({
+							_id: interaction.guild.id,
+						}, {
+							guildLang: separateCustomId[1]
+						},
+						{
+							upsert:true,
+						})
+						interaction.guild.lang = separateCustomId[1]
+						interaction.reply({
+							content: "Language has been set",
+							ephemeral: true
+						})
 					break;
 				}
 				await dbdisconnect()

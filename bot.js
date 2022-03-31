@@ -41,6 +41,7 @@ const updatewelcomer = require('./update/updatewelcomer');
 const updateleaver = require('./update/updateleaver');
 
 const ready = require('./events/ready');
+const selectlang = require('./tutorial/selectlang');
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 discordModals(bot);
@@ -118,7 +119,7 @@ bot.on('messageCreate', async msg => {
 	if (msg.author.username!=bot.user.username)
 	{
 		if(msg.content.startsWith(prefix)){
-			console.log(pollCounter)
+			console.log(msg.guild.lang)
 		}
 	}
 });

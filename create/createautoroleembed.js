@@ -3,12 +3,10 @@ const dbconnect = require('../db/dbconnect');
 const dbdisconnnect = require('../db/dbdisconnect');
 const autoroleSchema = require('../schemas/autorole-schema');
 module.exports = {
-    async execute(interaction,) {
+    async execute(interaction,channel) {
         await dbconnect()
         var selectGuildAutorole = await autoroleSchema.find({ "_id" : interaction.guild.id})
         await dbdisconnnect()
-        var channels = await interaction.guild.channels.fetch()
-        var settingsChannel = channels.find(c => c.name == "bot-settings" && c.type == "GUILD_TEXT")
         const enablerAutorole = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Autorole Enabler")
@@ -54,8 +52,8 @@ module.exports = {
                     },
                 ])
             });
-            await settingsChannel.send({embeds:[enablerAutorole],components:[button1]})
-            await settingsChannel.send({embeds:[roleEmbed],components:[button2]})
+            await channel.send({embeds:[enablerAutorole],components:[button1]})
+            await channel.send({embeds:[roleEmbed],components:[button2]})
 
         }
     }
