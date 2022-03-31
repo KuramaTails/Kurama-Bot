@@ -41,7 +41,7 @@ const updatewelcomer = require('./update/updatewelcomer');
 const updateleaver = require('./update/updateleaver');
 
 const ready = require('./events/ready');
-const selectlang = require('./tutorial/selectlang');
+const lang = new Map();
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 discordModals(bot);
@@ -66,6 +66,14 @@ const player = new DisTube.DisTube(bot, {
   } ) 
 let timeoutID;
 const commands = [];
+
+const langFiles = fs.readdirSync('./languages').filter(file => file.endsWith('.json'));
+for (const file of langFiles) {
+	var langName = (file.split("."))[0]
+	const language = require(`./languages/${file}`);
+	lang.set(langName,language)
+	console.log(`Language loaded`);
+}
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
@@ -95,7 +103,7 @@ bot.on('interactionCreate', async interaction => {
 	try {
 		cooldownUser.set(interaction.user.id, true);
 		if (interaction.isButton()) {
-			await isButton.execute(interaction,bot,player,pollUser,pollCounter)
+			await isButton.execute(interaction,bot,player,pollUser,pollCounter,lang)
 		}
 		if (interaction.isCommand()) {
 			pollUser.clear(); 
@@ -119,7 +127,6 @@ bot.on('messageCreate', async msg => {
 	if (msg.author.username!=bot.user.username)
 	{
 		if(msg.content.startsWith(prefix)){
-			console.log(msg.guild.lang)
 		}
 	}
 });

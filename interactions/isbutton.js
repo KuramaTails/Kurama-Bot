@@ -30,11 +30,11 @@ const botsettings = require('../update/botsettings');
 const selectlang = require('../tutorial/selectlang');
 const guildSchema = require('../schemas/guild-schema');
 module.exports = {
-	async execute(interaction,bot,player,pollUser,pollCounter) {
+	async execute(interaction,bot,player,pollUser,pollCounter,lang) {
 		var separateCustomId = interaction.customId.split("-")
         switch (separateCustomId[0]) {
 			case "role":
-				chooseRole.execute(interaction,separateCustomId[1])
+				chooseRole.execute(interaction,separateCustomId[1],lang)
 			break;
 			case "player":
 				const countVoiceChannels = bot.voice.adapters.size
