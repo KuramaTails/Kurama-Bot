@@ -1,5 +1,5 @@
 {
-    "strings": {
+    "buttons": {
         "optRoleAdded": "Ruolo <@&${roleId}> aggiunto",
         "optRoleRemoved": "Ruolo <@&${roleId}> rimosso",
         "btnBack": "Indietro",

@@ -1,33 +1,52 @@
 {
-    "strings": {        
-        "btnBack":"Back",
-        "btnPageDown":"Page Down",
-        "btnPageUp":"Page Up",
-        "optPlayeQueueShuffle":"Queue shuffled",   
-        "optPlayerDuration":"Duration", 
-        "optPlayerEmbedLessCommand":"Less commands",   
-        "optPlayerEmbedMoreCommand":"More commands",
-        "optPlayerJoin":"Player joined your voice Channel",
-        "optPlayerLeave":"Leaved the voice channel",
-        "optPlayerNoJoin":"Already joined",
-        "optPlayerNoLeave":"Already leaved",
-        "optPlayerNoPreviousSong":"No previous songs in queue",
-        "optPlayerNotPlaying":"I'm not playing any songs",
-        "optPlayerPause":"Player paused",
-        "optPlayerPlaying":"Playing",
-        "optPlayerPreviousSong":"Playing previous song",
-        "optPlayerQueueCurrentlyPlaying":"Currently Playing",
-        "optPlayerQueueEmpty":"No songs in queue",
-        "optPlayerQueueFinish":"No more songs in queue",
-        "optPlayerRepeatMode":"Set repeat mode to",
-        "optPlayerResume":"Player resumed",
-        "optPlayerSkip":"Song skipped",
-        "optPlayerVolSet":"Set volume to",
-        "optPollDeny":"You have already choosed one option",
-        "optPollThank":"Thank you for having participate",
-        "optRoleAdded":"Role <@&${roleId}> added",
-        "optRoleRemoved":"Role <@&${roleId}> removed"
-
-        
-    }
+    "buttons": {        
+        "buttons": {        
+            "btnBack":"Back",
+            "btnPageDown":"Page Down",
+            "btnPageUp":"Page Up",
+            "btnLessCommand":"Less commands",   
+            "btnMoreCommand":"More commands"
+        },
+        "player": {
+            "states": {        
+                "paused":"Player paused",
+                "resumed":"Player resumed"
+            },       
+            "settings": {        
+                "repeatMode":"Set repeat mode to",
+                "volSet":"Set volume to"
+            }, 
+            "commands": {        
+                "skip":"Song skipped",
+                "shuffle":"Queue shuffled", 
+                "join":"Player joined your voice Channel",
+                "leave":"Leaved the voice channel",
+                "previousSong":"Playing previous song",
+                "errors": {        
+                    "join":"Already joined",
+                    "leave":"Already leaved",
+                    "previousSong":"No previous songs in queue",
+                    "queue":"No songs in queue"
+                }
+            }, 
+            "embeds": {        
+                "playing":"Playing",
+                "duration":"Duration",
+                "currentlyPlaying":"Currently Playing",
+                "errors": {        
+                    "playing":"Not playing any songs"
+                }
+                
+            }        
+        },
+        "roles": {        
+            "optRoleAdded":"Role <@&${roleId}> added",
+            "optRoleRemoved":"Role <@&${roleId}> removed" 
+        },
+        "poll": {        
+            "optPollDeny":"You have already choosed one option",
+            "optPollThank":"Thank you for having participate"
+        }
+    },
+    "commands": {    }
 }

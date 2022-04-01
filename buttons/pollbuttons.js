@@ -1,7 +1,7 @@
 module.exports = {
 	async execute(interaction,pollUser,pollCounter) {
         if (pollUser.has(interaction.user.id)) {
-            await interaction.followUp({ content: lang.get(interaction.guild.lang).strings["optPollDeny"], ephemeral: true });
+            await interaction.followUp({ content: lang.get(interaction.guild.lang).poll["optPollDeny"], ephemeral: true });
         }
         else {
             pollUser.set(interaction.user.id, true);
@@ -22,7 +22,7 @@ module.exports = {
                     pollCounter[4] = pollCounter[4]+1
                 break;
             }
-            await interaction.followUp({ content: lang.get(interaction.guild.lang).strings["optPollThank"], ephemeral: true });
+            await interaction.followUp({ content: lang.get(interaction.guild.lang).poll["optPollThank"], ephemeral: true });
         }
 	}
 };

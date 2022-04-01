@@ -24,20 +24,20 @@ module.exports = {
         newButtons.addComponents(
         new MessageButton()
         .setCustomId(`help-Back`)
-        .setLabel(`🔙 `+ lang.get(interaction.guild.lang).strings["btnBack"])
+        .setLabel(`🔙 `+ lang.get(interaction.guild.lang).buttons.buttons["btnBack"])
         .setStyle("PRIMARY"),
         );
         newButtons.addComponents(
             new MessageButton()
             .setCustomId(`help-Up`)
-            .setLabel(`🔼 `+lang.get(interaction.guild.lang).strings["btnPageUp"])
+            .setLabel(`🔼 `+lang.get(interaction.guild.lang).buttons.buttons["btnPageUp"])
             .setStyle("PRIMARY")
             .setDisabled(true)
         );
         newButtons.addComponents(
             new MessageButton()
             .setCustomId(`help-Down`)
-            .setLabel(`🔽 `+lang.get(interaction.guild.lang).strings["btnPageDown"])
+            .setLabel(`🔽 `+lang.get(interaction.guild.lang).buttons.buttons["btnPageDown"])
             .setStyle("PRIMARY")
             .setDisabled(true)
         );

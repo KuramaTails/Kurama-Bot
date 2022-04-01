@@ -2,7 +2,7 @@ module.exports = {
 	async execute(interaction,roleId,lang) {
         var memberRole = await interaction.member.roles.cache.find(role => role.id == roleId)
         if (!memberRole) {
-            var string = lang.get(interaction.guild.lang).strings["optRoleAdded"]
+            var string = lang.get(interaction.guild.lang).buttons.roles["optRoleAdded"]
             let result = string.replace("<@&${roleId}>",`<@&${roleId}>`);
             interaction.member.roles.add(roleId);
             interaction.reply({
@@ -11,7 +11,7 @@ module.exports = {
             })
         }
         else {
-            var string = lang.get(interaction.guild.lang).strings["optRoleRemoved"]
+            var string = lang.get(interaction.guild.lang).buttons.roles["optRoleRemoved"]
             let result = string.replace("<@&${roleId}>",`<@&${roleId}>`);
             interaction.member.roles.remove(roleId);
             interaction.reply({

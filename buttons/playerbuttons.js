@@ -14,14 +14,14 @@ module.exports = {
             if(player.getQueue(voiceChannel)) {
                 let playingSong = await player.queues.get(voiceChannel).songs[0]
                 Embedsearch.setColor('#0099ff')
-                .setTitle(lang.get(interaction.guild.lang).strings["optPlayerPlaying"] +`: \`${playingSong.name}\``)
+                .setTitle(lang.get(interaction.guild.lang).buttons.player.embeds["playing"] +`: \`${playingSong.name}\``)
                 .setThumbnail(`${playingSong.thumbnail}`)
                 .setURL(`${playingSong.url}`)
-                .setDescription(lang.get(interaction.guild.lang).strings["optPlayerDuration"] +`: \`${playingSong.formattedDuration}\`\n`)
+                .setDescription(lang.get(interaction.guild.lang).buttons.player.embeds["duration"] +`: \`${playingSong.formattedDuration}\`\n`)
             }
             else {
                 Embedsearch.setColor('#0099ff')
-                .setTitle(lang.get(interaction.guild.lang).strings["optPlayerNotPlaying"])
+                .setTitle(lang.get(interaction.guild.lang).buttons.player.embeds.errors["playing"])
                 .setThumbnail(``)
                 .setURL(``)
                 .setDescription(``)
@@ -35,19 +35,19 @@ module.exports = {
                         if (countVoiceChannels<1) {
                             await player.voices.join(voiceChannel)
                             interaction.reply({
-                                content: lang.get(interaction.guild.lang).strings["optPlayerJoin"],
+                                content: lang.get(interaction.guild.lang).buttons.player.commands["join"],
                                 ephemeral: true
                             })
                         }
                         else {
                             interaction.reply({
-                                content: lang.get(interaction.guild.lang).strings["optPlayerNoJoin"],
+                                content: lang.get(interaction.guild.lang).buttons.player.commands.errors["join"],
                                 ephemeral: true
                             })
                         }
                     } catch (error) {
                         interaction.reply({
-                            content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
+                            content: lang.get(interaction.guild.lang).buttons.player.commands.errors["queue"],
                             ephemeral: true
                         })
                     }
@@ -57,19 +57,19 @@ module.exports = {
                         if (player.queues.collection.first().previousSongs.length) {
                             player.previous(voiceChannel);
                             interaction.reply({
-                                content: lang.get(interaction.guild.lang).strings["optPlayerPreviousSong"],
+                                content: lang.get(interaction.guild.lang).buttons.player.commands["previousSong"],
                                 ephemeral: true
                             })
                         }
                         else {
                             interaction.reply({
-                                content: lang.get(interaction.guild.lang).strings["optPlayerNoPreviousSong"],
+                                content: lang.get(interaction.guild.lang).buttons.player.commands.errors["previousSong"],
                                 ephemeral: true
                             })
                         }
                     } catch (error) {
                         interaction.reply({
-                            content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
+                            content: lang.get(interaction.guild.lang).buttons.player.commands.errors["queue"],
                             ephemeral: true
                         })
                     }
@@ -79,20 +79,20 @@ module.exports = {
                         if (!player.queues.collection.first().paused) {
                             player.pause(voiceChannel)
                             interaction.reply({
-                                content: lang.get(interaction.guild.lang).strings["optPlayerPause"],
+                                content: lang.get(interaction.guild.lang).buttons.player.states["optPlayerPause"],
                                 ephemeral: true
                             })
                         }
                         else {
                             player.resume(voiceChannel)
                             interaction.reply({
-                                content: lang.get(interaction.guild.lang).strings["optPlayerResume"],
+                                content: lang.get(interaction.guild.lang).buttons.player.states["optPlayerResume"],
                                 ephemeral: true
                             })
                         }
                     } catch (error) {
                         interaction.reply({
-                            content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
+                            content: lang.get(interaction.guild.lang).buttons.player.commands.errors["queue"],
                             ephemeral: true
                         })
                     }
@@ -102,20 +102,20 @@ module.exports = {
                         if (player.queues.collection.first().songs.length>1) {
                             player.skip(voiceChannel)
                             interaction.reply({
-                                content: lang.get(interaction.guild.lang).strings["optPlayerSkip"],
+                                content: lang.get(interaction.guild.lang).buttons.player.commands["skip"],
                                 ephemeral: true
                                 })
                         }
                         else {
                             player.voices.leave(voiceChannel)
                             interaction.reply({
-                                content: lang.get(interaction.guild.lang).strings["optPlayerQueueFinish"],
+                                content: lang.get(interaction.guild.lang).buttons.player.commands.errors["skip"],
                                 ephemeral: true
                                 })
                         }
                     } catch (error) {
                         interaction.reply({
-                            content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
+                            content: lang.get(interaction.guild.lang).buttons.player.commands.errors["queue"],
                             ephemeral: true
                         })
                     } 
@@ -125,25 +125,25 @@ module.exports = {
                         if (countVoiceChannels!=0) {
                             player.voices.leave(voiceChannel)
                             interaction.reply({
-                                content: lang.get(interaction.guild.lang).strings["optPlayerLeave"],
+                                content: lang.get(interaction.guild.lang).buttons.player.commands["leave"],
                                 ephemeral: true
                             })
                         }
                         else {
                             interaction.reply({
-                                content: lang.get(interaction.guild.lang).strings["optPlayerNoLeave"],
+                                content: lang.get(interaction.guild.lang).buttons.player.commands.errors["leave"],
                                 ephemeral: true
                             })
                         }
                     } catch (error) {
                         interaction.reply({
-                            content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
+                            content: lang.get(interaction.guild.lang).buttons.player.commands.errors["queue"],
                             ephemeral: true
                         })
                     }
                 break;
                 case "lesscommands":
-                    buttons2.components[0].setLabel(lang.get(interaction.guild.lang).strings["optPlayerEmbedMoreCommand"]+"🔽")
+                    buttons2.components[0].setLabel(lang.get(interaction.guild.lang).buttons["btnMoreCommand"]+"🔽")
                     buttons2.components[0].setCustomId("player-morecommands")
                     secMessage.edit({embeds: [Embedsearch],components: [buttons,buttons2] });
                     interaction.deferUpdate()
@@ -166,7 +166,7 @@ module.exports = {
                             .setStyle(`${moreButtonscommands[i].style}`),
                         ); 
                     }
-                    buttons2.components[0].setLabel(lang.get(interaction.guild.lang).strings["optPlayerEmbedLessCommand"]+"🔼")
+                    buttons2.components[0].setLabel(lang.get(interaction.guild.lang).buttons["btnLessCommand"]+"🔼")
                     buttons2.components[0].setCustomId("player-lesscommands")
                     secMessage.edit({embeds: [Embedsearch],components: [buttons,buttons2,moreButtons] });
                     interaction.deferUpdate()
@@ -175,12 +175,12 @@ module.exports = {
                     try {
                         player.shuffle(voiceChannel);
                         interaction.reply({
-                            content: lang.get(interaction.guild.lang).strings["optPlayeQueueShuffle"],
+                            content: lang.get(interaction.guild.lang).buttons.player.commands["shuffle"],
                             ephemeral: true
                         })
                     } catch (error) {
                         interaction.reply({
-                            content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
+                            content: lang.get(interaction.guild.lang).buttons.player.commands.errors["queue"],
                             ephemeral: true
                         })
                     }
@@ -194,7 +194,7 @@ module.exports = {
                                 player.setRepeatMode(voiceChannel, 1)
                                 mode = "DISABLED"
                                 interaction.reply({
-                                    content: lang.get(interaction.guild.lang).strings["optPlayerRepeatMode"]+"`" + mode + "`",
+                                    content: lang.get(interaction.guild.lang).buttons.player.settings["repeatMode"]+"`" + mode + "`",
                                     ephemeral: true
                                 })
                                 break;
@@ -202,7 +202,7 @@ module.exports = {
                                 player.setRepeatMode(voiceChannel, 2)
                                 mode = "SONG"
                                 interaction.reply({
-                                    content: lang.get(interaction.guild.lang).strings["optPlayerRepeatMode"]+"`" + mode + "`",
+                                    content: lang.get(interaction.guild.lang).buttons.player.settings["repeatMode"]+"`" + mode + "`",
                                     ephemeral: true
                                 })
                                 break;
@@ -210,7 +210,7 @@ module.exports = {
                                 player.setRepeatMode(voiceChannel, 0)
                                 var mode = "QUEUE"
                                 interaction.reply({
-                                    content: lang.get(interaction.guild.lang).strings["optPlayerRepeatMode"]+"`" + mode + "`",
+                                    content: lang.get(interaction.guild.lang).buttons.player.settings["repeatMode"]+"`" + mode + "`",
                                     ephemeral: true
                                 })
                                 break;
@@ -218,7 +218,7 @@ module.exports = {
                         break;
                     } catch (error) {
                         interaction.reply({
-                            content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
+                            content: lang.get(interaction.guild.lang).buttons.player.commands.errors["queue"],
                             ephemeral: true
                         })
                     }
@@ -231,7 +231,7 @@ module.exports = {
                         queueEmbed.setTitle("Current Queue")
                         queue.forEach(song => {
                             if (i<25) {
-                                var index = i > 0 ? i : lang.get(interaction.guild.lang).strings["optPlayerQueueCurrentlyPlaying"];
+                                var index = i > 0 ? i : lang.get(interaction.guild.lang).buttons.player.embeds["currentlyPlaying"];
                                 queueEmbed.addFields({ name: `**${index}**.` , value:  `${song.name} -`+ lang.get(interaction.guild.lang).strings["optPlayerQueueCurrentlyPlaying"] +`\`${song.formattedDuration}\``, inline: false })
                                 i=i+1
                             }
@@ -242,7 +242,7 @@ module.exports = {
                         })
                     } catch (error) {
                         interaction.reply({
-                            content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
+                            content: lang.get(interaction.guild.lang).buttons.player.commands.errors["queue"],
                             ephemeral: true
                         })
                     }
@@ -254,12 +254,12 @@ module.exports = {
                         player.setVolume(voiceChannel, volume-10);
                         volume = volume - 10
                         interaction.reply({
-                            content: lang.get(interaction.guild.lang).strings["optPlayerVolSet"]+"`" + volume + "`",
+                            content: lang.get(interaction.guild.lang).buttons.player.settings["volSet"]+"`" + volume + "`",
                             ephemeral: true
                         })
                     }
                     else { interaction.reply({
-                        content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
+                        content: lang.get(interaction.guild.lang).buttons.player.commands.errors["queue"],
                         ephemeral: true
                     })}
                 break;
@@ -270,12 +270,12 @@ module.exports = {
                         player.setVolume(voiceChannel, volume+10);
                         volume = volume + 10
                         interaction.reply({
-                            content: lang.get(interaction.guild.lang).strings["optPlayerVolSet"]+"`" + volume + "`",
+                            content: lang.get(interaction.guild.lang).buttons.player.settings["volSet"]+"`" + volume + "`",
                             ephemeral: true
                         })
                     }
                     else { interaction.reply({
-                        content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
+                        content: lang.get(interaction.guild.lang).buttons.player.commands.errors["queue"],
                         ephemeral: true
                     })}
                 break;
