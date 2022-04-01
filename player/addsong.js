@@ -9,7 +9,7 @@ module.exports = {
         await dbdisconnect()
         if (!selectGuild) {return}
         else {
-            var textChannel = selectGuild[9].channelId
+            var textChannel = selectGuild[0].channelId
             var listchannels = queue.clientMember.guild.channels.cache
             let playerChannel = await listchannels.find(channel => channel.id === textChannel )
             let playlist = player.queues.collection.first().songs;

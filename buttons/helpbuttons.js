@@ -7,7 +7,7 @@ const { MessageButton, MessageActionRow } = require('discord.js');
 
 
 module.exports = {
-	async execute(interaction) {
+	async execute(interaction,lang,category) {
         var pagNumber = 1
         if (interaction.message.embeds[0].title.includes("/")) {
             switch (true) {
@@ -23,25 +23,25 @@ module.exports = {
         var newButtons = new MessageActionRow()
         newButtons.addComponents(
         new MessageButton()
-        .setCustomId(`Back`)
-        .setLabel(`🔙 Back`)
+        .setCustomId(`help-Back`)
+        .setLabel(`🔙 `+ lang.get(interaction.guild.lang).strings["btnBack"])
         .setStyle("PRIMARY"),
         );
         newButtons.addComponents(
             new MessageButton()
-            .setCustomId(`Up`)
-            .setLabel(`🔼 Pag up`)
+            .setCustomId(`help-Up`)
+            .setLabel(`🔼 `+lang.get(interaction.guild.lang).strings["btnPageUp"])
             .setStyle("PRIMARY")
             .setDisabled(true)
         );
         newButtons.addComponents(
             new MessageButton()
-            .setCustomId(`Down`)
-            .setLabel(`🔽 Pag Down`)
+            .setCustomId(`help-Down`)
+            .setLabel(`🔽 `+lang.get(interaction.guild.lang).strings["btnPageDown"])
             .setStyle("PRIMARY")
             .setDisabled(true)
         );
-		switch (interaction.customId) {
+		switch (category) {
             case "Back":
                 await baseEmbed.execute(interaction)
             break;

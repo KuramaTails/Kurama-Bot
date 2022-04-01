@@ -38,7 +38,7 @@ module.exports = {
 			break;
 			case "player":
 				const countVoiceChannels = bot.voice.adapters.size
-				playerButtons.execute(interaction,player,countVoiceChannels)
+				playerButtons.execute(interaction,player,countVoiceChannels,lang,separateCustomId[1])
 			break;
 			case "tutorial":
 				var regExp = /\(([^)]+)\)/;
@@ -301,11 +301,11 @@ module.exports = {
 				}
 				await dbdisconnect()
 			break;
+			case "help":
+				await helpButtons.execute(interaction,lang,separateCustomId[1])
+			break;
 			default:
 				switch (true) {
-					case interaction.message.embeds[0].title.includes("Help"):
-						await helpButtons.execute(interaction)
-					break;
 					case interaction.message.embeds[0].title.includes("**__Poll__**"):
 						await interaction.deferReply( {ephemeral: true});
 						await pollbuttons.execute(interaction,pollUser,pollCounter)

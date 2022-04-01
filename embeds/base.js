@@ -28,23 +28,7 @@ for (let i = 0; i < startEmbed.fields.length; i++) {
 		case "🔑":
 			helpButtons.addComponents(
 				new MessageButton()
-				.setCustomId(`${startEmbed.fields[i+1].value}`)
-				.setLabel(`${startEmbed.fields[i].value+startEmbed.fields[i+1].value}`)
-				.setStyle("PRIMARY"),
-			);
-		break;
-		case "🆘":
-			helpButtons.addComponents(
-				new MessageButton()
-				.setCustomId(`${startEmbed.fields[i+1].value}`)
-				.setLabel(`${startEmbed.fields[i].value+startEmbed.fields[i+1].value}`)
-				.setStyle("PRIMARY"),
-			);
-		break;
-		case "🔨":
-			helpButtons.addComponents(
-				new MessageButton()
-				.setCustomId(`${startEmbed.fields[i+1].value}`)
+				.setCustomId(`help-${startEmbed.fields[i+1].value}`)
 				.setLabel(`${startEmbed.fields[i].value+startEmbed.fields[i+1].value}`)
 				.setStyle("PRIMARY"),
 			);
@@ -52,7 +36,7 @@ for (let i = 0; i < startEmbed.fields.length; i++) {
 		case "🎵":
 			helpButtons.addComponents(
 				new MessageButton()
-				.setCustomId(`${startEmbed.fields[i+1].value}`)
+				.setCustomId(`help-${startEmbed.fields[i+1].value}`)
 				.setLabel(`${startEmbed.fields[i].value+startEmbed.fields[i+1].value}`)
 				.setStyle("PRIMARY"),
 			);

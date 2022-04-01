@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 
 module.exports = {
-	async execute(interaction,player,countVoiceChannels) {
+	async execute(interaction,player,countVoiceChannels,lang,category) {
         var voiceChannel = interaction.member.voice.channel
         if(!voiceChannel) {
             return interaction.reply({
@@ -14,14 +14,14 @@ module.exports = {
             if(player.getQueue(voiceChannel)) {
                 let playingSong = await player.queues.get(voiceChannel).songs[0]
                 Embedsearch.setColor('#0099ff')
-                .setTitle(`Playing: \`${playingSong.name}\``)
+                .setTitle(lang.get(interaction.guild.lang).strings["optPlayerPlaying"] +`: \`${playingSong.name}\``)
                 .setThumbnail(`${playingSong.thumbnail}`)
                 .setURL(`${playingSong.url}`)
-                .setDescription(`Duration: \`${playingSong.formattedDuration}\`\n`)
+                .setDescription(lang.get(interaction.guild.lang).strings["optPlayerDuration"] +`: \`${playingSong.formattedDuration}\`\n`)
             }
             else {
                 Embedsearch.setColor('#0099ff')
-                .setTitle(`No songs playing right now`)
+                .setTitle(lang.get(interaction.guild.lang).strings["optPlayerNotPlaying"])
                 .setThumbnail(``)
                 .setURL(``)
                 .setDescription(``)
@@ -29,126 +29,126 @@ module.exports = {
             var secMessage = interaction.channel.messages.cache.get(interaction.message.id)
             var buttons = interaction.message.components[0]
             var buttons2 = interaction.message.components[1]
-            switch (interaction.customId) {
-                case "player-join":
+            switch (category) {
+                case "join":
                     try {
                         if (countVoiceChannels<1) {
-                            player.voices.join(voiceChannel)
+                            await player.voices.join(voiceChannel)
                             interaction.reply({
-                                content: "Player joined your voice Channel",
+                                content: lang.get(interaction.guild.lang).strings["optPlayerJoin"],
                                 ephemeral: true
                             })
                         }
                         else {
                             interaction.reply({
-                                content: "Already joined",
+                                content: lang.get(interaction.guild.lang).strings["optPlayerNoJoin"],
                                 ephemeral: true
                             })
                         }
                     } catch (error) {
                         interaction.reply({
-                            content: "No songs in queue",
+                            content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
                             ephemeral: true
                         })
                     }
                 break;
-                case "player-previous":
+                case "previous":
                     try {
                         if (player.queues.collection.first().previousSongs.length) {
                             player.previous(voiceChannel);
                             interaction.reply({
-                                content: "Playing previous song",
+                                content: lang.get(interaction.guild.lang).strings["optPlayerPreviousSong"],
                                 ephemeral: true
                             })
                         }
                         else {
                             interaction.reply({
-                                content: "No previous songs in queue",
+                                content: lang.get(interaction.guild.lang).strings["optPlayerNoPreviousSong"],
                                 ephemeral: true
                             })
                         }
                     } catch (error) {
                         interaction.reply({
-                            content: "No songs in queue",
+                            content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
                             ephemeral: true
                         })
                     }
                 break;
-                case "player-pause":
+                case "pause":
                     try {
                         if (!player.queues.collection.first().paused) {
                             player.pause(voiceChannel)
                             interaction.reply({
-                                content: "Player paused",
+                                content: lang.get(interaction.guild.lang).strings["optPlayerPause"],
                                 ephemeral: true
                             })
                         }
                         else {
                             player.resume(voiceChannel)
                             interaction.reply({
-                                content: "Player resumed",
+                                content: lang.get(interaction.guild.lang).strings["optPlayerResume"],
                                 ephemeral: true
                             })
                         }
                     } catch (error) {
                         interaction.reply({
-                            content: "No songs in queue",
+                            content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
                             ephemeral: true
                         })
                     }
                 break;
-                case "player-next":
+                case "next":
                     try {
                         if (player.queues.collection.first().songs.length>1) {
                             player.skip(voiceChannel)
                             interaction.reply({
-                                content: "Song skipped",
+                                content: lang.get(interaction.guild.lang).strings["optPlayerSkip"],
                                 ephemeral: true
                                 })
                         }
                         else {
                             player.voices.leave(voiceChannel)
                             interaction.reply({
-                                content: "Leaved the voice channel, no more songs in queue",
+                                content: lang.get(interaction.guild.lang).strings["optPlayerQueueFinish"],
                                 ephemeral: true
                                 })
                         }
                     } catch (error) {
                         interaction.reply({
-                            content: "No songs in queue",
+                            content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
                             ephemeral: true
                         })
                     } 
                 break;
-                case "player-leave":
+                case "leave":
                     try {
                         if (countVoiceChannels!=0) {
                             player.voices.leave(voiceChannel)
                             interaction.reply({
-                                content: "Leaving your voice Channel",
+                                content: lang.get(interaction.guild.lang).strings["optPlayerLeave"],
                                 ephemeral: true
                             })
                         }
                         else {
                             interaction.reply({
-                                content: "Already leaved",
+                                content: lang.get(interaction.guild.lang).strings["optPlayerNoLeave"],
                                 ephemeral: true
                             })
                         }
                     } catch (error) {
                         interaction.reply({
-                            content: "No songs in queue",
+                            content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
                             ephemeral: true
                         })
                     }
                 break;
-                case "player-lesscommands":
-                    buttons2.components[0].setLabel("More commands 🔽")
+                case "lesscommands":
+                    buttons2.components[0].setLabel(lang.get(interaction.guild.lang).strings["optPlayerEmbedMoreCommand"]+"🔽")
                     buttons2.components[0].setCustomId("player-morecommands")
                     secMessage.edit({embeds: [Embedsearch],components: [buttons,buttons2] });
                     interaction.deferUpdate()
                 break;
-                case "player-morecommands":
+                case "morecommands":
                     var moreButtonscommands = [
                     {name:"Shuffle",emoji:"🔀",style:"SECONDARY"},
                     {name:"Loop",emoji:"🔁",style:"SECONDARY"},
@@ -166,26 +166,26 @@ module.exports = {
                             .setStyle(`${moreButtonscommands[i].style}`),
                         ); 
                     }
-                    buttons2.components[0].setLabel("Less commands 🔼")
+                    buttons2.components[0].setLabel(lang.get(interaction.guild.lang).strings["optPlayerEmbedLessCommand"]+"🔼")
                     buttons2.components[0].setCustomId("player-lesscommands")
                     secMessage.edit({embeds: [Embedsearch],components: [buttons,buttons2,moreButtons] });
                     interaction.deferUpdate()
                 break;
-                case "player-shuffle":
+                case "shuffle":
                     try {
                         player.shuffle(voiceChannel);
                         interaction.reply({
-                            content: "Queue shuffled",
+                            content: lang.get(interaction.guild.lang).strings["optPlayeQueueShuffle"],
                             ephemeral: true
                         })
                     } catch (error) {
                         interaction.reply({
-                            content: "No songs in queue",
+                            content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
                             ephemeral: true
                         })
                     }
                 break;
-                case "player-loop":
+                case "loop":
                     try {
                         var queue = player.getQueue(voiceChannel)
                         var mode
@@ -194,7 +194,7 @@ module.exports = {
                                 player.setRepeatMode(voiceChannel, 1)
                                 mode = "DISABLED"
                                 interaction.reply({
-                                    content: "Set repeat mode to `" + mode + "`",
+                                    content: lang.get(interaction.guild.lang).strings["optPlayerRepeatMode"]+"`" + mode + "`",
                                     ephemeral: true
                                 })
                                 break;
@@ -202,7 +202,7 @@ module.exports = {
                                 player.setRepeatMode(voiceChannel, 2)
                                 mode = "SONG"
                                 interaction.reply({
-                                    content: "Set repeat mode to `" + mode + "`",
+                                    content: lang.get(interaction.guild.lang).strings["optPlayerRepeatMode"]+"`" + mode + "`",
                                     ephemeral: true
                                 })
                                 break;
@@ -210,7 +210,7 @@ module.exports = {
                                 player.setRepeatMode(voiceChannel, 0)
                                 var mode = "QUEUE"
                                 interaction.reply({
-                                    content: "Set repeat mode to `" + mode + "`",
+                                    content: lang.get(interaction.guild.lang).strings["optPlayerRepeatMode"]+"`" + mode + "`",
                                     ephemeral: true
                                 })
                                 break;
@@ -218,56 +218,64 @@ module.exports = {
                         break;
                     } catch (error) {
                         interaction.reply({
-                            content: "No songs in queue",
+                            content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
                             ephemeral: true
                         })
                     }
                 break;
-                case "player-queue":
+                case "queue":  
                     try {
+                        var queue = player.getQueue(voiceChannel).songs
+                        var i=0
+                        const queueEmbed = new MessageEmbed()
+                        queueEmbed.setTitle("Current Queue")
+                        queue.forEach(song => {
+                            if (i<25) {
+                                var index = i > 0 ? i : lang.get(interaction.guild.lang).strings["optPlayerQueueCurrentlyPlaying"];
+                                queueEmbed.addFields({ name: `**${index}**.` , value:  `${song.name} -`+ lang.get(interaction.guild.lang).strings["optPlayerQueueCurrentlyPlaying"] +`\`${song.formattedDuration}\``, inline: false })
+                                i=i+1
+                            }
+                        });
                         interaction.reply({
-                            content: `Current queue:\n${player.queues.collection.first().songs
-                                .map((song, id) =>	`**${id ? id : 'Playing'}**. ${song.name} - \`${song.formattedDuration}\``)
-                                .slice(0, 10)
-                                .join('\n')}`,
+                            embeds:[queueEmbed],
                             ephemeral: true
                         })
                     } catch (error) {
                         interaction.reply({
-                            content: "No songs in queue",
+                            content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
                             ephemeral: true
                         })
                     }
                 break;
-                case "player-vol down":
+                case "vol down":
                     var queue = player.getQueue(voiceChannel)
                     if (queue) {
                         var volume = queue.volume
                         player.setVolume(voiceChannel, volume-10);
                         volume = volume - 10
                         interaction.reply({
-                            content: "Set volume to `" + volume + "`",
+                            content: lang.get(interaction.guild.lang).strings["optPlayerVolSet"]+"`" + volume + "`",
                             ephemeral: true
                         })
                     }
                     else { interaction.reply({
-                        content: "No songs in queue",
+                        content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
                         ephemeral: true
                     })}
                 break;
-                case "player-vol up":
+                case "vol up":
                     var queue = player.getQueue(voiceChannel)
                     if (queue) {
                         var volume = queue.volume
                         player.setVolume(voiceChannel, volume+10);
                         volume = volume + 10
                         interaction.reply({
-                            content: "Set volume to `" + volume+ "`",
+                            content: lang.get(interaction.guild.lang).strings["optPlayerVolSet"]+"`" + volume + "`",
                             ephemeral: true
                         })
                     }
                     else { interaction.reply({
-                        content: "No songs in queue",
+                        content: lang.get(interaction.guild.lang).strings["optPlayerQueueEmpty"],
                         ephemeral: true
                     })}
                 break;
