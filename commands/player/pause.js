@@ -3,7 +3,7 @@ module.exports = {
     command:"pause",
     desc:'Bot will pause playing!',
     example:"/player pause",
-	async execute(interaction,player) {       
+	async execute(interaction,player,lang) {       
         try {
             var voiceChannel = interaction.member.voice.channel
             if (voiceChannel) {
@@ -11,21 +11,21 @@ module.exports = {
                     if (!player.queues.collection.first().paused) {
                         player.pause(voiceChannel)
                         interaction.followUp({
-                            content: "Player paused",
+                            content: lang.get(interaction.guild.lang).commands.player.states["paused"],
                             ephemeral: true
                         })
                     }
                 }
                 else {
                     interaction.followUp({
-                        content: "No songs in queue.",
+                        content: lang.get(interaction.guild.lang).commands.player.commands.error["queue"],
                         ephemeral: true
                     })
                 }
             }
             else { 
                 interaction.followUp({
-                    content: "You must join a voice channel first.",
+                    content: lang.get(interaction.guild.lang).commands.player.commands.error["memberJoin"],
                     ephemeral: true
                 })
             }

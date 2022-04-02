@@ -5,38 +5,37 @@ module.exports = {
     command:"queue",
     desc:"Bot will show the songs queue!",
     example:"/player queue",
-	async execute(interaction,player) {       
+	async execute(interaction,player,lang) {       
         try {
             var voiceChannel = interaction.member.voice.channel
             if (voiceChannel) {
                 if(player.getQueue(voiceChannel)) {
-                    var queue = player.queues.collection.first().songs
-                    const startEmbed = new MessageEmbed()
-                    .setColor('#0099ff')
-                    .setTitle('Current queue')
-                    for (let i = 0; i < queue.length; i++) {
-                        startEmbed.addFields(
-                            { name: "\u200B" , value: `${i+1}. ${queue[i].name} - \`${queue[i].formattedDuration}\``, inline: true },
-                            { name: '\u200B', value: "\u200B", inline: true },
-                            { name: '\u200B', value: "\u200B", inline: true }
-                            )
-                    }
-                    startEmbed.fields[0].value = "**Playing :   **" + startEmbed.fields[0].value
-                    interaction.followUp({
-                        embeds: [startEmbed],
+                    var queue = player.getQueue(voiceChannel).songs
+                    var i=0
+                    const queueEmbed = new MessageEmbed()
+                    queueEmbed.setTitle("Current Queue")
+                    queue.forEach(song => {
+                        if (i<25) {
+                            var index = i > 0 ? i : lang.get(interaction.guild.lang).buttons.player.embeds["currentlyPlaying"];
+                            queueEmbed.addFields({ name: `**${index}**.` , value:  `${song.name} -`+ lang.get(interaction.guild.lang).strings["optPlayerQueueCurrentlyPlaying"] +`\`${song.formattedDuration}\``, inline: false })
+                            i=i+1
+                        }
+                    });
+                    interaction.reply({
+                        embeds:[queueEmbed],
                         ephemeral: true
                     })
                 }
                 else {
                     interaction.followUp({
-                        content: "No songs in queue.",
+                        content: lang.get(interaction.guild.lang).commands.player.commands.error["queue"],
                         ephemeral: true
                     })
                 }
             }
             else { 
                 interaction.followUp({
-                    content: "You must join a voice channel first.",
+                    content: lang.get(interaction.guild.lang).commands.player.commands.error["memberJoin"],
                     ephemeral: true
                 })
             }

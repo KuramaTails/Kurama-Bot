@@ -3,7 +3,7 @@ module.exports = {
     command:"leave",
     desc:'Bot will leave this discord!',
     example:"/moderation leave",
-	async execute(interaction) { 
+	async execute(interaction,lang) { 
         try {
             var listChannels = await interaction.guild.channels.cache
             var listRoles = await interaction.guild.roles.cache
@@ -35,7 +35,7 @@ module.exports = {
                 var newKeys = Array.from(newChannels.keys())
                 for (let i = 0; i < newKeys.length; i++) {
                     if (newChannels.get(newKeys[i]).type== "GUILD_TEXT"){
-                        await newChannels.get(newKeys[i]).send("I'm sorry😢, admin wants me to drop this discord! Goodbye😋 ")
+                        await newChannels.get(newKeys[i]).send(lang.get(interaction.guild.lang).commands.moderation["optLeaveDs"])
                         await interaction.guild.leave();
                         return
                     }

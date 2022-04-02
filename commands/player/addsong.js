@@ -3,7 +3,7 @@ module.exports = {
     command:"Addsong",
     desc:'Bot will add a song to queue',
     example:"/player addsong <link or title>",
-	async execute(interaction,player) {
+	async execute(interaction,player,lang) {
         try {
             var voiceChannel = interaction.member.voice.channel
             if (voiceChannel) {
@@ -11,14 +11,16 @@ module.exports = {
                 await player.play(voiceChannel, link)
                 var queue = await player.queues.get(voiceChannel)
                 let addedsong = queue.songs[queue.songs.length-1]
+                var string = lang.get(interaction.guild.lang).commands.player.commands["addsong"]
+                 let result = string.replace("${addedsong.name} - ${addedsong.formattedDuration}",`${addedsong.name} - ${addedsong.formattedDuration}`);
                 interaction.followUp({
-                    content: `Added ${addedsong.name} - \`${addedsong.formattedDuration}\` to the queue`,
+                    content: result,
                     ephemeral: true
                 })
             }
             else { 
                 interaction.followUp({
-                    content: "You must join a voice channel first.",
+                    content: lang.get(interaction.guild.lang).commands.player.commands.errors["memberJoin"],
                     ephemeral: true
                 })
             }

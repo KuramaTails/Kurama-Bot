@@ -67,9 +67,9 @@ module.exports = {
 				.setDescription("Select player's volume!")
 				.addNumberOption(option =>option.setName("volume").setDescription("Set volume percentage").setRequired(true))
 		),
-	async execute(interaction,player) {
+	async execute(interaction,player,lang) {
         const playerCommand = require(`../commands/player/${interaction.options.getSubcommand()}`);
-		playerCommand.execute(interaction,player)
+		playerCommand.execute(interaction,player,lang)
 	},
 };
 

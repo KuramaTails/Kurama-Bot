@@ -109,7 +109,7 @@ bot.on('interactionCreate', async interaction => {
 			pollUser.clear(); 
 			pollCounter = [0,0,0,0,0]
 			const command = bot.commands.get(interaction.commandName);
-			await isCommand.execute(interaction,command,player,pollCounter)
+			await isCommand.execute(interaction,command,player,pollCounter,lang)
 		}
 		if(interaction.isSelectMenu()) {
 			await isselectmenu.execute(interaction)

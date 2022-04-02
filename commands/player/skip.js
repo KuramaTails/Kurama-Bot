@@ -3,7 +3,7 @@ module.exports = {
     command:"skip",
     desc:'Bot will skip this song!',
     example:"/player skip",
-	async execute(interaction,player) {       
+	async execute(interaction,player,lang) {       
         try {
             var voiceChannel = interaction.member.voice.channel
             if (voiceChannel) {
@@ -11,28 +11,28 @@ module.exports = {
                     if (player.queues.collection.first().songs.length>1) {
                         player.skip(voiceChannel)
                         interaction.followUp({
-                            content: "Song skipped",
+                            content: lang.get(interaction.guild.lang).commands.player.commands["skip"],
                             ephemeral: true
                             })
                     }
                     else {
                         player.voices.leave(voiceChannel)
                         interaction.followUp({
-                            content: "Leaved the voice channel, no more songs in queue",
+                            content: lang.get(interaction.guild.lang).commands.player.commands.error["queue"],
                             ephemeral: true
                             })
                     }
                 }
                 else {
                     interaction.followUp({
-                        content: "No songs in queue.",
+                        content: lang.get(interaction.guild.lang).commands.player.commands.error["queue"],
                         ephemeral: true
                     })
                 }
             }
             else { 
                 interaction.followUp({
-                    content: "You must join a voice channel first.",
+                    content: lang.get(interaction.guild.lang).commands.player.commands.error["memberJoin"],
                     ephemeral: true
                 })
             }

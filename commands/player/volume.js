@@ -3,7 +3,7 @@ module.exports = {
     command:"volume",
     desc:"Select player's volume!",
     example:"/player volume [0-100]",
-    async execute(interaction,player) {
+    async execute(interaction,player,lang) {
         try {
             var voiceChannel = interaction.member.voice.channel
             if (voiceChannel) {
@@ -11,20 +11,20 @@ module.exports = {
                     let volume = interaction.options.getNumber("volume")
                     player.setVolume(voiceChannel, volume);
                     interaction.followUp({
-                        content: "Set volume to `" + volume + "`",
+                        content: lang.get(interaction.guild.lang).buttons.player.settings["volSet"]+"`" + volume + "`",
                         ephemeral: true
                     })
                 }
                 else {
                     interaction.followUp({
-                        content: "No songs in queue.",
+                        content: lang.get(interaction.guild.lang).commands.player.commands.error["queue"],
                         ephemeral: true
                     })
                 }
             }
             else { 
                 interaction.followUp({
-                    content: "You must join a voice channel first.",
+                    content: lang.get(interaction.guild.lang).commands.player.commands.error["memberJoin"],
                     ephemeral: true
                 })
             }

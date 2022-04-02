@@ -3,18 +3,20 @@ module.exports = {
     command:"clear",
     desc:'Bot will clear messages in this channel!',
     example:"/moderation clear <number>",
-    async execute(interaction) {
+    async execute(interaction,lang) {
         var number = (interaction.options.getNumber("number"));
         if (number<101){
             interaction.channel.bulkDelete(number,true);
+            var string = lang.get(interaction.guild.lang).buttons.roles["optClearChat"]
+            let result = string.replace("${number}",`${number}`);
             interaction.followUp({
-                content: `${number} messages deleted`,
+                content: result,
                 ephemeral: true
             })
         }
         else {
             interaction.followUp({
-                content: "Please select less then 100 messages",
+                content: lang.get(interaction.guild.lang).commands.moderation["optClearChat"],
                 ephemeral: true
             })
         }        

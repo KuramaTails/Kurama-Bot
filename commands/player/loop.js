@@ -3,7 +3,7 @@ module.exports = {
     command:"loop",
     desc:'You can select loop mode!',
     example:"/player loop [0,1,2]",
-	async execute(interaction,player) {
+	async execute(interaction,player,lang) {
         try {
             var voiceChannel = interaction.member.voice.channel
             var mode
@@ -14,7 +14,7 @@ module.exports = {
                             player.setRepeatMode(voiceChannel, 1)
                             mode = "DISABLED"
                             interaction.followUp({
-                                content: "Set repeat mode to `" + mode + "`",
+                                content: lang.get(interaction.guild.lang).commands.player.settings["repeatMode"]+ "`" + mode + "`",
                                 ephemeral: true
                             })
                             break;
@@ -22,7 +22,7 @@ module.exports = {
                             player.setRepeatMode(voiceChannel, 2)
                             mode = "SONG"
                             interaction.followUp({
-                                content: "Set repeat mode to `" + mode + "`",
+                                content: lang.get(interaction.guild.lang).commands.player.settings["repeatMode"] +"`" + mode + "`",
                                 ephemeral: true
                             })
                             break;
@@ -30,13 +30,13 @@ module.exports = {
                             player.setRepeatMode(voiceChannel, 0)
                             var mode = "QUEUE"
                             interaction.followUp({
-                                content: "Set repeat mode to `" + mode + "`",
+                                content: lang.get(interaction.guild.lang).commands.player.settings["repeatMode"]+ "`" + mode + "`",
                                 ephemeral: true
                             })
                             break;
                         default:
                             interaction.followUp({
-                                content: "Please provide an available loop mode: DISABLED = 0, SONG = 1 , QUEUE = 2 ",
+                                content: lang.get(interaction.guild.lang).commands.player.settings["repeatMode"],
                                 ephemeral: true
                             })
                             break;
@@ -44,7 +44,7 @@ module.exports = {
                 }
                 else {
                     interaction.followUp({
-                        content: "No songs in queue.",
+                        content: lang.get(interaction.guild.lang).commands.player.commands.error["queue"],
                         ephemeral: true
                     })
                 }

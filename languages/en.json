@@ -22,7 +22,8 @@
                 "join":"Player joined your voice Channel",
                 "leave":"Leaved the voice channel",
                 "previousSong":"Playing previous song",
-                "errors": {        
+                "errors": {  
+                    "memberJoin":"Please join a vocal channel first",
                     "join":"Already joined",
                     "leave":"Already leaved",
                     "previousSong":"No previous songs in queue",
@@ -48,5 +49,65 @@
             "optPollThank":"Thank you for having participate"
         }
     },
-    "commands": {    }
+    "commands": { 
+        "moderation": {        
+            "optRoleAdded":"Role ${role.name} added to <@${member.id}>",
+            "optRoleRemoved":"Role ${role.name} removed to <@${member.id}>",
+            "optMemberBan":"<@${member.id}> was banned",
+            "optMemberBanReason":"<@${member.id}> was banned for ${reason}",
+            "optMemberUnban":"<@${member.id}> was unbanned",
+            "optMemberUnbanReason":"<@${member.id}> was unbanned for ${reason}",
+            "optMemberKick":"<@${member.id}> was kicked",
+            "optMemberKickReason":"<@${member.id}> was kicked for ${reason}",
+            "optMemberTimeout":"<@${member.id}> was timed out",
+            "optMemberTimeoutReason":"<@${member.id}> was timed out for ${reason}",
+            "optClearChat":"${number} messages deleted",
+            "optLeaveDs":"I'm sorry😢, admin wants me to drop this discord! Goodbye😋 ",
+            "errors": {        
+                "optClearChat":"Please select less then 100 messages"
+            }
+        },
+        "player": {
+            "states": {        
+                "paused":"Player paused",
+                "resumed":"Player resumed"
+            },       
+            "settings": {        
+                "repeatMode":"Set repeat mode to",
+                "volSet":"Set volume to",
+                "errors": {  
+                    "repeatMode":"Please provide an available loop mode: DISABLED = 0, SONG = 1 , QUEUE = 2"
+                }
+            }, 
+            "commands": {   
+                "addsong":"Added ${addedsong.name} - ${addedsong.formattedDuration} to the queue",     
+                "play":"Playing ${addedsong.name} - ${addedsong.formattedDuration}",     
+                "skip":"Song skipped",
+                "shuffle":"Queue shuffled", 
+                "join":"Player joined your voice Channel",
+                "leave":"Leaved the voice channel",
+                "previousSong":"Playing previous song",
+                "errors": {  
+                    "memberJoin":"Please join a vocal channel first",
+                    "join":"Already joined",
+                    "leave":"Already leaved",
+                    "previousSong":"No previous songs in queue",
+                    "queue":"No songs in queue"
+                }
+            }, 
+            "embeds": {        
+                "playing":"Playing",
+                "duration":"Duration",
+                "currentlyPlaying":"Currently Playing",
+                "errors": {        
+                    "playing":"Not playing any songs"
+                }
+            }        
+        }
+    },
+    "settings": {
+        "leaverSet":"Leaver has been set",
+        "playerSet":"Player has been set",
+        "welcomerSet":"Welcomer has been set"
+    }
 }

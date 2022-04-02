@@ -62,10 +62,10 @@ module.exports = {
 				.setDescription('Bot will unban mentioned user from your discord')
 				.addUserOption(user =>user.setName("user").setDescription("Select a user from this discord").setRequired(true))
 		),
-	async execute(interaction) {
+	async execute(interaction,player,lang) {
         const moderationCommand = require(`../commands/moderation/${interaction.options.getSubcommand()}`);
 		try {
-			moderationCommand.execute(interaction)
+			moderationCommand.execute(interaction,lang)
 		} catch (error) {
 			await interaction.deferUpdate()
 		}

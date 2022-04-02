@@ -3,13 +3,13 @@ module.exports = {
     command:"join",
     desc:'Bot will join your voice channel!',
     example:"/player join",
-	async execute(interaction,player) {
+	async execute(interaction,player,lang) {
 		var voiceChannel = Array.from(player.voices.collection.keys())
 		for (let i = 0; i < voiceChannel.length; i++) {
 			if (voiceChannel[i]= interaction.member.voice.channel)
 			{
 				interaction.followUp({
-					content: "Player is already in this voice channel.",
+                    content: lang.get(interaction.guild.lang).commands.player.commands.errors["join"],
 					ephemeral: true
 				})
 				return
@@ -17,7 +17,7 @@ module.exports = {
 			else {
 				await player.voices.join(voiceChannel[i])
 				interaction.followUp({
-					content: "Player joined",
+                    content: lang.get(interaction.guild.lang).commands.player.commands["join"],
 					ephemeral: true
 				})
 				return
@@ -25,7 +25,7 @@ module.exports = {
 		}
 		await player.voices.join(interaction.member.voice.channel)
 		interaction.followUp({
-			content: "Player joined",
+			content: lang.get(interaction.guild.lang).commands.player.commands["join"],
 			ephemeral: true
 		})
 	},

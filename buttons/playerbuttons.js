@@ -5,7 +5,7 @@ module.exports = {
         var voiceChannel = interaction.member.voice.channel
         if(!voiceChannel) {
             return interaction.reply({
-                content: "Please join a vocal channel first!",
+                content: lang.get(interaction.guild.lang).buttons.player.commands.errors["memberJoin"],
                 ephemeral: true
             })
         }

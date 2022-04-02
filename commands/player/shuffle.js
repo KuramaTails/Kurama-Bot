@@ -3,27 +3,27 @@ module.exports = {
     command:"shuffle",
     desc:"Bot will shuffle song's queue!",
     example:"/player shuffle",
-	async execute(interaction,player) {   
+	async execute(interaction,player,lang) {   
         try {
             var voiceChannel = interaction.member.voice.channel
             if (voiceChannel) {
                 if(player.getQueue(voiceChannel)) {
                     player.shuffle(voiceChannel);
                     interaction.followUp({
-                        content: "Queue shuffled.",
+                        content: lang.get(interaction.guild.lang).commands.player.commands["shuffle"],
                         ephemeral: true
                     })
                 }
                 else {
                     interaction.followUp({
-                        content: "No songs in queue.",
+                        content: lang.get(interaction.guild.lang).commands.player.commands.error["queue"],
                         ephemeral: true
                     })
                 }
             }
             else { 
                 interaction.followUp({
-                    content: "You must join a voice channel first.",
+                    content: lang.get(interaction.guild.lang).commands.player.commands.error["memberJoin"],
                     ephemeral: true
                 })
             }

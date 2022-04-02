@@ -2,7 +2,7 @@ const dbdisconnnect = require('../../db/dbdisconnnect');
 const dbconnect = require('../../db/dbconnect');
 const welcomeSchema = require('../../schemas/welcome-schema')
 module.exports = {
-	async execute(interaction) {
+	async execute(interaction,lang) {
         await dbconnect()
         switch (true) {
             case interaction.options.getBoolean("activewelcome")!=null:
@@ -54,7 +54,7 @@ module.exports = {
         }
         await dbdisconnnect()
         await interaction.followUp({
-            content: "Welcomer has been set",
+            content: lang.get(interaction.guild.lang).settings["welcomerSet"],
             ephemeral: true
         })
 	},

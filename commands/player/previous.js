@@ -3,7 +3,7 @@ module.exports = {
     command:"previous",
     desc:'Bot will play previous song!',
     example:"/player previous",
-	async execute(interaction,player) {       
+	async execute(interaction,player,lang) {       
         try {
             var voiceChannel = interaction.member.voice.channel
             if (voiceChannel) {
@@ -11,27 +11,27 @@ module.exports = {
                     if (player.queues.collection.first().previousSongs.length) {
                         player.previous(voiceChannel);
                         interaction.followUp({
-                            content: "Playing previous song",
+                            content: lang.get(interaction.guild.lang).commands.player.commands["previousSong"],
                             ephemeral: true
                         })
                     }
                     else {
                         interaction.followUp({
-                            content: "No previous songs in queue",
+                            content: lang.get(interaction.guild.lang).commands.player.commands.error["previousSong"],
                             ephemeral: true
                         })
                     }
                 }
                 else {
                     interaction.followUp({
-                        content: "No songs in queue.",
+                        content: lang.get(interaction.guild.lang).commands.player.commands.error["queue"],
                         ephemeral: true
                     })
                 }
             }
             else { 
                 interaction.followUp({
-                    content: "You must join a voice channel first.",
+                    content: lang.get(interaction.guild.lang).commands.player.commands.error["memberJoin"],
                     ephemeral: true
                 })
             }

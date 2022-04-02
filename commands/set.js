@@ -28,10 +28,10 @@ module.exports = {
 				.addChannelOption(option =>option.setName("channel").setDescription("Link or Title of song/playlist you want to add to queue"))
 
 		),
-	async execute(interaction) {
+	async execute(interaction,player,lang) {
         const setCommands = require(`../commands/set/${interaction.options.getSubcommand()}`);
 		try {
-			setCommands.execute(interaction)
+			setCommands.execute(interaction,lang)
 		} catch (error) {
 			await interaction.deferUpdate()
 		}

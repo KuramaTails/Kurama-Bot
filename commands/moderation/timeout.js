@@ -3,22 +3,26 @@ module.exports = {
     command:"timeout",
     desc:'Bot will timeout a member!',
     example:"/moderation timeout",
-    async execute(interaction) {
+    async execute(interaction,lang) {
         var member = await interaction.guild.members.fetch(interaction.options.getUser("user"));
         var reason = (interaction.options.getString("reason"));
         interaction.guild.members.timeout(member)
         if (reason!=null) {
+            var string = lang.get(interaction.guild.lang).buttons.roles["optMemberTimeoutReason"]
+            let result = string.replace("<@${member.id}>",`<@${member.id}>`);
+            result = string.replace("${reason}",`${reason}`);
             interaction.followUp({
-                content: `<@${member.id}> was timed out for ${reason}`,
+                content: result,
                 ephemeral: true
             })
         }
         else {
+            var string = lang.get(interaction.guild.lang).buttons.roles["optMemberTimeout"]
+            let result = string.replace("<@${member.id}>",`<@${member.id}>`);
             interaction.followUp({
-                content: `<@${member.id}> was timed out `,
+                content: result,
                 ephemeral: true
             })
         }
-        
     }
 };

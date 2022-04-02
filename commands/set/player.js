@@ -1,7 +1,7 @@
 const dbconnect = require('../../events/dbconnect');
 const playerSchema = require('../../schemas/player-schema')
 module.exports = {
-	async execute(interaction) {
+	async execute(interaction,lang) {
         await dbconnect().then(async (mongoose)=> {
             try {
                 switch (true) {
@@ -22,7 +22,7 @@ module.exports = {
                 mongoose.connection.close()
                 console.log("Disconnected from database")
                 interaction.followUp({
-                    content: "Player has been set",
+                    content: lang.get(interaction.guild.lang).settings["playerSet"],
                     ephemeral: true
                 })
             }
