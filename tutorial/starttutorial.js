@@ -3,7 +3,7 @@ const kuramaZonePermissions = new Permissions([
     Permissions.FLAGS.VIEW_CHANNEL,
 ]);
 module.exports = {
-    async execute(guild) {
+    async execute(guild,lang) {
         let everyone = guild.roles.cache.find(r => r.name === "@everyone");
         await guild.channels.create('Kurama-Zone', {
             type: 'GUILD_CATEGORY',
@@ -19,8 +19,8 @@ module.exports = {
                     .setColor('#0099ff')
                     .setTitle("Bot Kurama : Start Tutorial")
                     .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-                    .setDescription("Thanks for adding me to your discord. \n Please,follow this tutorial to set me up for your discord.\n It won't take long. ")
-                    .addField("Warning: If the tutorial is skipped or not configured correctly, my correct function is not guaranteed...","Please click the button below to continue")
+                    .setDescription(lang.get(guild.lang).tutorial.start["desc"])
+                    .addField(lang.get(guild.lang).tutorial.start["field1"],lang.get(guild.lang).tutorial.start["field2"])
                     const button1 = new MessageActionRow()
                     button1.addComponents(
                         new MessageButton()

@@ -41,6 +41,7 @@ const updatewelcomer = require('./update/updatewelcomer');
 const updateleaver = require('./update/updateleaver');
 
 const ready = require('./events/ready');
+const starttutorial = require('./tutorial/starttutorial');
 const lang = new Map();
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
@@ -127,6 +128,7 @@ bot.on('messageCreate', async msg => {
 	if (msg.author.username!=bot.user.username)
 	{
 		if(msg.content.startsWith(prefix)){
+			await starttutorial.execute(msg.guild,lang)
 		}
 	}
 });
@@ -138,10 +140,10 @@ bot.on('modalSubmit', async (modal) => {
 		} else {
 			cooldownUser.set(modal.user.id, true);
 			if(modal.customId === 'modal-welcomer'){
-				await updatewelcomer.execute(modal)
+				await updatewelcomer.execute(modal,lang)
 			} 
 			if(modal.customId === 'modal-leaver'){
-				await updateleaver.execute(modal)
+				await updateleaver.execute(modal,lang)
 			} 
 			deletecooldown.execute(modal,cooldownUser)
 		}
@@ -201,7 +203,7 @@ bot.on("guildMemberRemove", async (member) => {
 bot.on("guildCreate", async (guild) => {
 	var botId = bot.user.id
 	await registerPermissions.execute(guild,botId,commands)
-	await guildCreate.execute(guild)
+	await guildCreate.execute(guild,lang)
 	console.log("Joined a new guild: " + guild.name);
 })
 

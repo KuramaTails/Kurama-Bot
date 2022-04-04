@@ -1,23 +1,23 @@
 const { MessageActionRow, MessageEmbed, MessageButton } = require('discord.js');
 module.exports = {
-    async execute(interaction) {
+    async execute(interaction,lang) {
         await interaction.message.delete()
         const TutorialEmbed = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle("Bot Kurama Tutorial (2/6) : Welcome Channels")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .addField("Do you want to have a section to welcome new members and let them choose a role for themselves?","(Welcome and choose-roles channels will be created)")
+        .addField(lang.get(interaction.guild.lang).tutorial.part2["field1"],lang.get(interaction.guild.lang).tutorial.part2["field2"])
         const button1 = new MessageActionRow()
         button1.addComponents(
             new MessageButton()
             .setCustomId(`tutorial-yes`)
-            .setLabel("Yes")
+            .setLabel(lang.get(interaction.guild.lang).tutorial["yes"])
             .setStyle(`SUCCESS`),
         )
         button1.addComponents(
             new MessageButton()
             .setCustomId(`tutorial-no`)
-            .setLabel("No")
+            .setLabel(lang.get(interaction.guild.lang).tutorial["no"])
             .setStyle(`DANGER`),
         )
         interaction.channel.send({embeds:[TutorialEmbed],components:[button1]})

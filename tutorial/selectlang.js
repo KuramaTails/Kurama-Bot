@@ -1,13 +1,14 @@
 const { MessageActionRow, MessageEmbed, MessageButton } = require('discord.js');
 module.exports = {
-    async execute(interaction) {
+    async execute(interaction,lang) {
         await interaction.message.delete()
+        console.log(lang)
         const TutorialEmbed = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle("Bot Kurama Tutorial : Language selection")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .setDescription("Thanks for starting the tutorial. Let's start choosing a language")
-        .addField("This will be used for this tutorial aswell in your discord","Tips: You will be able to change it later in #botsettings channel")
+        .setDescription(lang.get(interaction.guild.lang).tutorial.selectLang["desc"])
+        .addField(lang.get(interaction.guild.lang).tutorial.selectLang["field1"],lang.get(interaction.guild.lang).tutorial.selectLang["field2"])
         const buttons = new MessageActionRow()
         buttons.addComponents(
             new MessageButton()

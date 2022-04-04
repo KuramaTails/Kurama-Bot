@@ -228,7 +228,7 @@ module.exports = {
                         var queue = player.getQueue(voiceChannel).songs
                         var i=0
                         const queueEmbed = new MessageEmbed()
-                        queueEmbed.setTitle("Current Queue")
+                        queueEmbed.setTitle(lang.get(interaction.guild.lang).buttons.player.embeds["queue"])
                         queue.forEach(song => {
                             if (i<25) {
                                 var index = i > 0 ? i : lang.get(interaction.guild.lang).buttons.player.embeds["currentlyPlaying"];

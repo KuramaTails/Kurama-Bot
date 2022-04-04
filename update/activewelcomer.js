@@ -3,19 +3,19 @@ const fs= require('fs');
 const welcomeSchema = require('../schemas/welcome-schema');
 
 module.exports = {
-	async execute(interaction) {
+	async execute(interaction,lang) {
         var selectGuildWelcomer = await welcomeSchema.find({ "_id" : interaction.guild.id})
         var selectChannel = await interaction.guild.channels.resolve(interaction.channelId)
         var selectedMessage = await selectChannel.messages.resolve(interaction.message.id)
         var updateEmbed = selectedMessage.embeds[0]
-        updateEmbed.fields[0].name = `Welcomer set to \`${selectGuildWelcomer[0].activeWelcome}\``
+        updateEmbed.fields[0].name = lang.get(interaction.guild.lang).update.welcomer["active"]+` \`${selectGuildWelcomer[0].activeWelcome}\``
         const newButton = new MessageActionRow()
         if (selectGuildWelcomer[0].activeWelcome==true) {
-            updateEmbed.fields[0].value = "Click button below to disable"
+            updateEmbed.fields[0].value = lang.get(interaction.guild.lang).update.welcomer.embeds["activeDescOff"]
             newButton.addComponents(
                 new MessageButton()
                 .setCustomId(`welcomer-disableWelcomer`)
-                .setLabel("🔴Disable")
+                .setLabel(lang.get(interaction.guild.lang).update.welcomer.embeds["activeBtnOff"])
                 .setStyle(`SECONDARY`),
             )
             await selectedMessage.edit({embeds:[updateEmbed],components:[newButton]}).then(async ()=>{
@@ -23,12 +23,12 @@ module.exports = {
                 .setColor('#0099ff')
                 .setTitle("Bot Kurama : Choose channel")
                 .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-                .addField("Please select a text channel:this will be used by the welcomer to send messages when members join ","(Tip: Select welcome if previously created)")
+                .addField(lang.get(interaction.guild.lang).update.welcomer.embeds["chooseChannelDesc1"],lang.get(interaction.guild.lang).update.welcomer.embeds["chooseChannelDesc2"])
                 const button2 = new MessageActionRow()
                 button2.addComponents(
                     new MessageSelectMenu()
                         .setCustomId('welcomer-selectWelcomerChannel')
-                        .setPlaceholder('Nothing selected') 
+                        .setPlaceholder(lang.get(interaction.guild.lang).update.welcomer.embeds["chooseChannelSelect"]) 
                 )
                 var textChannels = await interaction.guild.channels.cache.filter(c=> c.type=="GUILD_TEXT")
                 textChannels.forEach(channel => {
@@ -44,23 +44,23 @@ module.exports = {
                 .setTitle("Bot Kurama : Welcomer Text")
                 .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
                 const buttonWelcomertext = new MessageActionRow()
-                textWelcomerEmbed.addField(`Welcome text set to \`${selectGuildWelcomer[0].textWelcome}\``,"Click button below to change it")
+                textWelcomerEmbed.addField(lang.get(interaction.guild.lang).update.welcomer["text"]+` \`${selectGuildWelcomer[0].textWelcome}\``,lang.get(interaction.guild.lang).update.welcomer.embeds["changeTextEmbed"])
                 buttonWelcomertext.addComponents(
                     new MessageButton()
                     .setCustomId(`welcomer-textWelcomer`)
-                    .setLabel("Change text Welcomer")
+                    .setLabel(lang.get(interaction.guild.lang).update.welcomer.embeds["changeTextDesc"])
                     .setStyle(`SECONDARY`),
                 )
                 const backgroundEmbed = new MessageEmbed()
                 .setColor('#0099ff')
                 .setTitle("Bot Kurama : Choose Background")
                 .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-                .addField("Please select a background:this will be used by the welcomer to send messages when members join ","(Tip: Select welcome if previously created)")
+                .addField(lang.get(interaction.guild.lang).update.welcomer.embeds["chooseBackgroundDesc1"],lang.get(interaction.guild.lang).update.welcomer.embeds["chooseBackgroundDesc2"])
                 const button3 = new MessageActionRow()
                 button3.addComponents(
                     new MessageSelectMenu()
                         .setCustomId('welcomer-selectWelcomerBackground')
-                        .setPlaceholder('Nothing selected')
+                        .setPlaceholder(lang.get(interaction.guild.lang).update.welcomer.embeds["chooseBackgroundSelect"])
                 )
                 const background = fs.readdirSync('./welcomer').filter(file => file.endsWith('.jpg'));
                 background.forEach(image => {
@@ -80,28 +80,28 @@ module.exports = {
                     .setTitle("Bot Kurama : Leaver enabler")
                     .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
                 const buttonLeaver = new MessageActionRow()
-                Leaver.addField(`Leaver set to \`${selectGuildWelcomer[0].activeLeave}\``,"Click button below to enable")
+                Leaver.addField(lang.get(interaction.guild.lang).update.leaver["text"]+` \`${selectGuildWelcomer[0].activeLeave}\``,lang.get(interaction.guild.lang).update.leaver.embeds["activeDescOn"])
                 buttonLeaver.addComponents(
                     new MessageButton()
                     .setCustomId(`welcomer-enableLeaver`)
-                    .setLabel("🟢Enable")
+                    .setLabel(lang.get(interaction.guild.lang).update.leaver.embeds["activeBtnOn"])
                     .setStyle(`SECONDARY`),
                 )
                 await selectChannel.send({embeds:[Leaver],components:[buttonLeaver]})
             })
         } else {
-            updateEmbed.fields[0].value = "Click button below to enable"
+            updateEmbed.fields[0].value = lang.get(interaction.guild.lang).update.welcomer.embeds["activeDescOn"]
             newButton.addComponents(
                 new MessageButton()
                 .setCustomId(`welcomer-enableWelcomer`)
-                .setLabel("🟢Enable")
+                .setLabel(lang.get(interaction.guild.lang).update.welcomer.embeds["activeBtnOn"])
                 .setStyle(`SECONDARY`),
             )
             await selectedMessage.edit({embeds:[updateEmbed],components:[newButton]})
             var fetchedMessages = await selectChannel.messages.fetch()
             var toDeleteList = []
             fetchedMessages.forEach(async message=>{
-                if(message.embeds[0].fields[0].name != `Welcomer set to \`${selectGuildWelcomer[0].activeWelcome}\``) {
+                if(message.embeds[0].fields[0].name != lang.get(interaction.guild.lang).update.welcomer["active"]+` \`${selectGuildWelcomer[0].activeWelcome}\``) {
                     await toDeleteList.push(message)
                 }
             })

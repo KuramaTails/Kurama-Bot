@@ -46,7 +46,7 @@ module.exports = {
 				if (!matches) {
 					switch (separateCustomId[1]) {
 						case "start":
-							await selectlang.execute(interaction)
+							await selectlang.execute(interaction,lang)
 						break;
 						case "end":
 							await interaction.guild.channels.cache.find(c => c.name == "start-with-kurama").delete()
@@ -62,7 +62,7 @@ module.exports = {
 								upsert:true,
 							})
 							await dbdisconnect()
-							await part1.execute(interaction)
+							await part1.execute(interaction,lang)
 							
 						break;
 					}
@@ -205,7 +205,7 @@ module.exports = {
 								upsert:true,
 							})
 							await interaction.deferUpdate()
-							await activewelcomer.execute(interaction)
+							await activewelcomer.execute(interaction,lang)
 						break;
 						case "disableWelcomer":
 							await welcomeSchema.findOneAndUpdate({
@@ -222,7 +222,7 @@ module.exports = {
 								upsert:true,
 							})
 							await interaction.deferUpdate()
-							await activewelcomer.execute(interaction)
+							await activewelcomer.execute(interaction,lang)
 						break;
 						case "enableLeaver":
 							await welcomeSchema.findOneAndUpdate({
@@ -234,7 +234,7 @@ module.exports = {
 								upsert:true,
 							})
 							await interaction.deferUpdate()
-							await activeleaver.execute(interaction)
+							await activeleaver.execute(interaction,lang)
 						break;
 						case "disableLeaver":
 							await welcomeSchema.findOneAndUpdate({
@@ -247,7 +247,7 @@ module.exports = {
 								upsert:true,
 							})
 							await interaction.deferUpdate()
-							await activeleaver.execute(interaction)
+							await activeleaver.execute(interaction,lang)
 						break;
 						
 					}
@@ -269,7 +269,7 @@ module.exports = {
 							upsert:true,
 						})
 						await interaction.deferUpdate()
-						await botsettings.execute(interaction)
+						await botsettings.execute(interaction,lang)
 					break;
 					case "disableAutorole":
 						await autoroleSchema.findOneAndUpdate({
@@ -281,7 +281,7 @@ module.exports = {
 							upsert:true,
 						})
 						await interaction.deferUpdate()
-						await botsettings.execute(interaction)
+						await botsettings.execute(interaction,lang)
 					break;
 					default:
 						await guildSchema.findOneAndUpdate({
@@ -308,7 +308,7 @@ module.exports = {
 				switch (true) {
 					case interaction.message.embeds[0].title.includes("**__Poll__**"):
 						await interaction.deferReply( {ephemeral: true});
-						await pollbuttons.execute(interaction,pollUser,pollCounter)
+						await pollbuttons.execute(interaction,pollUser,pollCounter,lang)
 					break;
 				}
 			break;
