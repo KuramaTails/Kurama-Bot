@@ -113,7 +113,7 @@ bot.on('interactionCreate', async interaction => {
 			await isCommand.execute(interaction,command,player,pollCounter,lang)
 		}
 		if(interaction.isSelectMenu()) {
-			await isselectmenu.execute(interaction)
+			await isselectmenu.execute(interaction,lang)
 		}
 	} catch (error) {
 		console.error(error);
@@ -153,16 +153,16 @@ bot.on('modalSubmit', async (modal) => {
 });
 
 player.on('playSong', async (queue) =>{
-	playSong.execute(queue,player)
+	playSong.execute(queue,player,lang)
 	clearTimeout(timeoutID)
 	timeoutID = undefined	
 });
 player.on('addSong', (queue) => {
-	addSong.execute(queue,player)
+	addSong.execute(queue,player,lang)
 })
 player.on('finish', async (queue) => {
 	timeoutID = setTimeout(() => {
-		finish.execute(queue)
+		finish.execute(queue,lang)
 	  }, 30 * 1000)
 });
 player.on('error', async () => {
@@ -170,7 +170,7 @@ player.on('error', async () => {
 })
 player.on('empty', (queue) => {
 	timeoutID = setTimeout(() => {
-		finish.execute(queue)
+		finish.execute(queue,lang)
 	  }, 30 * 1000)
 })
 

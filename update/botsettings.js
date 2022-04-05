@@ -47,6 +47,7 @@ module.exports = {
                 new MessageButton()
                 .setCustomId(`bot-enableAutorole`)
                 .setLabel(lang.get(interaction.guild.lang).update.bot.embeds["activeBtnOn"])
+                .setStyle(`SECONDARY`)
             )
             await selectedMessage.edit({embeds:[updateEmbed],components:[newButton]})
             var fetchedMessages = await selectChannel.messages.fetch()

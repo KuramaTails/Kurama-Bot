@@ -3,7 +3,7 @@ const playerSchema = require('../schemas/player-schema');
 const dbconnect = require('../db/dbconnect');
 const dbdisconnect = require("../db/dbdisconnect");
 module.exports = {
-	async execute(queue,player) {
+	async execute(queue,player,lang) {
         await dbconnect()
         var selectGuild = await playerSchema.find({ "_id" : queue.clientMember.guild.id})
         await dbdisconnect()
@@ -15,10 +15,10 @@ module.exports = {
             let playlist = player.queues.collection.first().songs;
             const Embedsearch = new MessageEmbed()
             .setColor('#0099ff')
-            .setTitle(`Playing: \`${playlist[0].name}\``)
+            .setTitle(lang.get(queue.clientMember.guild.lang).commands.player.embeds["playing"]+`: \`${playlist[0].name}\``)
             .setThumbnail(`${playlist[0].thumbnail}`)
             .setURL(`${playlist[0].url}`)
-            .setDescription(`Duration: \`${playlist[0].formattedDuration}\`\n`)
+            .setDescription(lang.get(queue.clientMember.guild.lang).commands.player.embeds["duration"]+`: \`${playlist[0].formattedDuration}\`\n`)
             const buttons1 = new MessageActionRow()
             const moreButton = new MessageActionRow()
             buttons1.addComponents(
@@ -45,8 +45,8 @@ module.exports = {
             );
             moreButton.addComponents(
                 new MessageButton()
-                .setCustomId(`More commands 🔽`)
-                .setLabel("More commands 🔽")
+                .setCustomId("player-morecommands")
+                .setLabel(lang.get(queue.clientMember.guild.lang).buttons.buttons["btnMoreCommand"]+"🔽")
                 .setStyle(`SECONDARY`),);
             var allmessages = await playerChannel.messages.fetch()
             let selectedMessage = await allmessages.find(message => message.embeds.length > 0)

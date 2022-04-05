@@ -109,7 +109,10 @@
     "settings": {
         "leaverSet":"Leaver has been set",
         "playerSet":"Player has been set",
-        "welcomerSet":"Welcomer has been set"
+        "welcomerSet":"Welcomer has been set",
+        "welcomerChannelSet":"Welcomer's channel has been set",
+        "welcomerBackgroundSet":"Welcomer's background has been set",
+        "autoRoleSet":"Autorole set to role"
     },
     "tutorial": {
         "yes":"Yes",
@@ -157,8 +160,8 @@
     },
     "update": {
         "welcomer": {
-            "active":"Welcome has been set to",
-            "text":"Welcome text has been set to",
+            "active":"Welcomer has been set to",
+            "text":"Welcomer text has been set to",
             "embeds": {
                 "activeTitle":"Leaver set to",
                 "activeDescOn":"Click button below to enable",
@@ -176,8 +179,8 @@
             }
         },
         "leaver": {
-            "active":"Welcome has been set to",
-            "text":"Welcome text has been set to",
+            "active":"Leaver has been set to",
+            "text":"Leaver text has been set to",
             "embeds": {
                 "activeTitle":"Leaver set to",
                 "activeDescOn":"Click button below to enable",
@@ -200,5 +203,22 @@
                 "chooseRoleSelect":"Nothing selected"
             }
         }
+    },
+    "autorole": {
+        "title":"Add Role",
+        "desc":"Click on a button to get yourself a role"
+    },
+    "canvas": {
+        "join":"Welcome!",
+        "leave":"Oh no!"
+    },
+    "player":{
+        "desc1":"Please select a text channel: this will be used by the music player to send messages (Tip: Select player-room if previously created)",
+        "desc2":"Warning: It will be send an Embed Message with buttons:those will avoid to use text commands",
+        "selectPlayerChannel":"Nothing selected"
+    },
+    "poll":{
+        "desc1":"You have 30 seconds to reply to this poll \n **Poll created by**",
+        "desc2":"Poll ended! Thank you for your participation.\nFollowing are the results:"
     }
 }

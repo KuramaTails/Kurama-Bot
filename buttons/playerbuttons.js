@@ -143,7 +143,7 @@ module.exports = {
                     }
                 break;
                 case "lesscommands":
-                    buttons2.components[0].setLabel(lang.get(interaction.guild.lang).buttons["btnMoreCommand"]+"🔽")
+                    buttons2.components[0].setLabel(lang.get(interaction.guild.lang).buttons.buttons["btnMoreCommand"]+"🔽")
                     buttons2.components[0].setCustomId("player-morecommands")
                     secMessage.edit({embeds: [Embedsearch],components: [buttons,buttons2] });
                     interaction.deferUpdate()
@@ -166,7 +166,7 @@ module.exports = {
                             .setStyle(`${moreButtonscommands[i].style}`),
                         ); 
                     }
-                    buttons2.components[0].setLabel(lang.get(interaction.guild.lang).buttons["btnLessCommand"]+"🔼")
+                    buttons2.components[0].setLabel(lang.get(interaction.guild.lang).buttons.buttons["btnLessCommand"]+"🔼")
                     buttons2.components[0].setCustomId("player-lesscommands")
                     secMessage.edit({embeds: [Embedsearch],components: [buttons,buttons2,moreButtons] });
                     interaction.deferUpdate()

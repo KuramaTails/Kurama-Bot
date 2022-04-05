@@ -25,7 +25,7 @@ module.exports = {
         const poll = new MessageEmbed() 
             .setColor('#0099ff')
             .setTitle(`**__Poll__**`)
-            .setDescription(`***${title}*** \n\n You have 30 seconds to reply to this poll \n **Poll created by** *${interaction.user}* \n`)
+            .setDescription(`***${title}*** \n\n`+lang.get(guild.lang).poll["desc1"]+`*${interaction.user}* \n`)
             for (let i = 0; i < listOptions.length; i++) {
                 if (listOptions[i]!= null) {
                     poll.addFields(
@@ -46,7 +46,7 @@ module.exports = {
                 const resultspoll = new MessageEmbed()
                     .setColor('#0099ff')
                     .setTitle(`**__Poll__**`)
-                    .setDescription(`Poll ended! Thank you for your participation.\nFollowing are the results:`)
+                    .setDescription(lang.get(guild.lang).poll["desc2"])
                     for (let i = 0; i < listOptions.length; i++) {
                         if (listOptions[i]!= null) {
                             resultspoll.addFields(

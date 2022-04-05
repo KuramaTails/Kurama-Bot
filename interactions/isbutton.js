@@ -10,14 +10,14 @@ const helpButtons = require('../buttons/helpbuttons')
 const playerButtons = require('../buttons/playerbuttons')
 const pollbuttons = require('../buttons/pollbuttons');
 
-const part1 = require('../tutorial/part 1');
+const part1 = require('../tutorial/part1');
 const createserverstats = require('../create/createserverstats');
-const part2 = require('../tutorial/part 2');
+const part2 = require('../tutorial/part2');
 const createwelcomezone = require('../create/createwelcomezone');
-const part3 = require('../tutorial/part 3');
+const part3 = require('../tutorial/part3');
 const createplayerzone = require('../create/createplayerzone');
-const part4 = require('../tutorial/part 4');
-const part5 = require('../tutorial/part 5');
+const part4 = require('../tutorial/part4');
+const part5 = require('../tutorial/part5');
 const endtutorial = require('../tutorial/endtutorial');
 const tutorialparts = [part2,part3,part4,part5,0,endtutorial]
 
@@ -95,7 +95,7 @@ module.exports = {
 											upsert:true,
 										})
 										await dbdisconnect()
-										await createwelcomersettings.execute(interaction)
+										await createwelcomersettings.execute(interaction,lang)
 									break;
 									case 6:
 										await dbconnect()
@@ -108,7 +108,7 @@ module.exports = {
 												upsert:true,
 											})
 											await dbdisconnect()
-										await createbotsettings.execute(interaction)
+										await createbotsettings.execute(interaction,lang)
 									break;
 								}
 							break;
@@ -126,7 +126,7 @@ module.exports = {
 											upsert:true,
 										})
 										await dbdisconnect()
-										await createwelcomersettings.execute(interaction)
+										await createwelcomersettings.execute(interaction,lang)
 									break;
 									case 6:
 										await dbconnect()
@@ -139,14 +139,14 @@ module.exports = {
 											upsert:true,
 										})
 										await dbdisconnect()
-										await createbotsettings.execute(interaction)
+										await createbotsettings.execute(interaction,lang)
 									break;
 								}
 							break;
 						}
 					} finally {
 						if (part<7) {
-							await tutorialparts[part-1].execute(interaction)
+							await tutorialparts[part-1].execute(interaction,lang)
 						}
 					}
 				}

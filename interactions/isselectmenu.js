@@ -8,10 +8,10 @@ const autoroleSchema = require('../schemas/autorole-schema');
 const createplayerembed = require('../create/createplayerembed');
 const createplayersettings = require('../create/createplayersettings');
 const createplayersettingsembed = require('../create/createplayersettingsembed');
-const part6 = require('../tutorial/part 6');
+const part6 = require('../tutorial/part6');
 
 module.exports = {
-	async execute(interaction) {
+	async execute(interaction,lang) {
         var separateCustomId = interaction.customId.split("-")
         await dbconnect()
         switch (separateCustomId[0]) {
@@ -27,10 +27,10 @@ module.exports = {
                     upsert:true,
                 })
             
-                await createplayerembed.execute(interaction.guild,selectedChannelId)
+                await createplayerembed.execute(interaction.guild,selectedChannelId,lang)
                 await createplayersettings.execute(interaction)
-                await createplayersettingsembed.execute(interaction)
-                await part6.execute(interaction)
+                await createplayersettingsembed.execute(interaction,lang)
+                await part6.execute(interaction,lang)
             break;
             case "welcomer":
                 switch (separateCustomId[1]) {
@@ -45,7 +45,7 @@ module.exports = {
                             upsert:true,
                         })
                         interaction.reply({
-                            content: `Welcomer channel set`,
+                            content: lang.get(interaction.guild.lang).settings["welcomerChannelSet"],
                             ephemeral: true
                         })
                     break;
@@ -60,7 +60,7 @@ module.exports = {
                             upsert:true,
                         })
                         interaction.reply({
-                            content: `Welcomer background set`,
+                            content: lang.get(interaction.guild.lang).settings["welcomerBackgroundSet"],
                             ephemeral: true
                         })
                     break;
@@ -76,7 +76,7 @@ module.exports = {
                 {
                     upsert:true,
                 })
-                await createplayerembed.execute(interaction.guild,selectedChannelId)
+                await createplayerembed.execute(interaction.guild,selectedChannelId,lang)
             break;
             case "bot":
                 switch (separateCustomId[1]) {
@@ -91,7 +91,7 @@ module.exports = {
                             upsert:true,
                         })
                         interaction.reply({
-                            content: `Autorole set to role <@&${interaction.values[0]}>`,
+                            content: lang.get(interaction.guild.lang).settings["autoRoleSet"]+` <@&${interaction.values[0]}>`,
                             ephemeral: true
                         })
                     break;

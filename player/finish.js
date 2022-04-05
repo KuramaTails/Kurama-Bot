@@ -3,7 +3,7 @@ const playerSchema = require('../schemas/player-schema');
 const dbconnect = require('../db/dbconnect');
 const dbdisconnect = require("../db/dbdisconnect");
 module.exports = {
-	async execute(queue) {
+	async execute(queue,lang) {
         await dbconnect()
         var selectGuild = await playerSchema.find({ "_id" : queue.clientMember.guild.id})
         await dbdisconnect()
@@ -14,7 +14,7 @@ module.exports = {
             let playerChannel = await listchannels.find(channel => channel.id === textChannel )
             const Embedsearch = new MessageEmbed()
             .setColor('#0099ff')
-            .setTitle(`No songs playing right now`)
+            .setTitle(lang.get(queue.clientMember.guild.lang).commands.player.embeds.errors["playing"])
             .setThumbnail(``)
             .setURL(``)
             .setDescription(``)

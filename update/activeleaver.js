@@ -23,7 +23,7 @@ module.exports = {
                 .setTitle("Bot Kurama : Leaver Text")
                 .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
                 const buttonLeavertext = new MessageActionRow()
-                textLeaverEmbed.addField(lang.get(interaction.guild.lang).update.leaver["text"]+` \`${selectGuildWelcomer[0].textLeave}\``,"Click button below to change it")
+                textLeaverEmbed.addField(lang.get(interaction.guild.lang).update.leaver["text"]+` \`${selectGuildWelcomer[0].textLeave}\``,lang.get(interaction.guild.lang).update.leaver.embeds["changeTextEmbed"])
                 buttonLeavertext.addComponents(
                     new MessageButton()
                     .setCustomId(`welcomer-textLeaver`)
