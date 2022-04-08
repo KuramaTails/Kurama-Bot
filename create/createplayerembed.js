@@ -8,8 +8,14 @@ module.exports = {
         .setThumbnail(``)
         .setURL(``)
         .setDescription(``)
+        const searchButton = new MessageActionRow()
         const buttons1 = new MessageActionRow()
         const moreButton = new MessageActionRow()
+        searchButton.addComponents(
+            new MessageButton()
+            .setCustomId(`player-search`)
+            .setLabel("🔎 Enter your link or song's title here!")
+            .setStyle(`SECONDARY`),);
         buttons1.addComponents(
             new MessageButton()
             .setCustomId(`player-join`)
@@ -37,6 +43,6 @@ module.exports = {
             .setCustomId(`player-morecommands`)
             .setLabel(lang.get(guild.lang).buttons.buttons["btnMoreCommand"]+"🔽")
             .setStyle(`SECONDARY`),);
-        selectedChannel.send({embeds: [Embedsearch],components:[buttons1,moreButton]})
+        selectedChannel.send({embeds: [Embedsearch],components:[searchButton,buttons1,moreButton]})
     }
 };

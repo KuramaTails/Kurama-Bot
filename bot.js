@@ -37,11 +37,10 @@ const dbconnect = require('./db/dbconnect');
 const dbdisconnect = require('./db/dbdisconnect');
 const deletecooldown = require('./buttons/deletecooldown');
 
-const updatewelcomer = require('./update/updatewelcomer');
-const updateleaver = require('./update/updateleaver');
-
 const ready = require('./events/ready');
-const starttutorial = require('./tutorial/starttutorial');
+const createbotticketzone = require('./create/createbotticketzone');
+const ismodal = require('./interactions/ismodal');
+const isinteraction = require('./interactions/isinteraction');
 const lang = new Map();
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
@@ -51,7 +50,7 @@ cooldownUser = new Collection();
 cooldownPresence = new Collection();
 pollUser = new Collection();
 var pollCounter = [0,0,0,0,0]
-
+playerUser = new Map();
 dotenv.config()
 
 const player = new DisTube.DisTube(bot, {
@@ -96,60 +95,20 @@ for (const file of eventFiles) {
 }
 
 bot.on('interactionCreate', async interaction => {
-	if (cooldownUser.has(interaction.user.id)) {
-		await interaction.deferReply( {ephemeral: true});
-		await interaction.followUp({ content: "Please wait for cooldown to end", ephemeral: true });
-		return
-	}
-	try {
-		cooldownUser.set(interaction.user.id, true);
-		if (interaction.isButton()) {
-			await isButton.execute(interaction,bot,player,pollUser,pollCounter,lang)
-		}
-		if (interaction.isCommand()) {
-			pollUser.clear(); 
-			pollCounter = [0,0,0,0,0]
-			const command = bot.commands.get(interaction.commandName);
-			await isCommand.execute(interaction,command,player,pollCounter,lang)
-		}
-		if(interaction.isSelectMenu()) {
-			await isselectmenu.execute(interaction,lang)
-		}
-	} catch (error) {
-		console.error(error);
-		await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
-	} finally {
-		
-		deletecooldown.execute(interaction,cooldownUser)
-	}
+	await isinteraction.execute(interaction,bot,player,pollUser,pollCounter,lang,playerUser,cooldownUser)
 });
 
 bot.on('messageCreate', async msg => {
 	if (msg.author.username!=bot.user.username)
 	{
 		if(msg.content.startsWith(prefix)){
-			await starttutorial.execute(msg.guild,lang)
+			await createbotticketzone.execute(msg,msg.channel)
 		}
 	}
 });
 
 bot.on('modalSubmit', async (modal) => {
-	try {
-		if (cooldownUser.has(modal.user.id)) {
-			return
-		} else {
-			cooldownUser.set(modal.user.id, true);
-			if(modal.customId === 'modal-welcomer'){
-				await updatewelcomer.execute(modal,lang)
-			} 
-			if(modal.customId === 'modal-leaver'){
-				await updateleaver.execute(modal,lang)
-			} 
-			deletecooldown.execute(modal,cooldownUser)
-		}
-	} catch (error) {
-		console.log(error)
-	}
+	await ismodal.execute(modal,player,lang,cooldownUser)
 });
 
 player.on('playSong', async (queue) =>{
@@ -246,7 +205,6 @@ bot.on("roleCreate", async (role) => {
 		console.log(error)	
 	}
 	console.log(`Role created in ${role.guild.name}`)
-
 })
 
 bot.on("roleDelete", async (role) => {
@@ -266,10 +224,7 @@ bot.on("roleUpdate", async (oldRole,newRole) => {
 		roleupdate.execute(oldRole,newRole)
 	}
 })
-bot.on("error", async (error) => {
-    console.error(`Bot encountered a connection error: ${error}`);
-});
-bot.on('warning', console.warn);
+
 bot.on('debug', (...args) => console.log('debug', ...args));
 bot.on('rateLimit', (...args) => console.log('rateLimit', ...args));
 

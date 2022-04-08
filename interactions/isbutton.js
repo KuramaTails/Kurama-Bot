@@ -29,16 +29,43 @@ const activeleaver = require('../update/activeleaver');
 const botsettings = require('../update/botsettings');
 const selectlang = require('../tutorial/selectlang');
 const guildSchema = require('../schemas/guild-schema');
+const createticketzone = require('../create/createticketzone');
+const ticketstart = require('../ticket/ticketstart');
+const ticketSchema = require('../schemas/ticket-schema');
 module.exports = {
-	async execute(interaction,bot,player,pollUser,pollCounter,lang) {
+	async execute(interaction,bot,player,pollUser,pollCounter,lang,playerUser) {
 		var separateCustomId = interaction.customId.split("-")
         switch (separateCustomId[0]) {
 			case "role":
 				chooseRole.execute(interaction,separateCustomId[1],lang)
 			break;
 			case "player":
-				const countVoiceChannels = bot.voice.adapters.size
-				playerButtons.execute(interaction,player,countVoiceChannels,lang,separateCustomId[1])
+				switch (separateCustomId[1]) {
+					case "search":
+						var modal = new Modal()
+							.setCustomId('modal-search')
+							.setTitle('Search your song!')
+							.addComponents([
+								new TextInputComponent()
+									.setCustomId('textinput-customid')
+									.setLabel("Please enter songs link or title here")
+									.setStyle('SHORT') 
+									.setMinLength(1)
+									.setMaxLength(1024)
+									.setPlaceholder("Paste link or song's title here")
+									.setRequired(true) 
+								]);
+						showModal(modal, {
+							client: bot, 
+							interaction: interaction 
+							})
+					break;
+					default:
+						const countVoiceChannels = bot.voice.adapters.size
+						playerButtons.execute(interaction,player,countVoiceChannels,lang,separateCustomId[1],playerUser)
+					break;
+				}
+				
 			break;
 			case "tutorial":
 				var regExp = /\(([^)]+)\)/;
@@ -283,6 +310,9 @@ module.exports = {
 						await interaction.deferUpdate()
 						await botsettings.execute(interaction,lang)
 					break;
+					case "ticketZone":
+						createticketzone.execute(interaction,lang)
+					break;
 					default:
 						await guildSchema.findOneAndUpdate({
 							_id: interaction.guild.id,
@@ -297,6 +327,35 @@ module.exports = {
 							content: "Language has been set",
 							ephemeral: true
 						})
+					break;
+				}
+				await dbdisconnect()
+			break;
+			case "ticket":
+				await dbconnect()
+				var selectGuild = await ticketSchema.find({ "_id" : interaction.guild.id})
+				switch (separateCustomId[1]) {
+					case "create":
+						var i = selectGuild[0]? selectGuild[0].counter+1:0
+						var index = "" + i
+						var pad = "0000"
+						var ans = pad.substring(0, pad.length - index.length) + index
+						await ticketSchema.findOneAndUpdate({
+							_id: interaction.guild.id,
+						}, {
+							counter:ans
+						},
+						{
+							upsert:true,
+						})
+						await interaction.deferUpdate()
+						await ticketstart.execute(interaction,lang,ans)
+					break;
+					case "close":
+						await interaction.deferUpdate()
+						setTimeout(() => {
+							interaction.channel.delete()
+						}, 5*1000);
 					break;
 				}
 				await dbdisconnect()

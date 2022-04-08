@@ -14,7 +14,7 @@ module.exports = {
                 {
                 id: everyone.id,
                 deny: [welcomePermissions],
-            },
+                },
             ],
         })
         .then(cat => {
