@@ -8,10 +8,6 @@ const { YtDlpPlugin } = require('@distube/yt-dlp')
 const discordModals = require('discord-modals')
 const { setTimeout } = require('timers/promises');
 
-const isButton = require('./interactions/isbutton');
-const isCommand = require('./interactions/iscommand');
-const isselectmenu = require('./interactions/isselectmenu');
-
 const addSong = require('./player/addsong');
 const finish = require('./player/finish');
 const playSong = require('./player/playsong');
@@ -35,12 +31,8 @@ const rolesSchema = require('./schemas/roles-schema');
 
 const dbconnect = require('./db/dbconnect');
 const dbdisconnect = require('./db/dbdisconnect');
-const deletecooldown = require('./buttons/deletecooldown');
 
-const ready = require('./events/ready');
 const createbotticketzone = require('./create/createbotticketzone');
-const ismodal = require('./interactions/ismodal');
-const isinteraction = require('./interactions/isinteraction');
 const lang = new Map();
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
@@ -65,7 +57,6 @@ const player = new DisTube.DisTube(bot, {
 	  ],
   } ) 
 let timeoutID;
-const commands = [];
 
 const langFiles = fs.readdirSync('./languages').filter(file => file.endsWith('.json'));
 for (const file of langFiles) {
@@ -79,7 +70,6 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	bot.commands.set(command.data.name, command);
-	commands.push(command.data.toJSON());
 	console.log(`Command loaded`);
 }
 
@@ -88,15 +78,12 @@ for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
 	if (event.once) {
 		bot.once(event.name, (...args) => event.execute(...args));
-	} else {
-		bot.on(event.name, (...args) => event.execute(...args));
-	}
+	  } else {
+		bot.on(event.name, (...args) => event.execute(...args,player,lang,cooldownUser,bot,pollUser,pollCounter,playerUser));
+	  }
 	console.log(`Event loaded`); 
 }
 
-bot.on('interactionCreate', async interaction => {
-	await isinteraction.execute(interaction,bot,player,pollUser,pollCounter,lang,playerUser,cooldownUser)
-});
 
 bot.on('messageCreate', async msg => {
 	if (msg.author.username!=bot.user.username)
@@ -105,10 +92,6 @@ bot.on('messageCreate', async msg => {
 			await createbotticketzone.execute(msg,msg.channel)
 		}
 	}
-});
-
-bot.on('modalSubmit', async (modal) => {
-	await ismodal.execute(modal,player,lang,cooldownUser)
 });
 
 player.on('playSong', async (queue) =>{
@@ -133,9 +116,6 @@ player.on('empty', (queue) => {
 	  }, 30 * 1000)
 })
 
-bot.on('ready', async () => {
-	await ready.execute(bot,commands)
-});
 bot.on("presenceUpdate", async (oldMember, newMember) => {
 	if (oldMember=== null) { return}
 	if(oldMember.status == newMember.status) {return}

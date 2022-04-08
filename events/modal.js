@@ -4,6 +4,7 @@ const updateleaver = require("../update/updateleaver");
 const updatewelcomer = require("../update/updatewelcomer");
 
 module.exports = {
+    name: 'modalSubmit',
 	async execute(modal,player,lang,cooldownUser) {
         try {
             if (cooldownUser.has(modal.user.id)) {

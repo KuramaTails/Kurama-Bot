@@ -1,10 +1,10 @@
 const deletecooldown = require("../buttons/deletecooldown");
-const isbutton = require("./isbutton");
-const iscommand = require("./iscommand");
-const isselectmenu = require("./isselectmenu");
-
+const isbutton = require("../interactions/isbutton");
+const iscommand = require("../interactions/iscommand");
+const isselectmenu = require("../interactions/isselectmenu");
 module.exports = {
-	async execute(interaction,bot,player,pollUser,pollCounter,lang,playerUser,cooldownUser) {
+    name: 'interactionCreate',
+	async execute(interaction,player,lang,cooldownUser,bot,pollUser,pollCounter,playerUser) {
         if (cooldownUser.has(interaction.user.id)) {
             await interaction.deferReply( {ephemeral: true});
             await interaction.followUp({ content: "Please wait for cooldown to end", ephemeral: true });
