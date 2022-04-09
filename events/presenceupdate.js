@@ -1,7 +1,13 @@
+const bot = require("../bot");
+
 module.exports = {
-    async execute(newMember,cooldownPresence) {
+    name: 'presenceUpdate',
+	async execute(oldMember,newMember) {
+        if (oldMember=== null) { return}
+        if(oldMember.status == newMember.status) {return}
+        if (bot.cooldownPresence.has(newMember.guild.id)) {return}
         try {
-            cooldownPresence.set(newMember.guild.id, true);
+            bot.cooldownPresence.set(newMember.guild.id, true);
             let onlineChannel = await newMember.guild.channels.cache.find(channel => channel.name.includes("Online"))
             let offlineChannel = await newMember.guild.channels.cache.find(channel => channel.name.includes("Offline"))
             var members = newMember.guild.members.cache
@@ -38,9 +44,8 @@ module.exports = {
         } finally {
             setTimeout(() => {
                 console.log("Deleted cooldown")
-                cooldownPresence.delete(newMember.guild.id);
+                bot.cooldownPresence.delete(newMember.guild.id);
             }, 5*60*1000);
         }
-    }
+	}
 };
-   

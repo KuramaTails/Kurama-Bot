@@ -2,8 +2,12 @@ const { MessageEmbed, MessageActionRow, MessageButton} = require("discord.js");
 const playerSchema = require('../schemas/player-schema');
 const dbconnect = require('../db/dbconnect');
 const dbdisconnect = require("../db/dbdisconnect");
+const bot = require("../bot");
 module.exports = {
-	async execute(queue,player,lang) {
+    name: 'playSong',
+	async execute(queue) {
+        clearTimeout(bot.timeoutID)
+	    bot.timeoutID = undefined	
         await dbconnect()
         var selectGuild = await playerSchema.find({ "_id" : queue.clientMember.guild.id})
         await dbdisconnect()
@@ -12,13 +16,13 @@ module.exports = {
             var textChannel = selectGuild[0].channelId
             var listchannels = queue.clientMember.guild.channels.cache
             let playerChannel = await listchannels.find(channel => channel.id === textChannel )
-            let playlist = player.queues.collection.first().songs;
+            let playlist = bot.player.queues.collection.first().songs;
             const Embedsearch = new MessageEmbed()
             .setColor('#0099ff')
-            .setTitle(lang.get(queue.clientMember.guild.lang).commands.player.embeds["playing"]+`: \`${playlist[0].name}\``)
+            .setTitle(bot.lang.get(queue.clientMember.guild.lang).commands.player.embeds["playing"]+`: \`${playlist[0].name}\``)
             .setThumbnail(`${playlist[0].thumbnail}`)
             .setURL(`${playlist[0].url}`)
-            .setDescription(lang.get(queue.clientMember.guild.lang).commands.player.embeds["duration"]+`: \`${playlist[0].formattedDuration}\`\n`)
+            .setDescription(bot.lang.get(queue.clientMember.guild.lang).commands.player.embeds["duration"]+`: \`${playlist[0].formattedDuration}\`\n`)
             const buttons1 = new MessageActionRow()
             const moreButton = new MessageActionRow()
             buttons1.addComponents(
@@ -46,7 +50,7 @@ module.exports = {
             moreButton.addComponents(
                 new MessageButton()
                 .setCustomId("player-morecommands")
-                .setLabel(lang.get(queue.clientMember.guild.lang).buttons.buttons["btnMoreCommand"]+"🔽")
+                .setLabel(bot.lang.get(queue.clientMember.guild.lang).buttons.buttons["btnMoreCommand"]+"🔽")
                 .setStyle(`SECONDARY`),);
             var allmessages = await playerChannel.messages.fetch()
             let selectedMessage = await allmessages.find(message => message.embeds.length > 0)

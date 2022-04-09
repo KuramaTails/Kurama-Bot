@@ -1,5 +1,6 @@
 module.exports = {
-	async execute(channel) {
+    name: 'channelDelete',
+    async execute(channel) {
         try {
             var welcomerSettingsChannel = await channel.guild.channels.cache.find(channel => channel.name == "welcomer-settings")
             var playerSettingsChannel = await channel.guild.channels.cache.find(channel => channel.name == "player-settings")
@@ -24,5 +25,6 @@ module.exports = {
         } catch (error) {
             console.log(error)
         }
+	    console.log(`Channel deleted in ${channel.guild.name}`)
     }
 };

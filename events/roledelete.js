@@ -1,6 +1,11 @@
+const bot = require("../bot");
+
 module.exports = {
+    name: 'roleDelete',
 	async execute(role) {
+        if (bot.cooldownPresence.has(role.guild.id)) {return}
         try {
+            bot.cooldownUser.set(role.id, true);
             let selChannel = await role.guild.channels.cache.find(channel => channel.name == "choose-role")
             var allMessages = await selChannel.messages.fetch()
             let chooseRoleMessage = await allMessages.find(message => message.embeds[0] != null)
@@ -29,7 +34,12 @@ module.exports = {
             await selectRoleEmbed.edit({components:[selectRoleEmbed.components[0]]})
             console.log(`Roles updated in ${role.guild.name}`)
         } catch (error) {
-            console.log(error)
+            console.log(error)	
+        } finally {
+            console.log(`Role created in ${role.guild.name}`)
+            setTimeout(() => {
+                bot.cooldownUser.delete(role.id);
+            }, 5*1000);
         }
-    }
+	}
 };
