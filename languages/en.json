@@ -113,7 +113,10 @@
         "welcomerSet":"Welcomer has been set",
         "welcomerChannelSet":"Welcomer's channel has been set",
         "welcomerBackgroundSet":"Welcomer's background has been set",
-        "autoRoleSet":"Autorole set to role"
+        "autoRoleSet":"Autorole set to role",
+        "createTicketZoneField1":"Click here for creating a ticket zone:",
+        "createTicketZoneField2":"this will be used by members for any issue",
+        "createTicketZoneBtn":"Create Ticket Zone"
     },
     "tutorial": {
         "yes":"Yes",
