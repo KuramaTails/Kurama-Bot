@@ -36,7 +36,7 @@ module.exports = {
         } catch (error) {
             console.log(error)	
         } finally {
-            console.log(`Role created in ${role.guild.name}`)
+            console.log(`Role deleted in ${role.guild.name}`)
             setTimeout(() => {
                 bot.cooldownUser.delete(role.id);
             }, 5*1000);

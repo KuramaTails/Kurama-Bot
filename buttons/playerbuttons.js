@@ -88,8 +88,10 @@ module.exports = {
                         }
                         if (playerUser.get(interaction.guild.id).length<countMembers.length/2) {
                             var memberLeft= countMembers.length/2-playerUser.get(interaction.guild.id).length
+                            var string = lang.get(modal.guild.lang).commands.player.commands.errors["skip"]
+                            let result = string.replace("${memberLeft}",`${memberLeft}`);
                             return interaction.reply({
-                                content: `You are not administrator,${memberLeft} more members or an administrator have to click next button for skipping` ,
+                                content: result ,
                                 ephemeral: true
                                 })  
                         }

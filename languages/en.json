@@ -27,7 +27,8 @@
                     "join":"Already joined",
                     "leave":"Already leaved",
                     "previousSong":"No previous songs in queue",
-                    "queue":"No songs in queue"
+                    "queue":"No songs in queue",
+                    "skip":"You are not administrator,${memberLeft} more members or an administrator have to click next button for skipping"
                 }
             }, 
             "embeds": {        
@@ -220,5 +221,14 @@
     "poll":{
         "desc1":"You have 30 seconds to reply to this poll \n **Poll created by**",
         "desc2":"Poll ended! Thank you for your participation.\nFollowing are the results:"
+    },
+    "ticket":{
+        "createEmbedField1":"Click here for creating a new ticket:",
+        "createEmbedField2":"you can use this for report any issue to this discord's admins",
+        "createBtn":"Create New Ticket",
+        "startEmbedDesc":"Thank you for creating this ticket:please,introduce your problem here below,admins will respond you as fast as possible",
+        "startEmbedField1":"Use button below for close this ticket",
+        "startEmbedField2":"This channel will be then deleted in 5 seconds",
+        "startBtn":"🔒Close and delete ticket"
     }
 }
