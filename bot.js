@@ -47,25 +47,30 @@ module.exports = {
 	timeoutID:timeoutID
 }
 
-const langFiles = fs.readdirSync('./languages').filter(file => file.endsWith('.json'));
+const langFiles = fs.readdirSync('./src/languages').filter(file => file.endsWith('.json'));
 for (const file of langFiles) {
 	var langName = (file.split("."))[0]
-	const language = require(`./languages/${file}`);
+	const language = require(`./src/languages/${file}`);
 	lang.set(langName,language)
 	console.log(`Language loaded`);
 }
 
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	bot.commands.set(command.data.name, command);
-	commands.push(command.data.toJSON());
-	console.log(`Command loaded`);
-}
+const folders = fs.readdirSync('./src/').forEach(folder => {
+	fs.readdirSync(`./src/${folder}`).forEach(file=> {
+		if (file.endsWith(".js")) {
+			const command = require(`./src/${folder}/${file}`);
+			if (command.data) {
+				bot.commands.set(command.data.name, command);
+				commands.push(command.data.toJSON());
+				console.log(`Command loaded`);
+			}
+		}
+	})	
+});
 
-const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+const eventFiles = fs.readdirSync('./src/events').filter(file => file.endsWith('.js'));
 for (const file of eventFiles) {
-	const event = require(`./events/${file}`);
+	const event = require(`./src/events/${file}`);
 	if (event.once) {
 		bot.once(event.name, (...args) => event.execute(...args));
 	}
@@ -75,9 +80,9 @@ for (const file of eventFiles) {
 	console.log(`Event loaded`); 
 }
 
-const playerFiles = fs.readdirSync('./player').filter(file => file.endsWith('.js'));
+const playerFiles = fs.readdirSync('./src/player').filter(file => file.endsWith('.js'));
 for (const file of playerFiles) {
-	const event = require(`./player/${file}`);
+	const event = require(`./src/player/${file}`);
 	player.on(event.name, (...args) => event.execute(...args));
 	console.log(`Player event loaded`); 
 }
