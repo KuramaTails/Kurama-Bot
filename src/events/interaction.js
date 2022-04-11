@@ -1,4 +1,3 @@
-const deletecooldown = require("../misc/deletecooldown");
 const isbutton = require("../interactions/isbutton");
 const iscommand = require("../interactions/iscommand");
 const isselectmenu = require("../interactions/isselectmenu");
@@ -29,7 +28,9 @@ module.exports = {
             console.error(error);
             await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
         } finally {
-            deletecooldown.execute(interaction,bot.cooldownUser)
+            setTimeout(() => {
+                bot.cooldownUser.delete(interaction.user.id);
+            }, 3*1000);
         }
 	}
 };

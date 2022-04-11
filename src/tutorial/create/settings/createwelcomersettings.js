@@ -1,4 +1,4 @@
-const createwelcomersettingsembed = require("./createwelcomersettingsembed");
+const createwelcomersettingsembed = require("./embeds/createwelcomersettingsembed");
 
 module.exports = {
 	async execute(interaction,lang) {

@@ -5,9 +5,9 @@ const playerSchema = require('../schemas/player-schema');
 const welcomeSchema = require('../schemas/welcome-schema');
 const autoroleSchema = require('../schemas/autorole-schema');
 
-const createplayerembed = require('../player/createplayerembed');
-const createplayersettings = require('../player/settings/createplayersettings');
-const createplayersettingsembed = require('../player/settings/createplayersettingsembed');
+const createplayerembed = require('../tutorial/create/createplayerembed');
+const createplayersettings = require('../tutorial/create/settings/createplayersettings');
+const createplayersettingsembed = require('../tutorial/create/settings/embeds/createplayersettingsembed');
 const part6 = require('../tutorial/part6');
 
 module.exports = {

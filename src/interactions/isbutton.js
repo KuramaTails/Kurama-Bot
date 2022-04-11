@@ -11,25 +11,25 @@ const playerButtons = require('../player/playerbuttons')
 const pollbuttons = require('../poll/pollbuttons');
 
 const part1 = require('../tutorial/part1');
-const createserverstats = require('../misc/createserverstats');
+const createserverstats = require('../tutorial/create/createserverstats');
 const part2 = require('../tutorial/part2');
-const createwelcomezone = require('../settings/welcomer/createwelcomezone');
+const createwelcomezone = require('../tutorial/create/createwelcomezone');
 const part3 = require('../tutorial/part3');
-const createplayerzone = require('../player/createplayerzone');
+const createplayerzone = require('../tutorial/create/createplayerzone');
 const part4 = require('../tutorial/part4');
 const part5 = require('../tutorial/part5');
 const endtutorial = require('../tutorial/endtutorial');
 const tutorialparts = [part2,part3,part4,part5,0,endtutorial]
 
-const createwelcomersettings = require('../settings/welcomer/createwelcomersettings');
-const createbotsettings = require('../settings/createbotsettings');
+const createwelcomersettings = require('../tutorial/create/settings/createwelcomersettings');
+const createbotsettings = require('../tutorial/create/settings/createbotsettings');
 
 const activewelcomer = require('../settings/welcomer/activewelcomer');
 const activeleaver = require('../settings/leaver/activeleaver');
 const botsettings = require('../settings/botsettings');
 const selectlang = require('../tutorial/selectlang');
 const guildSchema = require('../schemas/guild-schema');
-const createticketzone = require('../ticket/createticketzone');
+const createticketzone = require('../settings/ticket/createticketzone');
 const ticketstart = require('../ticket/ticketstart');
 const ticketSchema = require('../schemas/ticket-schema');
 module.exports = {

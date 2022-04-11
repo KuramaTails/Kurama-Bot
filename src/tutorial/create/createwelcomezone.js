@@ -1,5 +1,5 @@
 const { Permissions } = require('discord.js');
-const createembedroles = require('../../roles/createembedroles');
+const createembedroles = require('./createembedroles');
 const welcomePermissions = new Permissions([
     Permissions.FLAGS.SEND_MESSAGES,
 ]);

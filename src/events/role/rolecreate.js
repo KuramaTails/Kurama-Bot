@@ -1,4 +1,4 @@
-const bot = require("../../bot");
+const bot = require("../../../bot");
 const {  MessageButton, MessageActionRow } = require("discord.js");
 
 module.exports = {

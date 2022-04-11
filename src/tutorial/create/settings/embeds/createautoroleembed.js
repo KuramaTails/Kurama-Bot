@@ -1,7 +1,7 @@
 const { MessageActionRow, MessageEmbed, MessageSelectMenu, MessageButton } = require('discord.js');
-const dbconnect = require('../../misc/db/dbconnect');
-const dbdisconnnect = require('../../misc/db/dbdisconnect');
-const autoroleSchema = require('../../schemas/autorole-schema');
+const dbconnect = require('../../../../misc/db/dbconnect');
+const dbdisconnnect = require('../../../../misc/db/dbdisconnect');
+const autoroleSchema = require('../../../../schemas/autorole-schema');
 module.exports = {
     async execute(interaction,channel,lang) {
         await dbconnect()

@@ -1,6 +1,6 @@
-const createautoroleembed = require("./autorole/createautoroleembed")
-const createselectlangembed = require("../misc/createselectlangembed")
-const createbotticketzone = require("../ticket/createbotticketzone")
+const createautoroleembed = require("./embeds/createautoroleembed")
+const createselectlangembed = require("./embeds/createselectlangembed")
+const createbotticketzone = require("./embeds/createbotticketzoneembed")
 
 module.exports = {
 	async execute(interaction,lang) {

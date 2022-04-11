@@ -1,9 +1,9 @@
-const dbconnect = require("../misc/db/dbconnect");
-const dbdisconnect = require("../misc/db/dbdisconnect");
-const fetchAll = require("../fetch/fetchAll");
-const registerpermissions = require("../misc/registerpermissions");
-const starttutorial = require("../tutorial/starttutorial");
-const bot = require("../../bot");
+const dbconnect = require("../../misc/db/dbconnect");
+const dbdisconnect = require("../../misc/db/dbdisconnect");
+const fetchAll = require("../../fetch/fetchAll");
+const registerpermissions = require("../../misc/registerpermissions");
+const starttutorial = require("../../tutorial/starttutorial");
+const bot = require("../../../bot");
 
 module.exports = {
     name: 'guildCreate',

@@ -1,5 +1,4 @@
 const bot = require("../../bot");
-const deletecooldown = require("../misc/deletecooldown");
 const search = require("../player/events/search");
 const updateleaver = require("../settings/leaver/updateleaver");
 const updatewelcomer = require("../settings/welcomer/updatewelcomer");
@@ -26,7 +25,9 @@ module.exports = {
                         break;
                     }
                 } finally {
-                    await deletecooldown.execute(modal,bot.cooldownUser)
+                    setTimeout(() => {
+                        bot.cooldownUser.delete(modal.user.id);
+                    }, 3*1000);
                 }
             }
         } catch (error) {

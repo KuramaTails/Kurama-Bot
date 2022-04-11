@@ -29,7 +29,7 @@ module.exports = {
 
 		),
 	async execute(interaction,player,lang) {
-        const setCommands = require(`../commands/set/${interaction.options.getSubcommand()}`);
+        const setCommands = require(`./commands/${interaction.options.getSubcommand()}`);
 		try {
 			setCommands.execute(interaction,lang)
 		} catch (error) {

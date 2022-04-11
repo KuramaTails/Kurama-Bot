@@ -68,17 +68,20 @@ const folders = fs.readdirSync('./src/').forEach(folder => {
 	})	
 });
 
-const eventFiles = fs.readdirSync('./src/events').filter(file => file.endsWith('.js'));
-for (const file of eventFiles) {
-	const event = require(`./src/events/${file}`);
-	if (event.once) {
-		bot.once(event.name, (...args) => event.execute(...args));
+fs.readdirSync('./src/events').forEach(element => {
+	var event = element.endsWith(".js")? require(`./src/events/${element}`) : null
+	if (event) {
+		bot.on(event.name, (...args) => event.execute(...args));
+		console.log(`Event loaded`); 
 	}
 	else {
-		bot.on(event.name, (...args) => event.execute(...args));
+		fs.readdirSync(`./src/events/${element}`).forEach(file => {
+			var subFile = require(`./src/events/${element}/${file}`)
+			bot.on(subFile.name, (...args) => subFile.execute(...args));
+				console.log(`${element} Event loaded`); 
+		});
 	}
-	console.log(`Event loaded`); 
-}
+});
 
 const playerFiles = fs.readdirSync('./src/player').filter(file => file.endsWith('.js'));
 for (const file of playerFiles) {
