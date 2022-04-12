@@ -4,6 +4,7 @@ const welcomerhandler = require('../settings/welcomer/welcomerhandler');
 const tutorial = require('../tutorial/tutorial');
 const bothandler = require("../settings/bot/bothandler");
 const playerhandler = require('../settings/player/playerhandler');
+const reporthandler = require('../reports/reporthandler');
 
 module.exports = {
 	async execute(interaction,lang) {
@@ -21,6 +22,9 @@ module.exports = {
             break;
             case "bot":
                 bothandler.execute(interaction,lang,separateCustomId[1])
+            break;
+            case "report":
+                reporthandler.execute(interaction,lang,separateCustomId[1])
             break;
         }
         await dbdisconnnect() 

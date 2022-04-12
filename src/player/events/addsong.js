@@ -1,5 +1,5 @@
 const { MessageEmbed} = require("discord.js");
-const playerSchema = require('../schemas/player-schema');
+const playerSchema = require('../../schemas/player-schema');
 const dbconnect = require('../../misc/db/dbconnect');
 const dbdisconnect = require("../../misc/db/dbdisconnect");
 const bot = require("../../../bot");

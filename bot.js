@@ -6,19 +6,15 @@ const DisTube = require('distube')
 const { YtDlpPlugin } = require('@distube/yt-dlp')
 const discordModals = require('discord-modals')
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
-
-const lang = new Map();
 discordModals(bot);
-const commands = []
 bot.commands = new Collection();
+bot.lang = new Map();
 cooldownUser = new Collection();
 cooldownPresence = new Collection();
 pollUser = new Collection();
 var pollCounter = [0,0,0,0,0]
 playerUser = new Map();
-
 dotenv.config()
-
 const player = new DisTube.DisTube(bot, {
 	leaveOnStop: false,
 	leaveOnEmpty: true,
@@ -31,14 +27,12 @@ const player = new DisTube.DisTube(bot, {
 	  ],
   } ) 
 let timeoutID;
-
 module.exports = {
 	prefix:prefix,
 	client:bot,
-	listCommands:commands,
 	commands:bot.commands,
+	lang:bot.lang,
 	player:player,
-	lang :lang,
 	cooldownUser:cooldownUser,
 	cooldownPresence:cooldownPresence,
 	pollUser:pollUser,
@@ -47,48 +41,37 @@ module.exports = {
 	timeoutID:timeoutID
 }
 
-const langFiles = fs.readdirSync('./src/languages').filter(file => file.endsWith('.json'));
-for (const file of langFiles) {
-	var langName = (file.split("."))[0]
-	const language = require(`./src/languages/${file}`);
-	lang.set(langName,language)
-	console.log(`Language loaded`);
-}
+fs.readdirSync('./src/languages').forEach(language => {
+	var langName = (language.split("."))[0]
+	const reqLang = require(`./src/languages/${language}`);
+	bot.lang.set(langName,reqLang)
+})
 
 fs.readdirSync('./src/').forEach(folder => {
 	fs.readdirSync(`./src/${folder}`).forEach(file=> {
-		if (file.endsWith(".js")) {
-			const command = require(`./src/${folder}/${file}`);
-			if (command.data) {
-				bot.commands.set(command.data.name, command);
-				commands.push(command.data.toJSON());
-				console.log(`Command loaded`);
-			}
-		}
-	})	
+		var command = file.endsWith(".js")? require(`./src/${folder}/${file}`) : ""
+		command.data? bot.commands.set(command.data.name, command) : ""
+	})
 });
 
+var events = []
 fs.readdirSync('./src/events').forEach(element => {
-	var event = element.endsWith(".js")? require(`./src/events/${element}`) : null
-	if (event) {
-		bot.on(event.name, (...args) => event.execute(...args));
-		console.log(`Event loaded`); 
-	}
-	else {
-		fs.readdirSync(`./src/events/${element}`).forEach(file => {
-			var subFile = require(`./src/events/${element}/${file}`)
-			bot.on(subFile.name, (...args) => subFile.execute(...args));
-				console.log(`${element} Event loaded`); 
-		});
-	}
+	element.endsWith(".js")? events.push(require(`./src/events/${element}`)) : fs.readdirSync(`./src/events/${element}`).forEach(file => {events.push(require(`./src/events/${element}/${file}`))})
+});
+function addEvents(events) {
+	events.forEach(event => {bot.on(event.name, (...args) => event.execute(...args))});
+	console.log(`Events loaded`); 
+}
+
+fs.readdirSync('./src/player/events').forEach(element => {
+	var event = element.endsWith(".js")? require(`./src/player/events/${element}`) : ""
+	player.on(event.name, (...args) => event.execute(...args))
 });
 
-const playerFiles = fs.readdirSync('./src/player').filter(file => file.endsWith('.js'));
-for (const file of playerFiles) {
-	const event = require(`./src/player/${file}`);
-	player.on(event.name, (...args) => event.execute(...args));
-	console.log(`Player event loaded`); 
-}
+console.log(`Languages loaded`);
+console.log(`Commands loaded`); 
+addEvents(events)
+console.log(`PlayerEvents loaded`); 
 
 bot.on('debug', (...args) => console.log('debug', ...args));
 bot.on('rateLimit', (...args) => console.log('rateLimit', ...args));

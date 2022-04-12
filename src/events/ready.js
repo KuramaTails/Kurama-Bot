@@ -18,7 +18,10 @@ module.exports = {
             var guild = bot.client.guilds.cache.get(guilds.get(guildsKeys[i]).id)
             var selectGuildlang = await guildSchema.find({ "_id" : guild.id})
             guild.lang= selectGuildlang? selectGuildlang[0].guildLang : "en"
-            await registerpermissions.execute(guild,bot.client.user.id,bot.listCommands)
+            var listCommands = []
+            var commandsKeys = Array.from(bot.commands.keys())
+            commandsKeys.forEach(command => listCommands.push(bot.commands.get(command).data.toJSON()))
+            await registerpermissions.execute(guild,bot.client.user.id,listCommands)
             guildsnames.push(guilds.get(guildsKeys[i]).name)
         }
         await dbdisconnect()

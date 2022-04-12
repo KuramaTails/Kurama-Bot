@@ -2,7 +2,6 @@ const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 
 module.exports = {
 	async execute(interaction,player,countVoiceChannels,lang,category,playerUser) {
-        console.log(lang)
         var voiceChannel = interaction.member.voice.channel
         if(!voiceChannel) {
             return interaction.reply({

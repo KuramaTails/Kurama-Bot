@@ -2,6 +2,7 @@ const dbconnect = require("../../misc/db/dbconnect")
 const dbdisconnect = require("../../misc/db/dbdisconnect")
 const autoroleSchema = require("../../schemas/autorole-schema")
 const guildSchema = require("../../schemas/guild-schema")
+const createadminzone = require("../admin/createadminzone")
 const botsettings = require("../botsettings")
 const createticketzone = require("../ticket/createticketzone")
 
@@ -36,20 +37,8 @@ module.exports = {
             case "ticketZone":
                 createticketzone.execute(interaction,lang)
             break;
-            default:
-                await guildSchema.findOneAndUpdate({
-                    _id: interaction.guild.id,
-                }, {
-                    guildLang: customId
-                },
-                {
-                    upsert:true,
-                })
-                interaction.guild.lang = customId
-                interaction.reply({
-                    content: "Language has been set",
-                    ephemeral: true
-                })
+            case "adminZone":
+                createadminzone.execute(interaction,lang)
             break;
             case "selectAutoroleRole":
                 var role = interaction.values[0]
@@ -63,6 +52,21 @@ module.exports = {
                 })
                 interaction.reply({
                     content: lang.get(interaction.guild.lang).settings["autoRoleSet"]+` <@&${interaction.values[0]}>`,
+                    ephemeral: true
+                })
+            break;
+            default:
+                await guildSchema.findOneAndUpdate({
+                    _id: interaction.guild.id,
+                }, {
+                    guildLang: customId
+                },
+                {
+                    upsert:true,
+                })
+                interaction.guild.lang = customId
+                interaction.reply({
+                    content: "Language has been set",
                     ephemeral: true
                 })
             break;

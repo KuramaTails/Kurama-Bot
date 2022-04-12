@@ -1,6 +1,7 @@
 const createautoroleembed = require("./embeds/createautoroleembed")
 const createselectlangembed = require("./embeds/createselectlangembed")
 const createbotticketzone = require("./embeds/createbotticketzoneembed")
+const createbotadminzone = require("./embeds/createbotadminzone")
 
 module.exports = {
 	async execute(interaction,lang) {
@@ -10,6 +11,7 @@ module.exports = {
             await createautoroleembed.execute(interaction,channel,lang)
             await createselectlangembed.execute(interaction,channel,lang)
             await createbotticketzone.execute(interaction,channel,lang)
+            await createbotadminzone.execute(interaction,channel,lang)
          })
         console.log(`Created autorole room in ${guild.name}`)
     }
