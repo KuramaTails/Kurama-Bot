@@ -1,14 +1,9 @@
 const dbconnect = require('../misc/db/dbconnect');
 const dbdisconnnect = require('../misc/db/dbdisconnect');
-
-const playerSchema = require('../schemas/player-schema');
-const welcomeSchema = require('../schemas/welcome-schema');
-const autoroleSchema = require('../schemas/autorole-schema');
-
-const createplayerembed = require('../tutorial/create/createplayerembed');
-const createplayersettings = require('../tutorial/create/settings/createplayersettings');
-const createplayersettingsembed = require('../tutorial/create/settings/embeds/createplayersettingsembed');
-const part6 = require('../tutorial/part6');
+const welcomerhandler = require('../settings/welcomer/welcomerhandler');
+const tutorial = require('../tutorial/tutorial');
+const bothandler = require("../settings/bot/bothandler");
+const playerhandler = require('../settings/player/playerhandler');
 
 module.exports = {
 	async execute(interaction,lang) {
@@ -16,86 +11,16 @@ module.exports = {
         await dbconnect()
         switch (separateCustomId[0]) {
             case "tutorial":
-                var selectedChannelId = interaction.values[0]
-            
-                await playerSchema.findOneAndUpdate({
-                    _id: interaction.guild.id,
-                }, {
-                    channelId:selectedChannelId
-                },
-                {
-                    upsert:true,
-                })
-            
-                await createplayerembed.execute(interaction.guild,selectedChannelId,lang)
-                await createplayersettings.execute(interaction)
-                await createplayersettingsembed.execute(interaction,lang)
-                await part6.execute(interaction,lang)
+                tutorial.execute(interaction,lang,separateCustomId[1])
             break;
             case "welcomer":
-                switch (separateCustomId[1]) {
-                    case "selectWelcomerChannel":
-                        var selectedChannelId = interaction.values[0]
-                        await welcomeSchema.findOneAndUpdate({
-                            _id: interaction.guild.id,
-                        }, {
-                            channelId:selectedChannelId
-                        },
-                        {
-                            upsert:true,
-                        })
-                        interaction.reply({
-                            content: lang.get(interaction.guild.lang).settings["welcomerChannelSet"],
-                            ephemeral: true
-                        })
-                    break;
-                    case "selectWelcomerBackground":
-                        var background = interaction.values[0]
-                        await welcomeSchema.findOneAndUpdate({
-                            _id: interaction.guild.id,
-                        }, {
-                            background
-                        },
-                        {
-                            upsert:true,
-                        })
-                        interaction.reply({
-                            content: lang.get(interaction.guild.lang).settings["welcomerBackgroundSet"],
-                            ephemeral: true
-                        })
-                    break;
-                }
+                welcomerhandler.execute(interaction,0,lang,separateCustomId[1])
             break;
             case "player":
-                var selectedChannelId = interaction.values[0]
-                await playerSchema.findOneAndUpdate({
-                    _id: interaction.guild.id,
-                }, {
-                    channelId:selectedChannelId
-                },
-                {
-                    upsert:true,
-                })
-                await createplayerembed.execute(interaction.guild,selectedChannelId,lang)
+                playerhandler.execute(interaction,lang)
             break;
             case "bot":
-                switch (separateCustomId[1]) {
-                    case "selectAutoroleRole":
-                        var role = interaction.values[0]
-                        await autoroleSchema.findOneAndUpdate({
-                            _id: interaction.guild.id,
-                        }, {
-                            roleId: role
-                        },
-                        {
-                            upsert:true,
-                        })
-                        interaction.reply({
-                            content: lang.get(interaction.guild.lang).settings["autoRoleSet"]+` <@&${interaction.values[0]}>`,
-                            ephemeral: true
-                        })
-                    break;
-                }
+                bothandler.execute(interaction,lang,separateCustomId[1])
             break;
         }
         await dbdisconnnect() 

@@ -55,7 +55,7 @@ for (const file of langFiles) {
 	console.log(`Language loaded`);
 }
 
-const folders = fs.readdirSync('./src/').forEach(folder => {
+fs.readdirSync('./src/').forEach(folder => {
 	fs.readdirSync(`./src/${folder}`).forEach(file=> {
 		if (file.endsWith(".js")) {
 			const command = require(`./src/${folder}/${file}`);
