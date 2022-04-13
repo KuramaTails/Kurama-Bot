@@ -8,7 +8,7 @@ module.exports = {
         var reason = interaction.options? interaction.options.getString("reason") : fields.length>2? fields[3] : null;
         interaction.guild.members.kick(member)
         if (reason!=null) {
-            var string = lang.get(interaction.guild.lang).buttons.roles["optMemberKickReason"]
+            var string = lang.get(interaction.guild.lang).commands.moderation["optMemberKickReason"]
             let result = string.replace("<@${member.id}>",`<@${member.id}>`);
             result = string.replace("${reason}",`${reason}`);
             interaction.followUp({
@@ -17,7 +17,7 @@ module.exports = {
             })
         }
         else {
-            var string = lang.get(interaction.guild.lang).buttons.roles["optMemberKick"]
+            var string = lang.get(interaction.guild.lang).commands.moderation["optMemberKick"]
             let result = string.replace("<@${member.id}>",`<@${member.id}>`);
             interaction.followUp({
                 content: result,

@@ -25,7 +25,8 @@ module.exports = {
         }
         const reportEmbed = new MessageEmbed()
         .setColor('#0099ff')
-        .setTitle("Bot Kurama : Quick View Report")
+        .setTitle("Bot Kurama : Report")
+        .setDescription("Status: Open")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
         fieldArr.forEach(element => {
             element.value? element.name=="Reported in"? reportEmbed.addFields({ name: element.name , value: "<#"+element.value+">", inline: false }) : reportEmbed.addFields({ name: element.name , value: "<@"+element.value+">", inline: false }) : ""
@@ -55,8 +56,14 @@ module.exports = {
                 ])
                 .addOptions([
                     {
-                        label: `False report`,
-                        value: `nope`,
+                        label: `Ignore`,
+                        value: `skip`,
+                    },
+                ])
+                .addOptions([
+                    {
+                        label: `Warn Reporter`,
+                        value: `falsereport`,
                     },
                 ])
 

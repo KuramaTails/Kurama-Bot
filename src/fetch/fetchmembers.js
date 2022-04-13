@@ -12,6 +12,7 @@ module.exports = {
                 bot:member.user.bot,
                 username:member.user.username,
                 roles:rolesKeys,
+                warn:0,
             }
             listChannels.set(memberId,memberObj)
         });

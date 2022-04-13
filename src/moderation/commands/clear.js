@@ -7,7 +7,7 @@ module.exports = {
         var number = (interaction.options.getNumber("number"));
         if (number<101){
             interaction.channel.bulkDelete(number,true);
-            var string = lang.get(interaction.guild.lang).buttons.roles["optClearChat"]
+            var string = lang.get(interaction.guild.lang).commands.moderation["optClearChat"]
             let result = string.replace("${number}",`${number}`);
             interaction.followUp({
                 content: result,
