@@ -5,12 +5,12 @@
           "btnPageDown": "Pagina giù",
           "btnPageUp": "Pagina su",
           "btnLessCommand": "Meno comandi",
-          "btnMoreCommand": "Altri comandi"
+          "btnMoreCommand": "Più comandi"
         },
         "player": {
             "states": {
-                "paused": "Giocatore in pausa",
-                "resumed": "Giocatore ripreso"
+                "paused": "Player musicale in pausa",
+                "resumed": "Player musicale ripreso"
                 },
             "settings": {
                 "repeatMode": "Imposta la modalità di ripetizione su",
@@ -24,11 +24,11 @@
                 "previousSong": "riproduzione del brano precedente",
                 "errors": {
                 "memberJoin": "Per favore unisciti prima a un canale vocale",
-                "join": "Già iscritto",
-                "leave": "Già uscito",
+                "join": "Già dentro al canale vocale",
+                "leave": "Sono già uscito",
                 "previousSong": "Nessun brano precedente in coda",
                 "queue": " Nessun brano in coda",
-                "skip":"Non sei un amministratore,${memberLeft} member o un amministratore devono cliccare il pulsante salta per saltare il brano"
+                "skip":"Non sei un amministratore,${memberLeft} memberi o un amministratore devono cliccare il pulsante salta per saltare il brano"
                 },
                 "embeds": {
                     "playing": "Riproduzione in corso",
@@ -54,17 +54,17 @@
         "moderation": {
             "optRoleAdded": "Ruolo ${role.name} aggiunto a <@${member.id}>",
             "optRoleRemoved": "Ruolo ${role.name} rimosso a <@${member.id}>",
-            "optMemberBan": "<@${member.id}> è stato bandito",
-            "optMemberBanReason": "<@${member.id}> è stato bandito per ${reason}",
-            "optMemberUnban": "<@${member.id}> è stato annullato",
-            "optMemberUnbanReason": "<@${member.id}> è stato annullato per ${reason }",
+            "optMemberBan": "<@${member.id}> è stato bannato",
+            "optMemberBanReason": "<@${member.id}> è stato bannato per ${reason}",
+            "optMemberUnban": "<@${member.id}> è stato sbannato",
+            "optMemberUnbanReason": "<@${member.id}> è stato sbannato per ${reason }",
             "optMemberKick": "<@${member.id}> è stato espulso",
             "optMemberKickReason": "<@${member.id}> è stato espulso per ${ragione}",
-            "optMemberTimeout": "<@${member.id}> è scaduto",
-            "optMemberTimeoutReason": "<@ ${member.id}> è scaduto per ${reason}",
+            "optMemberTimeout": "<@${member.id}> è stato sospeso",
+            "optMemberTimeoutReason": "<@ ${member.id}> è stato sospeso per ${reason}",
             "optClearChat": "${number} messaggi eliminati",
             "optLeaveDs": "Mi dispiace😢, l'amministratore vuole che io lasci questo discord! Arrivederci😋",
-            "optWarn": "Sei stato avvisato in ${interaction.guild.name}. Questo è il tuo ${warnCount}o avviso. Fai attenzione a cosa dici o fai in questo server. Se continui a violare le regole del server, l'amministratore potrebbe intraprendere azioni più severe contro di te. \n ***Se ritieni che questo avviso sia sbagliato avvisa per favore contatta un amministratore!***",
+            "optWarn": "Hai ricevuto un avviso in ${interaction.guild.name}. Questo è il tuo ${warnCount}o avviso. Fai attenzione a cosa dici o fai in questo server. Se continui a violare le regole del server, l'amministratore potrebbe intraprendere azioni più severe contro di te. \n ***Se ritieni che questo avviso sia sbagliato avvisa per favore contatta un amministratore!***",
             "errors": {
                 "optClearChat": "Seleziona meno di 100 messaggi"
             }
@@ -171,7 +171,7 @@
             "active":"Welcomer è stato impostato su",
             "text":"Il testo di benvenuto è stato impostato su",
             "embeds": {
-                "activeTitle":"Leaver impostato su",
+                "activeTitle":"Welcomer impostato su",
                 "activeDescOn":"Fai clic sul pulsante in basso per attivare",
                 "activeBtnOn":"🟢Attiva",
                 "activeDescOff":"Fai clic sul pulsante in basso per disabilitare",
@@ -182,7 +182,7 @@
                 "changeTextEmbed":"Fai clic sul pulsante in basso per cambiarlo",
                 "changeTextDesc":"Clicca qui per modificare il testo",
                 "chooseBackgroundDesc1":"Seleziona uno sfondo: questo verrà utilizzato dal benvenuto per inviare messaggi quando i membri si uniscono ",
-                "chooseBackgroundDesc2":"(Suggerimento: Seleziona benvenuto se precedentemente creato)",
+                "chooseBackgroundDesc2":"(Suggerimento: Seleziona #welcome se precedentemente creato)",
                 "chooseBackgroundSelect":"Niente selezionato"
             }
         },
