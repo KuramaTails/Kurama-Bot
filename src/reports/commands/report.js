@@ -6,6 +6,8 @@ module.exports = {
     desc:'You can report a user to admin!',
     example:"/moderation report",
 	async execute(interaction,lang) {
+        var selectedChannel = interaction.guild.channels.cache.find(channel => channel.name == "reports")
+        if (!selectedChannel) return
         var fieldArr = []
         fieldArr[0] = {
             name: "Reported Member",
@@ -68,9 +70,8 @@ module.exports = {
                 ])
 
         )
-        var selectedChannel = interaction.guild.channels.cache.find(channel => channel.name == "reports")
         interaction.followUp({
-            content: "Thank you for helping us!",
+            content: lang.get(interaction.guild.lang).reports.commands["optReport"],
             ephemeral: true
         })
         selectedChannel.send({embeds:[reportEmbed],components:[menu]})

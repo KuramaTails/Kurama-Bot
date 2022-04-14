@@ -65,6 +65,7 @@
             "optMemberTimeoutReason":"<@${member.id}> was timed out for ${reason}",
             "optClearChat":"${number} messages deleted",
             "optLeaveDs":"I'm sorry😢, admin wants me to drop this discord! Goodbye😋 ",
+            "optWarn":"You have been warned in ${interaction.guild.name}. This is your ${warnCount}th warn. Be careful what you say or do in this server. If you continue to break server's rules admin could be take more severe actions against you. \n ***If you think this was wrong warn please contact an admin!***",
             "errors": {        
                 "optClearChat":"Please select less then 100 messages"
             }
@@ -117,7 +118,10 @@
         "autoRoleSet":"Autorole set to role",
         "createTicketZoneField1":"Click here for creating a ticket zone:",
         "createTicketZoneField2":"this will be used by members for any issue",
-        "createTicketZoneBtn":"Create Ticket Zone"
+        "createTicketZoneBtn":"Create Ticket Zone",
+        "createAdminZoneField1":"Click here for creating the admin zone:",
+        "createAdminZoneField2":"this will be used by admin for getting logs,reports and warn count",
+        "createAdminZoneBtn":"Create admin zone"
     },
     "tutorial": {
         "yes":"Yes",
@@ -234,5 +238,24 @@
         "startEmbedField1":"Use button below for close this ticket",
         "startEmbedField2":"This channel will be then deleted in 5 seconds",
         "startBtn":"🔒Close and delete ticket"
+    },
+    "help":{
+        "desc":"Please choose one of these categories"
+    },
+    "reports":{
+        "commands":{
+            "falseReportdesc":"You have been warned in ${interaction.guild.name} for a false report! This is your ${warnCount}th warn. Be careful with reports commands. If you continue to break server's rules admin could be take more severe actions against you. \n ***If you think this was wrong warn please contact an admin!***",
+            "optReport":"Thank you for helping us!"
+        },
+        "reportEmbed":{
+            "desc":"Welcome to the reports channel. Only admins will be able to view this channel.",
+            "field1":"You will be able to pick an option from the menu below every report.",
+            "field2":"Options will be : \n -`Warn` \n -`Kick` \n -`Ban` \n -`Ignore` \n -`Report reporter` (this will warn the user who reported)"
+        }
+    },
+    "warn":{
+        "desc":"Welcome to the warn channel. Only admins will be able to view this channel.",
+        "field1":"Here you will be able to see when an admin will warn a user,",
+        "field2":"this is usefull for check many things like how many times was an user warned or who warned him"
     }
 }

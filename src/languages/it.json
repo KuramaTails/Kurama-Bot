@@ -1,31 +1,260 @@
 {
     "buttons": {
-        "optRoleAdded": "Ruolo <@&${roleId}> aggiunto",
-        "optRoleRemoved": "Ruolo <@&${roleId}> rimosso",
-        "btnBack": "Indietro",
-        "btnPageUp": "Pagina su",
-        "btnPageDown": "Pagina giù",
-        "optPlayerPlaying": "Riproduzione",
-        "optPlayerDuration": "Durata",
-        "optPlayerNotPlaying": "Nessun brano in riproduzione",
-        "optPlayerJoin": "Il player musicale si è unito al tuo canale vocale",
-        "optPlayerNoJoin": "Il player musicale si è già unito",
-        "optPlayerQueueEmpty": "Nessun brano in coda",
-        "optPlayerPreviousSong": "Riproduzione brano precedente",
-        "optPlayerNoPreviousSong": "Nessun brano precedente in coda",
-        "optPlayerPause": "Player in pausa",
-        "optPlayerResume": "Player ripreso",
-        "optPlayerSkip": "Brano saltato",
-        "optPlayerQueueFinish": "Nessun altro brano in coda",
-        "optPlayerLeave": "Il player musicale ha lasciato il canale vocale",
-        "optPlayerNoLeave": "Il player musicale è già uscito",
-        "optPlayerEmbedMoreCommand": "Più comandi ",
-        "optPlayerEmbedLessCommand": "Meno comandi",
-        "optPlayeQueueShuffle": "Coda in riproduzione casuale",
-        "optPlayerRepeatMode": "Imposta la modalità di ripetizione su",
-        "optPlayerVolSet": "Volume impostato a",
-        "optPollDeny": "Hai già scelto un'opzione",
-        "optPollThank": "Grazie per aver partecipato",
-        "optPlayerQueueCurrentlyPlaying":"In riproduzione"
+        "buttons": {
+          "btnBack": "Indietro",
+          "btnPageDown": "Pagina giù",
+          "btnPageUp": "Pagina su",
+          "btnLessCommand": "Meno comandi",
+          "btnMoreCommand": "Altri comandi"
+        },
+        "player": {
+            "states": {
+                "paused": "Giocatore in pausa",
+                "resumed": "Giocatore ripreso"
+                },
+            "settings": {
+                "repeatMode": "Imposta la modalità di ripetizione su",
+                "volSet": "Imposta il volume su"
+                },
+            "commands": {
+                "skip": "Brano saltato",
+                "shuffle": "Coda in ordine casuale",
+                "join": "Giocatore si è unito al tuo canale vocale",
+                "leave": "Ha lasciato il canale vocale",
+                "previousSong": "riproduzione del brano precedente",
+                "errors": {
+                "memberJoin": "Per favore unisciti prima a un canale vocale",
+                "join": "Già iscritto",
+                "leave": "Già uscito",
+                "previousSong": "Nessun brano precedente in coda",
+                "queue": " Nessun brano in coda",
+                "skip":"Non sei un amministratore,${memberLeft} member o un amministratore devono cliccare il pulsante salta per saltare il brano"
+                },
+                "embeds": {
+                    "playing": "Riproduzione in corso",
+                    "duration": "Durata",
+                    "queue": "Coda corrente",
+                    "currentlyPlaying": "Attualmente in riproduzione",
+                    "errors": {
+                        "playing": "Nessun brano in riproduzione"
+                    }
+                }
+            },
+            "roles": {
+                "optRoleAdded": "Ruolo <@&${roleId}> aggiunto",
+                "optRoleRemoved": "Ruolo <@&${roleId}> rimosso"
+            },
+            "poll": {
+                "optPollDeny": "Ne hai già scelto uno opzione",
+                "optPollThank": "Grazie per aver partecipato"
+            }
+        }
+    },
+    "commands": { 
+        "moderation": {
+            "optRoleAdded": "Ruolo ${role.name} aggiunto a <@${member.id}>",
+            "optRoleRemoved": "Ruolo ${role.name} rimosso a <@${member.id}>",
+            "optMemberBan": "<@${member.id}> è stato bandito",
+            "optMemberBanReason": "<@${member.id}> è stato bandito per ${reason}",
+            "optMemberUnban": "<@${member.id}> è stato annullato",
+            "optMemberUnbanReason": "<@${member.id}> è stato annullato per ${reason }",
+            "optMemberKick": "<@${member.id}> è stato espulso",
+            "optMemberKickReason": "<@${member.id}> è stato espulso per ${ragione}",
+            "optMemberTimeout": "<@${member.id}> è scaduto",
+            "optMemberTimeoutReason": "<@ ${member.id}> è scaduto per ${reason}",
+            "optClearChat": "${number} messaggi eliminati",
+            "optLeaveDs": "Mi dispiace😢, l'amministratore vuole che io lasci questo discord! Arrivederci😋",
+            "optWarn": "Sei stato avvisato in ${interaction.guild.name}. Questo è il tuo ${warnCount}o avviso. Fai attenzione a cosa dici o fai in questo server. Se continui a violare le regole del server, l'amministratore potrebbe intraprendere azioni più severe contro di te. \n ***Se ritieni che questo avviso sia sbagliato avvisa per favore contatta un amministratore!***",
+            "errors": {
+                "optClearChat": "Seleziona meno di 100 messaggi"
+            }
+        },
+        "player": {
+            "states": {        
+                "paused":"Player musicale in pausa",
+                "resumed":"Player musicale ripreso"
+            },       
+            "settings": {        
+                "repeatMode":"Imposta la modalità di ripetizione su",
+                "volSet":"Imposta il volume su",
+                "errors": {  
+                    "repeatMode":"Si prega di fornire una modalità loop disponibile: DISABILITATA = 0, CANZONE = 1 , CODA = 2"
+                }
+            }, 
+            "commands": {   
+                "addsong":"Aggiunto ${addedsong.name} - ${addedsong.formattedDuration} alla coda",
+                "play":"Riproduzione di ${addedsong.name} - ${addedsong.formattedDuration}",     
+                "skip":"Canzone saltata",
+                "shuffle":"Coda mescolata", 
+                "join":"Il player musicale si è unito al tuo canale vocale",
+                "leave":"Il player musicale ha lasciato il tuo canale vocale",
+                "previousSong":"Riproduzione del brano precedente in corso",
+                "errors": {  
+                    "memberJoin":"Per favore prima unisciti a un canale vocale",
+                    "join":"Già iscritto",
+                    "leave":"Già partito",
+                    "previousSong":"Nessun brano precedente in coda",
+                    "queue":"Nessun brano in coda"
+                }
+            }, 
+            "embeds": {        
+                "playing":"In riproduzione",
+                "duration":"Durata",
+                "queue":"Coda corrente",
+                "currentlyPlaying":"Attualmente in riproduzione",
+                "errors": {        
+                    "playing":"Nessun brano in riproduzione"
+                }
+            }        
+        }
+    },
+    "settings": {
+        "leaverSet":"Leaver è stato impostato",
+        "playerSet":"Player musicale è stato impostato",
+        "welcomerSet":"Welcomer è stato impostato",
+        "welcomerChannelSet":"Il canale del Welcomer è stato impostato",
+        "welcomerBackgroundSet":"Il background del Welcomer background è stato impostato",
+        "autoRoleSet":"Autorole impostato su role",
+        "createTicketZoneField1":"Clicca qui per creare la ticket zone:",
+        "createTicketZoneField2":"questa sarà utilizzato dai membri per qualsiasi problema",
+        "createTicketZoneBtn":"Crea Ticket Zone",
+        "createAdminZoneField1":"Clicca qui per creare la admin zone:",
+        "createAdminZoneField2":"questa sarà utilizzato dall'amministratore per ottenere registri, rapporti e conteggio avvisi",
+        "createAdminZoneBtn":"Crea Admin Zone"
+    },
+    "tutorial": {
+        "yes":"Si",
+        "no":"No",
+        "selectPlayerChannel":"Niente selezionato",
+        "start": {
+            "desc":"Grazie per avermi aggiunto alla tua discordia. \n Per favore, segui questo tutorial per configurarmi per la tua discordia.\n Non ci vorrà molto. ",
+            "field1":"Attenzione: se il tutorial viene saltato o non è configurato correttamente, il mio corretto funzionamento non è garantito...",
+            "field2":"Si prega di fare clic sul pulsante qui sotto per continuare"
+        },
+        "selectLang": {
+            "desc":"Grazie per aver iniziato il tutorial. Iniziamo a scegliere una lingua",
+            "field1":"Questa sarà usata anche per questo tutorial come nel tuo discord",
+            "field2":"Suggerimenti: potrai cambiarlo in seguito nel canale #botsettings"
+        },
+        "part1": {
+            "field1":"Vuoi avere una sezione relativa alle statistiche del tuo server?",
+            "field2":"(Verranno creati canali con counter per membri totali, online e offline)"
+        },
+        "part2": {
+            "field1":"Vuoi avere una sezione per accogliere i nuovi membri e far scegliere loro un ruolo?",
+            "field2":"(Verranno creati i canali di benvenuto e di scelta dei ruoli)"
+        },
+        "part3": {
+            "field1":"Vuoi avere una sezione per dare comandi al player musicale e ascoltare musica?",
+            "field2":"(Verranno creati canali per il player e i canali musicali)"
+        },
+        "part4": {
+            "field1":"Vuoi attivare il welcomer?",
+            "field2":"Messaggi di benvenuto verranno inviati quando si uniranno nuovi membri"
+        },
+        "part5": {
+            "field1":"Seleziona un canale di testo: questo verrà utilizzato dal player musicale per inviare messaggi (Suggerimento: seleziona la stanza del player se creata in precedenza)",
+            "field2":"Attenzione: Verrà inviato un messaggio Embed con pulsanti:questi eviteranno di utilizzare comandi di testo,non cancellarlo!"
+        },
+        "part6": {
+            "field1":"Vuoi che assegni automaticamente i ruoli ai nuovi membri?",
+            "field2":"Potrai selezionare il ruolo da dare nel canale #bot-settings che verrà creato di seguito"
+        },
+        "end": {
+            "desc":"Tutto configurato. \n Di seguito troverai altri canali di testo dove potrai configurarmi in futuro. Questo canale verrà eliminato dopo aver cliccato sul pulsante in basso",
+            "field1":"Suggerimento: usa / per un elenco veloce dei comandi utilizzabili, altrimenti usa /help per ottenere un elenco completo con tutte le categorie",
+            "field2":"Attenzione: non eliminare i canali sottostanti, ti serviranno in seguito per modificare le impostazioni del bot"
+        }
+    },
+    "update": {
+        "welcomer": {
+            "active":"Welcomer è stato impostato su",
+            "text":"Il testo di benvenuto è stato impostato su",
+            "embeds": {
+                "activeTitle":"Leaver impostato su",
+                "activeDescOn":"Fai clic sul pulsante in basso per attivare",
+                "activeBtnOn":"🟢Attiva",
+                "activeDescOff":"Fai clic sul pulsante in basso per disabilitare",
+                "activeBtnOff":"🔴Disabilitare",
+                "chooseChannelDesc1":"Seleziona un canale di testo: questo verrà utilizzato dal benvenuto per inviare messaggi quando i membri si uniscono",
+                "chooseChannelDesc2":"(Suggerimento: Seleziona il canale #welcome se creato in precedenza)",
+                "chooseChannelSelect":"Niente selezionato",
+                "changeTextEmbed":"Fai clic sul pulsante in basso per cambiarlo",
+                "changeTextDesc":"Clicca qui per modificare il testo",
+                "chooseBackgroundDesc1":"Seleziona uno sfondo: questo verrà utilizzato dal benvenuto per inviare messaggi quando i membri si uniscono ",
+                "chooseBackgroundDesc2":"(Suggerimento: Seleziona benvenuto se precedentemente creato)",
+                "chooseBackgroundSelect":"Niente selezionato"
+            }
+        },
+        "leaver": {
+            "active":"Leaver è stato impostato su",
+            "text":"Il testo del Leaver è stato impostato su",
+            "embeds": {
+                "activeTitle":"Leaver impostato su",
+                "activeDescOn":"Fai clic sul pulsante in basso per attivare",
+                "activeBtnOn":"🟢Attiva",
+                "activeDescOff":"Fai clic sul pulsante in basso per disabilitare",
+                "activeBtnOff":"🔴Disabilitare",
+                "changeTextEmbed":"Fai clic sul pulsante in basso per cambiarlo",
+                "changeTextDesc":"Clicca qui per modificare il testo"
+            }
+        },
+        "bot": {
+            "embeds": {
+                "activeTitle":"Autorole impostato su",
+                "activeDescOn":"Fai clic sul pulsante in basso per attivare",
+                "activeBtnOn":"🟢Attiva",
+                "activeDescOff":"Fai clic sul pulsante in basso per disabilitare",
+                "activeBtnOff":"🔴Disabilitare",
+                "chooseRoleDesc1":"Seleziona un ruolo:",
+                "chooseRoleDesc2":"questo verrà aggiunto automaticamente quando i membri si uniranno",
+                "chooseRoleSelect":"Niente selezionato"
+            }
+        }
+    },
+    "autorole": {
+        "title":"Aggiungi ruolo",
+        "desc":"Fai clic su un pulsante per ottenere un ruolo"
+    },
+    "canvas": {
+        "join":"Benvenuto!",
+        "leave":"Oh no!"
+    },
+    "player":{
+        "desc1":"Seleziona un canale di testo: questo verrà utilizzato dal lettore musicale per inviare messaggi (Suggerimento: seleziona il canale del player musicale se creata in precedenza)",
+        "desc2":"Attenzione: Verrà inviato un Embed Message con pulsanti:questi eviteranno di usare comandi di testo",
+        "selectPlayerChannel":"Niente selezionato"
+    },
+    "poll":{
+        "desc1":"Hai 30 secondi per rispondere a questo sondaggio \n **Sondaggio creato da**",
+        "desc2":"Sondaggio terminato! Grazie per la tua partecipazione.\nDi seguito sono riportati i risultati:"
+    },
+    "ticket":{
+        "createEmbedField1":"Clicca qui per creare un nuovo ticket:",
+        "createEmbedField2":"puoi usarlo per segnalare qualsiasi problema agli amministratori di questo discord",
+        "createBtn":"Crea nuovo Ticket",
+        "startEmbedDesc":"Grazie per aver creato questo ticket: per favore, presenta il tuo problema qui sotto, gli amministratori ti risponderanno il più velocemente possibile",
+        "startEmbedField1":"Usa il pulsante qui sotto per chiudere questo ticket",
+        "startEmbedField2":"Questo canale verrà quindi eliminato in 5 secondi",
+        "startBtn":"🔒Chiudi ed elimina ticket"
+    },
+    "help":{
+        "desc":"Scegli una di queste categorie"
+    },
+    "reports":{
+        "commands":{
+            "falseReportdesc":"Sei stato avvisato in ${interaction.guild.name} per un falso rapporto! Questo è il tuo ${warnCount}o avviso. Fai attenzione con i comandi dei rapporti. Se continui a infrangere le regole del server, l'amministratore potrebbe prendere azioni più gravi contro di te. \n ***Se ritieni che questo sia sbagliato contatta per favore un amministratore!***",
+            "optReport":"Grazie per averci aiutato!"
+        },
+        "reportEmbed":{
+            "desc":"Benvenuto nel canale dei rapporti. Solo gli amministratori potranno visualizzare questo canale.",
+            "field1":"Potrai scegliere un'opzione dal menu sotto ogni rapporto.",
+            "field2":"Le opzioni saranno: \n -`Avvisa` \n -`Kick` \n -`Ban` \n -`Ignora` \n -`Segnala reporter` (questo avviserà l'utente che ha segnalato)"
+        }
+    },
+    "warn":{
+        "desc":"Benvenuto nel canale di avviso. Solo gli amministratori potranno visualizzare questo canale.",
+        "field1":"Qui potrai vedere quando un amministratore avviserà un utente,",
+        "field2":"questo è utile per controllare molte cose come quante volte un utente è stato avvisato o chi lo ha avvertito"
     }
 }

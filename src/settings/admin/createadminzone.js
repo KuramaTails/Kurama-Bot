@@ -1,4 +1,5 @@
 const createreportembed = require("../../reports/createreportembed")
+const createwarnembed = require("../../warn/createwarnembed")
 
 module.exports = {
 	async execute(interaction,lang) {
@@ -12,7 +13,9 @@ module.exports = {
                 await createreportembed.execute(interaction,channel,lang)
             })
             guild.channels.create(`log`,  {type: 'GUILD_TEXT',parent: cat})
-            guild.channels.create(`warn`,  {type: 'GUILD_TEXT',parent: cat})
+            guild.channels.create(`warn`,  {type: 'GUILD_TEXT',parent: cat}).then(async (channel) => {
+                await createwarnembed.execute(interaction,channel,lang)
+            })
         })
         console.log(`Created welcome rooms in ${guild.name}`)
     }

@@ -18,11 +18,14 @@ module.exports = {
         dbmembers.markModified('members');
         await dbmembers.save()
         await dbdisconnect()
+        var string = lang.get(interaction.guild.lang).reports.commands["falseReportdesc"]
+        var result = string.replace("${interaction.guild.name}",`${interaction.guild.name}`);
+        result = string.replace("${warnCount}",`${warnCount}`);
         const reportedUser = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Warning")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .setDescription(`You have been warned in ${interaction.guild.name} for a false report! This is your ${warnCount}th warn. Be careful with reports commands. If you continue to break server's rules admin could be take more severe actions against you. \n ***If you think this was wrong warn please contact an admin!***`)
+        .setDescription(result)
         await member.send({embeds:[reportedUser]}).catch(err=>console.log(err))
     }
 }

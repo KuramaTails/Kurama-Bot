@@ -1,6 +1,7 @@
 const ticketSchema = require("../schemas/ticket-schema")
 const ticketstart = require("./ticketstart")
-
+const dbconnect = require("../misc/db/dbconnect");
+const dbdisconnect = require("../misc/db/dbdisconnect");
 module.exports= {
     async execute(interaction,lang,customId) {
         await dbconnect()
