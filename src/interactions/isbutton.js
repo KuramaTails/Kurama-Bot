@@ -11,22 +11,22 @@ module.exports = {
 		var separateCustomId = interaction.customId.split("-")
         switch (separateCustomId[0]) {
 			case "role":
-				chooseRole.execute(interaction,separateCustomId[1],lang)
+				await chooseRole.execute(interaction,separateCustomId[1],lang)
 			break;
 			case "player":
-				playerhandler.execute(interaction,player,lang,separateCustomId[1],playerUser)
+				await playerhandler.execute(interaction,player,lang,separateCustomId[1],playerUser)
 			break;
 			case "tutorial":
-				tutorial.execute(interaction,lang,separateCustomId[1])
+				await tutorial.execute(interaction,lang,separateCustomId[1])
 			break;
 			case "welcomer":
-				welcomerhandler.execute(interaction,bot,lang,separateCustomId[1])
+				await welcomerhandler.execute(interaction,bot,lang,separateCustomId[1])
 			break;
 			case "bot":
-				bothandler.execute(interaction,lang,separateCustomId[1])
+				await bothandler.execute(interaction,lang,separateCustomId[1])
 			break;
 			case "ticket":
-				tickethandler.execute(interaction,lang,separateCustomId[1])
+				await tickethandler.execute(interaction,lang,separateCustomId[1])
 			break;
 			case "help":
 				await helpButtons.execute(interaction,lang,separateCustomId[1])

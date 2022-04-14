@@ -10,6 +10,10 @@ module.exports = {
         else {
             var link = modal.getTextInputValue('textinput-customid')
             var voicechannel = modal.member.voice.channel
+            if (!voicechannel) {
+                await modal.editReply({ content: lang.get(modal.guild.lang).commands.player.commands.errors["memberJoin"], ephemeral: true })
+                return
+            }
             await player.play(voicechannel, link)
             var queue = await player.queues.get(voicechannel)
             let addedsong = queue.songs[queue.songs.length-1]

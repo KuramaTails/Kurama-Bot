@@ -31,7 +31,8 @@
                     "skip":"You are not administrator,${memberLeft} more members or an administrator have to click next button for skipping"
                 }
             }, 
-            "embeds": {        
+            "embeds": { 
+                "search":"🔎 Enter your link or song's title here!",
                 "playing":"Playing",
                 "duration":"Duration",
                 "queue":"Current Queue",

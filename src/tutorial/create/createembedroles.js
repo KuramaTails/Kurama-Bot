@@ -1,12 +1,12 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 module.exports = {
-	async execute(channel) {
+	async execute(channel,lang) {
         try {
             var buttons = [new MessageActionRow()]
             const rolesEmbed = new MessageEmbed()
                                 .setColor('#0099ff')
-                                .setTitle(lang.get(guild.lang).autorole["title"])
-                                .setDescription(lang.get(guild.lang).autorole["desc"])
+                                .setTitle(lang.get(channel.guild.lang).autorole["title"])
+                                .setDescription(lang.get(channel.guild.lang).autorole["desc"])
             await channel.guild.roles.cache.forEach(role => {
                 if (role.permissions.has("ADMINISTRATOR")== false) {
                     if (role.managed== false) {
@@ -33,7 +33,12 @@ module.exports = {
                     }
                 }
             });
-            await channel.send({embeds: [rolesEmbed],components: buttons})
+            try {
+                await channel.send({embeds: [rolesEmbed],components: buttons})
+            } catch (error) {
+                console.log(error) 
+            }
+            
         } catch (error) {
             console.log(error)
         }

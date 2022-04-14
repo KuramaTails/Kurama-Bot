@@ -19,6 +19,7 @@ const createplayerembed = require("./create/createplayerembed");
 const createplayersettings = require("./create/settings/createplayersettings");
 const createplayersettingsembed = require("./create/settings/embeds/createplayersettingsembed");
 const part6 = require("./part6");
+const playerSchema = require("../schemas/player-schema");
 const tutorialparts = [part2,part3,part4,part5,part6,endtutorial]
 module.exports = {
     async execute(interaction,lang,customId) {
@@ -59,7 +60,7 @@ module.exports = {
                                 await createserverstats.execute(interaction)
                             break;
                             case 2:
-                                await createwelcomezone.execute(interaction)
+                                await createwelcomezone.execute(interaction,lang)
                             break;
                             case 3:
                                 await createplayerzone.execute(interaction)
@@ -135,7 +136,7 @@ module.exports = {
                             upsert:true,
                         })
                     
-                        await createplayerembed.execute(interaction.guild,selectedChannelId,lang)
+                        await createplayerembed.execute(interaction,selectedChannelId,lang)
                         await createplayersettings.execute(interaction)
                         await createplayersettingsembed.execute(interaction,lang)
                     break;

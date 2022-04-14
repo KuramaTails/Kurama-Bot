@@ -66,7 +66,7 @@ module.exports = {
                         .setCustomId('welcomer-selectWelcomerBackground')
                         .setPlaceholder(lang.get(interaction.guild.lang).update.welcomer.embeds["chooseBackgroundSelect"])
                 )
-                const background = fs.readdirSync('./welcomer').filter(file => file.endsWith('.jpg'));
+                const background = fs.readdirSync('./src/settings/welcomer/backgrounds').filter(file => file.endsWith('.jpg'));
                 background.forEach(image => {
                     var fullName = image.split(".")
                     button3.components[0].addOptions([

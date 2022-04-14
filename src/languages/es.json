@@ -23,31 +23,33 @@
                 "leave": "Dejó el canal de voz",
                 "previousSong": "Reproduciendo la canción anterior",
                 "errors": {
-                "memberJoin": "Por favor, únete a un canal de voz primero",
-                "join": "Ya dentro del canal de voz",
-                "leave": "Ya estoy fuera",
-                "previousSong": "No hay canción anterior en la cola",
-                "queue": "No hay canción en la cola",
-                "skip":"Usted no es un administrador,${memberLeft} miembros o un administrador deben hacer clic en el botón saltar para saltar la canción"
-                },
-                "embeds": {
-                    "playing": "Jugando",
-                    "duration": "Duración",
-                    "queue": "Cola actual",
-                    "currentlyPlaying": "Reproduciendo actualmente",
-                    "errors": {
-                        "playing": "No se está reproduciendo ninguna canción"
-                    }
+                    "memberJoin": "Por favor, únete a un canal de voz primero",
+                    "join": "Ya dentro del canal de voz",
+                    "leave": "Ya estoy fuera",
+                    "previousSong": "No hay canción anterior en la cola",
+                    "queue": "No hay canción en la cola",
+                    "skip":"Usted no es un administrador,${memberLeft} miembros o un administrador deben hacer clic en el botón saltar para saltar la canción"
                 }
             },
-            "roles": {
-                "optRoleAdded": "Rol <@&${roleId}> agregado",
-                "optRoleRemoved": "Rol <@&${roleId}> eliminado"
-            },
-            "poll": {
-                "optPollDeny": "Ya has elegido una opción",
-                "optPollThank": "Gracias por participar"
-            }
+            "embeds": {
+                "search":"🔎 Ingrese su link o título de la canción aquí!",
+                "playing": "Jugando",
+                "duration": "Duración",
+                "queue": "Cola actual",
+                "currentlyPlaying": "Reproduciendo actualmente",
+                "errors": {
+                    "playing": "No se está reproduciendo ninguna canción"
+                }
+                
+            }        
+        },
+        "roles": {
+            "optRoleAdded": "Rol <@&${roleId}> agregado",
+            "optRoleRemoved": "Rol <@&${roleId}> eliminado"
+        },
+        "poll": {
+            "optPollDeny": "Ya has elegido una opción",
+            "optPollThank": "Gracias por participar"
         }
     },
     "commands": { 

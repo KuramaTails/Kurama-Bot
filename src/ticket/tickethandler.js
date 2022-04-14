@@ -20,7 +20,6 @@ module.exports= {
                 {
                     upsert:true,
                 })
-                await interaction.deferUpdate()
                 await ticketstart.execute(interaction,lang,ans)
             break;
             case "close":

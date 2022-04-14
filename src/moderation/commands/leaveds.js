@@ -3,7 +3,7 @@ module.exports = {
     command:"leave",
     desc:'Bot will leave this discord!',
     example:"/moderation leave",
-	async execute(interaction,lang) { 
+	async execute(interaction,lang) {
         try {
             var listChannels = await interaction.guild.channels.cache
             var listRoles = await interaction.guild.roles.cache
@@ -16,29 +16,19 @@ module.exports = {
             
             setTimeout(async () => {
                 try {
-                    await listChannels.find(channel => channel.name.includes("Serverstats")).delete()
-                    await listChannels.find(channel => channel.name.includes("Welcomer")).delete()
-                    await listChannels.find(channel => channel.name.includes("Music-Zone")).delete()
-                    await listChannels.find(channel => channel.name.includes("Members")).delete()
-                    await listChannels.find(channel => channel.name.includes("Online")).delete()
-                    await listChannels.find(channel => channel.name.includes("Offline")).delete()
-                    await listChannels.find(channel => channel.name.includes("welcome")).delete()
-                    await listChannels.find(channel => channel.name.includes("choose-role")).delete()
-                    await listChannels.find(channel => channel.name.includes("player-room")).delete()
-                    await listChannels.find(channel => channel.name.includes("Room 1")).delete()
-                    await listChannels.find(channel => channel.name.includes("Room 2")).delete()
-                    await listChannels.find(channel => channel.name.includes("Room 3")).delete()
+                    var createdChannel = ["Serverstats","Welcomer","Member","Online","welcome","choose-role","Music Zone","music","player-room","Kurama-Zone","player-settings","welcomer-settings","bot-settings","Ticket Zone","create-ticket","Admin Zone","reports","log","warn"]
+                    await createdChannel.forEach(lfChannel => listChannels.find(channel=> channel.name.includes(lfChannel)).delete())
+                    var newChannels = await interaction.guild.channels.fetch()
+                    var newKeys = Array.from(newChannels.keys())
+                    for (let i = 0; i < newKeys.length; i++) {
+                        if (newChannels.get(newKeys[i]).type== "GUILD_TEXT"){
+                            await newChannels.get(newKeys[i]).send(lang.get(interaction.guild.lang).commands.moderation["optLeaveDs"])
+                            await interaction.guild.leave();
+                            return
+                        }
+                    }
                 } catch (error) {
                     console.log(error)
-                }
-                var newChannels = await interaction.guild.channels.fetch()
-                var newKeys = Array.from(newChannels.keys())
-                for (let i = 0; i < newKeys.length; i++) {
-                    if (newChannels.get(newKeys[i]).type== "GUILD_TEXT"){
-                        await newChannels.get(newKeys[i]).send(lang.get(interaction.guild.lang).commands.moderation["optLeaveDs"])
-                        await interaction.guild.leave();
-                        return
-                    }
                 }
             }, 2000);
         } catch (error) {

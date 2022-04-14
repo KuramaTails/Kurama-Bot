@@ -12,6 +12,7 @@ module.exports = {
         {
             upsert:true,
         })
-        await createplayerembed.execute(interaction.guild,selectedChannelId,lang)
+        await interaction.deferUpdate()
+        await createplayerembed.execute(interaction,selectedChannelId,lang)
     }
 }

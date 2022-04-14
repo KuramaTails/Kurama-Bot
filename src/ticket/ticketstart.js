@@ -34,6 +34,7 @@ module.exports = {
                 },
             ]},
         ).then(async (channel) => {
+            await interaction.deferUpdate()
             channel.send({embeds:[Embed],components:[buttons]})
         })
     }

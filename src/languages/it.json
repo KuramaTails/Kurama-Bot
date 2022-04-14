@@ -23,31 +23,33 @@
                 "leave": "Ha lasciato il canale vocale",
                 "previousSong": "riproduzione del brano precedente",
                 "errors": {
-                "memberJoin": "Per favore unisciti prima a un canale vocale",
-                "join": "Già dentro al canale vocale",
-                "leave": "Sono già uscito",
-                "previousSong": "Nessun brano precedente in coda",
-                "queue": " Nessun brano in coda",
-                "skip":"Non sei un amministratore,${memberLeft} memberi o un amministratore devono cliccare il pulsante salta per saltare il brano"
-                },
-                "embeds": {
-                    "playing": "Riproduzione in corso",
-                    "duration": "Durata",
-                    "queue": "Coda corrente",
-                    "currentlyPlaying": "Attualmente in riproduzione",
-                    "errors": {
-                        "playing": "Nessun brano in riproduzione"
-                    }
+                    "memberJoin": "Per favore unisciti prima a un canale vocale",
+                    "join": "Già dentro al canale vocale",
+                    "leave": "Sono già uscito",
+                    "previousSong": "Nessun brano precedente in coda",
+                    "queue": " Nessun brano in coda",
+                    "skip":"Non sei un amministratore,${memberLeft} membri o un amministratore devono cliccare il pulsante salta per saltare il brano"
                 }
             },
-            "roles": {
-                "optRoleAdded": "Ruolo <@&${roleId}> aggiunto",
-                "optRoleRemoved": "Ruolo <@&${roleId}> rimosso"
-            },
-            "poll": {
-                "optPollDeny": "Ne hai già scelto uno opzione",
-                "optPollThank": "Grazie per aver partecipato"
-            }
+            "embeds": {
+                "search":"🔎 Inserisci qui il tuo link o il titolo della canzone!",
+                "playing": "Riproduzione in corso",
+                "duration": "Durata",
+                "queue": "Coda corrente",
+                "currentlyPlaying": "Attualmente in riproduzione",
+                "errors": {
+                    "playing": "Nessun brano in riproduzione"
+                }
+                
+            }        
+        },
+        "roles": {
+            "optRoleAdded": "Ruolo <@&${roleId}> aggiunto",
+            "optRoleRemoved": "Ruolo <@&${roleId}> rimosso"
+        },
+        "poll": {
+            "optPollDeny": "Ne hai già scelto uno opzione",
+            "optPollThank": "Grazie per aver partecipato"
         }
     },
     "commands": { 

@@ -12,19 +12,19 @@ module.exports = {
         await dbconnect()
         switch (separateCustomId[0]) {
             case "tutorial":
-                tutorial.execute(interaction,lang,separateCustomId[1])
+                await tutorial.execute(interaction,lang,separateCustomId[1])
             break;
             case "welcomer":
-                welcomerhandler.execute(interaction,0,lang,separateCustomId[1])
+                await welcomerhandler.execute(interaction,0,lang,separateCustomId[1])
             break;
             case "player":
-                playerhandler.execute(interaction,lang)
+                await playerhandler.execute(interaction,lang)
             break;
             case "bot":
-                bothandler.execute(interaction,lang,separateCustomId[1])
+                await bothandler.execute(interaction,lang,separateCustomId[1])
             break;
             case "report":
-                reporthandler.execute(interaction,lang,separateCustomId[1])
+                await reporthandler.execute(interaction,lang,separateCustomId[1])
             break;
         }
         await dbdisconnnect() 

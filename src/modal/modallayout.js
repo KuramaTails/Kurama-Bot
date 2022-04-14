@@ -2,7 +2,7 @@ const { Modal, TextInputComponent, showModal } = require('discord-modals')
 module.exports= {
     async execute(interaction,bot,customId,title,label,placeHolder) {
         var modal = new Modal()
-        .setCustomId('modal-'+customId)
+        .setCustomId(customId)
         .setTitle(title)
         .addComponents([
             new TextInputComponent()

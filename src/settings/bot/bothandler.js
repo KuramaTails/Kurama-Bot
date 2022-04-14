@@ -35,10 +35,12 @@ module.exports = {
                 await botsettings.execute(interaction,lang)
             break;
             case "ticketZone":
-                createticketzone.execute(interaction,lang)
+                await interaction.deferUpdate()
+                await createticketzone.execute(interaction,lang)
             break;
             case "adminZone":
-                createadminzone.execute(interaction,lang)
+                await interaction.deferUpdate()
+                await createadminzone.execute(interaction,lang)
             break;
             case "selectAutoroleRole":
                 var role = interaction.values[0]

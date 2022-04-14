@@ -32,6 +32,7 @@
                 }
             }, 
             "embeds": {        
+                "search":"🔎 Geben Sie hier Ihren Link oder Songtitel ein!",
                 "playing":"Wird gespielt",
                 "duration":"Dauer",
                 "queue":"Aktuelle Warteschlange",
