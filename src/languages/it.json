@@ -68,13 +68,19 @@
             "optLeaveDs": "Mi dispiace😢, l'amministratore vuole che io lasci questo discord! Arrivederci😋",
             "optWarn": "Hai ricevuto un avviso in ${interaction.guild.name}. Questo è il tuo ${warnCount}o avviso. Fai attenzione a cosa dici o fai in questo server. Se continui a violare le regole del server, l'amministratore potrebbe intraprendere azioni più severe contro di te. \n ***Se ritieni che questo avviso sia sbagliato avvisa per favore contatta un amministratore!***",
             "errors": {
+                "hasAlreadyAdded":"Questo ruolo è già stato aggiunto a questo membro",       
+                "hasAlreadyRemoved":"Questo ruolo è già stato rimosso a questo membro",     
                 "optClearChat": "Seleziona meno di 100 messaggi"
             }
         },
         "player": {
             "states": {        
                 "paused":"Player musicale in pausa",
-                "resumed":"Player musicale ripreso"
+                "resumed":"Player musicale ripreso",
+                "errors" :{
+                    "paused":"Player musicale già in pausa",
+                    "resumed":"Player musicale ha già ripreso la riproduzione"
+                }
             },       
             "settings": {        
                 "repeatMode":"Imposta la modalità di ripetizione su",
@@ -96,6 +102,7 @@
                     "join":"Già iscritto",
                     "leave":"Già partito",
                     "previousSong":"Nessun brano precedente in coda",
+                    "skip":"Non ci sono più brani in coda",
                     "queue":"Nessun brano in coda"
                 }
             }, 

@@ -68,13 +68,19 @@
             "optLeaveDs":"Es tut mir leid😢, der Administrator möchte, dass ich diesen Discord lösche! Auf Wiedersehen😋",
             "optWarn":"Sie wurden in ${interaction.guild.name} gewarnt. Dies ist Ihre ${warnCount}-te Warnung. Seien Sie vorsichtig, was Sie auf diesem Server sagen oder tun. Wenn Sie weiterhin gegen die Regeln des Servers verstoßen, könnte der Administrator sein strengere Maßnahmen gegen Sie ergreifen. \n ***Wenn Sie der Meinung sind, dass dies falsch war, warnen Sie bitte einen Administrator!***",
             "errors": {        
+                "hasAlreadyAdded":"Diese Rolle wurde diesem Mitglied bereits hinzugefügt",       
+                "hasAlreadyRemoved":"Diese Rolle wurde diesem Mitglied bereits entfernt",   
                 "optClearChat":"Bitte wählen Sie weniger als 100 Nachrichten aus"
             }
         },
         "player": {
             "states": {        
                 "paused":"Spieler pausiert",
-                "resumed":"Spieler fortgesetzt"
+                "resumed":"Spieler fortgesetzt",
+                "errors" :{
+                    "paused":"Spieler bereits pausiert",
+                    "resumed":"Spieler hat die Wiedergabe bereits fortgesetzt"
+                }
             },       
             "settings": {        
                 "repeatMode":"Wiederholungsmodus einstellen auf",
@@ -96,6 +102,7 @@
                     "join":"Bereits beigetreten",
                     "leave":"Bereits verlassen",
                     "previousSong":"Keine vorherigen Songs in der Warteschlange",
+                    "skip":"Keine Songs mehr in der Warteschlange",
                     "queue":"Keine Songs in der Warteschlange"
                 }
             }, 

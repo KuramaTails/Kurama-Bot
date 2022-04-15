@@ -1,128 +1,46 @@
-const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
-
+const { MessageButton, MessageActionRow } = require("discord.js");
+const join = require("./commands/join")
+const previous = require("./commands/previous")
+const pause = require("./commands/pause")
+const resume = require("./commands/resume")
+const next = require("./commands/skip")
+const leave = require("./commands/leave")
+const shuffle = require("./commands/shuffle")
+const loop = require("./commands/loop")
+const queue = require("./commands/queue")
+const volume = require("./commands/volume")
 module.exports = {
-	async execute(interaction,player,countVoiceChannels,lang,category,playerUser) {
-        const Embedsearch = new MessageEmbed()
+	async execute(interaction,player,lang,category,playerUser) {
         var voiceChannel = interaction.member.voice.channel
-        if (!player.getQueue(voiceChannel)) {
-            Embedsearch.setColor('#0099ff')
-            .setTitle(lang.get(interaction.guild.lang).buttons.player.embeds.errors["playing"])
-            .setThumbnail(``)
-            .setURL(``)
-            .setDescription(``)
-            await interaction.message.edit({embeds:[Embedsearch]})
-            await interaction.reply({
-                content: lang.get(interaction.guild.lang).buttons.player.commands.errors["queue"],
-                ephemeral: true
-            })
-            return
+        await interaction.deferUpdate()
+        switch (category) {
+            case "join":
+                join.execute(interaction,player,lang,voiceChannel)
+                return
+            case "leave":
+                leave.execute(interaction,player,lang,voiceChannel)
+                return
         }
-        let playingSong = await player.queues.get(voiceChannel).songs[0]
-        Embedsearch.setColor('#0099ff')
-        .setTitle(lang.get(interaction.guild.lang).buttons.player.embeds["playing"] +`: \`${playingSong.name}\``)
-        .setThumbnail(`${playingSong.thumbnail}`)
-        .setURL(`${playingSong.url}`)
-        .setDescription(lang.get(interaction.guild.lang).buttons.player.embeds["duration"] +`: \`${playingSong.formattedDuration}\`\n`)
+        if (!player.getQueue(voiceChannel)) return interaction.followUp({content: lang.get(interaction.guild.lang).buttons.player.commands.errors["queue"],ephemeral: true})
         var secMessage = interaction.channel.messages.cache.get(interaction.message.id)
         var search = interaction.message.components[0]
         var buttons = interaction.message.components[1]
         var buttons2 = interaction.message.components[2]
         switch (category) {
-            case "join":
-                if (countVoiceChannels>1) {
-                    interaction.reply({
-                        content: lang.get(interaction.guild.lang).buttons.player.commands.errors["join"],
-                        ephemeral: true
-                    })    
-                }
-                await player.voices.join(voiceChannel)
-                    interaction.reply({
-                        content: lang.get(interaction.guild.lang).buttons.player.commands["join"],
-                        ephemeral: true
-                    })
-            break;
             case "previous":
-                if (!player.queues.collection.first().previousSongs.length) {
-                    interaction.reply({
-                        content: lang.get(interaction.guild.lang).buttons.player.commands.errors["previousSong"],
-                        ephemeral: true
-                    }) 
-                }
-                player.previous(voiceChannel);
-                interaction.reply({
-                    content: lang.get(interaction.guild.lang).buttons.player.commands["previousSong"],
-                    ephemeral: true
-                })
+                previous.execute(interaction,player,lang,voiceChannel)
             break;
             case "pause":
-                if (player.queues.collection.first().paused) {
-                    player.resume(voiceChannel)
-                    interaction.reply({
-                        content: lang.get(interaction.guild.lang).buttons.player.states["optPlayerResume"],
-                        ephemeral: true
-                    })
-                }
-                player.pause(voiceChannel)
-                interaction.reply({
-                    content: lang.get(interaction.guild.lang).buttons.player.states["optPlayerPause"],
-                    ephemeral: true
-                })
+                !player.queues.collection.first().paused? pause.execute(interaction,player,lang,voiceChannel) : resume.execute(interaction,player,lang,voiceChannel)
             break;
             case "next":
-                if (!interaction.member.permissions.has("ADMINISTRATOR")) {
-                    var countMembers = Array.from(voiceChannel.members.keys())
-                    if (!playerUser.has(interaction.guild.id)) {
-                        playerUser.set(interaction.guild.id,[interaction.user.id]);
-                    }
-                    else {
-                        if (!playerUser.get(interaction.guild.id).find(id =>id==interaction.user.id)) {
-                            playerUser.get(interaction.guild.id).push(interaction.user.id)
-                        }
-                    }
-                    if (playerUser.get(interaction.guild.id).length<countMembers.length/2) {
-                        var memberLeft= countMembers.length/2-playerUser.get(interaction.guild.id).length
-                        console.log(memberLeft)
-                        var string = lang.get(modal.guild.lang).commands.player.commands.errors["skip"]
-                        let result = string.replace("${memberLeft}",memberLeft);
-                        return interaction.reply({
-                            content: result ,
-                            ephemeral: true
-                            })
-                    }
-                }
-                if (player.queues.collection.first().songs.length>1) {
-                    player.skip(voiceChannel)
-                    interaction.reply({
-                        content: lang.get(interaction.guild.lang).buttons.player.commands["skip"],
-                        ephemeral: true
-                        })
-                }
-                else {
-                    player.voices.leave(voiceChannel)
-                    interaction.reply({
-                        content: lang.get(interaction.guild.lang).buttons.player.commands.errors["queue"],
-                        ephemeral: true
-                        })
-                }
+                next.execute(interaction,player,lang,voiceChannel)
             break;
-            case "leave":
-                if (countVoiceChannels=0) {
-                    interaction.reply({
-                        content: lang.get(interaction.guild.lang).buttons.player.commands.errors["leave"],
-                        ephemeral: true
-                    })
-                }
-                player.voices.leave(voiceChannel)
-                interaction.reply({
-                    content: lang.get(interaction.guild.lang).buttons.player.commands["leave"],
-                    ephemeral: true
-                })
-            break;
+            
             case "lesscommands":
                 buttons2.components[0].setLabel(lang.get(interaction.guild.lang).buttons.buttons["btnMoreCommand"]+"🔽")
                 buttons2.components[0].setCustomId("player-morecommands")
-                secMessage.edit({embeds: [Embedsearch],components: [search,buttons,buttons2] });
-                interaction.deferUpdate()
+                secMessage.edit({components: [search,buttons,buttons2] });
             break;
             case "morecommands":
                 var moreButtonscommands = [
@@ -144,78 +62,22 @@ module.exports = {
                 }
                 buttons2.components[0].setLabel(lang.get(interaction.guild.lang).buttons.buttons["btnLessCommand"]+"🔼")
                 buttons2.components[0].setCustomId("player-lesscommands")
-                secMessage.edit({embeds: [Embedsearch],components: [search,buttons,buttons2,moreButtons] });
-                interaction.deferUpdate()
+                secMessage.edit({components: [search,buttons,buttons2,moreButtons]});
             break;
             case "shuffle":
-                player.shuffle(voiceChannel);
-                interaction.reply({
-                    content: lang.get(interaction.guild.lang).buttons.player.commands["shuffle"],
-                    ephemeral: true
-                })
+                shuffle.execute(interaction,player,lang,voiceChannel)
             break;
             case "loop":
-                var mode
-                switch(player.getQueue(voiceChannel).repeatMode) {
-                    case 0:
-                        player.setRepeatMode(voiceChannel, 1)
-                        mode = "DISABLED"
-                        interaction.reply({
-                            content: lang.get(interaction.guild.lang).buttons.player.settings["repeatMode"]+"`" + mode + "`",
-                            ephemeral: true
-                        })
-                        break;
-                    case 1:
-                        player.setRepeatMode(voiceChannel, 2)
-                        mode = "SONG"
-                        interaction.reply({
-                            content: lang.get(interaction.guild.lang).buttons.player.settings["repeatMode"]+"`" + mode + "`",
-                            ephemeral: true
-                        })
-                        break;
-                    case 2:
-                        player.setRepeatMode(voiceChannel, 0)
-                        var mode = "QUEUE"
-                        interaction.reply({
-                            content: lang.get(interaction.guild.lang).buttons.player.settings["repeatMode"]+"`" + mode + "`",
-                            ephemeral: true
-                        })
-                        break;
-                }   
+                loop.execute(interaction,player,lang,voiceChannel)
             break;
             case "queue":  
-                var i=0
-                const queueEmbed = new MessageEmbed()
-                queueEmbed.setTitle(lang.get(interaction.guild.lang).buttons.player.embeds["queue"])
-                player.getQueue(voiceChannel).songs.forEach(song => {
-                    if (i<25) {
-                        var index = i > 0 ? i : lang.get(interaction.guild.lang).buttons.player.embeds["currentlyPlaying"];
-                        queueEmbed.addFields({ name: `**${index}**.` , value:  `${song.name} -`+ lang.get(interaction.guild.lang).buttons.player.embeds["currentlyPlaying"] +`\`${song.formattedDuration}\``, inline: false })
-                        i=i+1
-                    }
-                });
-                interaction.reply({
-                    embeds:[queueEmbed],
-                    ephemeral: true
-                })
+                queue.execute(interaction,player,lang,voiceChannel)
             break;
             case "vol down":
-                var volume = player.getQueue(voiceChannel).volume
-                player.setVolume(voiceChannel, volume-10);
-                volume = volume - 10
-                interaction.reply({
-                    content: lang.get(interaction.guild.lang).buttons.player.settings["volSet"]+"`" + volume + "`",
-                    ephemeral: true
-                })
+                volume.execute(interaction,player,lang,voiceChannel,false)
             break;
             case "vol up":
-                var volume = player.getQueue(voiceChannel).volume
-                player.setVolume(voiceChannel, volume+10);
-                volume = volume + 10
-                interaction.reply({
-                    content: lang.get(interaction.guild.lang).buttons.player.settings["volSet"]+"`" + volume + "`",
-                    ephemeral: true
-                })
+                volume.execute(interaction,player,lang,voiceChannel,true)
             break;
         }
 	}

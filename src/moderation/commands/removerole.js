@@ -6,12 +6,23 @@ module.exports = {
 	async execute(interaction,lang) {
         var member = await interaction.guild.members.fetch(interaction.options.getUser("user"));
         var role = interaction.options.getRole("role")
-        member.roles.remove(role);
-        var string = lang.get(interaction.guild.lang).commands.moderation["optRoleRemoved"]
-        let result = string.replace("<@&${roleId}>",`<@&${role.id}>`);
-        interaction.followUp({
-            content:result,
-            ephemeral: true
-        })
+        var hasAlready = interaction.member.roles.cache.find(role=> role.id == interaction.options.getRole("role").id)? true : false
+        if (hasAlready==true) {
+            member.roles.remove(role);
+            var string = lang.get(interaction.guild.lang).commands.moderation["optRoleRemoved"]
+            var result = string.replace("${role.name}",`<@&${role.id}>`);
+            result = result.replace("<@${member.id}>",`<@${member.id}>`);
+            interaction.followUp({
+                content:result,
+                ephemeral: true
+            })
+        }
+        else {
+            interaction.followUp({
+                content: lang.get(interaction.guild.lang).commands.moderation.errors["hasAlreadyRemoved"],
+                ephemeral: true
+            })
+        }
+        
     }
 };

@@ -1,18 +1,23 @@
+const welcomer = require("../../settings/welcomer/welcomer");
+const autoroleSchema = require("../../schemas/autorole-schema");
+const welcomeSchema = require("../../schemas/welcome-schema");
 const dbconnect = require('../../misc/db/dbconnect');
 const dbdisconnnect = require('../../misc/db/dbdisconnect');
-const welcomer = require('../../settings/welcomer/welcomer');
-const autoroleSchema = require('../../schemas/autorole-schema');
-const welcomeSchema = require('../../schemas/welcome-schema');
+const bot = require('../../../bot');
 module.exports = {
     name: 'guildMemberRemove',
     async execute(member) {
         var add=false
         try {
-            await member.guild.channels.cache.find(channel => channel.name.includes("Member")).setName(`Member : ${member.guild.memberCount}`)
+            member.guild.channels.cache.find(channel => channel.name.includes("Member")).setName(`Member : ${member.guild.memberCount}`)
+        } catch (error) {
+            console.log(error)
+        }
+        try {
             await dbconnect()
             var selectGuildWelcomer = await welcomeSchema.find({ "_id" : member.guild.id})
             var selectGuildAutorole = await autoroleSchema.find({ "_id" : member.guild.id})
-            await welcomer.execute(member,add,selectGuildWelcomer)
+            await welcomer.execute(member,add,selectGuildWelcomer,bot.lang)
             switch (selectGuildAutorole[0].active) {
                 case true:
                     if (selectGuildAutorole[0].roleId) {

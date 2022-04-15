@@ -67,14 +67,20 @@
             "optClearChat":"${number} messages deleted",
             "optLeaveDs":"I'm sorry😢, admin wants me to drop this discord! Goodbye😋 ",
             "optWarn":"You have been warned in ${interaction.guild.name}. This is your ${warnCount}th warn. Be careful what you say or do in this server. If you continue to break server's rules admin could be take more severe actions against you. \n ***If you think this was wrong warn please contact an admin!***",
-            "errors": {        
+            "errors": { 
+                "hasAlreadyAdded":"This role was already added to this member",       
+                "hasAlreadyRemoved":"This role was removed to this member",       
                 "optClearChat":"Please select less then 100 messages"
             }
         },
         "player": {
             "states": {        
                 "paused":"Player paused",
-                "resumed":"Player resumed"
+                "resumed":"Player resumed",
+                "errors" :{
+                    "paused":"Player already paused",
+                    "resumed":"Player already resumed"
+                }
             },       
             "settings": {        
                 "repeatMode":"Set repeat mode to",
@@ -96,6 +102,7 @@
                     "join":"Already joined",
                     "leave":"Already leaved",
                     "previousSong":"No previous songs in queue",
+                    "skip":"No more songs in queue",
                     "queue":"No songs in queue"
                 }
             }, 

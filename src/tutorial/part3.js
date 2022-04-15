@@ -2,6 +2,7 @@ const { MessageActionRow, MessageEmbed, MessageButton } = require('discord.js');
 module.exports = {
     async execute(interaction,lang) {
         await interaction.message.delete()
+        console.log(interaction.guild.lang)
         const TutorialEmbed = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle("Bot Kurama Tutorial (3/6) : Player Channels")

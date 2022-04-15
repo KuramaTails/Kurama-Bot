@@ -3,7 +3,7 @@ const serverStatsPermissions = new Permissions([
     Permissions.FLAGS.CONNECT,
 ]);
 module.exports = {
-	async execute(interaction) {
+	async execute(interaction,lang) {
         var guild = interaction.guild
         let everyone = guild.roles.cache.find(r => r.name === "@everyone");
         var memberCount = guild.memberCount

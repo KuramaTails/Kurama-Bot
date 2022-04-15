@@ -12,15 +12,16 @@ module.exports = {
             } else {
                 bot.cooldownUser.set(modal.user.id, true);
                 await modal.deferReply({ ephemeral: true });
+                console.log(modal.customId)
                 try {
                     switch (modal.customId) {
                         case 'modal-search':
                             await search.execute(modal,bot.player,bot.lang)
                         break;
-                        case 'modal-welcomer':
+                        case 'modal-textWelcomer':
                             await updatewelcomer.execute(modal,bot.lang)
                         break;
-                        case 'modal-leaver':
+                        case 'modal-textLeaver':
                             await updateleaver.execute(modal,bot.lang)
                         break;
                     }

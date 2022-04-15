@@ -20,8 +20,7 @@ module.exports = {
                 modallayout.execute(interaction,bot.client,customId,title,label,placeHolder)
             break;
             default:
-                const countVoiceChannels = bot.client.voice.adapters.size
-                playerbuttons.execute(interaction,player,countVoiceChannels,lang,customId,playerUser)
+                playerbuttons.execute(interaction,player,lang,customId,playerUser)
             break;
         }
     }

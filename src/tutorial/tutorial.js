@@ -44,6 +44,7 @@ module.exports = {
                         upsert:true,
                     })
                     await dbdisconnect()
+                    interaction.guild.lang = customId
                     await part1.execute(interaction,lang)
                     
                 break;
@@ -57,13 +58,13 @@ module.exports = {
                     case "yes":
                         switch (part) {
                             case 1:
-                                await createserverstats.execute(interaction)
+                                await createserverstats.execute(interaction,lang)
                             break;
                             case 2:
                                 await createwelcomezone.execute(interaction,lang)
                             break;
                             case 3:
-                                await createplayerzone.execute(interaction)
+                                await createplayerzone.execute(interaction,lang)
                             break;
                             case 4:
                                 await dbconnect()

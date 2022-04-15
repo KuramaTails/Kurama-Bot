@@ -3,34 +3,10 @@ module.exports = {
     command:"resume",
     desc:"Bot will resume playing!",
     example:"/player resume",
-	async execute(interaction,player,lang) {       
-        try {
-            var voiceChannel = interaction.member.voice.channel
-            if (voiceChannel) {
-                if(player.getQueue(voiceChannel)) {
-                    if (player.queues.collection.first().paused) {
-                        player.resume(voiceChannel)
-                        interaction.followUp({
-                            content: lang.get(interaction.guild.lang).commands.player.states["resumed"],
-                            ephemeral: true
-                        })
-                    }
-                }
-                else {
-                    interaction.followUp({
-                        content: lang.get(interaction.guild.lang).commands.player.commands.error["queue"],
-                        ephemeral: true
-                    })
-                }
-            }
-            else { 
-                interaction.followUp({
-                    content: lang.get(interaction.guild.lang).commands.player.commands.error["memberJoin"],
-                    ephemeral: true
-                })
-            }
-        } catch (error) {
-            console.log(error)
-        }   
+	async execute(interaction,player,lang,voiceChannel) {   
+        var stringResume= lang.get(interaction.guild.lang).commands.player.states["resumed"]
+        var stringErr = lang.get(interaction.guild.lang).commands.player.states.errors["resumed"]
+        var stringErrQueue = lang.get(interaction.guild.lang).commands.player.commands.errors["queue"]
+        player.getQueue(voiceChannel)? (player.queues.collection.first().paused? (player.resume(voiceChannel),interaction.followUp({content: stringResume,ephemeral: true})) : interaction.followUp({content: stringErr,ephemeral: true})) : interaction.followUp({content: stringErrQueue,ephemeral: true})
 	},
 };

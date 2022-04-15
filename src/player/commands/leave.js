@@ -3,29 +3,12 @@ module.exports = {
     command:"leave",
     desc:'Bot will leave your voice channel!',
     example:"/player leave",
-	async execute(interaction,player,lang) {       
-		var voiceChannel = Array.from(player.voices.collection.keys())
-		for (let i = 0; i < voiceChannel.length; i++) {
-			if (voiceChannel[i]= interaction.member.voice.channel)
-			{
-				await player.voices.leave(voiceChannel[i])
-				interaction.followUp({
-					content: lang.get(interaction.guild.lang).commands.player.commands["leave"],
-					ephemeral: true
-				})
-				return
-			}
-			else {
-				interaction.followUp({
-					content: lang.get(interaction.guild.lang).commands.player.commands.errors["leave"],
-					ephemeral: true
-				})
-				return
-			}
-		}
-		interaction.followUp({
-			content: lang.get(interaction.guild.lang).commands.player.commands.errors["leave"],
-			ephemeral: true
-		})
+	async execute(interaction,player,lang,voiceChannel) {
+		var joinedChannnels = Array.from(player.voices.collection.keys())
+		var stringerr = lang.get(interaction.guild.lang).commands.player.commands.errors["leave"]
+		var stringjoin = lang.get(interaction.guild.lang).commands.player.commands["leave"]
+		var found = false
+		joinedChannnels.forEach(channel=> {found = channel.id=voiceChannel? true : false})
+		found==true? (interaction.followUp({content: stringjoin,ephemeral: true}),player.voices.leave(voiceChannel)) : interaction.followUp({content: stringerr,ephemeral: true}) 
 	},
 };

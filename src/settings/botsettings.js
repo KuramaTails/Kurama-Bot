@@ -51,7 +51,7 @@ module.exports = {
             )
             await selectedMessage.edit({embeds:[updateEmbed],components:[newButton]})
             var fetchedMessages = await selectChannel.messages.fetch()
-            fetchedMessages.find(async message=>{
+            fetchedMessages.forEach(async message=>{
                 if(message.embeds[0].title == "Bot Kurama : Choose role") {
                     await message.delete()
                     return

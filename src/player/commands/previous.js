@@ -3,40 +3,10 @@ module.exports = {
     command:"previous",
     desc:'Bot will play previous song!',
     example:"/player previous",
-	async execute(interaction,player,lang) {       
-        try {
-            var voiceChannel = interaction.member.voice.channel
-            if (voiceChannel) {
-                if(player.getQueue(voiceChannel)) {
-                    if (player.queues.collection.first().previousSongs.length) {
-                        player.previous(voiceChannel);
-                        interaction.followUp({
-                            content: lang.get(interaction.guild.lang).commands.player.commands["previousSong"],
-                            ephemeral: true
-                        })
-                    }
-                    else {
-                        interaction.followUp({
-                            content: lang.get(interaction.guild.lang).commands.player.commands.error["previousSong"],
-                            ephemeral: true
-                        })
-                    }
-                }
-                else {
-                    interaction.followUp({
-                        content: lang.get(interaction.guild.lang).commands.player.commands.error["queue"],
-                        ephemeral: true
-                    })
-                }
-            }
-            else { 
-                interaction.followUp({
-                    content: lang.get(interaction.guild.lang).commands.player.commands.error["memberJoin"],
-                    ephemeral: true
-                })
-            }
-        } catch (error) {
-            console.log(error)
-        }   
+	async execute(interaction,player,lang,voiceChannel) { 
+        var stringPrevious= lang.get(interaction.guild.lang).commands.player.commands["previousSong"]
+        var stringErr = lang.get(interaction.guild.lang).commands.player.commands.errors["previousSong"] 
+        var stringErrQueue = lang.get(interaction.guild.lang).commands.player.commands.errors["queue"]     
+        player.getQueue(voiceChannel)? (player.queues.collection.first().previousSongs.length>0? (player.previous(voiceChannel),interaction.followUp({content: stringPrevious,ephemeral: true})) : interaction.followUp({content: stringErr,ephemeral: true})) : interaction.followUp({content: stringErrQueue,ephemeral: true}) 
 	},
 };

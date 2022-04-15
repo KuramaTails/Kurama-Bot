@@ -30,11 +30,11 @@ module.exports = {
 				.addUserOption(user =>user.setName("user").setDescription("Select a user from this discord").setRequired(true))
 				.addStringOption(reason =>reason.setName("reason").setDescription("Select a reason for the ban"))
 		)
-		.addSubcommand(subcommand =>
+		/*.addSubcommand(subcommand =>
 			subcommand
 				.setName('leaveds')
 				.setDescription('Bot will leave your discord!')
-		)
+		)*/
 		.addSubcommand(subcommand =>
 			subcommand
 				.setName('removerole')

@@ -9,7 +9,11 @@ module.exports = {
     async execute(member) {
         var add=true
         try {
-            await member.guild.channels.cache.find(channel => channel.name.includes("Member")).setName(`Member : ${member.guild.memberCount}`)
+            member.guild.channels.cache.find(channel => channel.name.includes("Member")).setName(`Member : ${member.guild.memberCount}`)
+        } catch (error) {
+            console.log(error)
+        }
+        try {
             await dbconnect()
             var selectGuildWelcomer = await welcomeSchema.find({ "_id" : member.guild.id})
             var selectGuildAutorole = await autoroleSchema.find({ "_id" : member.guild.id})
@@ -26,6 +30,7 @@ module.exports = {
         } catch (error) {
             console.log(error)
         }
+        
         console.log(`Member joined in ${member.guild.name}`)
     }
 };
