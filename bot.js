@@ -55,6 +55,12 @@ const antiSpam = new AntiSpam({
   modLogsChannelName: "mod-logs",
   modLogsMode: "embed",
 });
+const TwitchAPI = require('node-twitch').default
+const twitch = new TwitchAPI({
+    client_id: process.env.TWITCH_CLIENDID,
+    client_secret: process.env.TWITCH_CLIENTSECRET
+})
+let IsLiveMemory = false
 
 module.exports = {
 	prefix:prefix,
@@ -63,6 +69,8 @@ module.exports = {
 	lang:bot.lang,
 	player:player,
 	antiSpam:antiSpam,
+	twitch:twitch,
+	IsLiveMemory:IsLiveMemory,
 	spamList:spamList,
 	cooldownUser:cooldownUser,
 	cooldownPresence:cooldownPresence,

@@ -6,6 +6,8 @@
     "@discordjs/voice": "^0.8.0",
     "@distube/yt-dlp": "^1.0.2",
     "@distube/ytdl-core": "^4.11.1",
+    "@twurple/api": "^5.1.0",
+    "@twurple/auth": "^5.1.0",
     "axios": "^0.26.1",
     "canvas": "^2.9.0",
     "discord-anti-spam": "^2.7.3",
@@ -16,7 +18,8 @@
     "dotenv": "^16.0.0",
     "ffmpeg-static": "^4.4.1",
     "libsodium-wrappers": "^0.7.9",
-    "mongoose": "^6.2.7"
+    "mongoose": "^6.2.7",
+    "node-twitch": "^0.4.5"
   },
   "name": "discord-bot-test",
   "version": "1.0.0",
