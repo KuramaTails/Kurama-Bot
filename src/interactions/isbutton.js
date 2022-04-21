@@ -2,10 +2,10 @@ const chooseRole = require('../roles/chooseroles')
 const helpButtons = require('../help/helpbuttons')
 const pollbuttons = require('../poll/pollbuttons');
 const tutorial = require('../tutorial/tutorial');
-const bothandler = require("../settings/bot/bothandler");
 const tickethandler = require("../ticket/tickethandler");
-const welcomerhandler = require("../settings/welcomer/welcomerhandler");
 const playerhandler = require('../player/playerhandler');
+const bothandler = require('../settings/bothandler');
+const welcomerhandler = require('../welcomer/settings/welcomerhandler');
 module.exports = {
 	async execute(interaction,bot,player,pollUser,pollCounter,lang,playerUser) {
 		var separateCustomId = interaction.customId.split("-")

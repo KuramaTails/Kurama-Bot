@@ -1,4 +1,4 @@
-const welcomer = require("../../settings/welcomer/welcomer");
+const welcomer = require("../../welcomer/welcomer");
 const autoroleSchema = require("../../schemas/autorole-schema");
 const welcomeSchema = require("../../schemas/welcome-schema");
 const dbconnect = require('../../misc/db/dbconnect');

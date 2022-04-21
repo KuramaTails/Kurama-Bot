@@ -3,6 +3,7 @@ const dbdisconnect = require('../misc/db/dbdisconnect');
 const registerpermissions = require('../misc/registerpermissions');
 const guildSchema = require('../schemas/guild-schema');
 const bot = require("../../bot");
+const checkstreamers = require('../twitch/checkstreamers');
 
 module.exports = {
 	name: 'ready',
@@ -26,5 +27,7 @@ module.exports = {
         }
         await dbdisconnect()
         console.log(`Bot joined into ${guildsnames.toString()}`)
+        await checkstreamers.execute(bot.twitch,bot.isLive)
+        console.log("Streamers cached")
     }
 };
