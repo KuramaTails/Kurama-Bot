@@ -116,7 +116,7 @@ console.log(`PlayerEvents loaded`);
 setInterval(async () => {
 	await checklive.execute(twitch,bot.isLive)
 	console.log("Notification checked")
-}, 1*60*1000);
+}, 5*60*1000);
 
 bot.on('debug', (...args) => console.log('debug', ...args));
 bot.on('rateLimit', (...args) => console.log('rateLimit', ...args));
