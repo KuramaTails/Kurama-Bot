@@ -2,7 +2,7 @@ const dbconnect = require("../../misc/db/dbconnect");
 const dbdisconnect = require("../../misc/db/dbdisconnect");
 const fetchAll = require("../../fetch/fetchAll");
 const registerpermissions = require("../../misc/registerpermissions");
-const starttutorial = require("../../tutorial/starttutorial");
+const starttutorial = require("../../tutorial/embeds/starttutorial");
 const bot = require("../../../bot");
 
 module.exports = {

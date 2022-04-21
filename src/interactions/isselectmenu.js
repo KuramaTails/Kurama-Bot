@@ -1,10 +1,10 @@
 const dbconnect = require('../misc/db/dbconnect');
 const dbdisconnnect = require('../misc/db/dbdisconnect');
-const welcomerhandler = require('../settings/welcomer/welcomerhandler');
 const tutorial = require('../tutorial/tutorial');
-const bothandler = require("../settings/bot/bothandler");
-const playerhandler = require('../settings/player/playerhandler');
+const playerhandler = require('../player/settings/playerhandler');
 const reporthandler = require('../reports/reporthandler');
+const bothandler = require('../settings/bothandler');
+const welcomerhandler = require('../welcomer/settings/welcomerhandler');
 
 module.exports = {
 	async execute(interaction,lang) {

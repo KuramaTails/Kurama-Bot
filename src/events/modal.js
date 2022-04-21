@@ -1,7 +1,7 @@
 const bot = require("../../bot");
 const search = require("../player/events/search");
-const updateleaver = require("../settings/leaver/updateleaver");
-const updatewelcomer = require("../settings/welcomer/updatewelcomer");
+const updateleaver = require("../welcomer/updateleaver");
+const updatewelcomer = require("../welcomer/updatewelcomer");
 
 module.exports = {
     name: 'modalSubmit',

@@ -30,6 +30,7 @@ const player = new DisTube.DisTube(bot, {
   } ) 
 let timeoutID;
 const AntiSpam = require("discord-anti-spam");
+const checklive = require('./src/twitch/checklive');
 
 const antiSpam = new AntiSpam({
   warnThreshold: 3,
@@ -60,7 +61,7 @@ const twitch = new TwitchAPI({
     client_id: process.env.TWITCH_CLIENDID,
     client_secret: process.env.TWITCH_CLIENTSECRET
 })
-let IsLiveMemory = false
+bot.isLive = []
 
 module.exports = {
 	prefix:prefix,
@@ -70,7 +71,7 @@ module.exports = {
 	player:player,
 	antiSpam:antiSpam,
 	twitch:twitch,
-	IsLiveMemory:IsLiveMemory,
+	isLive:bot.isLive,
 	spamList:spamList,
 	cooldownUser:cooldownUser,
 	cooldownPresence:cooldownPresence,
@@ -111,6 +112,11 @@ console.log(`Languages loaded`);
 console.log(`Commands loaded`); 
 addEvents(events)
 console.log(`PlayerEvents loaded`); 
+
+setInterval(async () => {
+	await checklive.execute(twitch,bot.isLive)
+	console.log("Notification checked")
+}, 1*60*1000);
 
 bot.on('debug', (...args) => console.log('debug', ...args));
 bot.on('rateLimit', (...args) => console.log('rateLimit', ...args));
