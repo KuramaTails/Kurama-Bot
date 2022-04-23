@@ -1,9 +1,9 @@
-const dbconnect = require('../misc/db/dbconnect');
-const dbdisconnect = require('../misc/db/dbdisconnect');
-const registerpermissions = require('../misc/registerpermissions');
 const guildSchema = require('../schemas/guild-schema');
 const bot = require("../../bot");
-const checkstreamers = require('../twitch/checkstreamers');
+const dbconnect = require('../db/dbconnect');
+const dbdisconnect = require('../db/dbdisconnect');
+const registerpermissions = require('./guild/registerpermissions');
+const loadstreamers = require('../settings/twitch/loadstreamers');
 
 module.exports = {
 	name: 'ready',
@@ -24,10 +24,11 @@ module.exports = {
             commandsKeys.forEach(command => listCommands.push(bot.commands.get(command).data.toJSON()))
             await registerpermissions.execute(guild,bot.client.user.id,listCommands)
             guildsnames.push(guilds.get(guildsKeys[i]).name)
+            await loadstreamers.execute(guild,bot.twitch)
+            console.log("Streamers cached")
         }
         await dbdisconnect()
         console.log(`Bot joined into ${guildsnames.toString()}`)
-        await checkstreamers.execute(bot.twitch,bot.isLive)
-        console.log("Streamers cached")
+        
     }
 };

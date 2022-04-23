@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
-const dbconnect = require("../../misc/db/dbconnect")
-const dbdisconnect = require("../../misc/db/dbdisconnect")
+const dbconnect = require("../../db/dbconnect")
+const dbdisconnect = require("../../db/dbdisconnect")
 const membersSchema = require("../../schemas/members-schema")
 module.exports = {
     name: "warn",

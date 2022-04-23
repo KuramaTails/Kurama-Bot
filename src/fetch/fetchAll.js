@@ -1,5 +1,5 @@
-const dbconnect = require('../misc/db/dbconnect');
-const dbdisconnnect = require('../misc/db/dbdisconnect');
+const dbconnect = require('../db/dbconnect');
+const dbdisconnnect = require('../db/dbdisconnect');
 const fetchchannels = require('./fetchchannels');
 const fetchguild = require('./fetchguild');
 const fetchmembers = require('./fetchmembers');

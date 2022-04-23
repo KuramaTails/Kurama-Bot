@@ -1,10 +1,11 @@
-const dbconnect = require('../misc/db/dbconnect');
-const dbdisconnnect = require('../misc/db/dbdisconnect');
+const dbconnect = require('../db/dbconnect');
+const dbdisconnnect = require('../db/dbdisconnect');
 const tutorial = require('../tutorial/tutorial');
-const playerhandler = require('../player/settings/playerhandler');
+const playerhandler = require('../settings/player/playerhandler');
 const reporthandler = require('../reports/reporthandler');
-const bothandler = require('../settings/bothandler');
-const welcomerhandler = require('../welcomer/settings/welcomerhandler');
+const bothandler = require('../settings/bot/bothandler');
+const welcomerhandler = require('../settings/welcomer/welcomerhandler');
+const settingshandler = require('../settings/settingshandler');
 
 module.exports = {
 	async execute(interaction,lang) {
@@ -26,6 +27,9 @@ module.exports = {
             case "report":
                 await reporthandler.execute(interaction,lang,separateCustomId[1])
             break;
+            case "settings":
+				await settingshandler.execute(interaction,lang,separateCustomId)
+			break;
         }
         await dbdisconnnect() 
 	}

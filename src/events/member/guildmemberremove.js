@@ -1,8 +1,8 @@
 const welcomer = require("../../welcomer/welcomer");
 const autoroleSchema = require("../../schemas/autorole-schema");
 const welcomeSchema = require("../../schemas/welcome-schema");
-const dbconnect = require('../../misc/db/dbconnect');
-const dbdisconnnect = require('../../misc/db/dbdisconnect');
+const dbconnect = require('../../db/dbconnect');
+const dbdisconnnect = require('../../db/dbdisconnect');
 const bot = require('../../../bot');
 module.exports = {
     name: 'guildMemberRemove',

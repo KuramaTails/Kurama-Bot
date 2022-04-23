@@ -1,0 +1,119 @@
+const bot = require("../../../bot")
+const dbconnect = require("../../db/dbconnect")
+const dbdisconnect = require("../../db/dbdisconnect")
+
+
+module.exports= {
+    async execute(interaction,lang,customId) {
+        try {
+            switch (customId) {
+                case "textWelcomer":
+                    var customId="modal-"+customId
+                    var title ='Set Welcomer Text!'
+                    var label='Please enter welcomer text here'
+                    var placeHolder='Write a text here'
+                    modallayout.execute(interaction,bot.client,customId,title,label,placeHolder)
+                return;
+                case "textLeaver":
+                    var customId="modal-"+customId
+                    var title ='Set Leaver Text!'
+                    var label='Please enter leave text here'
+                    var placeHolder='Write a text here'
+                    modallayout.execute(interaction,bot.client,customId,title,label,placeHolder)
+                return;
+                case "selectWelcomerChannel":
+                        var selectedChannelId = interaction.values[0]
+                        await welcomeSchema.findOneAndUpdate({
+                            _id: interaction.guild.id,
+                        }, {
+                            channelId:selectedChannelId
+                        },
+                        {
+                            upsert:true,
+                        })
+                        interaction.reply({
+                            content: lang.get(interaction.guild.lang).settings["welcomerChannelSet"],
+                            ephemeral: true
+                        })
+                break;
+                case "selectWelcomerBackground":
+                    var background = interaction.values[0]
+                    await welcomeSchema.findOneAndUpdate({
+                        _id: interaction.guild.id,
+                    }, {
+                        background
+                    },
+                    {
+                        upsert:true,
+                    })
+                    interaction.reply({
+                        content: lang.get(interaction.guild.lang).settings["welcomerBackgroundSet"],
+                        ephemeral: true
+                    })
+                break;
+            }
+            await dbconnect()
+            switch (customId) {
+                //Create var true false for welcomer and one for leaver,callback on execute of embeds
+                case "enableWelcomer":
+                    await welcomeSchema.findOneAndUpdate({
+                        _id: interaction.guild.id,
+                    }, {
+                        activeWelcome:true,
+                    },
+                    {
+                        upsert:true,
+                    })
+                    await interaction.deferUpdate()
+                    await activewelcomer.execute(interaction,lang)
+                break;
+                case "disableWelcomer":
+                    await welcomeSchema.findOneAndUpdate({
+                        _id: interaction.guild.id,
+                    }, {
+                        activeWelcome:false,
+                        activeLeave:false,
+                        channelId: null,
+                        background: null,
+                        textWelcome:null,
+                        textLeave: null,
+                    },
+                    {
+                        upsert:true,
+                    })
+                    await interaction.deferUpdate()
+                    await activewelcomer.execute(interaction,lang)
+                break;
+                case "enableLeaver":
+                    await welcomeSchema.findOneAndUpdate({
+                        _id: interaction.guild.id,
+                    }, {
+                        activeLeave:true,
+                    },
+                    {
+                        upsert:true,
+                    })
+                    await interaction.deferUpdate()
+                    await activeleaver.execute(interaction,lang)
+                break;
+                case "disableLeaver":
+                    await welcomeSchema.findOneAndUpdate({
+                        _id: interaction.guild.id,
+                    }, {
+                        activeLeave:false,
+                        textLeave: null,
+                    },
+                    {
+                        upsert:true,
+                    })
+                    await interaction.deferUpdate()
+                    await activeleaver.execute(interaction,lang)
+                break;
+                
+            }
+            await dbdisconnect()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}

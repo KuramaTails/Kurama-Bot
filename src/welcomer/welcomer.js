@@ -1,4 +1,4 @@
-const createcanvas = require('../misc/createcanvas');
+const createcanvas = require('./createcanvas');
 module.exports = {
     async execute(member,add,selectGuildWelcomer,lang) {
         if (!selectGuildWelcomer[0].channelId) {

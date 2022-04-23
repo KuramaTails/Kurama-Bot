@@ -4,8 +4,7 @@ const pollbuttons = require('../poll/pollbuttons');
 const tutorial = require('../tutorial/tutorial');
 const tickethandler = require("../ticket/tickethandler");
 const playerhandler = require('../player/playerhandler');
-const bothandler = require('../settings/bothandler');
-const welcomerhandler = require('../welcomer/settings/welcomerhandler');
+const settingshandler = require('../settings/settingshandler');
 module.exports = {
 	async execute(interaction,bot,player,pollUser,pollCounter,lang,playerUser) {
 		var separateCustomId = interaction.customId.split("-")
@@ -19,11 +18,8 @@ module.exports = {
 			case "tutorial":
 				await tutorial.execute(interaction,lang,separateCustomId[1])
 			break;
-			case "welcomer":
-				await welcomerhandler.execute(interaction,bot,lang,separateCustomId[1])
-			break;
-			case "bot":
-				await bothandler.execute(interaction,lang,separateCustomId[1])
+			case "settings":
+				await settingshandler.execute(interaction,lang,separateCustomId)
 			break;
 			case "ticket":
 				await tickethandler.execute(interaction,lang,separateCustomId[1])

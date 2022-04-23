@@ -1,6 +1,6 @@
 const playerSchema = require('../../schemas/player-schema');
-const dbconnect = require('../../misc/db/dbconnect');
-const dbdisconnect = require("../../misc/db/dbdisconnect");
+const dbconnect = require('../../db/dbconnect');
+const dbdisconnect = require("../../db/dbdisconnect");
 module.exports = {
 	async execute(modal,player,lang) {
         await dbconnect()

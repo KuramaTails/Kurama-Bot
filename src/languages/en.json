@@ -123,13 +123,18 @@
         "welcomerSet":"Welcomer has been set",
         "welcomerChannelSet":"Welcomer's channel has been set",
         "welcomerBackgroundSet":"Welcomer's background has been set",
-        "autoRoleSet":"Autorole set to role",
+        "createAutoRoleChannelField1":"Click here for creating an Autorole Channel:",
+        "createAutoRoleChannelField2":"this will be used for setting up a role that will be automatically assigned to new members",
+        "createAutoRoleChannelBtn":"Create Autorole Channel",
         "createTicketZoneField1":"Click here for creating a ticket zone:",
         "createTicketZoneField2":"this will be used by members for any issue",
         "createTicketZoneBtn":"Create Ticket Zone",
+        "createTwitchZoneField1":"Click here for creating a Twitch zone:",
+        "createTwitchZoneField2":"There you will be able to add streamers to notification",
+        "createTwitchZoneBtn":"Create Twitch Zone",
         "createAdminZoneField1":"Click here for creating the admin zone:",
         "createAdminZoneField2":"this will be used by admin for getting logs,reports and warn count",
-        "createAdminZoneBtn":"Create admin zone"
+        "createAdminZoneBtn":"Create Admin Zone"
     },
     "tutorial": {
         "yes":"Yes",

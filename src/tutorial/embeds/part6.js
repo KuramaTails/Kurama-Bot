@@ -2,7 +2,6 @@ const { MessageActionRow, MessageEmbed, MessageButton } = require('discord.js');
 const dbconnect = require('../../misc/db/dbconnect');
 const dbdisconnect = require('../../misc/db/dbdisconnect');
 const playerSchema = require('../../schemas/player-schema');
-const botsettings = require('../../settings/bot/botsettings');
 const playerembed = require('../../settings/player/playerembed');
 const playersettings = require('../create/settings/playersettings');
 module.exports = {

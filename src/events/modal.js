@@ -1,7 +1,8 @@
 const bot = require("../../bot");
 const search = require("../player/events/search");
-const updateleaver = require("../welcomer/updateleaver");
-const updatewelcomer = require("../welcomer/updatewelcomer");
+const updateleaver = require("../settings/welcomer/updateleaver");
+const updatewelcomer = require("../settings/welcomer/updatewelcomer");
+const addstreamer = require("../settings/twitch/addstreamer");
 
 module.exports = {
     name: 'modalSubmit',
@@ -12,7 +13,6 @@ module.exports = {
             } else {
                 bot.cooldownUser.set(modal.user.id, true);
                 await modal.deferReply({ ephemeral: true });
-                console.log(modal.customId)
                 try {
                     switch (modal.customId) {
                         case 'modal-search':
@@ -23,6 +23,9 @@ module.exports = {
                         break;
                         case 'modal-textLeaver':
                             await updateleaver.execute(modal,bot.lang)
+                        break;
+                        case 'modal-twitch':
+                            await addstreamer.execute(modal,bot.lang,bot.twitch)
                         break;
                     }
                 } finally {

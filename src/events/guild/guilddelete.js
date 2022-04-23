@@ -1,5 +1,5 @@
-const dbconnect = require("../../misc/db/dbconnect");
-const dbdisconnect = require("../../misc/db/dbdisconnect");
+const dbconnect = require("../../db/dbconnect");
+const dbdisconnect = require("../../db/dbdisconnect");
 const autoroleSchema = require("../../schemas/autorole-schema");
 const channelsSchema = require("../../schemas/channels-schema");
 const guildSchema = require("../../schemas/guild-schema");
