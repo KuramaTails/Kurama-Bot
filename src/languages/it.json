@@ -121,6 +121,7 @@
         "leaverSet":"Leaver è stato impostato",
         "playerSet":"Player musicale è stato impostato",
         "welcomerSet":"Welcomer è stato impostato",
+        "autoRoleSet":"Autorole è stato impostato a",
         "welcomerChannelSet":"Il canale del Welcomer è stato impostato",
         "welcomerBackgroundSet":"Il background del Welcomer background è stato impostato",
         "createAutoRoleChannelField1":"Clicca qui per creare il canale di Autorole:",

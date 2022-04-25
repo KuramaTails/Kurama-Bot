@@ -1,6 +1,4 @@
 const bot = require("../../../bot");
-const dbconnect = require("../../db/dbconnect");
-const dbdisconnect = require("../../db/dbdisconnect");
 const modallayout = require("../../modal/modallayout");
 const guildSchema = require("../../schemas/guild-schema");
 
@@ -15,15 +13,18 @@ module.exports = {
                 modallayout.execute(interaction,bot.client,customId,title,label,placeHolder)
 			break;
 			case "SelectChannel":
-				interaction.guild.twitchPlugin.channelId= interaction.values[0]
+				interaction.guild.settings.twitchPlugin.channelId= interaction.values[0]
 				await guildSchema.findOneAndUpdate({
 					_id: interaction.guild.id,
 					}, {
-						guildTwitchPluginChannelId:interaction.values[0]
+						$set: {
+							"plugins.twitchPlugin.channelId": interaction.values[0],
+						}
 					},
 					{
 						upsert:true,
 					})
+				
 				await interaction.deferUpdate()
 			break;
 		}

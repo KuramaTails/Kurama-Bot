@@ -3,7 +3,6 @@ const bot = require("../../bot");
 const dbconnect = require('../db/dbconnect');
 const dbdisconnect = require('../db/dbdisconnect');
 const registerpermissions = require('./guild/registerpermissions');
-const loadstreamers = require('../settings/twitch/loadstreamers');
 
 module.exports = {
 	name: 'ready',
@@ -11,24 +10,37 @@ module.exports = {
 	async execute() {
         if (!process.env.DATABASE_TOKEN) {return console.log("Error,no db found")}
         if (!bot.client.application?.owner) await bot.client.application?.fetch();
-        var guilds= await bot.client.guilds.fetch()
-        var guildsKeys= Array.from(guilds.keys())
-        var guildsnames = []
+        var guilds= await bot.client.guilds.cache
         await dbconnect()
-        for (let i = 0; i < guildsKeys.length; i++) {
-            var guild = bot.client.guilds.cache.get(guilds.get(guildsKeys[i]).id)
-            var selectGuildlang = await guildSchema.find({ "_id" : guild.id})
-            guild.lang= selectGuildlang? selectGuildlang[0].guildLang : "en"
-            var listCommands = []
-            var commandsKeys = Array.from(bot.commands.keys())
-            commandsKeys.forEach(command => listCommands.push(bot.commands.get(command).data.toJSON()))
-            await registerpermissions.execute(guild,bot.client.user.id,listCommands)
-            guildsnames.push(guilds.get(guildsKeys[i]).name)
-            await loadstreamers.execute(guild,bot.twitch)
-            console.log("Streamers cached")
-        }
+        var guildSettings = await guildSchema.find()
         await dbdisconnect()
-        console.log(`Bot joined into ${guildsnames.toString()}`)
+        await guilds.forEach(async guild=> {
+            var selectedGuild = await guildSettings.find(setting => setting.id == guild.id)
+            if (!selectedGuild) return
+            guild.settings = {
+                lang: selectedGuild.guildLang,
+                twitchPlugin : {
+                    active:selectedGuild.plugins.twitchPlugin.active,
+                    channelId:selectedGuild.plugins.twitchPlugin.channelId,
+                    streamerList:selectedGuild.plugins.twitchPlugin.streamerList
+                },
+                autorolePlugin : {
+                    active:selectedGuild.guildAutorolePluginActive,
+                    role:selectedGuild.guildAutorolePluginRole
+                },
+                welcomerPlugin : {
+                    active:selectedGuild.guildWelcomerPluginActive,
+                    channelId:selectedGuild.guildWelcomerPluginChannelId,
+                    textWelcomer: selectedGuild.guildWelcomerPluginTextWelcomer,
+                    activeLeaver: selectedGuild.guildWelcomerPluginActiveLeaver,
+                    textLeave: selectedGuild.guildWelcomerPluginTextLeaver,
+                    background:selectedGuild.guildWelcomerPluginBackground,
+                }
+            }
+            await registerpermissions.execute(guild,bot.client.user.id,bot.commands)
+            console.log(`Bot initializated in ${guild.name}`)
+            })
+        console.log(`Bot ready`)
         
     }
 };

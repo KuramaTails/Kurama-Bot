@@ -94,12 +94,10 @@ fs.readdirSync('./src/').forEach(folder => {
 
 var events = []
 fs.readdirSync('./src/events').forEach(element => {
-	element.endsWith(".js")? events.push(require(`./src/events/${element}`)) : fs.readdirSync(`./src/events/${element}`).forEach(file => {events.push(require(`./src/events/${element}/${file}`))})
+	element.endsWith(".js")?
+	events.push(require(`./src/events/${element}`)) : fs.readdirSync(`./src/events/${element}`).forEach(file => {events.push(require(`./src/events/${element}/${file}`))})
 });
-function addEvents(events) {
-	events.forEach(event => {bot.on(event.name, (...args) => event.execute(...args))});
-	console.log(`Events loaded`); 
-}
+events.forEach(event => {bot.on(event.name, (...args) => event.execute(...args))});
 
 fs.readdirSync('./src/player/events').forEach(element => {
 	var event = element.endsWith(".js")? require(`./src/player/events/${element}`) : ""
@@ -108,7 +106,7 @@ fs.readdirSync('./src/player/events').forEach(element => {
 
 console.log(`Languages loaded`);
 console.log(`Commands loaded`); 
-addEvents(events)
+console.log(`Events loaded`); 
 console.log(`PlayerEvents loaded`); 
 
 setInterval(async () => {
@@ -116,7 +114,7 @@ setInterval(async () => {
 		await checkstreamers.execute(guild,twitch,guild.twitchPlugin)
 	}); 
 	console.log("Notification checked")
-}, 5*60*1000);
+}, 15*1000);
 
 bot.on('debug', (...args) => console.log('debug', ...args));
 bot.on('rateLimit', (...args) => console.log('rateLimit', ...args));

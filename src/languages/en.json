@@ -121,6 +121,7 @@
         "leaverSet":"Leaver has been set",
         "playerSet":"Player has been set",
         "welcomerSet":"Welcomer has been set",
+        "autoRoleSet":"Autorole has been set to",
         "welcomerChannelSet":"Welcomer's channel has been set",
         "welcomerBackgroundSet":"Welcomer's background has been set",
         "createAutoRoleChannelField1":"Click here for creating an Autorole Channel:",

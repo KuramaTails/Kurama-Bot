@@ -16,11 +16,18 @@ const guildSchema = mongoose.Schema({
     guildName:reqString,
     guildMemberCount:reqString,
     guildLang:reqString,
-    guildAutoroleActive:reqBoolean,
-    guildAutoroleSelectedRole:reqString,
+    guildAutorolePluginActive:reqBoolean,
+    guildAutorolePluginRole:reqString,
     guildTwitchPluginActive:reqBoolean,
     guildTwitchPluginArray:reqArray,
     guildTwitchPluginChannelId:reqString,
+    plugins : {
+        twitchPlugin: {
+            active:reqBoolean,
+            channelId:reqString,
+            streamerList:reqArray
+        }
+    }
 })
 
 module.exports = mongoose.model('guilds' , guildSchema)

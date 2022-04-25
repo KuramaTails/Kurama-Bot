@@ -2,6 +2,7 @@ const bothandler = require("./bot/bothandler");
 const playerhandler = require("./player/playerhandler");
 const welcomerhandler = require("./welcomer/welcomerhandler");
 const twitchhandler = require("./twitch/twitchhandler");
+const autorolehandler = require("./autorole/autorolehandler");
 module.exports = {
 	async execute(interaction,lang,separateCustomId) {
         switch (separateCustomId[1]) {
@@ -15,6 +16,7 @@ module.exports = {
 				await playerhandler.execute(interaction,lang,separateCustomId[2],playerUser)
 			break;
 			case "autorole":
+				await autorolehandler.execute(interaction,lang,separateCustomId[2])
 			break;
 			case "twitch":
 				await twitchhandler.execute(interaction,lang,separateCustomId[2])

@@ -122,6 +122,7 @@
         "playerSet":"Spieler wurde eingestellt",
         "welcomerSet":"Welcomer wurde eingestellt",
         "welcomerChannelSet":"Begrüßungskanal wurde eingestellt",
+        "autoRoleSet":"Autorole wurde eingestellt auf",
         "welcomerBackgroundSet":"Hintergrund des Welcomers wurde eingestellt",
         "createAutoRoleChannelField1":"Klicken Sie hier, um ein Autorole Kanal zu erstellen :",
         "createAutoRoleChannelField2":"Dies wird zum Einrichten einer Rolle verwendet, die neuen Mitgliedern automatisch zugewiesen wird",
