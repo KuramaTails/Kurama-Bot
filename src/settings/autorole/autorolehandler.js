@@ -1,23 +1,27 @@
+const dbconnect = require("../../db/dbconnect");
+const dbdisconnect = require("../../db/dbdisconnect");
 const guildSchema = require("../../schemas/guild-schema");
 
 module.exports = {
-	async execute(interaction,lang,customId) {
+	async execute(interaction,lang,customId,plugins) {
+        var autorolePlugin = plugins.autorolePlugin
         switch (customId) {
             case "selectAutoroleRole":
-                var role = interaction.values[0]
+                await dbconnect()
                 await guildSchema.findOneAndUpdate({
                     _id: interaction.guild.id,
                 }, {
-                    guildAutorolePluginRole: role
+                    $set: {
+                        "plugins.autorolePlugin.role": interaction.values[0],
+                    }
                 },
                 {
                     upsert:true,
                 })
-				guild.autoRolePlugin = {
-					role:role
-				}
-                interaction.reply({
-                    content: lang.get(interaction.guild.lang).settings["autoRoleSet"]+` <@&${interaction.values[0]}>`,
+                await dbdisconnect()
+                autorolePlugin.role = interaction.values[0]
+                interaction.followUp({
+                    content: lang.get(interaction.guild.settings.lang).settings["autoRoleSet"]+` <@&${interaction.values[0]}>`,
                     ephemeral: true
                 })
             break;

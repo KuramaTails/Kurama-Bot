@@ -3,6 +3,7 @@ const bot = require("../../bot");
 const dbconnect = require('../db/dbconnect');
 const dbdisconnect = require('../db/dbdisconnect');
 const registerpermissions = require('./guild/registerpermissions');
+const loadstreamer = require('../settings/twitch/loadstreamer');
 
 module.exports = {
 	name: 'ready',
@@ -19,24 +20,9 @@ module.exports = {
             if (!selectedGuild) return
             guild.settings = {
                 lang: selectedGuild.guildLang,
-                twitchPlugin : {
-                    active:selectedGuild.plugins.twitchPlugin.active,
-                    channelId:selectedGuild.plugins.twitchPlugin.channelId,
-                    streamerList:selectedGuild.plugins.twitchPlugin.streamerList
-                },
-                autorolePlugin : {
-                    active:selectedGuild.guildAutorolePluginActive,
-                    role:selectedGuild.guildAutorolePluginRole
-                },
-                welcomerPlugin : {
-                    active:selectedGuild.guildWelcomerPluginActive,
-                    channelId:selectedGuild.guildWelcomerPluginChannelId,
-                    textWelcomer: selectedGuild.guildWelcomerPluginTextWelcomer,
-                    activeLeaver: selectedGuild.guildWelcomerPluginActiveLeaver,
-                    textLeave: selectedGuild.guildWelcomerPluginTextLeaver,
-                    background:selectedGuild.guildWelcomerPluginBackground,
-                }
+                plugins: selectedGuild.plugins
             }
+            loadstreamer.execute(guild.settings.plugins.twitchPlugin,bot.twitch)
             await registerpermissions.execute(guild,bot.client.user.id,bot.commands)
             console.log(`Bot initializated in ${guild.name}`)
             })

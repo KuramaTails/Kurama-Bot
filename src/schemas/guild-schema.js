@@ -16,16 +16,28 @@ const guildSchema = mongoose.Schema({
     guildName:reqString,
     guildMemberCount:reqString,
     guildLang:reqString,
-    guildAutorolePluginActive:reqBoolean,
-    guildAutorolePluginRole:reqString,
-    guildTwitchPluginActive:reqBoolean,
-    guildTwitchPluginArray:reqArray,
-    guildTwitchPluginChannelId:reqString,
     plugins : {
         twitchPlugin: {
             active:reqBoolean,
             channelId:reqString,
             streamerList:reqArray
+        },
+        autorolePlugin:{
+            active:reqBoolean,
+            role:reqString
+        },
+        welcomerPlugin:{
+            active: reqBoolean,
+            channelId: reqString,
+            textWelcomer: reqString,
+            background:reqString,
+        },
+        leaverPlugin:{
+            active: reqBoolean,
+            textLeaver: reqString,
+        },
+        playerPlugin:{
+            channelId: reqString,
         }
     }
 })

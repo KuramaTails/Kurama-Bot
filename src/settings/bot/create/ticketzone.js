@@ -1,4 +1,4 @@
-const createticketembed = require("./embeds/ticketembed")
+const createticketembed = require("./embeds/ticketsembed")
 
 module.exports = {
 	async execute(interaction,lang) {
@@ -12,6 +12,6 @@ module.exports = {
                 await createticketembed.execute(interaction,channel,lang)
             })
         })
-        console.log(`Created welcome rooms in ${guild.name}`)
+        console.log(`Created Ticket Zone in ${guild.name}`)
     }
 }

@@ -6,12 +6,12 @@ module.exports = {
         .setColor('#0099ff')
         .setTitle("Bot Kurama Tutorial (5/6) : Set up player")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .addField(lang.get(interaction.guild.lang).tutorial.part5["field1"],lang.get(interaction.guild.lang).tutorial.part5["field2"])
+        .addField(lang.get(interaction.guild.settings.lang).tutorial.part5["field1"],lang.get(interaction.guild.settings.lang).tutorial.part5["field2"])
         const button1 = new MessageActionRow()
         button1.addComponents(
             new MessageSelectMenu()
-                .setCustomId('settings-player-SelectPlayerChannel')
-                .setPlaceholder(lang.get(interaction.guild.lang).tutorial["selectPlayerChannel"])
+                .setCustomId('settings-bot-SelectPlayerChannel')
+                .setPlaceholder(lang.get(interaction.guild.settings.lang).tutorial["selectPlayerChannel"])
                 
         )
         var textChannels = interaction.guild.channels.cache.filter(c=> c.type=="GUILD_TEXT")

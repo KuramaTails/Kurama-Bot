@@ -7,7 +7,7 @@ module.exports = {
         var voiceChannel = interaction.member.voice.channel
         if(!voiceChannel) {
             return interaction.reply({
-                content: lang.get(interaction.guild.lang).buttons.player.commands.errors["memberJoin"],
+                content: lang.get(interaction.guild.settings.lang).buttons.player.commands.errors["memberJoin"],
                 ephemeral: true
             })
         }

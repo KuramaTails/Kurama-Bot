@@ -3,14 +3,14 @@ module.exports = {
     async execute(interaction,channel,lang) {
         const Embed = new MessageEmbed()
         .setColor('#0099ff')
-        .setTitle("Bot Kurama : Autorole Channel")
+        .setTitle("Bot Kurama : Ticket Zone")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .addField(lang.get(interaction.guild.lang).settings["createAutoRoleChannelField1"],lang.get(interaction.guild.lang).settings["createAutoRoleChannelField2"])
+        .addField(lang.get(interaction.guild.settings.lang).ticket["createEmbedField1"],lang.get(interaction.guild.settings.lang).ticket["createEmbedField2"])
         const buttons = new MessageActionRow()
         buttons.addComponents(
             new MessageButton()
-            .setCustomId(`settings-bot-autoroleChannel`)
-            .setLabel(lang.get(interaction.guild.lang).settings["createAutoRoleChannelBtn"])
+            .setCustomId(`ticket-createTicket`)
+            .setLabel(lang.get(interaction.guild.settings.lang).ticket["createBtn"])
             .setStyle(`SECONDARY`),
         )
         channel.send({embeds:[Embed],components:[buttons]})

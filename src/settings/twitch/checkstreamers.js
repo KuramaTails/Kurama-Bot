@@ -1,5 +1,7 @@
 const { MessageEmbed } = require("discord.js");
-
+const dbconnect = require("../../db/dbconnect");
+const dbdisconnect = require("../../db/dbdisconnect");
+const guildSchema = require("../../schemas/guild-schema");
 module.exports = {
     async execute(guild,twitch) {
         var twitchPlugin = guild.settings.twitchPlugin
@@ -7,19 +9,20 @@ module.exports = {
             var query = await twitch.searchChannels({ query: channel.broadcaster_login })
             var found = query.data.find(nchannel => nchannel.broadcaster_login == channel.broadcaster_login)
             if (!found) return
-            if (found.is_live == true && found.is_live != channel.alreadySend) return sendEmbed(guild,channel,found)
+            if (found.is_live == true && found.is_live != channel.alreadySend) return sendEmbed(guild,channel,found,guildSchema)
         }
-        function sendEmbed(guild,channel,found) {
-            channel.alreadySend == found.is_live
-            var textChannel = guild.channels.cache.get(guild.plugins.twitchPlugin.channelId)
-            var thumbnail = selectUser.thumbnail_url.replace("-{width}x{height}","")
+        async function sendEmbed(guild,channel,found) {
+            channel = found
+            channel.alreadySend = channel.is_live
+            var textChannel = guild.channels.cache.get(guild.settings.twitchPlugin.channelId)
+            var thumbnail = found.thumbnail_url.replace("-{width}x{height}","")
             const streamingEmbed = new MessageEmbed()
             .setColor('#0099ff')
-            .setTitle(selectUser.user_name+" is live right now")
-            .setURL("https://twitch.tv/"+selectUser.user_login)
-            .setDescription(selectUser.title)
+            .setTitle(found.broadcaster_login+" is live right now")
+            .setURL("https://twitch.tv/"+found.broadcaster_login)
+            .setDescription(found.title)
             .setImage(thumbnail)
-            textChannel.send({embeds:[streamingEmbed]})
+            //textChannel.send({embeds:[streamingEmbed]})
         }
 	}
 };

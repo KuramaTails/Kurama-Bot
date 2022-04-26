@@ -1,8 +1,8 @@
 const bot = require("../../bot");
 const search = require("../player/events/search");
-const updateleaver = require("../settings/welcomer/updateleaver");
 const updatewelcomer = require("../settings/welcomer/updatewelcomer");
 const addstreamer = require("../settings/twitch/addstreamer");
+const updateleaver = require("../settings/leaver/updateleaver");
 
 module.exports = {
     name: 'modalSubmit',

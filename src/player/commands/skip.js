@@ -4,9 +4,9 @@ module.exports = {
     desc:'Bot will skip this song!',
     example:"/player skip",
 	async execute(interaction,player,lang,voiceChannel) {
-        var stringSkip = lang.get(interaction.guild.lang).commands.player.commands["skip"]
-        var stringErrSkip = lang.get(interaction.guild.lang).commands.player.commands.errors["skip"]
-        var stringErrQueue = lang.get(interaction.guild.lang).commands.player.commands.errors["queue"]
+        var stringSkip = lang.get(interaction.guild.settings.lang).commands.player.commands["skip"]
+        var stringErrSkip = lang.get(interaction.guild.settings.lang).commands.player.commands.errors["skip"]
+        var stringErrQueue = lang.get(interaction.guild.settings.lang).commands.player.commands.errors["queue"]
         player.getQueue(voiceChannel)? (player.queues.collection.first().songs.length>1? (player.skip(voiceChannel),interaction.followUp({content: stringSkip,ephemeral: true})) : (player.voices.leave(voiceChannel),interaction.followUp({content: stringErrSkip,ephemeral: true}))) : interaction.followUp({content: stringErrQueue,ephemeral: true})  
 	},
 };

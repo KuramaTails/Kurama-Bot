@@ -10,7 +10,7 @@ module.exports = {
         const modalButton = new MessageActionRow()
         modalButton.addComponents(
             new MessageButton()
-            .setCustomId(`settings-twitch-twitch`)
+            .setCustomId(`settings-twitch-addStreamer`)
             .setLabel("Click here")
             .setStyle(`SECONDARY`),
         )

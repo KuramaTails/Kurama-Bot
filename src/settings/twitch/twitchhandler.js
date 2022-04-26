@@ -1,11 +1,14 @@
 const bot = require("../../../bot");
+const dbconnect = require("../../db/dbconnect");
+const dbdisconnect = require("../../db/dbdisconnect");
 const modallayout = require("../../modal/modallayout");
 const guildSchema = require("../../schemas/guild-schema");
 
 module.exports = {
-	async execute(interaction,lang,customId) {
+	async execute(interaction,lang,customId,plugin) {
+		var twitchPlugin = plugin.twitchPlugin
         switch (customId) {
-			case "twitch":
+			case "addStreamer":
                 var customId="modal-"+customId
                 var title ='Add Streamer to notification list!'
                 var label="Please enter streamer's username here"
@@ -13,7 +16,8 @@ module.exports = {
                 modallayout.execute(interaction,bot.client,customId,title,label,placeHolder)
 			break;
 			case "SelectChannel":
-				interaction.guild.settings.twitchPlugin.channelId= interaction.values[0]
+				twitchPlugin.channelId= interaction.values[0]
+				await dbconnect()
 				await guildSchema.findOneAndUpdate({
 					_id: interaction.guild.id,
 					}, {
@@ -24,8 +28,7 @@ module.exports = {
 					{
 						upsert:true,
 					})
-				
-				await interaction.deferUpdate()
+				await dbdisconnect()
 			break;
 		}
 	}

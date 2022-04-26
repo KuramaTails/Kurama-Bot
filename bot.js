@@ -114,7 +114,7 @@ setInterval(async () => {
 		await checkstreamers.execute(guild,twitch,guild.twitchPlugin)
 	}); 
 	console.log("Notification checked")
-}, 15*1000);
+}, 15*1000*1000);
 
 bot.on('debug', (...args) => console.log('debug', ...args));
 bot.on('rateLimit', (...args) => console.log('rateLimit', ...args));

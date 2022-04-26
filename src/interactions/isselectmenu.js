@@ -1,7 +1,6 @@
 const dbconnect = require('../db/dbconnect');
 const dbdisconnnect = require('../db/dbdisconnect');
 const tutorial = require('../tutorial/tutorial');
-const playerhandler = require('../settings/player/playerhandler');
 const reporthandler = require('../reports/reporthandler');
 const bothandler = require('../settings/bot/bothandler');
 const welcomerhandler = require('../settings/welcomer/welcomerhandler');
@@ -17,9 +16,6 @@ module.exports = {
             break;
             case "welcomer":
                 await welcomerhandler.execute(interaction,0,lang,separateCustomId[1])
-            break;
-            case "player":
-                await playerhandler.execute(interaction,lang)
             break;
             case "bot":
                 await bothandler.execute(interaction,lang,separateCustomId[1])

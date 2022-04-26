@@ -5,12 +5,12 @@ module.exports = {
             .setColor('#0099ff')
             .setTitle("Bot Kurama : Choose role")
             .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-            .addField(lang.get(interaction.guild.lang).update.bot.embeds["chooseRoleDesc1"],lang.get(interaction.guild.lang).update.bot.embeds["chooseRoleDesc2"])
+            .addField(lang.get(interaction.guild.settings.lang).update.bot.embeds["chooseRoleDesc1"],lang.get(interaction.guild.settings.lang).update.bot.embeds["chooseRoleDesc2"])
             const selectMenu = new MessageActionRow()
             selectMenu.addComponents(
                 new MessageSelectMenu()
                     .setCustomId('settings-autorole-selectAutoroleRole')
-                    .setPlaceholder(lang.get(interaction.guild.lang).update.bot.embeds["chooseRoleSelect"])
+                    .setPlaceholder(lang.get(interaction.guild.settings.lang).update.bot.embeds["chooseRoleSelect"])
                     
             )
             var roles = await interaction.guild.roles.cache

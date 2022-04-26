@@ -14,12 +14,16 @@ module.exports = {
         }
         selectUser.alreadySend=selectUser.is_live
         twitchPlugin.streamerList.push(selectUser)
+        var selectUserDb= {
+            broadcaster_login:selectUser.broadcaster_login,
+            display_name:selectUser.display_name
+        }
         await dbconnect()
         await guildSchema.findOneAndUpdate({
             _id: modal.member.guild.id,
             }, {
                 $push: {
-                    "plugins.twitchPlugin.streamerList": selectUser,
+                    "plugins.twitchPlugin.streamerList": selectUserDb,
                 }
             }, {
                 upsert:true,

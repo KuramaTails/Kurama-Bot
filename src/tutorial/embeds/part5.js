@@ -2,7 +2,6 @@ const { MessageActionRow, MessageEmbed, MessageSelectMenu } = require('discord.j
 const dbconnect = require('../../misc/db/dbconnect');
 const dbdisconnect = require('../../misc/db/dbdisconnect');
 const welcomeSchema = require('../../schemas/welcome-schema');
-const welcomersettings = require('../create/settings/welcomersettings');
 module.exports = {
     part:6,
     async execute(interaction,lang,button) {
@@ -17,7 +16,6 @@ module.exports = {
             upsert:true,
         })
         await dbdisconnect()
-        await welcomersettings.execute(interaction,lang)
         await interaction.message.delete()
         const TutorialEmbed = new MessageEmbed()
         .setColor('#0099ff')

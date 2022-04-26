@@ -1,10 +1,10 @@
 const { MessageEmbed, MessageActionRow, MessageButton} = require("discord.js");
 module.exports = {
-	async execute(interaction,selectedChannelId,lang) {
-        var selectedChannel = await interaction.guild.channels.cache.find(channel => channel.id == selectedChannelId)
+	async execute(interaction,lang,channelId) {
+        var selectedChannel = interaction.guild.channels.resolve(channelId)
         const Embedsearch = new MessageEmbed()
         .setColor('#0099ff')
-        .setTitle(lang.get(interaction.guild.lang).commands.player.embeds.errors["playing"])
+        .setTitle(lang.get(interaction.guild.settings.lang).commands.player.embeds.errors["playing"])
         .setThumbnail(``)
         .setURL(``)
         .setDescription(``)
@@ -14,7 +14,7 @@ module.exports = {
         searchButton.addComponents(
             new MessageButton()
             .setCustomId(`player-search`)
-            .setLabel(lang.get(interaction.guild.lang).buttons.player.embeds["search"])
+            .setLabel(lang.get(interaction.guild.settings.lang).buttons.player.embeds["search"])
             .setStyle(`SECONDARY`),);
         buttons1.addComponents(
             new MessageButton()
@@ -41,7 +41,7 @@ module.exports = {
         moreButton.addComponents(
             new MessageButton()
             .setCustomId(`player-morecommands`)
-            .setLabel(lang.get(interaction.guild.lang).buttons.buttons["btnMoreCommand"]+"🔽")
+            .setLabel(lang.get(interaction.guild.settings.lang).buttons.buttons["btnMoreCommand"]+"🔽")
             .setStyle(`SECONDARY`),);
         selectedChannel.send({embeds: [Embedsearch],components:[searchButton,buttons1,moreButton]})
     }

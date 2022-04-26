@@ -1,4 +1,4 @@
-const createreportembed = require("./embeds/reportembed")
+const createreportembed = require("./embeds/reportsembed")
 const createwarnembed = require("./embeds/warnembed")
 
 module.exports = {
@@ -17,6 +17,6 @@ module.exports = {
                 await createwarnembed.execute(interaction,channel,lang)
             })
         })
-        console.log(`Created welcome rooms in ${guild.name}`)
+        console.log(`Created Admin Zone in ${guild.name}`)
     }
 }
