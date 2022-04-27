@@ -120,3 +120,4 @@ bot.on('debug', (...args) => console.log('debug', ...args));
 bot.on('rateLimit', (...args) => console.log('rateLimit', ...args));
 
 bot.login(process.env.BOT_TOKEN);
+

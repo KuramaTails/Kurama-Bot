@@ -8,40 +8,38 @@ const twitchplugin = require("./create/twitchplugin")
 const welcomerplugin = require("./create/welcomerplugin")
 const leaverplugin = require("./create/leaverplugin")
 const playerembed = require("./create/embeds/playerembed")
+const changelang = require("./changelang")
 module.exports = {
     async execute(interaction,customId,lang,plugins) {
-        if (customId.includes("Plugin")) {
-            var rows = interaction.message.components
-            rows.forEach(row => {
-                var found = row.components.find(button=> button.customId == interaction.customId) 
-                if (found) {
-                    found.disabled = true
-                    switch (true) {
-                        case interaction.customId.includes("Enable"):
-                            row.components.find(button=> {
-                                if (button.customId.includes("Disable")) button.disabled = false
-                            })
-                        break;
-                        case interaction.customId.includes("Disable"):
-                            row.components.find(button=> {
-                                if (button.customId.includes("Enable")) button.disabled = false
-                            })
-                        break;
-                    }
-                    
-                    
-                }
-            });
-            interaction.message.edit({components:rows})
+        var found
+        var disabled
+        var components = interaction.message.components
+        for (const component of components) {
+            found = component.components.find(button=> button.customId == interaction.customId)
+            if (found) {
+                disabled = component.components.find(button=> !button.customId.includes("tag") && button.disabled == true)
+                break
+            }
         }
+        found.disabled = true
+        if (disabled) disabled.disabled = false
+        interaction.message.edit({components:components})
         
         await dbconnect()
         switch (customId) {
             case "adminZoneEnable":
                 await adminzone.execute(interaction,lang)
             break;
+            case "adminZoneDisable":
+                var par = interaction.guild.channels.cache.find(channel =>channel.name == "Admin Zone")
+                if (par) par.children.forEach(channel => channel.delete()),par.delete()
+            break;
             case "ticketZoneEnable":
                 await ticketzone.execute(interaction,lang)
+            break;
+            case "ticketZoneDisable":
+                var par = interaction.guild.channels.cache.find(channel =>channel.name == "Ticket Zone")
+                if (par) par.children.forEach(channel => channel.delete()),par.delete()
             break;
             case "autorolePluginEnable":
                 plugins.autorolePlugin = {
@@ -196,20 +194,7 @@ module.exports = {
                 await playerembed.execute(interaction,lang,plugins.playerPlugin.channelId)
             break;
             default:
-                plugins.lang = customId
-                await guildSchema.findOneAndUpdate({
-                    _id: interaction.guild.id,
-                }, {
-                    guildLang: customId
-                },
-                {
-                    upsert:true,
-                })
-                var lang = interaction.message.components[0].components.find(button=> button.customId == interaction.customId).label
-                interaction.followUp({
-                    content: "Language has been set to" + ` \`${lang}\``,
-                    ephemeral: true
-                })
+                await changelang.execute(interaction,customId,lang,plugins)
             break;
         }
         await dbdisconnect()

@@ -9,26 +9,36 @@ module.exports = {
         const buttons1 = new MessageActionRow()
         buttons1.addComponents(
             new MessageButton()
-            .setCustomId(`h1`)
+            .setCustomId(`tag1`)
             .setLabel("Admin Zone:")
             .setStyle(`SECONDARY`)
             .setDisabled(true),
             new MessageButton()
             .setCustomId(`settings-bot-adminZoneEnable`)
-            .setLabel("Create Admin Zone")
-            .setStyle(`SECONDARY`),
+            .setLabel("Create")
+            .setStyle(`SUCCESS`),
+            new MessageButton()
+            .setCustomId(`settings-bot-adminZoneDisable`)
+            .setLabel("Delete")
+            .setStyle(`DANGER`)
+            .setDisabled(true),
         )
         const buttons2 = new MessageActionRow()
         buttons2.addComponents(
             new MessageButton()
-            .setCustomId(`h2`)
+            .setCustomId(`tag2`)
             .setLabel("Ticket Zone:")
             .setStyle(`SECONDARY`)
             .setDisabled(true),
             new MessageButton()
             .setCustomId(`settings-bot-ticketZoneEnable`)
-            .setLabel("Create Ticket Zone")
-            .setStyle(`SECONDARY`),
+            .setLabel("Create")
+            .setStyle(`SUCCESS`),
+            new MessageButton()
+            .setCustomId(`settings-bot-ticketZoneDisable`)
+            .setLabel("Delete")
+            .setStyle(`DANGER`)
+            .setDisabled(true),
         )
         const pluginEmbed = new MessageEmbed()
         .setColor('#0099ff')
@@ -38,7 +48,7 @@ module.exports = {
         const buttons3 = new MessageActionRow()
         buttons3.addComponents(
             new MessageButton()
-            .setCustomId(`h3`)
+            .setCustomId(`tag3`)
             .setLabel("Autorole Plugin:")
             .setStyle(`SECONDARY`)
             .setDisabled(true),
@@ -55,7 +65,7 @@ module.exports = {
         const buttons4 = new MessageActionRow()
         buttons4.addComponents(
             new MessageButton()
-            .setCustomId(`h4`)
+            .setCustomId(`tag4`)
             .setLabel("Twitch Plugin:")
             .setStyle(`SECONDARY`)
             .setDisabled(true),
@@ -72,7 +82,7 @@ module.exports = {
         const buttons5 = new MessageActionRow()
         buttons5.addComponents(
             new MessageButton()
-            .setCustomId(`h5`)
+            .setCustomId(`tag5`)
             .setLabel("Welcomer Plugin:")
             .setStyle(`SECONDARY`)
             .setDisabled(true),
@@ -89,7 +99,7 @@ module.exports = {
         const buttons6 = new MessageActionRow()
         buttons6.addComponents(
             new MessageButton()
-            .setCustomId(`h6`)
+            .setCustomId(`tag6`)
             .setLabel("Leaver Plugin:")
             .setStyle(`SECONDARY`)
             .setDisabled(true),

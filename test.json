@@ -1,0 +1,221 @@
+{
+    "langs": {
+        "en":"English",
+        "it":"Italian",
+        "es":"Spanish",
+        "de":"German"
+    },
+    "settings": {
+        "create":"Create",
+        "delete":"Delete",
+        "enable":"Enable",
+        "disable":"Disable",
+        "plugins": {
+            "twitchPlugin": {
+                "createTwitchZoneField1":"Click here for creating a Twitch zone:",
+                "createTwitchZoneField2":"There you will be able to add streamers to notification",
+                "createTwitchZoneBtn":"Create Twitch Zone"
+            },
+            "autorolePlugin":{
+                "AutoRoleDesc1":"Please select a role:",
+                "AutoRoleDesc2":"this will be added automatically when members join",
+                "AutoRoleSelect":"Nothing selected",
+                "createAutoRoleChannelField1":"Click here for creating an Autorole Channel:",
+                "createAutoRoleChannelField2":"this will be used for setting up a role that will be automatically assigned to new members",
+                "createAutoRoleChannelBtn":"Create Autorole Channel",
+                "autoRoleSet":"Autorole has been set to"
+            },
+            "welcomerPlugin":{
+                "text":"Welcomer text has been set to",
+                "welcomerChannelSet":"Welcomer's channel has been set",
+                "welcomerBackgroundSet":"Welcomer's background has been set",
+                "embeds": {
+                    "chooseChannelDesc1":"Please select a text channel:this will be used by the welcomer to send messages when members join ",
+                    "chooseChannelDesc2":"(Tip: Select welcome if previously created)",
+                    "chooseChannelSelect":"Nothing selected",
+                    "changeTextEmbed":"Click button below to change it",
+                    "changeTextDesc":"Click here to change text",
+                    "chooseBackgroundDesc1":"Please select a background:this will be used by the welcomer to send messages when members join ",
+                    "chooseBackgroundDesc2":"(Tip: Select welcome if previously created)",
+                    "chooseBackgroundSelect":"Nothing selected"
+                }
+                
+            },
+            "leaverPlugin":{
+                "text":"Leaver text has been set to",
+                "leaverSet":"Leaver has been set",
+                "embeds": {
+                    "changeTextEmbed":"Click button below to change it",
+                    "changeTextDesc":"Click here to change text"
+                }
+                
+            },
+            "playerPlugin":{
+                "desc1":"Please select a text channel: this will be used by the music player to send messages (Tip: Select player-room if previously created)",
+                "desc2":"Warning: It will be send an Embed Message with buttons:those will avoid to use text commands",
+                "playerSet":"Player has been set"
+            }
+        },
+    },
+    "tutorial": {
+        "yes":"Yes",
+        "no":"No"
+    },
+    "ticket": {
+        "new":"ticketPlugin"
+    },
+    "player": {
+        "search":"🔎 Enter your link or song's title here!",
+        "btnLessCommand":"Less commands",   
+        "btnMoreCommand":"More commands"
+    },
+    "help": {
+        "Back":"cmdHelp",
+        "PagUp":"cmdHelp",
+        "PagDown":"cmdHelp"
+    }
+    "selectMenu":{
+        "none":"Nothing selected"
+    },
+    "player": {
+        "embeds": { 
+            "playing":"Playing",
+            "duration":"Duration",
+            "queue":"Current Queue",
+            "currentlyPlaying":"Currently Playing",
+            "addsong":"Added ${addedsong.name} - ${addedsong.formattedDuration} to the queue",     
+            "play":"Playing ${addedsong.name} - ${addedsong.formattedDuration}", 
+            "errors": {
+                "playing":"Not playing any songs"
+            }
+        },
+        "commands": { 
+            "repeatMode":"Set repeat mode to",
+            "volSet":"Set volume to",
+            "paused":"Player paused",
+            "resumed":"Player resumed",     
+            "skip":"Song skipped",
+            "shuffle":"Queue shuffled", 
+            "join":"Player joined your voice Channel",
+            "leave":"Leaved the voice channel",
+            "previousSong":"Playing previous song",
+            "errors": {
+                "repeatMode":"Please provide an available loop mode: DISABLED = 0, SONG = 1 , QUEUE = 2",
+                "paused":"Player already paused",
+                "resumed":"Player already resumed",
+                "memberJoin":"Please join a vocal channel first",
+                "join":"Already joined",
+                "leave":"Already leaved",
+                "previousSong":"No previous songs in queue",
+                "queue":"No songs in queue",
+                "skip":"You are not administrator,${memberLeft} more members or an administrator have to click next button for skipping"
+            }
+        }
+    },
+    "zones": {
+        "ticketZone": {
+            "createTicketZoneField1":"Click here for creating a ticket zone:",
+            "createTicketZoneField2":"this will be used by members for any issue",
+            "createTicketZoneBtn":"Create Ticket Zone"
+        },
+        "adminZone":{
+            "reports":{
+                "commands":{
+                    "falseReportdesc":"You have been warned in ${interaction.guild.name} for a false report! This is your ${warnCount}th warn. Be careful with reports commands. If you continue to break server's rules admin could be take more severe actions against you. \n ***If you think this was wrong warn please contact an admin!***",
+                    "optReport":"Thank you for helping us!"
+                },
+                "reportEmbed":{
+                    "desc":"Welcome to the reports channel. Only admins will be able to view this channel.",
+                    "field1":"You will be able to pick an option from the menu below every report.",
+                    "field2":"Options will be : \n -`Warn` \n -`Kick` \n -`Ban` \n -`Ignore` \n -`Report reporter` (this will warn the user who reported)"
+                }
+            },
+            "warn":{
+                "desc":"Welcome to the warn channel. Only admins will be able to view this channel.",
+                "field1":"Here you will be able to see when an admin will warn a user,",
+                "field2":"this is usefull for check many things like how many times was an user warned or who warned him"
+            },
+            "createAdminZoneField1":"Click here for creating the admin zone:",
+            "createAdminZoneField2":"this will be used by admin for getting logs,reports and warn count",
+            "createAdminZoneBtn":"Create Admin Zone"
+        }
+    },
+    "tutorial": {
+        "start": {
+            "desc":"Thanks for adding me to your discord. \n Please,follow this tutorial to set me up for your discord.\n It won't take long. ",
+            "field1":"Warning: If the tutorial is skipped or not configured correctly, my correct function is not guaranteed...",
+            "field2":"Please click the button below to continue"
+        },
+        "selectLang": {
+            "desc":"Thanks for starting the tutorial. Let's start choosing a language",
+            "field1":"This will be used for this tutorial aswell in your discord",
+            "field2":"Tips: You will be able to change it later in #botsettings channel"
+        },
+        "part1": {
+            "field1":"Do you want to have a section regarding your server statistics?",
+            "field2":"(Members, Online and Offline channels will be created)"
+        },
+        "part2": {
+            "field1":"Do you want to have a section to welcome new members and let them choose a role for themselves?",
+            "field2":"(Welcome and choose-roles channels will be created)"
+        },
+        "part3": {
+            "field1":"Do you want to have a section for giving commands to the music player and listening to music?",
+            "field2":"(Player-room and music channels will be created)"
+        },
+        "part4": {
+            "field1":"Do you want to activate the welcomer?",
+            "field2":"Welcome messages will be send when new members will join"
+        },
+        "part5": {
+            "field1":"Please select a text channel:this will be used by the music player to send messages (Tip: Select player-room if previously created)",
+            "field2":"Warning: It will be send an Embed Message with buttons:those will avoid to use text commands"
+        },
+        "part6": {
+            "field1":"Do you want me to autoassign roles for new members?",
+            "field2":"You will be able to select it in the channel that will be created below"
+        },
+        "end": {
+            "desc":"Everything set up. \n Below you will find other text channels where you can set me up in the future. This channel will be deleted after clicking on the button below",
+            "field1":"Tip: Use the / for a complete list of all usable commands, otherwise use /help to get a list with all categories",
+            "field2":"Warning: Do not delete the channels below, you will need them later in order to change bot settings"
+        }
+    },
+    "commands":{
+        "moderation": {        
+            "optRoleAdded":"Role ${role.name} added to <@${member.id}>",
+            "optRoleRemoved":"Role ${role.name} removed to <@${member.id}>",
+            "optMemberBan":"<@${member.id}> was banned",
+            "optMemberBanReason":"<@${member.id}> was banned for ${reason}",
+            "optMemberUnban":"<@${member.id}> was unbanned",
+            "optMemberUnbanReason":"<@${member.id}> was unbanned for ${reason}",
+            "optMemberKick":"<@${member.id}> was kicked",
+            "optMemberKickReason":"<@${member.id}> was kicked for ${reason}",
+            "optMemberTimeout":"<@${member.id}> was timed out",
+            "optMemberTimeoutReason":"<@${member.id}> was timed out for ${reason}",
+            "optClearChat":"${number} messages deleted",
+            "optLeaveDs":"I'm sorry😢, admin wants me to drop this discord! Goodbye😋 ",
+            "optWarn":"You have been warned in ${interaction.guild.name}. This is your ${warnCount}th warn. Be careful what you say or do in this server. If you continue to break server's rules admin could be take more severe actions against you. \n ***If you think this was wrong warn please contact an admin!***",
+            "errors": { 
+                "hasAlreadyAdded":"This role was already added to this member",       
+                "hasAlreadyRemoved":"This role was removed to this member",       
+                "optClearChat":"Please select less then 100 messages"
+            }
+        },
+        "help":{
+            "desc":"Please choose one of these categories"
+        },
+        "poll": {        
+            "optPollDeny":"You have already choosed one option",
+            "optPollThank":"Thank you for having participate"
+        }
+    },
+    "canvas": {
+        "join":"Welcome!",
+        "leave":"Oh no!"
+    },
+    "choose-role": {
+        "title":"Add Role",
+        "desc":"Click on a button to get yourself a role"
+    }
+}
