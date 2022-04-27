@@ -12,16 +12,16 @@
         "disable":"Disable",
         "plugins": {
             "twitchPlugin": {
-                "createTwitchZoneField1":"Click here for creating a Twitch zone:",
-                "createTwitchZoneField2":"There you will be able to add streamers to notification",
+                "createTwitchZoneField1":"Click here to create a Twitch zone: ",
+                "createTwitchZoneField2":"There you will be able to add streamers to the notification.",
                 "createTwitchZoneBtn":"Create Twitch Zone"
             },
             "autorolePlugin":{
                 "AutoRoleDesc1":"Please select a role:",
-                "AutoRoleDesc2":"this will be added automatically when members join",
+                "AutoRoleDesc2":"This will be added automatically when members join",
                 "AutoRoleSelect":"Nothing selected",
-                "createAutoRoleChannelField1":"Click here for creating an Autorole Channel:",
-                "createAutoRoleChannelField2":"this will be used for setting up a role that will be automatically assigned to new members",
+                "createAutoRoleChannelField1":"Click here to create an Autorole Channel:",
+                "createAutoRoleChannelField2":"This will be used for setting up a role that will be automatically assigned to new members.",
                 "createAutoRoleChannelBtn":"Create Autorole Channel",
                 "autoRoleSet":"Autorole has been set to"
             },
@@ -34,7 +34,7 @@
                     "chooseChannelDesc2":"(Tip: Select welcome if previously created)",
                     "chooseChannelSelect":"Nothing selected",
                     "changeTextEmbed":"Click button below to change it",
-                    "changeTextDesc":"Click here to change text",
+                    "changeTextDesc":"Click here to change the text",
                     "chooseBackgroundDesc1":"Please select a background:this will be used by the welcomer to send messages when members join ",
                     "chooseBackgroundDesc2":"(Tip: Select welcome if previously created)",
                     "chooseBackgroundSelect":"Nothing selected"
@@ -46,38 +46,26 @@
                 "leaverSet":"Leaver has been set",
                 "embeds": {
                     "changeTextEmbed":"Click button below to change it",
-                    "changeTextDesc":"Click here to change text"
+                    "changeTextDesc":"Click here to change the text"
                 }
                 
             },
             "playerPlugin":{
                 "desc1":"Please select a text channel: this will be used by the music player to send messages (Tip: Select player-room if previously created)",
-                "desc2":"Warning: It will be send an Embed Message with buttons:those will avoid to use text commands",
+                "desc2":"Warning: It will be sent an Embed Message with buttons:those will avoid using text commands",
                 "playerSet":"Player has been set"
             }
-        },
+        }
     },
-    "tutorial": {
-        "yes":"Yes",
-        "no":"No"
-    },
-    "ticket": {
-        "new":"ticketPlugin"
-    },
-    "player": {
-        "search":"🔎 Enter your link or song's title here!",
-        "btnLessCommand":"Less commands",   
-        "btnMoreCommand":"More commands"
-    },
-    "help": {
-        "Back":"cmdHelp",
-        "PagUp":"cmdHelp",
-        "PagDown":"cmdHelp"
-    }
     "selectMenu":{
         "none":"Nothing selected"
     },
     "player": {
+        "buttons": {
+            "search":"🔎 Enter your link or song's title here!",
+            "btnLessCommand":"Less commands",   
+            "btnMoreCommand":"More commands"
+        },
         "embeds": { 
             "playing":"Playing",
             "duration":"Duration",
@@ -96,26 +84,26 @@
             "resumed":"Player resumed",     
             "skip":"Song skipped",
             "shuffle":"Queue shuffled", 
-            "join":"Player joined your voice Channel",
+            "join":"Player has joined your voice Channel",
             "leave":"Leaved the voice channel",
             "previousSong":"Playing previous song",
             "errors": {
                 "repeatMode":"Please provide an available loop mode: DISABLED = 0, SONG = 1 , QUEUE = 2",
                 "paused":"Player already paused",
-                "resumed":"Player already resumed",
-                "memberJoin":"Please join a vocal channel first",
-                "join":"Already joined",
-                "leave":"Already leaved",
+                "resumed":"Player has already resumed",
+                "memberJoin":"Please join a vocal channel first.",
+                "join":"I have already joined",
+                "leave":"I have already left",
                 "previousSong":"No previous songs in queue",
                 "queue":"No songs in queue",
-                "skip":"You are not administrator,${memberLeft} more members or an administrator have to click next button for skipping"
+                "skip":"You are not an administrator,${memberLeft} more members or an administrator have to click the next button skipping members."
             }
         }
     },
     "zones": {
         "ticketZone": {
-            "createTicketZoneField1":"Click here for creating a ticket zone:",
-            "createTicketZoneField2":"this will be used by members for any issue",
+            "createTicketZoneField1":"Click here to create a ticket zone:",
+            "createTicketZoneField2":"This will be used by members for any issue.",
             "createTicketZoneBtn":"Create Ticket Zone"
         },
         "adminZone":{
@@ -141,6 +129,10 @@
         }
     },
     "tutorial": {
+        "buttons":{
+            "yes":"Yes",
+            "no":"No"
+        },
         "start": {
             "desc":"Thanks for adding me to your discord. \n Please,follow this tutorial to set me up for your discord.\n It won't take long. ",
             "field1":"Warning: If the tutorial is skipped or not configured correctly, my correct function is not guaranteed...",
@@ -203,6 +195,11 @@
             }
         },
         "help":{
+            "buttons": {
+                "Back":"cmdHelp",
+                "PagUp":"cmdHelp",
+                "PagDown":"cmdHelp"
+            },
             "desc":"Please choose one of these categories"
         },
         "poll": {        
