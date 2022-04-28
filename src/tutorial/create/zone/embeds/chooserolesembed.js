@@ -5,8 +5,8 @@ module.exports = {
             var buttons = [new MessageActionRow()]
             const rolesEmbed = new MessageEmbed()
                                 .setColor('#0099ff')
-                                .setTitle(lang.get(channel.guild.lang).autorole["title"])
-                                .setDescription(lang.get(channel.guild.lang).autorole["desc"])
+                                .setTitle(lang.get(channel.guild.settings.lang).chooseRole["title"])
+                                .setDescription(lang.get(channel.guild.settings.lang).chooseRole["desc"])
             await channel.guild.roles.cache.forEach(role => {
                 if (role.permissions.has("ADMINISTRATOR")== false) {
                     if (role.managed== false) {

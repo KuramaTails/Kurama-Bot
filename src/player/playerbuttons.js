@@ -21,7 +21,7 @@ module.exports = {
                 leave.execute(interaction,player,lang,voiceChannel)
                 return
         }
-        if (!player.getQueue(voiceChannel)) return interaction.followUp({content: lang.get(interaction.guild.settings.lang).buttons.player.commands.errors["queue"],ephemeral: true})
+        if (!player.getQueue(voiceChannel)) return interaction.followUp({content: lang.get(interaction.guild.settings.lang).player.commands.errors["queue"],ephemeral: true})
         var secMessage = interaction.channel.messages.cache.get(interaction.message.id)
         var search = interaction.message.components[0]
         var buttons = interaction.message.components[1]
@@ -34,10 +34,10 @@ module.exports = {
                 !player.queues.collection.first().paused? pause.execute(interaction,player,lang,voiceChannel) : resume.execute(interaction,player,lang,voiceChannel)
             break;
             case "next":
-                next.execute(interaction,player,lang,voiceChannel)
+                next.execute(interaction,player,lang,voiceChannel,playerUser)
             break;
             case "lesscommands":
-                buttons2.components[0].setLabel(lang.get(interaction.guild.settings.lang).buttons.buttons["btnMoreCommand"]+"🔽")
+                buttons2.components[0].setLabel(lang.get(interaction.guild.settings.lang).player.buttons["btnMoreCommand"]+"🔽")
                 buttons2.components[0].setCustomId("player-morecommands")
                 secMessage.edit({components: [search,buttons,buttons2] });
             break;
@@ -59,7 +59,7 @@ module.exports = {
                         .setStyle(`${moreButtonscommands[i].style}`),
                     ); 
                 }
-                buttons2.components[0].setLabel(lang.get(interaction.guild.settings.lang).buttons.buttons["btnLessCommand"]+"🔼")
+                buttons2.components[0].setLabel(lang.get(interaction.guild.settings.lang).player.buttons["btnLessCommand"]+"🔼")
                 buttons2.components[0].setCustomId("player-lesscommands")
                 secMessage.edit({components: [search,buttons,buttons2,moreButtons]});
             break;

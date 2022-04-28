@@ -19,7 +19,7 @@ module.exports = {
                 bot.pollUser.clear(); 
                 bot.pollCounter = [0,0,0,0,0]
                 const command = bot.commands.get(interaction.commandName);
-                await iscommand.execute(interaction,command,bot.player,bot.pollCounter,bot.lang)
+                await iscommand.execute(interaction,command,bot.player,bot.pollCounter,bot.lang,bot.playerUser)
             }
             if(interaction.isSelectMenu()) {
                 await isselectmenu.execute(interaction,bot.lang)

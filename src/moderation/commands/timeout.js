@@ -8,7 +8,7 @@ module.exports = {
         var reason = (interaction.options.getString("reason"));
         interaction.member.timeout(5*60*1000)
         if (reason!=null) {
-            var string = lang.get(interaction.guild.lang).commands.moderation["optMemberTimeoutReason"]
+            var string = lang.get(interaction.guild.settings.lang).commands.moderation["optMemberTimeoutReason"]
             let result = string.replace("<@${member.id}>",`<@${member.id}>`);
             result = string.replace("${reason}",`${reason}`);
             interaction.followUp({
@@ -17,7 +17,7 @@ module.exports = {
             })
         }
         else {
-            var string = lang.get(interaction.guild.lang).commands.moderation["optMemberTimeout"]
+            var string = lang.get(interaction.guild.settings.lang).commands.moderation["optMemberTimeout"]
             let result = string.replace("<@${member.id}>",`<@${member.id}>`);
             interaction.followUp({
                 content: result,

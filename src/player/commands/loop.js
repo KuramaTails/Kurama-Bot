@@ -5,7 +5,7 @@ module.exports = {
     example:"/player loop [0,1,2]",
 	async execute(interaction,player,lang,voiceChannel) {
         var mode = interaction.options? interaction.options.getString("mode") : player.getQueue(voiceChannel).repeatMode
-        var stringErr = lang.get(interaction.guild.settings.lang).commands.player.commands.errors["queue"]
+        var stringErr = lang.get(interaction.guild.settings.lang).player.commands.errors["queue"]
         player.getQueue(voiceChannel)? (setMode(mode)) : interaction.followUp({content: stringErr,ephemeral: true})
         function setMode(mode) {
             switch(parseInt(mode)) {
@@ -13,7 +13,7 @@ module.exports = {
                     player.setRepeatMode(voiceChannel, 1)
                     mode = "DISABLED"
                     interaction.followUp({
-                        content: lang.get(interaction.guild.settings.lang).commands.player.settings["repeatMode"]+ "`" + mode + "`",
+                        content: lang.get(interaction.guild.settings.lang).player.settings["repeatMode"]+ "`" + mode + "`",
                         ephemeral: true
                     })
                     break;
@@ -21,7 +21,7 @@ module.exports = {
                     player.setRepeatMode(voiceChannel, 2)
                     mode = "SONG"
                     interaction.followUp({
-                        content: lang.get(interaction.guild.settings.lang).commands.player.settings["repeatMode"] +"`" + mode + "`",
+                        content: lang.get(interaction.guild.settings.lang).player.settings["repeatMode"] +"`" + mode + "`",
                         ephemeral: true
                     })
                     break;
@@ -29,13 +29,13 @@ module.exports = {
                     player.setRepeatMode(voiceChannel, 0)
                     var mode = "QUEUE"
                     interaction.followUp({
-                        content: lang.get(interaction.guild.settings.lang).commands.player.settings["repeatMode"]+ "`" + mode + "`",
+                        content: lang.get(interaction.guild.settings.lang).player.settings["repeatMode"]+ "`" + mode + "`",
                         ephemeral: true
                     })
                     break;
                 default:
                     interaction.followUp({
-                        content: lang.get(interaction.guild.settings.lang).commands.player.settings["repeatMode"],
+                        content: lang.get(interaction.guild.settings.lang).player.settings["repeatMode"],
                         ephemeral: true
                     })
                     break;

@@ -28,7 +28,7 @@ module.exports= {
                         upsert:true,
                     })
                 interaction.followUp({
-                    content: lang.get(interaction.guild.settings.lang).settings["welcomerChannelSet"],
+                    content: lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin["welcomerChannelSet"],
                     ephemeral: true
                 })
             break;
@@ -45,7 +45,7 @@ module.exports= {
                         upsert:true,
                     })
                 interaction.followUp({
-                    content: lang.get(interaction.guild.settings.lang).settings["welcomerBackgroundSet"],
+                    content: lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin["welcomerBackgroundSet"],
                     ephemeral: true
                 })
             break;

@@ -17,7 +17,7 @@ module.exports = {
         })
         await botsettings.execute(interaction,lang)
         await dbdisconnect()
-        //await interaction.message.delete()
+        await interaction.message.delete()
         const TutorialEmbed = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle("Bot Kurama : End Tutorial")

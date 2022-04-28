@@ -18,7 +18,7 @@ module.exports = {
         dbmembers.markModified('members');
         await dbmembers.save()
         await dbdisconnect()
-        var string = lang.get(interaction.guild.lang).reports.commands["falseReportdesc"]
+        var string = lang.get(interaction.guild.lang).zones.adminZone.reports.commands["falseReportdesc"]
         var result = string.replace("${interaction.guild.name}",`${interaction.guild.name}`);
         result = string.replace("${warnCount}",`${warnCount}`);
         const reportedUser = new MessageEmbed()

@@ -33,6 +33,6 @@ module.exports = {
             .setStyle(`SECONDARY`),
         )
 
-        channel.send({embeds:[TutorialEmbed],components:[buttons]})
+        await channel.send({embeds:[TutorialEmbed],components:[buttons]})
     }
 };

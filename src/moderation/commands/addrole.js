@@ -8,8 +8,8 @@ module.exports = {
         var role = interaction.options.getRole("role")
         var hasAlready = interaction.member.roles.cache.find(role=> role.id == interaction.options.getRole("role").id)? true : false
         if (hasAlready==false) {
-            member.roles.add(role)
-            var string = lang.get(interaction.guild.lang).commands.moderation["optRoleAdded"]
+            await member.roles.add(role)
+            var string = lang.get(interaction.guild.settings.lang).commands.moderation["optRoleAdded"]
             var result = string.replace("${role.name}",`<@&${role.id}>`);
             result = result.replace("<@${member.id}>",`<@${member.id}>`);
             interaction.followUp({
@@ -19,7 +19,7 @@ module.exports = {
         }
         else {
             interaction.followUp({
-                content: lang.get(interaction.guild.lang).commands.moderation.errors["hasAlreadyAdded"],
+                content: lang.get(interaction.guild.settings.lang).commands.moderation.errors["hasAlreadyAdded"],
                 ephemeral: true
             })
         }

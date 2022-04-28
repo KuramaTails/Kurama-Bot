@@ -1,6 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 module.exports = {
     async execute(interaction,channel,lang) {
+        var plugins = interaction.guild.settings.plugins
         const zoneEmbed = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Zones creator")
@@ -23,6 +24,12 @@ module.exports = {
             .setStyle(`DANGER`)
             .setDisabled(true),
         )
+        var par = interaction.guild.channels.cache.find(channel =>channel.name == "Admin Zone")
+        if (par) {
+            buttons1.components.forEach(button => {
+                !button.customId.includes("tag") && button.disabled? button.disabled=false : button.disabled=true
+            });
+        }
         const buttons2 = new MessageActionRow()
         buttons2.addComponents(
             new MessageButton()
@@ -40,6 +47,12 @@ module.exports = {
             .setStyle(`DANGER`)
             .setDisabled(true),
         )
+        var par = interaction.guild.channels.cache.find(channel =>channel.name == "Ticket Zone")
+        if (par) {
+            buttons2.components.forEach(button => {
+                !button.customId.includes("tag") && button.disabled? button.disabled=false : button.disabled=true
+            });
+        }
         const pluginEmbed = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Plugins Enabler")
@@ -62,6 +75,12 @@ module.exports = {
             .setStyle(`DANGER`)
             .setDisabled(true),
         )
+        var par = interaction.guild.channels.cache.find(channel =>channel.name == "autorole-plugin")
+        if (par) {
+            buttons3.components.forEach(button => {
+                !button.customId.includes("tag") && button.disabled? button.disabled=false : button.disabled=true
+            });
+        }
         const buttons4 = new MessageActionRow()
         buttons4.addComponents(
             new MessageButton()
@@ -79,6 +98,12 @@ module.exports = {
             .setStyle(`DANGER`)
             .setDisabled(true),
         )
+        var par = interaction.guild.channels.cache.find(channel =>channel.name == "twitch-plugin")
+        if (par) {
+            buttons4.components.forEach(button => {
+                !button.customId.includes("tag") && button.disabled? button.disabled=false : button.disabled=true
+            });
+        }
         const buttons5 = new MessageActionRow()
         buttons5.addComponents(
             new MessageButton()
@@ -96,6 +121,12 @@ module.exports = {
             .setStyle(`DANGER`)
             .setDisabled(true),
         )
+        var par = interaction.guild.channels.cache.find(channel =>channel.name == "welcomer-plugin")
+        if (par) {
+            buttons5.components.forEach(button => {
+                !button.customId.includes("tag") && button.disabled? button.disabled=false : button.disabled=true
+            });
+        }
         const buttons6 = new MessageActionRow()
         buttons6.addComponents(
             new MessageButton()
@@ -113,6 +144,12 @@ module.exports = {
             .setStyle(`DANGER`)
             .setDisabled(true),
         )
+        var par = interaction.guild.channels.cache.find(channel =>channel.name == "leaver-plugin")
+        if (par) {
+            buttons6.components.forEach(button => {
+                !button.customId.includes("tag") && button.disabled? button.disabled=false : button.disabled=true
+            });
+        }
         await channel.send({embeds: [zoneEmbed],components:[buttons1,buttons2]});
         await channel.send({embeds: [pluginEmbed],components:[buttons3,buttons4,buttons5,buttons6]});
     }

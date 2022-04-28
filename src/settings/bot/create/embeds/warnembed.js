@@ -5,8 +5,8 @@ module.exports = {
         .setColor('#0099ff')
         .setTitle("Warn: Channel Information")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .setDescription(lang.get(interaction.guild.settings.lang).warn["desc"])
-        .addField(lang.get(interaction.guild.settings.lang).warn["field1"],lang.get(interaction.guild.settings.lang).warn["field2"])
+        .setDescription(lang.get(interaction.guild.settings.lang).zones.adminZone.warn["desc"])
+        .addField(lang.get(interaction.guild.settings.lang).zones.adminZone.warn["field1"],lang.get(interaction.guild.settings.lang).zones.adminZone.warn["field2"])
         channel.send({embeds:[Embed]})
     }
 };

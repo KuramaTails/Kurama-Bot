@@ -19,9 +19,9 @@ module.exports = {
             })
         await dbdisconnect()
         var updateEmbed = modal.message.embeds[0]
-        updateEmbed.fields[0].name = lang.get(modal.guild.settings.lang).update.leaver["text"]+` \`${textLeave}\``
+        updateEmbed.fields[0].name = lang.get(modal.guild.settings.lang).settings.plugins.leaverPlugin["text"]+` \`${textLeave}\``
         await modal.message.edit({embeds:[updateEmbed]})
-        await modal.editReply({ content: lang.get(modal.guild.settings.lang).update.leaver["text"] +` ${textLeave}.`, ephemeral: true })
+        await modal.editReply({ content: lang.get(modal.guild.settings.lang).settings.plugins.leaverPlugin["text"] +` ${textLeave}.`, ephemeral: true })
         console.log(`Changed leaver text in ${modal.guild.name}`)  
 	}
 };

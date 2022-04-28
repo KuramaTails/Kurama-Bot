@@ -14,10 +14,10 @@ module.exports = {
         context.font = '28px sans-serif';
         context.fillStyle = '#ffffff';
         if (add==true) {
-            context.fillText(lang.get(member.guild.lang).canvas["join"], canvas.width / 2.5, canvas.height / 3.5);
+            context.fillText(lang.get(member.guild.lang).welcomer.canvas["join"], canvas.width / 2.5, canvas.height / 3.5);
         }
         else {
-            context.fillText(lang.get(member.guild.lang).canvas["leave"], canvas.width / 2.5, canvas.height / 3.5);
+            context.fillText(lang.get(member.guild.lang).welcomer.canvas["leave"], canvas.width / 2.5, canvas.height / 3.5);
         }
 
         context.font = applyText(canvas, `${member.user.username}!`);

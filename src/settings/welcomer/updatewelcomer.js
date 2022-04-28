@@ -20,9 +20,9 @@ module.exports = {
             })
         await dbdisconnect()
         var updateEmbed = modal.message.embeds[0]
-        updateEmbed.fields[0].name = lang.get(modal.guild.settings.lang).update.welcomer["text"]+` \`${textWelcomer}\``
+        updateEmbed.fields[0].name = lang.get(modal.guild.settings.lang).settings.plugins.welcomerPlugin["text"]+` \`${textWelcomer}\``
         await modal.message.edit({embeds:[updateEmbed]})
-        await modal.editReply({ content: lang.get(modal.guild.settings.lang).update.welcomer["text"] +` ${textWelcomer}.`, ephemeral: true })
+        await modal.editReply({ content: lang.get(modal.guild.settings.lang).settings.plugins.welcomerPlugin["text"] +` ${textWelcomer}.`, ephemeral: true })
         console.log(`Changed welcomer text in ${modal.guild.name}`)  
 	}
 };

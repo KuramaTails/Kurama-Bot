@@ -8,7 +8,7 @@ module.exports = {
         var reason = (interaction.options.getString("reason"));
         interaction.guild.members.unban(member)
         if (reason!=null) {
-            var string = lang.get(interaction.guild.lang).commands.moderation["optMemberUnbanReason"]
+            var string = lang.get(interaction.guild.settings.lang).commands.moderation["optMemberUnbanReason"]
             let result = string.replace("<@${member.id}>",`<@${member.id}>`);
             result = string.replace("${reason}",`${reason}`);
             interaction.followUp({
@@ -17,7 +17,7 @@ module.exports = {
             })
         }
         else {
-            var string = lang.get(interaction.guild.lang).commands.moderation["optMemberUnban"]
+            var string = lang.get(interaction.guild.settings.lang).commands.moderation["optMemberUnban"]
             let result = string.replace("<@${member.id}>",`<@${member.id}>`);
             interaction.followUp({
                 content: result,

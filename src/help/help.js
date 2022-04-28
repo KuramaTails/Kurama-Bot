@@ -10,7 +10,7 @@ module.exports = {
 		.setTitle('Help List')
 		.setURL('https://discord.js.org/')
 		.setAuthor({ name: 'Documentation : Commands', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
-		.setDescription(lang.get(interaction.guild.lang).help["desc"])
+		.setDescription(lang.get(interaction.guild.lang).commands.help["desc"])
 		.addFields(
 			{ name: "\u200B" , value: "🔑", inline: true },
 			{ name: '\u200B', value: "Admin", inline: true },

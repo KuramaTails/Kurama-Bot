@@ -7,12 +7,12 @@ module.exports = {
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Choose channel")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .addField(lang.get(interaction.guild.settings.lang).update.welcomer.embeds["chooseChannelDesc1"],lang.get(interaction.guild.settings.lang).update.welcomer.embeds["chooseChannelDesc2"])
+        .addField(lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.embeds["chooseChannelDesc1"],lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.embeds["chooseChannelDesc2"])
         const button2 = new MessageActionRow()
         button2.addComponents(
             new MessageSelectMenu()
                 .setCustomId('settings-welcomer-selectWelcomerChannel')
-                .setPlaceholder(lang.get(interaction.guild.settings.lang).update.welcomer.embeds["chooseChannelSelect"]) 
+                .setPlaceholder(lang.get(interaction.guild.settings.lang).selectMenu["none"]) 
         )
         var textChannels = await interaction.guild.channels.cache.filter(c=> c.type=="GUILD_TEXT")
         textChannels.forEach(channel => {
@@ -27,24 +27,24 @@ module.exports = {
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Welcomer Text")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
+        .addField(lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin["text"]+` \`${welcomerPlugin.textWelcome}\``,lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.embeds["changeTextDesc"])
         const buttonWelcomertext = new MessageActionRow()
-        textWelcomerEmbed.addField(lang.get(interaction.guild.settings.lang).update.welcomer["text"]+` \`${welcomerPlugin.textWelcome}\``,lang.get(interaction.guild.settings.lang).update.welcomer.embeds["changeTextEmbed"])
         buttonWelcomertext.addComponents(
             new MessageButton()
             .setCustomId(`settings-welcomer-textWelcomer`)
-            .setLabel(lang.get(interaction.guild.settings.lang).update.welcomer.embeds["changeTextDesc"])
+            .setLabel(lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.embeds["changeTextDesc"])
             .setStyle(`SECONDARY`),
         )
         const backgroundEmbed = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Choose Background")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .addField(lang.get(interaction.guild.settings.lang).update.welcomer.embeds["chooseBackgroundDesc1"],lang.get(interaction.guild.settings.lang).update.welcomer.embeds["chooseBackgroundDesc2"])
+        .addField(lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.embeds["chooseBackgroundDesc1"],lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.embeds["chooseBackgroundDesc2"])
         const button3 = new MessageActionRow()
         button3.addComponents(
             new MessageSelectMenu()
                 .setCustomId('settings-welcomer-selectWelcomerBackground')
-                .setPlaceholder(lang.get(interaction.guild.settings.lang).update.welcomer.embeds["chooseBackgroundSelect"])
+                .setPlaceholder(lang.get(interaction.guild.settings.lang).selectMenu["none"])
         )
         const background = fs.readdirSync('./src/settings/welcomer/backgrounds').filter(file => file.endsWith('.jpg'));
         background.forEach(image => {

@@ -9,22 +9,24 @@ const welcomerplugin = require("./create/welcomerplugin")
 const leaverplugin = require("./create/leaverplugin")
 const playerembed = require("./create/embeds/playerembed")
 const changelang = require("./changelang")
+const chooserolesembed = require("../../tutorial/create/zone/embeds/chooserolesembed")
 module.exports = {
     async execute(interaction,customId,lang,plugins) {
         var found
         var disabled
         var components = interaction.message.components
-        for (const component of components) {
-            found = component.components.find(button=> button.customId == interaction.customId)
-            if (found) {
-                disabled = component.components.find(button=> !button.customId.includes("tag") && button.disabled == true)
-                break
+        if (!interaction.customId.includes("select")) {
+            for (const component of components) {
+                found = component.components.find(button=> button.customId == interaction.customId)
+                if (found) {
+                    disabled = component.components.find(button=> !button.customId.includes("tag") && button.disabled == true)
+                    break
+                }
             }
+            found.disabled = true
+            if (disabled) disabled.disabled = false
+            interaction.message.edit({components:components})
         }
-        found.disabled = true
-        if (disabled) disabled.disabled = false
-        interaction.message.edit({components:components})
-        
         await dbconnect()
         switch (customId) {
             case "adminZoneEnable":
@@ -177,7 +179,7 @@ module.exports = {
                     if (channel.name == "leaver-plugin") channel.delete()
                 })
             break;
-            case "SelectPlayerChannel":
+            case "selectPlayerChannel":
                 plugins.playerPlugin = {
                     channelId:interaction.values[0]
                 }
@@ -192,6 +194,11 @@ module.exports = {
                     upsert:true,
                 })
                 await playerembed.execute(interaction,lang,plugins.playerPlugin.channelId)
+            break;
+            case "selectChooseRoleChannel":
+                var channelId = interaction.values[0]
+                var channel = interaction.guild.channels.cache.find(channel=> channel.id == channelId)
+                await chooserolesembed.execute(channel,lang)
             break;
             default:
                 await changelang.execute(interaction,customId,lang,plugins)

@@ -2,14 +2,16 @@ module.exports = {
     name: 'channelUpdate',
     async execute(oldChannel,newChannel) {
         if (oldChannel.name != newChannel.name) {
-            var welcomerSettingsChannel = await newChannel.guild.channels.cache.find(channel => channel.name == "welcomer-settings")
-            var playerSettingsChannel = await newChannel.guild.channels.cache.find(channel => channel.name == "player-settings")
+            if (oldChannel.name.includes("Online") || oldChannel.name.includes("Offline") || oldChannel.name.includes("Members")) return
+            console.log(oldChannel.name)
+            var welcomerSettingsChannel = await newChannel.guild.channels.cache.find(channel => channel.name == "welcomer-plugin")
+            var botSettingsChannel = await newChannel.guild.channels.cache.find(channel => channel.name == "bot-settings")
             var welcomerChannelMessages = await welcomerSettingsChannel.messages.fetch()
-            var playerChannelMessages = await playerSettingsChannel.messages.fetch()
+            var botChannelMessages = await botSettingsChannel.messages.fetch()
             if (!welcomerChannelMessages) return
-            if (!playerSettingsChannel) return
+            if (!botSettingsChannel) return
             var selectWelcomerEmbed = await welcomerChannelMessages.find(message => message.embeds[0].title.includes("Choose channel"));
-            var selectPlayerEmbed = await playerChannelMessages.find(message => message.embeds[0].title.includes("Set up player"));
+            var selectPlayerEmbed = await botChannelMessages.find(message => message.embeds[0].title.includes("Set up player"));
             var welcomerMenu = selectWelcomerEmbed.components[0]
             if (welcomerMenu.components[0].options.find(option => option.label == oldChannel.name)) {
                 welcomerMenu.components[0].options.find(option => option.label == oldChannel.name).label= newChannel.name

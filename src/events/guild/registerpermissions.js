@@ -10,11 +10,11 @@ module.exports = {
         await rest.put(Routes.applicationGuildCommands(botId,guild.id), { body: listCommands })
             .then(() => console.log('Successfully registered application commands.'))
             .catch(console.error);
-        let commandsList = await guild.commands.fetch()
-        let moderation = await commandsList.find(command => command.name === "moderation")
-        var roles = await guild.roles.cache
+        var commandsList = await guild.commands.fetch();
+        var roles = await guild.roles.fetch()
         var allPermissions = []
-        roles.forEach(role => {
+        await roles.forEach(role => {
+            if (role.name.includes("Kurama")) return
             const permissions = [{
                 id: role.id,
                 type: 'ROLE',
@@ -22,9 +22,13 @@ module.exports = {
             }];
             allPermissions.push.apply(allPermissions,permissions)
         });
-        await moderation.permissions.add({ command: moderation.id,permissions: allPermissions})
-        .then(console.log(`Set permissions in ${guild.name}`))
-        .catch(console.error);
+        await commandsList.forEach(command => {
+            guild.commands.permissions.add({
+                command: command.id,
+                permissions: allPermissions
+            }).then(console.log(`Set permissions in ${guild.name}`))
+            .catch(console.error);
+        })        
     }
 };
     

@@ -10,7 +10,7 @@ module.exports = {
             let playerChannel = await listchannels.find(channel => channel.id === textChannel )
             const Embedsearch = new MessageEmbed()
             .setColor('#0099ff')
-            .setTitle(bot.lang.get(queue.clientMember.guild.settings.lang).commands.player.embeds.errors["playing"])
+            .setTitle(bot.lang.get(queue.clientMember.guild.settings.lang).player.embeds.errors["playing"])
             .setThumbnail(``)
             .setURL(``)
             .setDescription(``)

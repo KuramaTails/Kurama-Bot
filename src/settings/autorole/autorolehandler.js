@@ -21,7 +21,7 @@ module.exports = {
                 await dbdisconnect()
                 autorolePlugin.role = interaction.values[0]
                 interaction.followUp({
-                    content: lang.get(interaction.guild.settings.lang).settings["autoRoleSet"]+` <@&${interaction.values[0]}>`,
+                    content: lang.get(interaction.guild.settings.lang).settings.plugins.autorolePlugin["autoRoleSet"]+` <@&${interaction.values[0]}>`,
                     ephemeral: true
                 })
             break;

@@ -34,9 +34,9 @@ module.exports = {
             if (roleMenu.components.length<5) {
                 roleMenu.addComponents(
                     new MessageButton()
-                        .setCustomId(`${role.id}`)
-                        .setLabel(`${role.name}`)
-                        .setStyle("PRIMARY"),
+                    .setCustomId(`role-${role.id}`)
+                    .setLabel(`${role.name}`)
+                    .setStyle("PRIMARY"),
                 ); 
                 await chooseRoleMessage.edit({components:[roleMenu]})
             }
@@ -44,9 +44,9 @@ module.exports = {
                 newComponents = new MessageActionRow()
                 newComponents.addComponents(
                     new MessageButton()
-                        .setCustomId(`${role.id}`)
-                        .setLabel(`${role.name}`)
-                        .setStyle("PRIMARY"),
+                    .setCustomId(`role-${role.id}`)
+                    .setLabel(`${role.name}`)
+                    .setStyle("PRIMARY"),
                 );
                 await chooseRoleMessage.edit({components:[roleMenu,newComponents]})
             }            
