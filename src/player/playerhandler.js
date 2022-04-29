@@ -14,9 +14,9 @@ module.exports = {
         switch (customId) {
             case "search":
                 var customId="modal-"+customId
-                var title ='Search your song!'
-                var label="Please enter songs link or title here"
-                var placeHolder="Paste link or song's title here"
+                var title =lang.get(interaction.guild.settings.lang).player.modal["title"]
+                var label=lang.get(interaction.guild.settings.lang).player.modal["label"]
+                var placeHolder=lang.get(interaction.guild.settings.lang).player.modal["placeholder"]
                 modallayout.execute(interaction,bot.client,customId,title,label,placeHolder)
             break;
             default:

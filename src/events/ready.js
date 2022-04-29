@@ -22,7 +22,7 @@ module.exports = {
                 lang: selectedGuild.guildLang,
                 plugins: selectedGuild.plugins
             }
-            loadstreamer.execute(guild.settings.plugins.twitchPlugin,bot.twitch)
+            await loadstreamer.execute(guild.settings.plugins.twitchPlugin,bot.twitch)
             await registerpermissions.execute(guild,bot.client.user.id,bot.commands)
             console.log(`Bot initializated in ${guild.name}`)
             })

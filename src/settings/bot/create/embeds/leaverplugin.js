@@ -6,12 +6,12 @@ module.exports = {
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Leaver Text")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .addField("Leaver text set to : "+` \`${leaverPlugin.textLeave}\``,"Click here below for change it")
+        .addField(lang.get(interaction.guild.settings.lang).plugins.leaverPlugin["text"],` \`${leaverPlugin.textLeave}\``)
         const button = new MessageActionRow()
         button.addComponents(
             new MessageButton()
             .setCustomId(`settings-leaver-textLeaver`)
-            .setLabel("Change text")
+            .setLabel(lang.get(interaction.guild.settings.lang).plugins.leaverPlugin["changeText"])
             .setStyle(`SECONDARY`),
         )
         await channel.send({embeds:[embed],components:[button]})

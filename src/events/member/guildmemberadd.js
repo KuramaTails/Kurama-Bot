@@ -9,11 +9,16 @@ module.exports = {
         } catch (error) {
             console.log(error)
         }
+        if (!member.guild.settings.plugins.welcomerPlugin.active) return
         await welcomer.execute(member,add,bot.lang)
-        if (member.guild.settings.autorolePlugin.active && member.guild.settings.autorolePlugin.role != undefined) {
-            let selRole = member.guild.roles.cache.find(role => role.id === selectGuildAutorole[0].roleId)
-            member.roles.add(selRole)
-        }
+        if (!member.guild.settings.plugins.autorolePlugin.active) return
+        if (!member.guild.settings.plugins.autorolePlugin.role) return
+        let selRole = member.guild.roles.cache.find(role => role.id === selectGuildAutorole[0].roleId)
+        try {
+            await member.roles.add(selRole)
+        } catch (error) {
+            console.log(error)
+        } 
         console.log(`Member joined in ${member.guild.name}`)
     }
 };

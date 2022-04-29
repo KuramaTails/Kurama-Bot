@@ -9,6 +9,7 @@ module.exports = {
         } catch (error) {
             console.log(error)
         }
+        if (!member.guild.settings.plugins.leaverPlugin.active) return
         await welcomer.execute(member,add,bot.lang)
         console.log(`Member leaved from ${member.guild.name}`)
     }

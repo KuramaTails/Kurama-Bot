@@ -8,9 +8,9 @@ module.exports = {
         var streamerUsername = modal.getTextInputValue('textinput-customid')
         var query = await twitch.searchChannels({ query: streamerUsername })
         var selectUser = query.data.find(channel => channel.broadcaster_login == streamerUsername)
-        if (!selectUser) return modal.editReply({ content: "Streamer not found,retry", ephemeral: true })
+        if (!selectUser) return modal.editReply({ content: lang.get(interaction.guild.lang).plugins.twitchPlugin.replies["notFound"], ephemeral: true })
         if (twitchPlugin.streamerList) {
-            if (twitchPlugin.streamerList.find(streamer=> streamer.broadcaster_login == selectUser.broadcaster_login)) return modal.editReply({ content: "Streamer already added to notification list", ephemeral: true })
+            if (twitchPlugin.streamerList.find(streamer=> streamer.broadcaster_login == selectUser.broadcaster_login)) return modal.editReply({ content: lang.get(interaction.guild.lang).plugins.twitchPlugin.replies["alreadyAdded"], ephemeral: true })
         }
         selectUser.alreadySend=selectUser.is_live
         twitchPlugin.streamerList.push(selectUser)
@@ -30,6 +30,6 @@ module.exports = {
             }
         )
         await dbdisconnect()
-        return await modal.editReply({ content: "Streamer added to notification list", ephemeral: true }) 
+        return await modal.editReply({ content: lang.get(interaction.guild.lang).plugins.twitchPlugin.replies["added"], ephemeral: true }) 
 	}
 };

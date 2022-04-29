@@ -1,0 +1,74 @@
+🟡🟢🔴
+./events🟢
+    /interaction.js
+    "Please wait for cooldown to end"
+    'There was an error while executing this command!'
+./help🟢
+    /embeds.base
+    "Please choose one of these categories" 
+./player🟢
+    /playerhandler.js
+    'Search your song!'
+    "Please enter songs link or title here"
+    "Paste link or song's title here"
+./settings🟢
+    /reports
+    /reporthandler.js
+    "Status : Resolved \n This situation has been dealth with "
+    /bot
+    /changelang.js
+    "Language has been set to"
+    /create/embeds
+        /leaverplugin.js
+        "Leaver text set to : "+` \`${leaverPlugin.textLeave}\``
+        "Click here below for change it"
+        /twitchplugin.js
+        "Click for add"
+        "Add"
+        "Click here"
+        "Select a channel here below"
+        "This will be used to send notification when a streamer goes live"
+    /leaver/leaverhandler.js
+    'Set Leaver Text!'
+    'Please enter leave text here'
+    'Write a text here'
+    /twitch
+        /addstreamer.js
+        "Streamer not found,retry"
+        "Streamer already added to notification list"
+        "Streamer added to notification list"
+        /twitchhandler.js
+        'Add Streamer to notification list!'
+        "Please enter streamer's username here"
+        "Streamer's username here"
+    /welcomer/welcomerhandler.js
+    'Set Welcomer Text!'
+    'Please enter welcomer text here'
+    'Write a text here'
+./tutorial🟡
+    /create/settings/embeds
+        /playerembed.js
+        "This will send a Embed Message to your selected channel"
+        "Is useful for giving automatic roles to members"
+        /pluginembeds.js
+        "Click here below for create new Zones"
+        "this will be helpfull"
+        "Create"
+        "Delete"
+        /selectlang.js
+        "Click here below to change your preferred language"
+        "Warning: Only the Embed messages of this channel will change language."
+        "To ensure that this happens in other Channels too, please deactivate and reactivate the plugins or change the default channel to let the bot resend these Embeds messages."
+        "English"
+        "Italian"
+        "Spanish"
+        "German"
+./welcomer
+    /createcanvas.js
+    `Welcome <@${member.user.id}> . You are the ${member.guild.memberCount}th member !`
+    `<@${member.user.id}> leaved. We now have ${member.guild.memberCount} members left!`
+    /welcomer.js
+    "Please select a text to have inside your leave message in #welcomer-setting"
+    "Please select a background for your leave message in #welcomer-setting"
+
+lang.get(interaction.guild.lang)

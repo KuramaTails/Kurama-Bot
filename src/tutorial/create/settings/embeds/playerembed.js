@@ -4,7 +4,7 @@ module.exports = {
 	async execute(interaction,channel,lang) {
         const TutorialEmbed = new MessageEmbed()
         .setColor('#0099ff')
-        .setTitle("Bot Kurama Tutorial (5/6) : Set up player")
+        .setTitle("Bot Kurama : Set up player")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
         .addField(lang.get(interaction.guild.settings.lang).tutorial.part5["field1"],lang.get(interaction.guild.settings.lang).tutorial.part5["field2"])
         const button1 = new MessageActionRow()
@@ -34,7 +34,7 @@ module.exports = {
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Choose Role Embed")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .addField("This will send a Embed Message to your selected channel","Is useful for giving automatic roles to members")
+        .addField(lang.get(interaction.guild.settings.lang).plugins.embeds.chooseRole["desc1"],lang.get(interaction.guild.settings.lang).plugins.embeds.chooseRole["desc2"])
         const button2 = new MessageActionRow()
         button2.addComponents(
             new MessageSelectMenu()

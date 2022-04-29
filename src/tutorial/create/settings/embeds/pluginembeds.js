@@ -6,7 +6,7 @@ module.exports = {
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Zones creator")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .addField("Click here below for create new Zones","this will be helpfull")                
+        .addField(lang.get(interaction.guild.lang).settings.embeds.zones['desc1'],lang.get(interaction.guild.lang).settings.embeds.zones['desc2'])                
         const buttons1 = new MessageActionRow()
         buttons1.addComponents(
             new MessageButton()
@@ -16,11 +16,11 @@ module.exports = {
             .setDisabled(true),
             new MessageButton()
             .setCustomId(`settings-bot-adminZoneEnable`)
-            .setLabel("Create")
+            .setLabel(lang.get(interaction.guild.lang).settings['create'])
             .setStyle(`SUCCESS`),
             new MessageButton()
             .setCustomId(`settings-bot-adminZoneDisable`)
-            .setLabel("Delete")
+            .setLabel(ang.get(interaction.guild.lang).settings['delete'])
             .setStyle(`DANGER`)
             .setDisabled(true),
         )
@@ -39,11 +39,11 @@ module.exports = {
             .setDisabled(true),
             new MessageButton()
             .setCustomId(`settings-bot-ticketZoneEnable`)
-            .setLabel("Create")
+            .setLabel(lang.get(interaction.guild.lang).settings['create'])
             .setStyle(`SUCCESS`),
             new MessageButton()
             .setCustomId(`settings-bot-ticketZoneDisable`)
-            .setLabel("Delete")
+            .setLabel(lang.get(interaction.guild.lang).settings['delete'])
             .setStyle(`DANGER`)
             .setDisabled(true),
         )
@@ -57,7 +57,7 @@ module.exports = {
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Plugins Enabler")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .addField("Click here below for enable plugins","this will very usefull") 
+        .addField(lang.get(interaction.guild.lang).settings.embeds.plugins['desc1'],lang.get(interaction.guild.lang).settings.embeds.plugins['desc2'])                
         const buttons3 = new MessageActionRow()
         buttons3.addComponents(
             new MessageButton()
@@ -67,11 +67,11 @@ module.exports = {
             .setDisabled(true),
             new MessageButton()
             .setCustomId(`settings-bot-autorolePluginEnable`)
-            .setLabel("Enable")
+            .setLabel(lang.get(interaction.guild.lang).settings['enable'])
             .setStyle(`SUCCESS`),
             new MessageButton()
             .setCustomId(`settings-bot-autorolePluginDisable`)
-            .setLabel("Disable")
+            .setLabel(lang.get(interaction.guild.lang).settings['disable'])
             .setStyle(`DANGER`)
             .setDisabled(true),
         )
@@ -90,11 +90,11 @@ module.exports = {
             .setDisabled(true),
             new MessageButton()
             .setCustomId(`settings-bot-twitchPluginEnable`)
-            .setLabel("Enable")
+            .setLabel(lang.get(interaction.guild.lang).settings['enable'])
             .setStyle(`SUCCESS`),
             new MessageButton()
             .setCustomId(`settings-bot-twitchPluginDisable`)
-            .setLabel("Disable")
+            .setLabel(lang.get(interaction.guild.lang).settings['disable'])
             .setStyle(`DANGER`)
             .setDisabled(true),
         )
@@ -113,11 +113,11 @@ module.exports = {
             .setDisabled(true),
             new MessageButton()
             .setCustomId(`settings-bot-welcomerPluginEnable`)
-            .setLabel("Enable")
+            .setLabel(lang.get(interaction.guild.lang).settings['enable'])
             .setStyle(`SUCCESS`),
             new MessageButton()
             .setCustomId(`settings-bot-welcomerPluginDisable`)
-            .setLabel("Disable")
+            .setLabel(lang.get(interaction.guild.lang).settings['disable'])
             .setStyle(`DANGER`)
             .setDisabled(true),
         )
@@ -136,11 +136,11 @@ module.exports = {
             .setDisabled(true),
             new MessageButton()
             .setCustomId(`settings-bot-leaverPluginEnable`)
-            .setLabel("Enable")
+            .setLabel(lang.get(interaction.guild.lang).settings['enable'])
             .setStyle(`SUCCESS`),
             new MessageButton()
             .setCustomId(`settings-bot-leaverPluginDisable`)
-            .setLabel("Disable")
+            .setLabel(lang.get(interaction.guild.lang).settings['disable'])
             .setStyle(`DANGER`)
             .setDisabled(true),
         )

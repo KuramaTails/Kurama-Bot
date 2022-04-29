@@ -15,7 +15,7 @@ module.exports = {
             upsert:true,
         })
         await dbdisconnect()
-        interaction.guild.lang = part
+        interaction.guild.settings.lang = part
         await interaction.message.delete()
         const TutorialEmbed = new MessageEmbed()
         .setColor('#0099ff')

@@ -41,15 +41,18 @@ module.exports = {
         const attachment = new MessageAttachment(canvas.toBuffer(), 'profile-image.png');
         const embed = new MessageEmbed()
         if (add==true) {
-            embed.setColor('#36393e')
-            .setDescription(`Welcome <@${member.user.id}> . You are the ${member.guild.memberCount}th member !`)
-            .setImage('attachment://profile-image.png');
+            var string = lang.get(interaction.guild.lang).welcomer.canvas['descWelcome']
+            var result = string.replace("${member.user.id}",`${member.user.id}`);
+            result = result.replace("${member.guild.memberCount}",`${member.guild.memberCount}`);
         }
         else {
-            embed.setColor('#36393e')
-            .setDescription(`<@${member.user.id}> leaved. We now have ${member.guild.memberCount} members left!`)
-            .setImage('attachment://profile-image.png');
+            var string = lang.get(interaction.guild.lang).welcomer.canvas['descLeave']
+            var result = string.replace("${member.user.id}",`${member.user.id}`);
+            result = result.replace("${member.guild.memberCount}",`${member.guild.memberCount}`); 
         }
+        embed.setColor('#36393e')
+        .setDescription(result)
+        .setImage('attachment://profile-image.png');
         await selectedChannel.send({embeds: [embed],files: [attachment] });
     }
 };

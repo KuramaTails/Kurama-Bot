@@ -41,7 +41,7 @@ module.exports = {
         );
 		switch (category) {
             case "Back":
-                await baseEmbed.execute(interaction)
+                await baseEmbed.execute(interaction,lang)
             break;
             case "Admin":
                 await adminEmbed.execute(interaction,newButtons,pagNumber)

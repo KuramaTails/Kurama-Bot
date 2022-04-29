@@ -1,6 +1,4 @@
 const { MessageEmbed } = require("discord.js");
-const dbconnect = require("../../db/dbconnect");
-const dbdisconnect = require("../../db/dbdisconnect");
 const guildSchema = require("../../schemas/guild-schema");
 module.exports = {
     async execute(guild,twitch) {
@@ -22,7 +20,7 @@ module.exports = {
             .setURL("https://twitch.tv/"+found.broadcaster_login)
             .setDescription(found.title)
             .setImage(thumbnail)
-            //textChannel.send({embeds:[streamingEmbed]})
+            textChannel.send({embeds:[streamingEmbed]})
         }
 	}
 };

@@ -10,9 +10,9 @@ module.exports = {
         switch (customId) {
 			case "addStreamer":
                 var customId="modal-"+customId
-                var title ='Add Streamer to notification list!'
-                var label="Please enter streamer's username here"
-                var placeHolder="Streamer's username here"
+                var title =lang.get(interaction.guild.lang).plugins.twitchPlugin.modal["title"]
+                var label=lang.get(interaction.guild.lang).plugins.twitchPlugin.modal["label"]
+                var placeHolder=lang.get(interaction.guild.lang).plugins.twitchPlugin.modal["placeHolder"]
                 modallayout.execute(interaction,bot.client,customId,title,label,placeHolder)
 			break;
 			case "SelectChannel":

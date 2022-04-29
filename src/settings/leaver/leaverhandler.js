@@ -6,9 +6,9 @@ module.exports= {
         switch (customId) {
             case "textLeaver":
                 var customId="modal-"+customId
-                var title ='Set Leaver Text!'
-                var label='Please enter leave text here'
-                var placeHolder='Write a text here'
+                var title =lang.get(interaction.guild.lang).plugins.leaverPlugin.modal["title"]
+                var label=lang.get(interaction.guild.lang).plugins.leaverPlugin.modal["label"]
+                var placeHolder=lang.get(interaction.guild.lang).plugins.leaverPlugin.modal["placeholder"]
                 modallayout.execute(interaction,bot.client,customId,title,label,placeHolder)
             return
         }

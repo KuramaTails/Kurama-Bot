@@ -8,22 +8,22 @@ module.exports = {
         var selectedChannel = await member.guild.channels.resolve(selectGuildWelcomer[0].channelId)
         switch (add) {
             case false:
-                if (!welcomerPlugin.textLeave) {
-                    return selectedChannel.send("Please select a text to have inside your leave message in #welcomer-setting")
+                if (!leaverPlugin.textLeave) {
+                    return selectedChannel.send(lang.get(interaction.guild.lang).welcomer.errors['noText'])
                 }
                 else {
                     if (!member.guild.settings.welcomerPlugin.background) {
-                        return selectedChannel.send("Please select a background for your leave message in #welcomer-setting")
+                        return selectedChannel.send(lang.get(interaction.guild.lang).welcomer.errors['noBackground'])
                     }        
                 }
             break;
             case true:
                 if (!welcomerPlugin.textWelcome) {
-                    return selectedChannel.send("Please select a text to have inside your welcome message in #welcomer-setting")
+                    return selectedChannel.send(lang.get(interaction.guild.lang).welcomer.errors['noText'])
                 }
                 else {
                     if (!welcomerPlugin.background) {
-                        return selectedChannel.send("Please select a background for your welcome message in #welcomer-setting")
+                        return selectedChannel.send(lang.get(interaction.guild.lang).welcomer.errors['noBackground'])
                     }  
                     
                 }

@@ -22,13 +22,13 @@ module.exports = {
             }];
             allPermissions.push.apply(allPermissions,permissions)
         });
-        await commandsList.forEach(command => {
+        /*await commandsList.forEach(command => {
             guild.commands.permissions.add({
                 command: command.id,
                 permissions: allPermissions
             }).then(console.log(`Set permissions in ${guild.name}`))
             .catch(console.error);
-        })        
+        })        */
     }
 };
     

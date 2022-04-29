@@ -1,4 +1,8 @@
 {
+    "interaction": {
+        "cooldown":"Please wait for cooldown to end",
+        "err":"There was an error while executing this command!"
+    },
     "langs": {
         "en":"English",
         "it":"Italian",
@@ -10,11 +14,48 @@
         "delete":"Delete",
         "enable":"Enable",
         "disable":"Disable",
+        "embeds":{
+            "selectLang": {
+                "desc":"Click here below to change your preferred language",
+                "field1":"Warning: Only the Embed messages of this channel will change language.",
+                "field2":"To ensure that this happens in other Channels too, please deactivate and reactivate the plugins or change the default channel to let the bot resend these Embeds messages.",
+                "set": "Language has been set to"
+            },
+            "chooseRole": {
+                "desc1":"This will send a Embed Message to your selected channel",
+                "desc2":"Is useful for giving automatic roles to members"
+            },
+            "zones": {
+                "desc1":"Click here below for create new Zones",
+                "desc2":"Enabling one of them will create a new category with many Channels, which will be automatically deleted when disabled"
+            },
+            "plugins": {
+                "desc1":"Click here below to enable plugins : a new channel will be created below where you can set up the plugin",
+                "desc2":"Warning : Do not delete those channels,disabling a plugin will automatically delete them "
+            }
+        },
         "plugins": {
             "twitchPlugin": {
                 "createTwitchZoneField1":"Click here to create a Twitch zone: ",
                 "createTwitchZoneField2":"There you will be able to add streamers to the notification.",
-                "createTwitchZoneBtn":"Create Twitch Zone"
+                "createTwitchZoneBtn":"Create Twitch Zone",
+                "modal": {
+                    "title":"Add Streamer to notification list!",
+                    "label":"Please enter streamer's username here",   
+                    "placeholder":"Streamer's username here"
+                },
+                "embed":{
+                    "addStreamerdesc1":"Click here to add a streamer to your notifications",
+                    "addStreamerdesc2":"You will receive a notification when streamer goes live in your selected Channel",
+                    "btn1":"Click here to Add",
+                    "selectChanneldesc1":"Select a channel here below",
+                    "selectChanneldesc2":"This will be used to send notification when a streamer goes live"
+                },
+                "replies":{
+                    "added":"Streamer added to notification list",
+                    "notFound":"Streamer not found,retry",
+                    "alreadyAdded":"Streamer already added to notification list"                    
+                }
             },
             "autorolePlugin":{
                 "AutoRoleDesc1":"Please select a role:",
@@ -25,6 +66,11 @@
                 "text":"Welcomer text has been set to",
                 "welcomerChannelSet":"Welcomer's channel has been set",
                 "welcomerBackgroundSet":"Welcomer's background has been set",
+                "modal": {
+                    "title":"Set Welcomer Text!",
+                    "label":"Please enter welcomer text here",   
+                    "placeholder":"Write a text here"
+                },
                 "embeds": {
                     "chooseChannelDesc1":"Please select a text channel: this will be used by the welcomer to send messages when members join ",
                     "chooseChannelDesc2":"(Tip: Select #welcome if previously created)",
@@ -34,9 +80,12 @@
                 }
             },
             "leaverPlugin":{
-                "text":"Leaver text has been set to",
-                "embeds": {
-                    "changeTextDesc":"Click here to change the text"
+                "text":"Leaver text has been set to :",
+                "changeText":"Click here to change the text",
+                "modal":{
+                    "title":"Set Leaver Text!",
+                    "label":"Please enter leave text here",
+                    "placeholder":"Write a text here"
                 }
             },
             "playerPlugin":{
@@ -54,6 +103,11 @@
             "search":"🔎 Enter your link or song's title here!",
             "btnLessCommand":"Less commands",   
             "btnMoreCommand":"More commands"
+        },
+        "modal": {
+            "title":"Search your song!",
+            "label":"Please enter songs link or title here",   
+            "placeholder":"Paste link or song's title here"
         },
         "embeds": { 
             "playing":"Playing",
@@ -108,6 +162,9 @@
                     "desc":"Welcome to the reports channel. Only admins will be able to view this channel.",
                     "field1":"You will be able to pick an option from the menu below every report.",
                     "field2":"Options will be : \n -`Warn` \n -`Kick` \n -`Ban` \n -`Ignore` \n -`Report reporter` (this will warn the user who reported)"
+                },
+                "resolved":{
+                    "desc":"Status : Resolved \n This situation has been dealth with "
                 }
             },
             "warn":{
@@ -202,7 +259,13 @@
     "welcomer": {
         "canvas": {
             "join":"Welcome!",
-            "leave":"Oh no!"
+            "leave":"Oh no!",
+            "descWelcome":"Welcome <@${member.user.id}> . You are the ${member.guild.memberCount}th member !",
+            "descLeave":"<@${member.user.id}> leaved. We now have ${member.guild.memberCount} members left!"
+        },
+        "errors":{
+            "noText":"Please select a text to have inside your leave message in #welcomer-setting",
+            "noBackground":"Please select a background for your leave message in #welcomer-setting"
         }
     },
     "chooseRole": {

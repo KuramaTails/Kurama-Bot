@@ -7,7 +7,7 @@ module.exports = {
 	async execute(interaction) {
         if (bot.cooldownUser.has(interaction.user.id)) {
             await interaction.deferReply( {ephemeral: true});
-            await interaction.followUp({ content: "Please wait for cooldown to end", ephemeral: true });
+            await interaction.followUp({ content: bot.lang.get(interaction.guild.settings.lang).interaction["cooldown"], ephemeral: true });
             return
         }
         try {
@@ -26,7 +26,7 @@ module.exports = {
             }
         } catch (error) {
             console.error(error);
-            await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+            await interaction.followUp({ content: bot.lang.get(interaction.guild.settings.lang).interaction["err"], ephemeral: true });
         } finally {
             setTimeout(() => {
                 bot.cooldownUser.delete(interaction.user.id);

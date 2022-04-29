@@ -1,5 +1,4 @@
 const guildSchema = require("../../schemas/guild-schema")
-const botsettings = require("../../tutorial/create/settings/botsettings.js")
 const playerembed = require("../../tutorial/create/settings/embeds/playerembed")
 const pluginembeds = require("../../tutorial/create/settings/embeds/pluginembeds")
 module.exports = {
@@ -23,7 +22,7 @@ module.exports = {
         await pluginembeds.execute(interaction,channel,lang)
         var selectedLang = interaction.message.components[0].components.find(button=> button.customId == interaction.customId).label
         interaction.followUp({
-            content: "Language has been set to" + ` \`${selectedLang}\``,
+            content: lang.get(interaction.guild.settings.lang).settings.embeds.selectLang["set"] + ` \`${selectedLang}\``,
             ephemeral: true
         })
     }
