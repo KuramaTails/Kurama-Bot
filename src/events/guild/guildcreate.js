@@ -9,10 +9,11 @@ module.exports = {
     name: 'guildCreate',
     async execute(guild) {
         await dbconnect()
-        var listCommands = []
-        var commandsKeys = Array.from(bot.commands.keys())
-        commandsKeys.forEach(command => listCommands.push(bot.commands.get(command).data.toJSON()))
-        await registerpermissions.execute(guild,bot.client.user.id,listCommands)
+        guild.settings = {
+            lang: "en",
+            plugins: undefined
+        }
+        await registerpermissions.execute(guild,bot.client.user.id,bot.commands)
         await fetchAll.execute(guild) 
         console.log("Fetched all!")
         await dbdisconnect()

@@ -1,11 +1,20 @@
 const Canvas = require ('canvas');
 const { MessageAttachment, MessageEmbed } = require('discord.js');
+const fs= require('fs');
+
 module.exports = {
-    async execute(member,selectGuildWelcomer,selectedChannel,add,lang) {
+    async execute(member,selectedChannel,add,lang) {
+        var guildSettings = member.guild.settings
+        var title = add? lang.get(guildSettings.lang).welcomer.canvas["join"] : lang.get(guildSettings.lang).welcomer.canvas["leave"]
+        var text = add? guildSettings.plugins.welcomerPlugin.textWelcomer : guildSettings.plugins.leaverPlugin.textLeave
+        var desc = add? lang.get(guildSettings.lang).welcomer.canvas['descWelcome'] : lang.get(guildSettings.lang).welcomer.canvas['descLeave']
+        var result = desc.replace("${member.user.id}",`${member.user.id}`);
+        result = result.replace("${member.guild.memberCount}",`${member.guild.memberCount}`);
+        var repDesc = result
+        var pathBackground = guildSettings.plugins.welcomerPlugin.background
         const canvas = Canvas.createCanvas(700,250);
         const context = canvas.getContext('2d');
-
-        const background = await Canvas.loadImage(`${selectGuildWelcomer[0].background}.jpg`);
+        const background = await Canvas.loadImage(pathBackground+".jpg");
         context.drawImage(background, 0, 0, canvas.width, canvas.height);
         context.strokeStyle = '#ffffff';
         context.lineWidth = 5;
@@ -13,12 +22,7 @@ module.exports = {
 
         context.font = '28px sans-serif';
         context.fillStyle = '#ffffff';
-        if (add==true) {
-            context.fillText(lang.get(member.guild.lang).welcomer.canvas["join"], canvas.width / 2.5, canvas.height / 3.5);
-        }
-        else {
-            context.fillText(lang.get(member.guild.lang).welcomer.canvas["leave"], canvas.width / 2.5, canvas.height / 3.5);
-        }
+        context.fillText(title, canvas.width / 2.5, canvas.height / 3.5);
 
         context.font = applyText(canvas, `${member.user.username}!`);
         context.fillStyle = '#ffffff';
@@ -26,7 +30,7 @@ module.exports = {
 
         context.font = '22px sans-serif';
         context.fillStyle = '#ffffff';
-        context.fillText(`${selectGuildWelcomer[0].textWelcome}`, canvas.width / 2.5, canvas.height / 1.4);
+        context.fillText(text, canvas.width / 2.5, canvas.height / 1.4);
         
         context.beginPath();
         context.arc(125, 125, 100, 0, Math.PI * 2, true);
@@ -40,18 +44,8 @@ module.exports = {
 
         const attachment = new MessageAttachment(canvas.toBuffer(), 'profile-image.png');
         const embed = new MessageEmbed()
-        if (add==true) {
-            var string = lang.get(interaction.guild.lang).welcomer.canvas['descWelcome']
-            var result = string.replace("${member.user.id}",`${member.user.id}`);
-            result = result.replace("${member.guild.memberCount}",`${member.guild.memberCount}`);
-        }
-        else {
-            var string = lang.get(interaction.guild.lang).welcomer.canvas['descLeave']
-            var result = string.replace("${member.user.id}",`${member.user.id}`);
-            result = result.replace("${member.guild.memberCount}",`${member.guild.memberCount}`); 
-        }
         embed.setColor('#36393e')
-        .setDescription(result)
+        .setDescription(repDesc)
         .setImage('attachment://profile-image.png');
         await selectedChannel.send({embeds: [embed],files: [attachment] });
     }

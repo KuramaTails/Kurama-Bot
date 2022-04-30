@@ -10,10 +10,10 @@ module.exports= {
         switch (customId) {
             case "textWelcomer":
                 var customId="modal-"+customId
-                var title =lang.get(interaction.guild.lang).plugins.welcomerPlugin.modal["title"]
-                var label=lang.get(interaction.guild.lang).plugins.welcomerPlugin.modal["label"]
-                var placeHolder=lang.get(interaction.guild.lang).plugins.welcomerPlugin.modal["placeHolder"]
-                modallayout.execute(interaction,bot.client,customId,title,label,placeHolder)
+                var title =lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["title"]
+                var label=lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["label"]
+                var placeholder=lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["placeholder"]
+                modallayout.execute(interaction,bot.client,customId,title,label,placeholder)
             return;
             case "selectWelcomerChannel":
                 welcomerPlugin.channelId = interaction.values[0]

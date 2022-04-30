@@ -34,7 +34,7 @@ module.exports = {
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Choose Role Embed")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .addField(lang.get(interaction.guild.settings.lang).plugins.embeds.chooseRole["desc1"],lang.get(interaction.guild.settings.lang).plugins.embeds.chooseRole["desc2"])
+        .addField(lang.get(interaction.guild.settings.lang).settings.embeds.chooseRole["desc1"],lang.get(interaction.guild.settings.lang).settings.embeds.chooseRole["desc2"])
         const button2 = new MessageActionRow()
         button2.addComponents(
             new MessageSelectMenu()

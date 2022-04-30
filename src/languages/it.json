@@ -1,4 +1,8 @@
 {
+    "interaction": {
+        "cooldown":"Per favore attendi che il tempo di recupero finisca",
+        "err":"Si è verificato un errore durante l'esecuzione di questo comando!!"
+    },
     "langs": {
         "en":"Inglese",
         "it":"Italiano",
@@ -10,21 +14,71 @@
         "delete":"Elimina",
         "enable":"Abilita",
         "disable":"Disabilita",
+        "embeds":{
+            "selectLang": {
+                "desc":"Clicca qui sotto per cambiare la tua lingua preferita",
+                "field1":"Attenzione: solo i messaggi Embed di questo canale cambieranno lingua.",
+                "field2":"Per assicurarti che ciò avvenga anche in altri canali, disattiva e riattiva i plug-in o cambia il canale predefinito per consentire al bot di inviare nuovamente questi messaggi nella lingua selezionata.",
+                "set": "La lingua è stata impostata su"
+            },
+            "chooseRole": {
+                "desc1":"Questo invierà un messaggio Embed al canale selezionato",
+                "desc2":"È utile per assegnare ruoli automatici ai membri"
+            },
+            "zones": {
+                "desc1":"Clicca qui sotto per creare nuove Zone",
+                "desc2":"Abilitando uno di essi si creerà una nuova categoria con molti Canali, che verranno automaticamente cancellati quando disabilitati"
+            },
+            "plugins": {
+                "desc1":"Clicca qui sotto per abilitare i plugin: sotto verrà creato un nuovo canale dove puoi impostare il plugin",
+                "desc2":"Attenzione: non eliminare quei canali, la disabilitazione di un plugin li cancellerà automaticamente "
+            }
+        },
         "plugins": {
             "twitchPlugin": {
                 "createTwitchZoneField1":"Clicca qui per creare la Twitch Zone: ",
-                "createTwitchZoneField2":"Qui potrai aggiunngere streamers alle notifiche.",
-                "createTwitchZoneBtn":"Crea Twitch Zone"
+                "createTwitchZoneField2":"Qui potrai aggiungere streamers alle notifiche.",
+                "createTwitchZoneBtn":"Crea Twitch Zone",
+                "modalAdd": {
+                    "title":"Aggiungi uno streamer alle notifiche!",
+                    "label":"Inserisci il nome utente dello streamer",   
+                    "placeholder":"Nome utente streamer qui"
+                },
+                "modalDelete": {
+                    "title":"Elimina uno streamer dalle notifiche!",
+                    "label":"Inserisci il nome utente dello streamer",   
+                    "placeholder":"Nome utente streamer qui"
+                },
+                "embed":{
+                    "addStreamerdesc1":"Fai clic qui per aggiungere uno streamer alle tue notifiche",
+                    "addStreamerdesc2":"Riceverai una notifica quando lo streamer andrà in diretta nel tuo canale selezionato",
+                    "btn1":"Clicca qui per aggiungere",
+                    "btn2":"Clicca qui per eliminare",
+                    "selectChanneldesc1":"Seleziona un canale qui sotto",
+                    "selectChanneldesc2":"Sarà usato per inviare una notifica quando uno streamer va in diretta"
+                },
+                "replies":{
+                    "added":"Streamer aggiunto alle notifiche",
+                    "notFound":"Streamer non trovato,riprova",
+                    "alreadyAdded":"Streamer già aggiunto alle notifiche",
+                    "notListed":"Streamer non trovato nelle notifiche,riprova",
+                    "foundDelete":"Streamer trovato e eliminato dalle notifiche"               
+                }
             },
             "autorolePlugin":{
                 "AutoRoleDesc1":"Prego, seleziona un ruolo:",
                 "AutoRoleDesc2":"Questo verrà aggiunto automaticamente quando un membro entrerà nel Discord",
-                "autoRoleSet":"Autorole  è stato impostato su :"
+                "autoRoleSet":"Autorole è stato impostato su :"
             },
             "welcomerPlugin":{
                 "text":"Il testo del Welcomer è stato impostato su :",
                 "welcomerChannelSet":"Il canale del Welcomer è stato impostato su :",
                 "welcomerBackgroundSet":"Lo sfondo del Welcomer è stato impostato su : ",
+                "modal": {
+                    "title":"Imposta testo di benvenuto!",
+                    "label":"Inserisci qui il testo di benvenuto qui",   
+                    "placeholder":"Scrivi qui il testo"
+                },
                 "embeds": {
                     "chooseChannelDesc1":"Prego, seleziona un canale testuale: questo verrà utilizzato dal Welcomer per mandare messaggi quando dei membri entreranno nel Discord",
                     "chooseChannelDesc2":"(Consiglio: Seleziona #welcome se precedentemente creato)",
@@ -34,9 +88,12 @@
                 }
             },
             "leaverPlugin":{
-                "text":"Il testo del Leaver è stato imposato su ",
-                "embeds": {
-                    "changeTextDesc":"Clicca qui per cambiare il testo"
+                "text":"Il testo del Leaver è stato impostato su ",
+                "changeText":"Clicca qui per cambiare il testo",
+                "modal":{
+                    "title":"Imposta testo del Leaver!",
+                    "label":"Per favore inserisci il testo del leaver qui",
+                    "placeholder":"Scrivi qui il testo"
                 }
             },
             "playerPlugin":{
@@ -54,6 +111,11 @@
             "search":"🔎 Inserisci qui il tuo link o il titolo della canzone!",
             "btnLessCommand":"Meno comandi",   
             "btnMoreCommand":"Più comandi"
+        },
+        "modal": {
+            "title":"Cerca la tua canzone!",
+            "label":"Inserisci il link o il titolo della canzone",   
+            "placeholder":"Incolla qui il link o il titolo del brano"
         },
         "embeds": { 
             "playing":"Riproducendo",
@@ -94,9 +156,9 @@
             "createTicketZoneField1":"Clicca qui per creare la Ticket Zone:",
             "createTicketZoneField2":"Questa verrà utilizzata dagli utenti per qualsiasi problema.",
             "createTicketZoneBtn":"Crea Ticket Zone",
-            "createEmbedField1":"Clicca qui per creare un nuovo ticket",
-            "createEmbedField2":"Puoi usarlo per segnalare problemi agli amministratori",
-            "createBtn":"Crea un nuovo Ticket"
+            "startEmbedField1":"Clicca qui sotto per chiudere questo ticket",
+            "startEmbedField2":"Questo canale verrà eliminato in 5 secondi",
+            "startBtn":"🔒Chiudi e cancella biglietto"
         },
         "adminZone":{
             "reports":{
@@ -108,6 +170,9 @@
                     "desc":"Benvenuto nel canale di report. Solo gli admin potranno vedere questo canale.",
                     "field1":"Avrai la possibilità di scegliere un opzione dal menu qui sotto per ogni report.",
                     "field2":"Le opzioni saranno : \n -`Warn` \n -`Kick` \n -`Ban` \n -`Ignore` \n -`Report reporter` (questo manderà un avvertimento a chi ha eseguito il report)"
+                },
+                "resolved":{
+                    "desc":"Stato: Risolto \n Questa situazione è stata risolta con "
                 }
             },
             "warn":{
@@ -172,9 +237,9 @@
             "optMemberBan": "<@${member.id}> è stato bannato",
             "optMemberBanReason": "<@${member.id}> è stato bannato per ${reason}",
             "optMemberUnban": "<@${member.id}> è stato sbannato",
-            "optMemberUnbanReason": "<@${member.id}> è stato sbannato per ${reason }",
+            "optMemberUnbanReason": "<@${member.id}> è stato sbannato per ${reason}",
             "optMemberKick": "<@${member.id}> è stato espulso",
-            "optMemberKickReason": "<@${member.id}> è stato espulso per ${ragione}",
+            "optMemberKickReason": "<@${member.id}> è stato espulso per ${reason}",
             "optMemberTimeout": "<@${member.id}> è stato sospeso",
             "optMemberTimeoutReason": "<@ ${member.id}> è stato sospeso per ${reason}",
             "optClearChat": "${number} messaggi eliminati",
@@ -202,7 +267,14 @@
     "welcomer": {
         "canvas": {
             "join":"Benvenuto!",
-            "leave":"Oh no!"
+            "leave":"Oh no!",
+            "descWelcome":"Benvenuto <@${member.user.id}> . Sei il ${member.guild.memberCount}o membro! !",
+            "descLeave":"<@${member.user.id}> ha lasciato il Discord. Ora abbiamo ${member.guild.memberCount} membri rimanenti!"
+        },
+        "errors":{
+            "noTextWelcomer":"Seleziona un testo da inserire nel messaggio del Welcomer in #welcomer-plugin",
+            "noTextLeaver":"Seleziona un testo da inserire nel messaggio del Leaver in #welcomer-plugin",
+            "noBackground":"Seleziona uno sfondo per il tuo messaggio del Welcomer/Leaver in #welcomer-plugin"
         }
     },
     "chooseRole": {

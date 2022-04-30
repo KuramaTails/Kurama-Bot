@@ -5,8 +5,8 @@ module.exports = {
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Language selection")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .setDescription(lang.get(interaction.guild.settings.lang).settings.selectLang["desc"])
-        .addField(lang.get(interaction.guild.settings.lang).settings.selectLang["field1"],lang.get(interaction.guild.settings.lang).settings.selectLang["field2"])
+        .setDescription(lang.get(interaction.guild.settings.lang).settings.embeds.selectLang["desc"])
+        .addField(lang.get(interaction.guild.settings.lang).settings.embeds.selectLang["field1"],lang.get(interaction.guild.settings.lang).settings.embeds.selectLang["field2"])
         const buttons = new MessageActionRow()
         buttons.addComponents(
             new MessageButton()

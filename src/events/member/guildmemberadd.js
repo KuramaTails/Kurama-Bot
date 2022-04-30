@@ -13,7 +13,8 @@ module.exports = {
         await welcomer.execute(member,add,bot.lang)
         if (!member.guild.settings.plugins.autorolePlugin.active) return
         if (!member.guild.settings.plugins.autorolePlugin.role) return
-        let selRole = member.guild.roles.cache.find(role => role.id === selectGuildAutorole[0].roleId)
+        var roleId = member.guild.settings.plugins.autorolePlugin.role
+        let selRole = member.guild.roles.cache.find(role => role.id === roleId)
         try {
             await member.roles.add(selRole)
         } catch (error) {

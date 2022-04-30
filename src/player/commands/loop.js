@@ -13,7 +13,7 @@ module.exports = {
                     player.setRepeatMode(voiceChannel, 1)
                     mode = "DISABLED"
                     interaction.followUp({
-                        content: lang.get(interaction.guild.settings.lang).player.settings["repeatMode"]+ "`" + mode + "`",
+                        content: lang.get(interaction.guild.settings.lang).player.commands["repeatMode"]+ "`" + mode + "`",
                         ephemeral: true
                     })
                     break;
@@ -21,7 +21,7 @@ module.exports = {
                     player.setRepeatMode(voiceChannel, 2)
                     mode = "SONG"
                     interaction.followUp({
-                        content: lang.get(interaction.guild.settings.lang).player.settings["repeatMode"] +"`" + mode + "`",
+                        content: lang.get(interaction.guild.settings.lang).player.commands["repeatMode"] +"`" + mode + "`",
                         ephemeral: true
                     })
                     break;
@@ -29,13 +29,13 @@ module.exports = {
                     player.setRepeatMode(voiceChannel, 0)
                     var mode = "QUEUE"
                     interaction.followUp({
-                        content: lang.get(interaction.guild.settings.lang).player.settings["repeatMode"]+ "`" + mode + "`",
+                        content: lang.get(interaction.guild.settings.lang).player.commands["repeatMode"]+ "`" + mode + "`",
                         ephemeral: true
                     })
                     break;
                 default:
                     interaction.followUp({
-                        content: lang.get(interaction.guild.settings.lang).player.settings["repeatMode"],
+                        content: lang.get(interaction.guild.settings.lang).player.commands.errors["repeatMode"],
                         ephemeral: true
                     })
                     break;

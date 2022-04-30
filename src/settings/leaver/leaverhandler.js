@@ -6,9 +6,9 @@ module.exports= {
         switch (customId) {
             case "textLeaver":
                 var customId="modal-"+customId
-                var title =lang.get(interaction.guild.lang).plugins.leaverPlugin.modal["title"]
-                var label=lang.get(interaction.guild.lang).plugins.leaverPlugin.modal["label"]
-                var placeHolder=lang.get(interaction.guild.lang).plugins.leaverPlugin.modal["placeholder"]
+                var title =lang.get(interaction.guild.settings.lang).settings.plugins.leaverPlugin.modal["title"]
+                var label=lang.get(interaction.guild.settings.lang).settings.plugins.leaverPlugin.modal["label"]
+                var placeHolder=lang.get(interaction.guild.settings.lang).settings.plugins.leaverPlugin.modal["placeholder"]
                 modallayout.execute(interaction,bot.client,customId,title,label,placeHolder)
             return
         }

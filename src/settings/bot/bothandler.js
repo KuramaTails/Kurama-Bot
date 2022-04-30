@@ -197,6 +197,17 @@ module.exports = {
             break;
             case "selectChooseRoleChannel":
                 var channelId = interaction.values[0]
+                interaction.guild.settings.chooseRole= interaction.values[0]
+                /*await guildSchema.findOneAndUpdate({
+                    _id: interaction.guild.id,
+                }, {
+                    $set: {
+                        "chooseRole.channelId": interaction.values[0],
+                    }
+                },
+                {
+                    upsert:true,
+                })*/
                 var channel = interaction.guild.channels.cache.find(channel=> channel.id == channelId)
                 await chooserolesembed.execute(channel,lang)
             break;

@@ -16,8 +16,9 @@ module.exports = {
                 var customId="modal-"+customId
                 var title =lang.get(interaction.guild.settings.lang).player.modal["title"]
                 var label=lang.get(interaction.guild.settings.lang).player.modal["label"]
-                var placeHolder=lang.get(interaction.guild.settings.lang).player.modal["placeholder"]
-                modallayout.execute(interaction,bot.client,customId,title,label,placeHolder)
+                var placeholder=lang.get(interaction.guild.settings.lang).player.modal["placeholder"]
+                console.log(title,label,placeholder)
+                modallayout.execute(interaction,bot.client,customId,title,label,placeholder)
             break;
             default:
                 playerbuttons.execute(interaction,player,lang,customId,playerUser)

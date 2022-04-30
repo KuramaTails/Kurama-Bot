@@ -34,7 +34,7 @@ module.exports = {
                 }
             });
             try {
-                await channel.send({embeds: [rolesEmbed],components: buttons})
+                buttons[0].components[0]? await channel.send({embeds: [rolesEmbed],components: buttons}) : await channel.send({embeds: [rolesEmbed]})
             } catch (error) {
                 console.log(error) 
             }

@@ -6,7 +6,7 @@ const leaverhandler = require("./leaver/leaverhandler");
 module.exports = {
 	async execute(interaction,lang,separateCustomId) {
 		var plugins= interaction.guild.settings.plugins
-		if (!(separateCustomId[2].includes("text") || separateCustomId[2].includes("addStreamer"))) {
+		if (!(separateCustomId[2].includes("text") || separateCustomId[2].includes("Streamer"))) {
 			await interaction.deferUpdate()
 		}
         switch (separateCustomId[1]) {

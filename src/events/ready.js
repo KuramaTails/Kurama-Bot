@@ -19,7 +19,8 @@ module.exports = {
             var selectedGuild = await guildSettings.find(setting => setting.id == guild.id)
             if (!selectedGuild) return
             guild.settings = {
-                lang: selectedGuild.guildLang,
+                lang: selectedGuild.guildLang? selectedGuild.guildLang : "en",
+                chooseRole: selectedGuild.chooseRole? selectedGuild.chooseRole : undefined,
                 plugins: selectedGuild.plugins
             }
             await loadstreamer.execute(guild.settings.plugins.twitchPlugin,bot.twitch)

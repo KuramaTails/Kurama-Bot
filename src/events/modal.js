@@ -3,6 +3,7 @@ const search = require("../player/events/search");
 const updatewelcomer = require("../settings/welcomer/updatewelcomer");
 const addstreamer = require("../settings/twitch/addstreamer");
 const updateleaver = require("../settings/leaver/updateleaver");
+const deletestreamer = require("../settings/twitch/deletestreamer");
 
 module.exports = {
     name: 'modalSubmit',
@@ -24,8 +25,11 @@ module.exports = {
                         case 'modal-textLeaver':
                             await updateleaver.execute(modal,bot.lang)
                         break;
-                        case 'modal-twitch':
+                        case 'modal-addStreamer':
                             await addstreamer.execute(modal,bot.lang,bot.twitch)
+                        break;
+                        case 'modal-deleteStreamer':
+                            await deletestreamer.execute(modal,bot.lang,bot.twitch)
                         break;
                     }
                 } finally {

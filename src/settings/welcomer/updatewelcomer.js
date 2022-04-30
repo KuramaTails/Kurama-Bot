@@ -6,13 +6,13 @@ const guildSchema = require("../../schemas/guild-schema");
 module.exports = {
 	async execute(modal,lang) {
         var textWelcomer = modal.getTextInputValue('textinput-customid')
-        modal.guild.settings.plugins.leaverPlugin.textWelcomer = textWelcomer
+        modal.guild.settings.plugins.welcomerPlugin.textWelcomer = textWelcomer
         await dbconnect()
         await guildSchema.findOneAndUpdate({
             _id: modal.member.guild.id,
             }, {
                 $set: {
-                    "plugins.leaverPlugin.textWelcomer": textWelcomer,
+                    "plugins.welcomerPlugin.textWelcomer": textWelcomer,
                 }
             },
             {

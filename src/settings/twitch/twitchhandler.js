@@ -9,11 +9,16 @@ module.exports = {
 		var twitchPlugin = plugin.twitchPlugin
         switch (customId) {
 			case "addStreamer":
-                var customId="modal-"+customId
-                var title =lang.get(interaction.guild.lang).plugins.twitchPlugin.modal["title"]
-                var label=lang.get(interaction.guild.lang).plugins.twitchPlugin.modal["label"]
-                var placeHolder=lang.get(interaction.guild.lang).plugins.twitchPlugin.modal["placeHolder"]
-                modallayout.execute(interaction,bot.client,customId,title,label,placeHolder)
+                var title =lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalAdd["title"]
+                var label=lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalAdd["label"]
+                var placeholder=lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalAdd["placeholder"]
+                await modallayout.execute(interaction,bot.client,customId,title,label,placeholder)
+			break;
+			case "deleteStreamer":
+                var title =lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalDelete["title"]
+                var label=lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalDelete["label"]
+                var placeholder=lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalDelete["placeholder"]
+                await modallayout.execute(interaction,bot.client,customId,title,label,placeholder)
 			break;
 			case "SelectChannel":
 				twitchPlugin.channelId= interaction.values[0]

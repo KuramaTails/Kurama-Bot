@@ -25,7 +25,7 @@ module.exports = {
         const poll = new MessageEmbed() 
             .setColor('#0099ff')
             .setTitle(`**__Poll__**`)
-            .setDescription(`***${title}*** \n\n`+lang.get(interaction.guild.lang).commands.poll["desc1"]+`*${interaction.user}* \n`)
+            .setDescription(`***${title}*** \n\n`+lang.get(interaction.guild.settings.lang).commands.poll["desc1"]+`*${interaction.user}* \n`)
             for (let i = 0; i < listOptions.length; i++) {
                 if (listOptions[i]!= null) {
                     poll.addFields(
@@ -46,7 +46,7 @@ module.exports = {
                 const resultspoll = new MessageEmbed()
                     .setColor('#0099ff')
                     .setTitle(`**__Poll__**`)
-                    .setDescription(lang.get(interaction.guild.lang).commands.poll["desc2"])
+                    .setDescription(lang.get(interaction.guild.settings.lang).commands.poll["desc2"])
                     for (let i = 0; i < listOptions.length; i++) {
                         if (listOptions[i]!= null) {
                             resultspoll.addFields(

@@ -1,275 +1,284 @@
 {
-    "buttons": {        
-        "buttons": {        
-            "btnBack":"Zurück",
-            "btnPageDown":"Bild nach unten",
-            "btnPageUp":"Bild nach oben",
-            "btnLessCommand":"Weniger Befehle",   
-            "btnMoreCommand":"Weitere Befehle"
-        },
-        "player": {
-            "states": {        
-                "paused":"Spieler pausiert",
-                "resumed":"Spieler fortgesetzt"
-            },       
-            "settings": {        
-                "repeatMode":"Wiederholungsmodus einstellen auf",
-                "volSet":"Lautstärke einstellen auf"
-            }, 
-            "commands": {        
-                "skip":"Lied übersprungen",
-                "shuffle":"Warteschlange gemischt", 
-                "join":"Spieler ist Ihrem Sprachkanal beigetreten",
-                "leave":"Voice-Kanal verlassen",
-                "previousSong":"Vorherigen Song abspielen",
-                "errors": {  
-                    "memberJoin":"Bitte treten Sie zuerst einem Gesangskanal bei",
-                    "join":"Bereits beigetreten",
-                    "leave":"Bereits verlassen",
-                    "previousSong":"Keine vorherigen Songs in der Warteschlange",
-                    "queue":"Keine Songs in der Warteschlange",
-                    "skip":"Sie sind kein Administrator, ${memberLeft} weitere Mitglieder oder ein Administrator müssen auf Weiter Button klicken,um zu Überspringen "
-                }
-            }, 
-            "embeds": {        
-                "search":"🔎 Geben Sie hier Ihren Link oder Songtitel ein!",
-                "playing":"Wird gespielt",
-                "duration":"Dauer",
-                "queue":"Aktuelle Warteschlange",
-                "currentlyPlaying":"Wird gerade gespielt",
-                "errors": {        
-                    "playing":"Keine Songs wird gespielt"
-                }
-                
-            }        
-        },
-        "roles": {        
-            "optRoleAdded":"Rolle <@&${roleId}> hinzugefügt",
-            "optRoleRemoved":"Rolle <@&${roleId}> entfernt" 
-        },
-        "poll": {        
-            "optPollDeny":"Sie haben bereits eine Option ausgewählt",
-            "optPollThank":"Danke für die Teilnahme"
-        }
+    "interaction": {
+        "cooldown":"Bitte warten, bis die Abklingzeit abgelaufen ist",
+        "err":"Beim Ausführen dieses Befehls ist ein Fehler aufgetreten!"
     },
-    "commands": { 
-        "moderation": {        
-            "optRoleAdded":"Rolle ${role.name} hinzugefügt zu <@${member.id}>",
-            "optRoleRemoved":"Rolle ${role.name} entfernt zu <@${member.id}>",
-            "optMemberBan":"<@${member.id}> wurde gebannt",
-            "optMemberBanReason":"<@${member.id}> wurde gebannt aus ${reason}",
-            "optMemberUnban":"<@${member.id}> wurde ungebannt",
-            "optMemberUnbanReason":"<@${member.id}> wurde ungebannt aus ${reason}",
-            "optMemberKick":"<@${member.id}> wurde gekickt",
-            "optMemberKickReason":"<@${member.id}> wurde gekickt aus ${reason}",
-            "optMemberTimeout":"<@${member.id}> wurde ausgesetzt",
-            "optMemberTimeoutReason":"<@${member.id}> wurde ausgesetzt aus ${reason}",
-            "optClearChat":"${number} Nachrichten gelöscht",
-            "optLeaveDs":"Es tut mir leid😢, der Administrator möchte, dass ich diesen Discord lösche! Auf Wiedersehen😋",
-            "optWarn":"Sie wurden in ${interaction.guild.name} gewarnt. Dies ist Ihre ${warnCount}-te Warnung. Seien Sie vorsichtig, was Sie auf diesem Server sagen oder tun. Wenn Sie weiterhin gegen die Regeln des Servers verstoßen, könnte der Administrator sein strengere Maßnahmen gegen Sie ergreifen. \n ***Wenn Sie der Meinung sind, dass dies falsch war, warnen Sie bitte einen Administrator!***",
-            "errors": {        
-                "hasAlreadyAdded":"Diese Rolle wurde diesem Mitglied bereits hinzugefügt",       
-                "hasAlreadyRemoved":"Diese Rolle wurde diesem Mitglied bereits entfernt",   
-                "optClearChat":"Bitte wählen Sie weniger als 100 Nachrichten aus"
-            }
-        },
-        "player": {
-            "states": {        
-                "paused":"Spieler pausiert",
-                "resumed":"Spieler fortgesetzt",
-                "errors" :{
-                    "paused":"Spieler bereits pausiert",
-                    "resumed":"Spieler hat die Wiedergabe bereits fortgesetzt"
-                }
-            },       
-            "settings": {        
-                "repeatMode":"Wiederholungsmodus einstellen auf",
-                "volSet":"Lautstärke einstellen auf",
-                "errors": {  
-                    "repeatMode":"Bitte geben Sie einen verfügbaren Loop-Modus an: DISABLED = 0, SONG = 1 , QUEUE = 2"
-                }
-            }, 
-            "commands": {   
-                "addsong":"${addedsong.name} - ${addedsong.formattedDuration} wurde zur Warteschlange hinzugefügt ",     
-                "play":"${addedsong.name} - ${addedsong.formattedDuration} wird abgespielt",     
-                "skip":"Lied übersprungen",
-                "shuffle":"Warteschlange gemischt", 
-                "join":"Spieler ist Ihrem Sprachkanal beigetreten",
-                "leave":"Voice-Kanal verlassen",
-                "previousSong":"Vorherigen Song abspielen",
-                "errors": {  
-                    "memberJoin":"Bitte treten Sie zuerst einem Voice-Kanal bei",
-                    "join":"Bereits beigetreten",
-                    "leave":"Bereits verlassen",
-                    "previousSong":"Keine vorherigen Songs in der Warteschlange",
-                    "skip":"Keine Songs mehr in der Warteschlange",
-                    "queue":"Keine Songs in der Warteschlange"
-                }
-            }, 
-            "embeds": {        
-                "playing":"Wird gespielt",
-                "duration":"Dauer",
-                "queue":"Aktuelle Warteschlange",
-                "currentlyPlaying":"Wird gerade gespielt",
-                "errors": {        
-                    "playing":"Keine Songs spielen"
-                }
-            }        
-        }
+    "langs": {
+        "en":"Englisch",
+        "it":"Italienisch",
+        "es":"Spanisch",
+        "de":"Deutsch"
     },
     "settings": {
-        "leaverSet":"Leaver wurde eingestellt",
-        "playerSet":"Spieler wurde eingestellt",
-        "welcomerSet":"Welcomer wurde eingestellt",
-        "welcomerChannelSet":"Begrüßungskanal wurde eingestellt",
-        "autoRoleSet":"Autorole wurde eingestellt auf",
-        "welcomerBackgroundSet":"Hintergrund des Welcomers wurde eingestellt",
-        "createAutoRoleChannelField1":"Klicken Sie hier, um ein Autorole Kanal zu erstellen :",
-        "createAutoRoleChannelField2":"Dies wird zum Einrichten einer Rolle verwendet, die neuen Mitgliedern automatisch zugewiesen wird",
-        "createAutoRoleChannelBtn":"Autorole Kanal erstellen",
-        "createTicketZoneField1":"Klicken Sie hier, um eine Ticketzone zu erstellen:",
-        "createTicketZoneField2":"dies wird von Mitgliedern für jedes Problem verwendet",
-        "createTicketZoneBtn":"Ticketzone erstellen",
-        "createTwitchZoneField1":"Klicken Sie hier, um eine Twitchzone zu erstellen:",
-        "createTwitchZoneField2":"Dort können Sie Streamer zur Benachrichtigung hinzufügen",
-        "createTwitchZoneBtn":"Twitchzone erstellen",
-        "createAdminZoneField1":"Klicken Sie hier, um die Admin-Zone zu erstellen:",
-        "createAdminZoneField2":"Dies wird vom Administrator zum Abrufen von Protokollen, Berichten und der Anzahl von Warnungen verwendet",
-        "createAdminZoneBtn":"Adminzone erstellen"
+        "create":"Erstellen",
+        "delete":"Löschen",
+        "enable":"Enable",
+        "disable":"Deaktivieren",
+        "embeds":{
+            "selectLang": {
+                "desc":"Klicken Sie hier unten, um Ihre bevorzugte Sprache zu ändern",
+                "field1":"Warnung: Nur die Embed-Nachrichten dieses Kanals ändern die Sprache.",
+                "field2":"Um sicherzustellen, dass dies auch in anderen Channels geschieht, deaktivieren und reaktivieren Sie bitte die Plugins oder ändern Sie den Standard-Channel, damit der Bot diese Embeds-Nachrichten erneut senden kann." ,
+                "set": "Sprache wurde auf"
+            },
+            "chooseRole": {
+                "desc1":"Dies sendet eine Embed-Nachricht an den ausgewählten Kanal",
+                "desc2":"Ist nützlich, um Mitgliedern automatische Rollen zu geben"
+            },
+            "zones": {
+                "desc1":"Klicken Sie hier unten, um neue Zonen zu erstellen",
+                "desc2":"Wenn Sie eine von ihnen aktivieren, wird eine neue Kategorie mit vielen Kanälen erstellt, die automatisch gelöscht wird, wenn sie deaktiviert wird"
+            },
+            "plugins": {
+                "desc1":"Klicken Sie hier unten, um Plugins zu aktivieren : unten wird ein neuer Kanal erstellt, in dem Sie das Plugin einrichten können",
+                "desc2":"Warnung : Löschen Sie diese Kanäle nicht, wenn Sie ein Plugin deaktivieren, werden sie automatisch gelöscht "
+            }
+        },
+        "plugins": {
+            "twitchPlugin": {
+                "createTwitchZoneField1":"Klicken Sie hier, um eine Twitch-Zone zu erstellen: ",
+                "createTwitchZoneField2":"Dort können Sie Streamer zur Benachrichtigung hinzufügen." ,
+                "createTwitchZoneBtn":"Twitch Zone erstellen",
+                "modalAdd": {
+                    "title":"Streamer zur Benachrichtigung hinzufügen!",
+                    "label":"Geben Sie den Benutzernamen des Streamers ein",   
+                    "placeholder":"Benutzername des Streamers hier"
+                },
+                "modalDelete": {
+                    "title":"Entfernen Sie einen Streamer aus Benachrichtigungen!",
+                    "label":"Geben Sie den Benutzernamen des Streamers ein",   
+                    "placeholder":"Benutzername des Streamers hier"
+                },
+                "embed":{
+                    "addStreamerdesc1":"Klicken Sie hier, um einen Streamer zu Ihren Benachrichtigungen hinzuzufügen",
+                    "addStreamerdesc2":"Sie erhalten eine Benachrichtigung, wenn der Streamer in Ihrem ausgewählten Kanal live geht",
+                    "btn1":"Zum Hinzufügen hier klicken",
+                    "btn2":"Zum Entfernen hier klicken",
+                    "selectChanneldesc1":"Wählen Sie einen Kanal hier unten",
+                    "selectChanneldesc2":"Dies wird verwendet, um Benachrichtigungen zu senden, wenn ein Streamer live geht"
+                },
+                "replies":{
+                    "added":"Streamer zur Benachrichtigungsliste hinzugefügt",
+                    "notFound":"Streamer nicht gefunden,versuche es noch einmal",
+                    "alreadyAdded":"Streamer bereits zur Benachrichtigungsliste hinzugefügt",
+                    "notListed":"Streamer wurde nicht in der Benachrichtigungsliste gefunden,versuche es noch einmal",
+                    "foundDelete":"Streamer gefunden und aus der Benachrichtigungsliste entfernt"                                                
+                }
+            },
+            "autorolePlugin":{
+                "AutoRoleDesc1":"Bitte wählen Sie eine Rolle:",
+                "AutoRoleDesc2":"Dies wird automatisch hinzugefügt, wenn Mitglieder beitreten",
+                "autoRoleSet":"Autorole wurde auf"
+            },
+            "welcomerPlugin":{
+                "text":"Der Begrüßungstext wurde gesetzt auf",
+                "welcomerChannelSet":"Welcomers Kanal wurde eingestellt",
+                "welcomerBackgroundSet":"Welcomers Hintergrund wurde eingestellt",
+                "modal": {
+                    "title":"Ein neuer Tag!",
+                    "label":"Bitte hier Begrüßungstext eingeben",   
+                    "Platzhalter":"Hier einen Text schreiben"
+                    
+                },
+                "embeds": {
+                    "chooseChannelDesc1":"Bitte wählen Sie einen Textkanal: dieser wird vom Welcomer verwendet, um Nachrichten zu senden, wenn Mitglieder beitreten ",
+                    "chooseChannelDesc2":"(Tipp: Wählen Sie #welcome, wenn zuvor erstellt)",
+                    "changeTextDesc":"Klicken Sie hier, um den Text zu ändern",
+                    "chooseBackgroundDesc1":"Bitte wählen Sie einen Hintergrund: ",
+                    "chooseBackgroundDesc2":"Dies wird auf die Nachrichten des Welcomers angewendet "
+                }
+            },
+            "leaverPlugin":{
+                "text":"Leaver-Text wurde gesetzt auf :",
+                "changeText":"Klicken Sie hier, um den Text zu ändern",
+                "modal":{
+                    "title":"Ein neuer Tag!",
+                    "label":"Bitte hier Text eingeben",
+                    "Platzhalter":"Hier einen Text schreiben"
+                }
+            },
+            "playerPlugin":{
+                "desc1":"Bitte wählen Sie einen Textkanal: dieser wird vom Musik-Player verwendet, um Nachrichten zu senden (Tipp: Wählen Sie #player-room, wenn zuvor erstellt)",
+                "desc2":"Warnung: Es wird eine Embed-Nachricht mit Schaltflächen gesendet: Diese werden die Verwendung von Textbefehlen vermeiden",
+                "playerSet":"Spieler wurde eingestellt"
+            }
+        }
+    },
+    "selectMenu":{
+        "none":"Nichts ausgewählt"
+    },
+    "player": {
+        "buttons": {
+            "search":"🔎 Geben Sie hier Ihren Link oder den Titel des Songs ein!",
+            "btnLessCommand":"Weniger Befehle",   
+            "btnMoreCommand":"Mehr Befehle"
+        },
+        "modal": {
+            "title":"Suchen Sie Ihr Lied!",
+            "label":"Bitte Titel oder Link hier eingeben",   
+            "placeholder":"Link oder Songtitel hier einfügen"
+        },
+        "embeds": { 
+            "playing":"Spielen",
+            "duration":"Dauer",
+            "queue":"Aktuelle Warteschlange",
+            "currentlyPlaying":"Derzeit im Spiel",
+            "addsong":"hinzugefügt ${addedsong.name} - ${addedsong.formattedDuration} zur Warteschlange",     
+            "play":"Abspielen von ${addedsong.name} - ${addedsong.formattedDuration}", 
+            "errors": {
+                "playing":"Ich spiele keine Songs"
+            }
+        },
+        "commands": { 
+            "repeatMode":"Wiederholungsmodus gesetzt auf",
+            "volSet":"Lautstärke auf",
+            "paused":"Spieler pausiert",
+            "resumed":"Spieler wieder aufgenommen",     
+            "skip":"Song übersprungen",
+            "shuffle":"Queue shuffled", 
+            "join":"Der Spieler ist Ihrem Sprachkanal beigetreten",
+            "leave":"Der Spieler hat den Sprachkanal verlassen",
+            "previousSong":"Abspielen des vorherigen Songs",
+            "errors": {
+                "repeatMode":"Bitte geben Sie einen verfügbaren Loop-Modus an: DISABLED = 0, SONG = 1, QUEUE = 2",
+                "paused":"Spieler hat bereits pausiert",
+                "resumed":"Spieler hat bereits wieder aufgenommen",
+                "memberJoin":"Bitte treten Sie zuerst einem Sprachkanal bei, um diese Schaltflächen verwenden zu können.",
+                "join":"Spieler ist bereits beigetreten",
+                "leave":"Der Spieler ist schon gegangen",
+                "previousSong":"Keine vorherigen Songs in der Warteschlange",
+                "queue":"Keine Lieder in der Warteschlange",
+                "skip":"Sie sind kein Administrator, ${memberLeft} mehr Mitglieder oder ein Administrator müssen auf die nächste Schaltfläche klicken, um den aktuellen Song zu überspringen."
+            }
+        }
+    },
+    "zones": {
+        "ticketZone": {
+            "createTicketZoneField1":"Klicken Sie hier, um eine Ticketzone zu erstellen:",
+            "createTicketZoneField2":"Dies wird von Mitgliedern für jede Ausgabe verwendet.",
+            "createTicketZoneBtn":"Ticket Zone erstellen",
+            "startEmbedField1":"Klicken Sie unten, um dieses Ticket zu schließen",
+            "startEmbedField2":"Dieser Kanal wird dann in 5 Sekunden gelöscht",
+            "startBtn":"🔒Ticket schließen und löschen"
+        },
+        "adminZone":{
+            "reports":{
+                "commands":{
+                    "falseReportdesc":"Sie wurden in ${interaction.guild.name} wegen eines falschen Berichts gewarnt! Dies ist Ihre ${warnCount}th warn. Seien Sie vorsichtig mit Berichtsbefehlen. Wenn Sie weiterhin die Regeln des Servers brechen, könnte der Administrator schwerwiegendere Maßnahmen gegen Sie ergreifen. n ***Wenn Sie der Meinung sind, dass dies falsch war, wenden Sie sich bitte an einen Administrator! **",
+                    "optReport":"Vielen Dank für Ihre Hilfe!"
+                },
+                "reportEmbed":{
+                    "desc":"Willkommen im Berichtkanal. Nur Administratoren können diesen Kanal sehen.",
+                    "field1":"Sie können eine Option aus dem Menü unter jedem Bericht auswählen.",
+                    "field2":"Optionen sind :  \n -`Warn` \n -`Kick` \n -`Ban` \n -`Ignore` \n -`Report reporter` (dies wird den Benutzer warnen, der berichtet hat)"
+                },
+                "resolved":{
+                    "desc":"Status : Behoben \n Diese Situation wurde behoben mit "
+                }
+            },
+            "warn":{
+                "desc":"Willkommen im Warn-Channel. Nur Admins können diesen Channel sehen.",
+                "field1":"Hier können Sie sehen, wann ein Administrator einen Benutzer warnt,",
+                "field2":"Dies ist nützlich, um viele Dinge zu überprüfen, wie oft ein Benutzer gewarnt wurde oder wer ihn gewarnt hat"
+            },
+            "createAdminZoneField1":"Klicken Sie hier, um die Admin Zone zu erstellen: ",
+            "createAdminZoneField2":"Dies wird vom Admin für das Abrufen von Protokollen, Berichten und Warnungen verwendet",
+            "createAdminZoneBtn":"Admin Zone erstellen"
+        }
     },
     "tutorial": {
-        "yes":"Ja",
-        "no":"Nein",
-        "selectPlayerChannel":"Nichts ausgewählt",
+        "buttons":{
+            "yes":"Ja",
+            "Nein":"Nein"
+        },
         "start": {
-            "desc":"Danke, dass Sie mich zu Ihrem Discord hinzugefügt haben. \n Bitte folgen Sie diesem Tutorial, um mich für Ihren Discord einzurichten.\n Es wird nicht lange dauern.",
-            "field1":"Achtung: Wird das Tutorial übersprungen oder nicht korrekt konfiguriert, ist meine korrekte Funktion nicht gewährleistet...",
+            "desc":"Danke für das Hinzufügen von mir zu Ihrem discord.   n Bitte folgen Sie diesem Tutorial, um mein bestes setup.  n Es wird nicht lange dauern. ",
+            "field1":"Warnung: Wenn das Tutorial übersprungen oder nicht richtig konfiguriert ist, ist meine korrekte Funktion nicht garantiert...",
             "field2":"Bitte klicken Sie auf die Schaltfläche unten, um fortzufahren"
         },
         "selectLang": {
-            "desc":"Danke, dass Sie mit dem Tutorial begonnen haben. Fangen wir an, eine Sprache auszuwählen",
-            "field1":"Dies wird auch für dieses Tutorial in deinem Discord verwendet",
-            "field2":"Tipps: Sie können es später im Kanal #botsettings ändern"
+            "desc":"Vielen Dank für das Starten des Tutorials. Beginnen wir mit der Auswahl einer Sprache",
+            "field1":"Dies wird für dieses Tutorial auch in Ihrer Zwietracht verwendet",
+            "field2":"Tipps: Du kannst es später im #botsettings channel ändern"
         },
         "part1": {
-            "field1":"Wollen Sie einen Abschnitt zu Ihren Serverstatistiken haben?",
+            "field1":"Möchten Sie einen Abschnitt über Ihre Serverstatistik haben?",
             "field2":"(Mitglieder, Online- und Offline-Kanäle werden erstellt)"
         },
         "part2": {
-            "field1":"Möchtest du einen Bereich haben, um neue Mitglieder willkommen zu heißen und sie eine Rolle für sich selbst wählen zu lassen?",
-            "field2":"(Willkommens- und Rollenauswahlkanäle werden erstellt)"
+            "field1":"Möchten Sie einen Bereich haben, um neue Mitglieder willkommen zu heißen und sie eine Rolle für sich selbst wählen zu lassen?",
+            "field2":"(Willkommens- und Auswahlrollen-Kanäle werden erstellt)"
         },
         "part3": {
-            "field1":"Wollen Sie einen Abschnitt haben, um dem Musikplayer Befehle zu erteilen und Musik zu hören?",
+            "field1":"Möchten Sie einen Abschnitt haben, in dem Sie dem Musikplayer Befehle geben und Musik hören können?",
             "field2":"(Spielerraum und Musikkanäle werden erstellt)"
         },
         "part4": {
-            "field1":"Möchten Sie den Welcomer aktivieren?",
+            "field1":"Willst du den Welcomer aktivieren?",
             "field2":"Begrüßungsnachrichten werden gesendet, wenn neue Mitglieder beitreten"
         },
         "part5": {
-            "field1":"Bitte wählen Sie einen Textkanal aus: Dieser wird vom Musikplayer verwendet, um Nachrichten zu senden (Tipp: Player-Room auswählen, falls zuvor erstellt)",
-            "field2":"Warnung: Es wird eine Einbettungsnachricht mit Schaltflächen gesendet: Diese vermeiden die Verwendung von Textbefehlen"
+            "field1":"Bitte wählen Sie einen Textkanal: dieser wird vom Musik-Player verwendet, um Nachrichten zu senden (Tipp: Wählen Sie den Player-Raum, wenn er zuvor erstellt wurde)",
+            "field2":"Warnung: Es wird eine Embed-Nachricht mit Schaltflächen gesendet: Diese vermeiden die Verwendung von Textbefehlen"
         },
         "part6": {
-            "field1":"Soll ich neuen Mitgliedern automatisch Rollen zuweisen?",
+            "field1":"Soll ich neuen Mitgliedern automatisch eine Rolle zuweisen?",
             "field2":"Sie können es in dem Kanal auswählen, der unten erstellt wird"
         },
         "end": {
-            "desc":"Alles eingerichtet. \n Unten findest du weitere Textkanäle, in denen du mich zukünftig einrichten kannst. Dieser Kanal wird gelöscht, nachdem du auf die Schaltfläche unten geklickt hast",
-            "field1":"Tipp: Verwenden Sie / für eine vollständige Liste aller verwendbaren Befehle, andernfalls verwenden Sie /help, um eine Liste mit allen Kategorien zu erhalten",
-            "field2":"Achtung: Lösche nicht die Kanäle unten, du brauchst sie später, um die Bot-Einstellungen zu ändern"
+            "desc":"Alles eingerichtet.   n Unten finden Sie weitere Textkanäle, auf denen Sie mich in Zukunft einrichten können. Dieser Kanal wird nach Klick auf den Button unten gelöscht",
+            "field1":"Tipp: Verwenden Sie die / für eine vollständige Liste aller verwendbaren Befehle, ansonsten verwenden Sie /help, um eine Liste mit allen Kategorien zu erhalten",
+            "field2":"Warnung: Löschen Sie die Kanäle unten nicht, Sie benötigen sie später, um die Bot-Einstellungen zu ändern"
         }
     },
-    "update": {
-        "welcomer": {
-            "active":"Welcomer wurde gesetzt auf",
-            "text":"Begrüßungstext wurde gesetzt auf",
-            "embeds": {
-                "activeTitle":"Leaver wurde gesetzt auf",
-                "activeDescOn":"Zum Aktivieren auf den unteren Button klicken",
-                "activeBtnOn":"🟢Aktivieren",
-                "activeDescOff":"Zum Deaktivieren auf den unteren Button klicken",
-                "activeBtnOff":"🔴Deaktivieren",
-                "chooseChannelDesc1":"Bitte wählen Sie einen Textkanal aus: Dieser wird vom Willkommensgruß verwendet, um Nachrichten zu senden, wenn Mitglieder beitreten ",
-                "chooseChannelDesc2":"(Tipp: Willkommen auswählen, falls zuvor erstellt)",
-                "chooseChannelSelect":"Nichts ausgewählt",
-                "changeTextEmbed":"Klicken Sie auf die Schaltfläche unten, um es zu ändern",
-                "changeTextDesc":"Klicken Sie hier, um den Text zu ändern",
-                "chooseBackgroundDesc1":"Bitte wählen Sie einen Hintergrund aus: Dieser wird vom Willkommensgruß verwendet, um Nachrichten zu senden, wenn Mitglieder beitreten",
-                "chooseBackgroundDesc2":"(Tipp: Willkommen auswählen, falls zuvor erstellt)",
-                "chooseBackgroundSelect":"Nichts ausgewählt"
+    "commands":{
+        "moderation": {        
+            "optRoleAdded":"Role ${role.name} hinzugefügt zu <@${member.id}>",
+            "optRoleRemoved":"Role ${role.name} entfernt zu <@${member.id}>",
+            "optMemberBan":"<@${member.id}> wurde gesperrt",
+            "optMemberBanReason":"<@${member.id}> wurde für ${reason} gesperrt",
+            "optMemberUnban":"<@${member.id}> was unbanned",
+            "optMemberUnbanReason":"<@${member.id}> wurde für ${reason} freigegeben",
+            "optMemberKick":"<@${member.id}> wurde gekickt",
+            "optMemberKickReason":"<${member.id}> wurde gekickt für ${reason}",
+            "optMemberTimeout":"<@${member.id}> was timed out",
+            "optMemberTimeoutReason":"<@${member.id}> wurde für ${reason} ausgelaufen",
+            "optClearChat":"${number} Nachrichten gelöscht",
+            "optLeaveDs":"Es tut mir leid😢, Admins wollen, dass ich diese Zwietracht lasse! Auf Wiedersehen😋 ",
+            "optWarn":"Sie wurden in ${interaction.guild.name} gewarnt. Dies ist Ihr ${warnCount}th warn. Seien Sie vorsichtig, was Sie auf diesem Server sagen oder tun. Wenn Sie weiterhin gegen die Regeln des Servers verstoßen, könnte der Administrator schwerwiegendere Maßnahmen gegen Sie ergreifen. n ***Wenn Sie der Meinung sind, dass dies falsch war, wenden Sie sich bitte an einen Administrator! **",
+            "errors": { 
+                "hasAlreadyAdded":"Diese Rolle wurde diesem Mitglied bereits hinzugefügt",       
+                "hasAlreadyRemoved":"Diese Rolle wurde für dieses Mitglied entfernt",       
+                "optClearChat":"Bitte wählen Sie weniger als 100 Nachrichten"
             }
         },
-        "leaver": {
-            "active":"Leaver wurde gesetzt auf",
-            "text":"Leaver text wurde gesetzt auf",
-            "embeds": {
-                "activeTitle":"Leaver wurde gesetzt auf",
-                "activeDescOn":"Zum Aktivieren auf den unteren Button klicken",
-                "activeBtnOn":"🟢Aktivieren",
-                "activeDescOff":"Zum Deaktivieren auf den unteren Button klicken",
-                "activeBtnOff":"🔴Disable",
-                "changeTextEmbed":"Klicken Sie den unteren Button, um es zu ändern",
-                "changeTextDesc":"Klicken Sie hier, um den Text zu ändern"
-            }
+        "help":{
+            "buttons": {
+                "btnBack":"cmdHelp",
+                "btnPageDown":"cmdHelp",
+                "btnPageUp":"cmdHelp"
+            },
+            "desc":"Bitte wählen Sie eine dieser Kategorien"
         },
-        "bot": {
-            "embeds": {
-                "activeTitle":"Autorole wurde gesetzt auf",
-                "activeDescOn":"Zum Aktivieren auf den unteren Button klicken",
-                "activeBtnOn":"🟢Aktivieren",
-                "activeDescOff":"Zum Deaktivieren auf den unteren Button klicken",
-                "activeBtnOff":"🔴Deaktivieren",
-                "chooseRoleDesc1":"Bitte wählen Sie eine Rolle aus:",
-                "chooseRoleDesc2":"dies wird automatisch hinzugefügt, wenn Mitglieder beitreten",
-                "chooseRoleSelect":"Nichts ausgewählt"
-            }
+        "poll": {        
+            "optPollDeny":"Sie haben bereits eine Option gewählt",
+            "optPollThank":"Vielen Dank für die Teilnahme"
         }
     },
-    "autorole": {
+    "welcomer": {
+        "canvas": {
+            "join":"Willkommen!" ,
+            "leave":"Oh nein!" ,
+            "descWelcome":"Willkommen <@${member.user.id}> . Sie sind das ${member.guild.memberCount}th member !",
+            "descLeave":"<@${member.user.id}> leaved. Wir haben jetzt ${member.guild.memberCount} Mitglieder übrig!"
+        },
+        "errors":{
+            "noText":"Bitte wählen Sie einen Text aus, den Sie in Ihrer Welcomer haben möchten in #welcomer-plugin",
+            "noBackground":"Bitte wählen Sie einen Hintergrund für Ihrer Welcomer in #welcomer-plugin"
+        }
+    },
+    "chooseRole": {
         "title":"Rolle hinzufügen",
-        "desc":"Klicken Sie auf einen Button, um sich eine Rolle zu holen"
-    },
-    "canvas": {
-        "join":"Willkommen!",
-        "leave":"Oh nein!"
-    },
-    "player":{
-        "desc1":"Bitte wählen Sie einen Textkanal aus: Dieser wird vom Musikplayer verwendet, um Nachrichten zu senden (Tipp: Wählen Sie den Player-Raum aus, falls zuvor erstellt)",
-        "desc2":"Warnung: Es wird eine Einbettungsnachricht mit Schaltflächen gesendet: Diese vermeiden die Verwendung von Textbefehlen",
-        "selectPlayerChannel":"Nichts ausgewählt"
-    },
-    "poll":{
-        "desc1":"Sie haben 30 Sekunden Zeit, um auf diese Umfrage zu antworten \n **Umfrage erstellt von**",
-        "desc2":"Umfrage beendet! Vielen Dank für Ihre Teilnahme.\nFolgend sind die Ergebnisse:"
-    },
-    "ticket":{
-        "createEmbedField1":"Klicken Sie hier, um ein neues Ticket zu erstellen",
-        "createEmbedField2":"Sie können dies verwenden, um den Administratoren dieses Discords jedes Problem zu melden",
-        "createBtn":"Neues Ticket erstellen",
-        "startEmbedDesc":"Danke, dass Sie dieses Ticket erstellt haben: Bitte stellen Sie Ihr Problem hier unten vor, die Administratoren werden Ihnen so schnell wie möglich antworten",
-        "startEmbedField1":"Verwenden Sie den unteren Button, um dieses Ticket zu schließen",
-        "startEmbedField2":"Dieser Kanal wird dann in 5 Sekunden gelöscht",
-        "startBtn":"Ticket schließen und löschen"
-    },
-    "help":{
-        "desc":"Bitte wählen Sie eine dieser Kategorien aus"
-    },
-    "reports":{
-        "commands":{
-            "falseReportdesc":"Du wurdest in ${interaction.guild.name} wegen eines falschen Berichts gewarnt! Dies ist deine ${warnCount}-te Warnung. Sei vorsichtig mit Berichtsbefehlen. Wenn du weiterhin gegen die Regeln des Servers verstößt, könnte der Administrator greifen strengere Maßnahmen gegen Sie. \n ***Wenn Sie der Meinung sind, dass dies falsch war, warnen Sie bitte einen Administrator!***",
-            "optReport":"Danke, dass Sie uns helfen!"
-        },
-        "reportEmbed":{
-            "desc":"Willkommen beim Kanal für Berichte. Nur Administratoren können diesen Kanal sehen.",
-            "field1":"Sie können eine Option aus dem Menü unter jedem Bericht auswählen.",
-            "field2":"Optionen sind : \n -`Warn` \n -`Kick` \n -`Ban` \n -`Ignore` \n -`Report reporter` (dies wird den Benutzer warnen, der gemeldet hat)"
-        }
-    },
-    "warn":{
-        "desc":"Willkommen im Warnkanal. Nur Administratoren können diesen Kanal sehen.",
-        "field1":"Hier können Sie sehen, wann ein Administrator einen Benutzer warnt,",
-        "field2":"Dies ist nützlich, um viele Dinge zu überprüfen, z. B. wie oft ein Benutzer gewarnt wurde oder wer ihn gewarnt hat."
+        "desc":"Klicken Sie auf eine Schaltfläche, um sich eine Rolle zu holen"
     }
 }

@@ -7,7 +7,7 @@ module.exports= {
         await dbconnect()
         var selectGuild = await ticketSchema.find({ "_id" : interaction.guild.id})
         switch (customId) {
-            case "create":
+            case "createTicket":
                 var i = selectGuild[0]? selectGuild[0].counter+1:0
                 var index = "" + i
                 var pad = "0000"

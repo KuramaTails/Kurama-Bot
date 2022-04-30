@@ -46,13 +46,13 @@ module.exports = {
                 .setCustomId('settings-welcomer-selectWelcomerBackground')
                 .setPlaceholder(lang.get(interaction.guild.settings.lang).selectMenu["none"])
         )
-        const background = fs.readdirSync('./src/settings/welcomer/backgrounds').filter(file => file.endsWith('.jpg'));
+        const background = fs.readdirSync('./src/welcomer/backgrounds').filter(file => file.endsWith('.jpg'));
         background.forEach(image => {
             var fullName = image.split(".")
             button3.components[0].addOptions([
                 {
                     label: `${fullName[0]}`,
-                    value: `./welcomer/${fullName[0]}`,
+                    value: `./src/welcomer/backgrounds/${fullName[0]}`,
                 },
             ])
         });

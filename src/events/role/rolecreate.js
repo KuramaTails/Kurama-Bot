@@ -31,6 +31,7 @@ module.exports = {
                 .then(console.log(`Set permissions in ${role.guild.name}`))
                 .catch(console.error);
             var roleMenu = chooseRoleMessage.components[0]
+            console.log(roleMenu)
             if (roleMenu.components.length<5) {
                 roleMenu.addComponents(
                     new MessageButton()

@@ -1,6 +1,6 @@
 {
     "interaction": {
-        "cooldown":"Please wait for cooldown to end",
+        "cooldown":"Please wait for cooldown to run out",
         "err":"There was an error while executing this command!"
     },
     "langs": {
@@ -39,8 +39,13 @@
                 "createTwitchZoneField1":"Click here to create a Twitch zone: ",
                 "createTwitchZoneField2":"There you will be able to add streamers to the notification.",
                 "createTwitchZoneBtn":"Create Twitch Zone",
-                "modal": {
+                "modalAdd": {
                     "title":"Add Streamer to notification list!",
+                    "label":"Please enter streamer's username here",   
+                    "placeholder":"Streamer's username here"
+                },
+                "modalDelete": {
+                    "title":"Delete Streamer from notification list!",
                     "label":"Please enter streamer's username here",   
                     "placeholder":"Streamer's username here"
                 },
@@ -48,13 +53,16 @@
                     "addStreamerdesc1":"Click here to add a streamer to your notifications",
                     "addStreamerdesc2":"You will receive a notification when streamer goes live in your selected Channel",
                     "btn1":"Click here to Add",
+                    "btn2":"Click here to Delete",
                     "selectChanneldesc1":"Select a channel here below",
                     "selectChanneldesc2":"This will be used to send notification when a streamer goes live"
                 },
                 "replies":{
                     "added":"Streamer added to notification list",
                     "notFound":"Streamer not found,retry",
-                    "alreadyAdded":"Streamer already added to notification list"                    
+                    "alreadyAdded":"Streamer already added to notification list",
+                    "notListed":"Streamer not found in your notification list,retry",
+                    "foundDelete":"Streamer found and deleted from notification list"                      
                 }
             },
             "autorolePlugin":{
@@ -148,9 +156,9 @@
             "createTicketZoneField1":"Click here to create a ticket zone:",
             "createTicketZoneField2":"This will be used by members for any issue.",
             "createTicketZoneBtn":"Create Ticket Zone",
-            "createEmbedField1":"Click here to create a new ticket",
-            "createEmbedField2":"You can use it to report problems to the admins",
-            "createBtn":"Create new Ticket"
+            "startEmbedField1":"Use button below for close this ticket",
+            "startEmbedField2":"This channel will be then deleted in 5 seconds",
+            "startBtn":"🔒Close and delete ticket"
         },
         "adminZone":{
             "reports":{
@@ -245,9 +253,9 @@
         },
         "help":{
             "buttons": {
-                "Back":"cmdHelp",
-                "PagUp":"cmdHelp",
-                "PagDown":"cmdHelp"
+                "btnBack":"cmdHelp",
+                "btnPageDown":"cmdHelp",
+                "btnPageUp":"cmdHelp"
             },
             "desc":"Please choose one of these categories"
         },
@@ -264,8 +272,9 @@
             "descLeave":"<@${member.user.id}> leaved. We now have ${member.guild.memberCount} members left!"
         },
         "errors":{
-            "noText":"Please select a text to have inside your leave message in #welcomer-setting",
-            "noBackground":"Please select a background for your leave message in #welcomer-setting"
+            "noTextWelcomer":"Please select a text to have inside your Welcomer message in #welcomer-plugin",
+            "noTextLeaver":"Please select a text to have inside your Leaver message in #welcomer-plugin",
+            "noBackground":"Please select a background for your Welcomer/Leaver message in #welcomer-plugin"
         }
     },
     "chooseRole": {

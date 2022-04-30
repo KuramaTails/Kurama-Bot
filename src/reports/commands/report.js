@@ -37,7 +37,7 @@ module.exports = {
         menu.addComponents(
             new MessageSelectMenu()
                 .setCustomId('report-ActionSelector')
-                .setPlaceholder(lang.get(interaction.guild.lang).selectMenu["none"])
+                .setPlaceholder(lang.get(interaction.guild.settings.lang).selectMenu["none"])
                 .addOptions([
                     {
                         label: `Warn`,
@@ -71,7 +71,7 @@ module.exports = {
 
         )
         interaction.followUp({
-            content: lang.get(interaction.guild.lang).zones.adminZone.reports.commands["optReport"],
+            content: lang.get(interaction.guild.settings.lang).zones.adminZone.reports.commands["optReport"],
             ephemeral: true
         })
         selectedChannel.send({embeds:[reportEmbed],components:[menu]})

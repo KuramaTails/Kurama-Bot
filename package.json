@@ -8,7 +8,6 @@
     "@distube/ytdl-core": "^4.11.1",
     "@twurple/api": "^5.1.0",
     "@twurple/auth": "^5.1.0",
-    "axios": "^0.26.1",
     "canvas": "^2.9.0",
     "discord-anti-spam": "^2.7.3",
     "discord-api-types": "^0.27.0",
@@ -17,6 +16,7 @@
     "distube": "^3.3.2",
     "dotenv": "^16.0.0",
     "ffmpeg-static": "^4.4.1",
+    "i": "^0.3.7",
     "libsodium-wrappers": "^0.7.9",
     "mongoose": "^6.2.7",
     "node-twitch": "^0.4.5"

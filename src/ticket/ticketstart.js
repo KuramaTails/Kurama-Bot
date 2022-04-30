@@ -8,13 +8,12 @@ module.exports = {
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Ticket Start")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .setDescription(lang.get(interaction.guild.lang).ticket["startEmbedDesc"])
-        .addField(lang.get(interaction.guild.lang).zones.ticketZone["startEmbedField1"],lang.get(interaction.guild.lang).zones.ticketZone["startEmbedField2"])
+        .addField(lang.get(interaction.guild.settings.lang).zones.ticketZone["startEmbedField1"],lang.get(interaction.guild.settings.lang).zones.ticketZone["startEmbedField2"])
         const buttons = new MessageActionRow()
         buttons.addComponents(
             new MessageButton()
             .setCustomId(`ticket-close`)
-            .setLabel(lang.get(interaction.guild.lang).zones.ticketZone["startBtn"])
+            .setLabel(lang.get(interaction.guild.settings.lang).zones.ticketZone["startBtn"])
             .setStyle(`SECONDARY`),
         )
         let everyone = interaction.guild.roles.cache.find(r => r.name === "@everyone");

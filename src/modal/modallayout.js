@@ -1,8 +1,8 @@
 const { Modal, TextInputComponent, showModal } = require('discord-modals')
 module.exports= {
-    async execute(interaction,bot,customId,title,label,placeHolder) {
+    async execute(interaction,bot,customId,title,label,placeholder) {
         var modal = new Modal()
-        .setCustomId(customId)
+        .setCustomId("modal-"+customId)
         .setTitle(title)
         .addComponents([
             new TextInputComponent()
@@ -11,10 +11,10 @@ module.exports= {
                 .setStyle('SHORT') 
                 .setMinLength(1)
                 .setMaxLength(1024)
-                .setPlaceholder(placeHolder)
+                .setPlaceholder(placeholder)
                 .setRequired(true) 
             ]);
-        showModal(modal, {
+        await showModal(modal, {
             client: bot, 
             interaction: interaction 
             })
