@@ -62,7 +62,8 @@
                     "notFound":"Streamer nicht gefunden,versuche es noch einmal",
                     "alreadyAdded":"Streamer bereits zur Benachrichtigungsliste hinzugefügt",
                     "notListed":"Streamer wurde nicht in der Benachrichtigungsliste gefunden,versuche es noch einmal",
-                    "foundDelete":"Streamer gefunden und aus der Benachrichtigungsliste entfernt"                                                
+                    "foundDelete":"Streamer gefunden und aus der Benachrichtigungsliste entfernt",
+                    "selectChannel":"Wählen Sie zuerst einen Kanal aus"                                                       
                 }
             },
             "autorolePlugin":{
@@ -154,9 +155,9 @@
     },
     "zones": {
         "ticketZone": {
-            "createTicketZoneField1":"Klicken Sie hier, um eine Ticketzone zu erstellen:",
-            "createTicketZoneField2":"Dies wird von Mitgliedern für jede Ausgabe verwendet.",
-            "createTicketZoneBtn":"Ticket Zone erstellen",
+            "createTicketZoneField1":"Klicken Sie hier, um ein neues Ticket zu erstellen:",
+            "createTicketZoneField2":"Dies kann von Mitgliedern verwendet werden, um Probleme an Administratoren zu melden.",
+            "createTicketZoneBtn":"Neues Ticket erstellen",
             "startEmbedField1":"Klicken Sie unten, um dieses Ticket zu schließen",
             "startEmbedField2":"Dieser Kanal wird dann in 5 Sekunden gelöscht",
             "startBtn":"🔒Ticket schließen und löschen"

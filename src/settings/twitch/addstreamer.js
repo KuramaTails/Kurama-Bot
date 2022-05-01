@@ -5,7 +5,7 @@ const guildSchema = require("../../schemas/guild-schema");
 module.exports = {
 	async execute(modal,lang,twitch) {
         var twitchPlugin = modal.guild.settings.plugins.twitchPlugin
-        if (!twitchPlugin.channelId) return modal.editReply({ content: 'select a channel first', ephemeral: true })
+        if (!twitchPlugin.channelId) return modal.editReply({ content: lang.get(modal.guild.settings.lang).settings.plugins.twitchPlugin.replies["selectChannel"], ephemeral: true })
         var streamerUsername = modal.getTextInputValue('textinput-customid')
         var query = await twitch.searchChannels({ query: streamerUsername })
         var selectUser = query.data.find(channel => channel.broadcaster_login == streamerUsername)

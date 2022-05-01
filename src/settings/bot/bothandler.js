@@ -146,14 +146,14 @@ module.exports = {
                 })
             break;
             case "leaverPluginEnable":
-                plugins.welcomerPlugin = {
+                plugins.leaverPlugin = {
                     active:true
                 }
                 await guildSchema.findOneAndUpdate({
                     _id: interaction.guild.id,
                 }, {
                     $set: {
-                        "plugins.leaverPlugin.active": true,
+                        "plugins.leaverPlugin": {active:true},
                     }
                 },
                 {

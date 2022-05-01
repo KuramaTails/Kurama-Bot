@@ -62,7 +62,8 @@
                     "notFound":"Streamer not found,retry",
                     "alreadyAdded":"Streamer already added to notification list",
                     "notListed":"Streamer not found in your notification list,retry",
-                    "foundDelete":"Streamer found and deleted from notification list"                      
+                    "foundDelete":"Streamer found and deleted from notification list",
+                    "selectChannel":"Select a channel first"                            
                 }
             },
             "autorolePlugin":{
@@ -153,9 +154,9 @@
     },
     "zones": {
         "ticketZone": {
-            "createTicketZoneField1":"Click here to create a ticket zone:",
-            "createTicketZoneField2":"This will be used by members for any issue.",
-            "createTicketZoneBtn":"Create Ticket Zone",
+            "createTicketZoneField1":"Click here to create a new ticket:",
+            "createTicketZoneField2":"This can be used by members to report any issue to admins.",
+            "createTicketZoneBtn":"Create new Ticket ",
             "startEmbedField1":"Use button below for close this ticket",
             "startEmbedField2":"This channel will be then deleted in 5 seconds",
             "startBtn":"🔒Close and delete ticket"
