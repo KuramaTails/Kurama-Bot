@@ -13,7 +13,7 @@ module.exports = {
         }
         switch (customId) {
             case "search":
-                var customId="modal-"+customId
+                var customId=customId
                 var title =lang.get(interaction.guild.settings.lang).player.modal["title"]
                 var label=lang.get(interaction.guild.settings.lang).player.modal["label"]
                 var placeholder=lang.get(interaction.guild.settings.lang).player.modal["placeholder"]

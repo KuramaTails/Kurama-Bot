@@ -5,7 +5,7 @@ module.exports= {
     async execute(interaction,lang,customId) {
         switch (customId) {
             case "textLeaver":
-                var customId="modal-"+customId
+                var customId=customId
                 var title =lang.get(interaction.guild.settings.lang).settings.plugins.leaverPlugin.modal["title"]
                 var label=lang.get(interaction.guild.settings.lang).settings.plugins.leaverPlugin.modal["label"]
                 var placeHolder=lang.get(interaction.guild.settings.lang).settings.plugins.leaverPlugin.modal["placeholder"]

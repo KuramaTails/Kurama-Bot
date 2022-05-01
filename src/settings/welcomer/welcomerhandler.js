@@ -9,7 +9,7 @@ module.exports= {
         await dbconnect()
         switch (customId) {
             case "textWelcomer":
-                var customId="modal-"+customId
+                var customId=customId
                 var title =lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["title"]
                 var label=lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["label"]
                 var placeholder=lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["placeholder"]
