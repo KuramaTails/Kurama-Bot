@@ -3,7 +3,7 @@ module.exports = {
 	async execute(oldRole,newRole) {
         if (oldRole.name != newRole.name) {
             try {
-                let selChannel = await newRole.guild.channels.cache.find(channel => channel.name == "choose-role")
+                let selChannel = await newRole.guild.channels.cache.find(channel => channel.name == role.guild.settings.plugins.chooseRolePlugin.channelId)
                 var roleSettingsChannel = await newRole.guild.channels.cache.find(channel => channel.name == "bot-settings")
                 if (!selChannel) return
                 if (!roleSettingsChannel) return

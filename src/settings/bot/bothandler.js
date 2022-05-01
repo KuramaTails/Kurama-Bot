@@ -196,19 +196,20 @@ module.exports = {
                 await playerembed.execute(interaction,lang,plugins.playerPlugin.channelId)
             break;
             case "selectChooseRoleChannel":
-                var channelId = interaction.values[0]
-                interaction.guild.settings.chooseRole= interaction.values[0]
-                /*await guildSchema.findOneAndUpdate({
-                    _id: interaction.guild.id,
+                plugins.chooseRolePlugin = {
+                    channelId:interaction.values[0]
+                }
+                await guildSchema.findOneAndUpdate({
+                _id: interaction.guild.id,
                 }, {
                     $set: {
-                        "chooseRole.channelId": interaction.values[0],
+                        "plugins.chooseRolePlugin": {channelId:interaction.values[0]},
                     }
                 },
                 {
                     upsert:true,
-                })*/
-                var channel = interaction.guild.channels.cache.find(channel=> channel.id == channelId)
+                })
+                var channel = interaction.guild.channels.cache.find(channel=> channel.id == interaction.values[0])
                 await chooserolesembed.execute(channel,lang)
             break;
             default:

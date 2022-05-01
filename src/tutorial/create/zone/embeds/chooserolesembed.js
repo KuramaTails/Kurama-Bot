@@ -2,6 +2,7 @@ const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 module.exports = {
 	async execute(channel,lang) {
         try {
+            console.log(channel.guild.settings.lang)
             var buttons = [new MessageActionRow()]
             const rolesEmbed = new MessageEmbed()
                                 .setColor('#0099ff')

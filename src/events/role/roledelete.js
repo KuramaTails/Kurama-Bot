@@ -6,7 +6,7 @@ module.exports = {
         if (bot.cooldownPresence.has(role.guild.id)) {return}
         try {
             bot.cooldownUser.set(role.id, true);
-            let selChannel = await role.guild.channels.cache.find(channel => channel.name == "choose-role")
+            let selChannel = await role.guild.channels.cache.find(channel => channel.name == role.guild.settings.plugins.chooseRolePlugin.channelId)
             var allMessages = await selChannel.messages.fetch()
             let chooseRoleMessage = await allMessages.find(message => message.embeds[0] != null)
             let moderationCommandId = await role.guild.commands.cache.find(command => command.name === "moderation").id
