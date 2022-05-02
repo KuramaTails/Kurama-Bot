@@ -20,8 +20,8 @@ module.exports = {
                     .setColor('#0099ff')
                     .setTitle("Bot Kurama : Start Tutorial")
                     .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-                    .setDescription(lang.get(guild.lang).tutorial.start["desc"])
-                    .addField(lang.get(guild.lang).tutorial.start["field1"],lang.get(guild.lang).tutorial.start["field2"])
+                    .setDescription(lang.get(guild.settings.lang).tutorial.start["desc"])
+                    .addField(lang.get(guild.settings.lang).tutorial.start["field1"],lang.get(guild.settings.lang).tutorial.start["field2"])
                     const button1 = new MessageActionRow()
                     button1.addComponents(
                         new MessageButton()

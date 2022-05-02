@@ -41,13 +41,13 @@
                 "createTwitchZoneBtn":"Twitch Zone erstellen",
                 "modalAdd": {
                     "title":"Streamer zur Benachrichtigung hinzufügen!",
-                    "label":"Geben Sie den Benutzernamen des Streamers ein",   
-                    "placeholder":"Benutzername des Streamers hier"
+                    "label":"Geben Sie den Username des Streamers ein",   
+                    "placeholder":"Username des Streamers hier"
                 },
                 "modalDelete": {
                     "title":"Entfernen Sie einen Streamer aus Benachrichtigungen!",
-                    "label":"Geben Sie den Benutzernamen des Streamers ein",   
-                    "placeholder":"Benutzername des Streamers hier"
+                    "label":"Geben Sie den Username des Streamers ein",   
+                    "placeholder":"Username des Streamers hier"
                 },
                 "embed":{
                     "addStreamerdesc1":"Klicken Sie hier, um einen Streamer zu Ihren Benachrichtigungen hinzuzufügen",

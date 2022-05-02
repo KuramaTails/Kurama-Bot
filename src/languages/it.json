@@ -41,13 +41,13 @@
                 "createTwitchZoneBtn":"Crea Twitch Zone",
                 "modalAdd": {
                     "title":"Aggiungi uno streamer alle notifiche!",
-                    "label":"Inserisci il nome utente dello streamer",   
-                    "placeholder":"Nome utente streamer qui"
+                    "label":"Inserisci l'username dello streamer",   
+                    "placeholder":"Username streamer qui"
                 },
                 "modalDelete": {
                     "title":"Elimina uno streamer dalle notifiche!",
-                    "label":"Inserisci il nome utente dello streamer",   
-                    "placeholder":"Nome utente streamer qui"
+                    "label":"Inserisci l'username dello streamer",   
+                    "placeholder":"Username streamer qui"
                 },
                 "embed":{
                     "addStreamerdesc1":"Fai clic qui per aggiungere uno streamer alle tue notifiche",
@@ -77,7 +77,7 @@
                 "welcomerBackgroundSet":"Lo sfondo del Welcomer è stato impostato su : ",
                 "modal": {
                     "title":"Imposta testo di benvenuto!",
-                    "label":"Inserisci qui il testo di benvenuto qui",   
+                    "label":"Inserisci qui il testo di benvenuto",   
                     "placeholder":"Scrivi qui il testo"
                 },
                 "embeds": {
@@ -93,7 +93,7 @@
                 "changeText":"Clicca qui per cambiare il testo",
                 "modal":{
                     "title":"Imposta testo del Leaver!",
-                    "label":"Per favore inserisci il testo del leaver qui",
+                    "label":"Per favore inserisci il testo del leaver",
                     "placeholder":"Scrivi qui il testo"
                 }
             },
@@ -115,7 +115,7 @@
         },
         "modal": {
             "title":"Cerca la tua canzone!",
-            "label":"Inserisci il link o il titolo della canzone",   
+            "label":"Inserisci il link/titolo della canzone",   
             "placeholder":"Incolla qui il link o il titolo del brano"
         },
         "embeds": { 

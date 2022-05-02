@@ -20,9 +20,9 @@ module.exports = {
                 var placeholder=lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalDelete["placeholder"]
                 await modallayout.execute(interaction,bot.client,customId,title,label,placeholder)
 			break;
-			case "SelectChannel":
-				twitchPlugin.channelId= interaction.values[0]
+			case "selectChannel":
 				await dbconnect()
+				twitchPlugin.channelId= interaction.values[0]
 				await guildSchema.findOneAndUpdate({
 					_id: interaction.guild.id,
 					}, {

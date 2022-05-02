@@ -1,4 +1,4 @@
-const twitchembed = require("./embeds/twitchplugin")
+const twitchembed = require("./embeds/twitchembed")
 
 module.exports = {
 	async execute(interaction,lang) {

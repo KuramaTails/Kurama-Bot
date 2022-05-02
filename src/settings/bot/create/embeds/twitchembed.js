@@ -26,8 +26,10 @@ module.exports = {
         const twitchSelectMenu = new MessageActionRow()
         twitchSelectMenu.addComponents(
             new MessageSelectMenu()
-                .setCustomId('settings-twitch-SelectChannel')
-                .setPlaceholder(lang.get(interaction.guild.settings.lang).selectMenu["none"])
+            .setCustomId('settings-twitch-selectChannel')
+            .setPlaceholder(lang.get(interaction.guild.settings.lang).selectMenu["none"])    
+            
+                
         )
         var textChannels = interaction.guild.channels.cache.filter(c=> c.type=="GUILD_TEXT")
         textChannels.forEach(channel => {

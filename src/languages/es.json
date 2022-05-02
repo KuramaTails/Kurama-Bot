@@ -46,8 +46,8 @@
                 },
                 "modalDelete": {
                     "title":"Elimine un streamer de las notificaciones!",
-                    "label":"Introduce el nombre de usuario del streamer",   
-                    "placeholder":"Nombre de usuario de streamer aquí"
+                    "label":"Introduce el username del streamer",   
+                    "placeholder":"Username del streamer aquí"
                 },
                 "embed":{
                     "addStreamerdesc1":"Haga clic aquí para añadir un streamer a sus notificaciones",
@@ -93,7 +93,7 @@
                 "changeText":"Haga clic aquí para cambiar el texto",
                 "modal":{
                     "title":"¡Establecer texto de Leaver!",
-                    "label":"Por favor, introduce el texto de la palanca aquí",
+                    "label":"Introduce el texto de la palanca",
                     "placeholder":"Escribe el texto aquí"
                 }
             },
@@ -115,8 +115,8 @@
         },
         "modal": {
             "title":"¡Busca tu canción!",
-            "label":"Introduce el enlace o el título de la canción",   
-            "placeholder":"Pega aquí el enlace o el título de la canción"
+            "label":"Introduce el enlace/título de la canción",   
+            "placeholder":"Pega aquí el enlac/título de la canción"
         },
         "embeds": { 
             "playing":"Riproducendo",

@@ -2,6 +2,7 @@ const { MessageActionRow, MessageEmbed, MessageButton } = require('discord.js');
 const dbconnect = require('../../db/dbconnect');
 const dbdisconnect = require('../../db/dbdisconnect');
 const guildSchema = require('../../schemas/guild-schema');
+const playerembed = require('../../settings/bot/create/embeds/playerembed');
 module.exports = {
     part:7,
     async execute(interaction,lang) {
@@ -18,6 +19,7 @@ module.exports = {
         })
         await dbdisconnect()
         interaction.guild.settings.plugins.playerPlugin = {channelId:interaction.values[0]}
+        await playerembed.execute(interaction,lang,interaction.values[0])
         await interaction.message.delete()
         const TutorialEmbed = new MessageEmbed()
         .setColor('#0099ff')

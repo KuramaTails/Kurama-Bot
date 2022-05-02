@@ -6,18 +6,20 @@ module.exports = {
     part:2,
     async execute(interaction,lang,part) {
         await dbconnect()
+        console.log(interaction.guild.settings.lang)
+        interaction.guild.settings.lang = part
         await guildSchema.findOneAndUpdate({
             _id: interaction.guild.id,
         }, {
             $set: {
-                "lang": part,
+                "guildLang": part,
             }
         },
         {
             upsert:true,
         })
+        console.log(interaction.guild.settings.lang)
         await dbdisconnect()
-        interaction.guild.settings.lang = part
         await interaction.message.delete()
         const TutorialEmbed = new MessageEmbed()
         .setColor('#0099ff')

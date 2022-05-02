@@ -25,18 +25,21 @@ module.exports = {
             });
             var selectRoleChannelEmbed = await botChannelMessages.find(message => message.embeds[0].title.includes("Choose Role"));
             await selectPlayerEmbed.edit({components:[channelsonMenu]})
+            channelsonMenu.components[0].customId="settings-bot-selectChooseRoleChannel"
             await selectRoleChannelEmbed.edit({components:[channelsonMenu]})
 
             var welcomerSettingsChannel = await channel.guild.channels.cache.find(channel => channel.name == "welcomer-plugin")
             if (welcomerSettingsChannel) {
                 var welcomerChannelMessages = await welcomerSettingsChannel.messages.fetch()
                 var selectWelcomerEmbed = await welcomerChannelMessages.find(message => message.embeds[0].title.includes("channel"));
+                channelsonMenu.components[0].customId="settings-welcomer-selectWelcomerChannel"
                 await selectWelcomerEmbed.edit({components:[channelsonMenu]})
             }
             var twitchPluginChannel = await channel.guild.channels.cache.find(channel => channel.name == "twitch-plugin")
             if (twitchPluginChannel) {
                 var twitchPluginMessages = await twitchPluginChannel.messages.fetch()
                 var selectTwittchEmbed = await twitchPluginMessages.find(message => message.embeds[0].title.includes("Channel"));
+                channelsonMenu.components[0].customId="settings-twitch-selectChannel"
                 await selectTwittchEmbed.edit({components:[channelsonMenu]})
             }
         } catch (error) {
