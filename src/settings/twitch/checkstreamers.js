@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const guildSchema = require("../../schemas/guild-schema");
 module.exports = {
     async execute(guild,twitch) {
-        var twitchPlugin = guild.settings.twitchPlugin
+        var twitchPlugin = guild.settings.plugins.twitchPlugin
         for (const channel of twitchPlugin.streamerList) {
             var query = await twitch.searchChannels({ query: channel.broadcaster_login })
             var found = query.data.find(nchannel => nchannel.broadcaster_login == channel.broadcaster_login)
@@ -12,7 +12,7 @@ module.exports = {
         async function sendEmbed(guild,channel,found) {
             channel = found
             channel.alreadySend = channel.is_live
-            var textChannel = guild.channels.cache.get(guild.settings.twitchPlugin.channelId)
+            var textChannel = guild.channels.cache.get(guild.settings.plugins.twitchPlugin.channelId)
             var thumbnail = found.thumbnail_url.replace("-{width}x{height}","")
             const streamingEmbed = new MessageEmbed()
             .setColor('#0099ff')
