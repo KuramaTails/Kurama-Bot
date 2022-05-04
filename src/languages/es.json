@@ -233,12 +233,12 @@
     },
     "commands":{
         "moderation": {
-            "optRoleAdded": "Rol ${role. name} añadido a <@${member. id}>",
-            "optRoleRemoved": "Rol ${role. name} eliminado en <@${member. id}>",
+            "optRoleAdded": "Rol ${role.name} añadido a <@${member.id}>",
+            "optRoleRemoved": "Rol ${role.name} eliminado en <@${member.id}>",
             "optMemberBan": "<@${member. id}> ha sido baneado",  
             "optMemberBanReason": "<@${member.id}> ha sido baneado por ${reason}",
             "optMemberUnban": "<@${member.id}> ha sido sbaneado",
-            "optMemberUnbanReason": "<@${member.id}> ha sido sbaneado por ${reason }",
+            "optMemberUnbanReason": "<@${member.id}> ha sido sbaneado por ${reason}",
             "optMemberKick": "<@${member.id}> ha sido expulsado",
             "optMemberKickReason": "<@${member.id}> ha sido expulsado por ${reason}",
             "optMemberTimeout": "<@${member.id}> ha sido suspendido",
@@ -261,6 +261,8 @@
             "desc":"Por favor seleccione una de estas categorías"
         },
         "poll": {        
+            "desc1":"Tienes 30 segundos para responder a esta encuesta \n **Encuesta creada por**",
+            "desc2":"Encuesta terminó! Gracias por su participación. \n Los siguientes son los resultados:", 
             "optPollDeny":"¡Ya has elegido una opción!",
             "optPollThank":"¡Gracias por participar!"
         }

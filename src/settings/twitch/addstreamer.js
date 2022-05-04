@@ -13,7 +13,8 @@ module.exports = {
         if (twitchPlugin.streamerList) {
             if (twitchPlugin.streamerList.find(streamer=> streamer.broadcaster_login == selectUser.broadcaster_login)) return modal.editReply({ content: lang.get(modal.guild.settings.lang).settings.plugins.twitchPlugin.replies["alreadyAdded"], ephemeral: true })
         }
-        selectUser.alreadySend=selectUser.is_live
+        selectUser.alreadySend=selectUser.is_live 
+        if (!twitchPlugin.streamerList) twitchPlugin.streamerList=[]
         twitchPlugin.streamerList.push(selectUser)
         var selectUserDb= {
             broadcaster_login:selectUser.broadcaster_login,

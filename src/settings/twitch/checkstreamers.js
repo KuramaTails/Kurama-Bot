@@ -3,7 +3,6 @@ module.exports = {
     async execute(guild,twitch) {
         var twitchPlugin = guild.settings.plugins.twitchPlugin
         for (const channel of twitchPlugin.streamerList) {
-            console.log(channel)
             var query = await twitch.searchChannels({ query: channel.broadcaster_login })
             var found = query.data.find(nchannel => nchannel.broadcaster_login == channel.broadcaster_login)
             if (!found) return

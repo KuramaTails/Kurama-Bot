@@ -57,6 +57,6 @@ module.exports = {
                         }
                     }
                     await interaction.editReply({embeds: [resultspoll], components: []})
-            }, 10*1000);
+            }, 30*1000);
 	},
 };

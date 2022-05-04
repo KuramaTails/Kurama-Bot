@@ -261,7 +261,9 @@
             },
             "desc":"Bitte wählen Sie eine dieser Kategorien"
         },
-        "poll": {        
+        "poll": {    
+            "desc1":"Sie haben 30 Sekunden, um auf diese Umfrage zu antworten \n **Umfrage erstellt von**",
+            "desc2":"Umfrage beendet! Vielen Dank für Ihre Teilnahme. \n Im Folgenden sind die Ergebnisse:",    
             "optPollDeny":"Sie haben bereits eine Option gewählt",
             "optPollThank":"Vielen Dank für die Teilnahme"
         }

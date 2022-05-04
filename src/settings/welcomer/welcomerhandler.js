@@ -16,6 +16,7 @@ module.exports= {
                 modallayout.execute(interaction,bot.client,customId,title,label,placeholder)
             return;
             case "selectWelcomerChannel":
+                var selectedChannel = interaction.guild.channels.resolve(interaction.values[0])
                 welcomerPlugin.channelId = interaction.values[0]
                 await guildSchema.findOneAndUpdate({
                     _id: interaction.guild.id,
@@ -28,11 +29,12 @@ module.exports= {
                         upsert:true,
                     })
                 interaction.followUp({
-                    content: lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin["welcomerChannelSet"],
+                    content: lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin["welcomerChannelSet"]+selectedChannel.name,
                     ephemeral: true
                 })
             break;
             case "selectWelcomerBackground":
+                var str = interaction.values[0].split('/');
                 welcomerPlugin.background = interaction.values[0]
                 await guildSchema.findOneAndUpdate({
                     _id: interaction.guild.id,
@@ -45,7 +47,7 @@ module.exports= {
                         upsert:true,
                     })
                 interaction.followUp({
-                    content: lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin["welcomerBackgroundSet"],
+                    content: lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin["welcomerBackgroundSet"]+str[str.length-1],
                     ephemeral: true
                 })
             break;

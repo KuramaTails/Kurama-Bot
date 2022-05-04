@@ -260,7 +260,9 @@
             },
             "desc":"Prego seleziona una di queste categorie"
         },
-        "poll": {        
+        "poll": {       
+            "desc1":"Hai 30 secondi per rispondere a questo sondaggio \n **Sondaggio creato da**",
+            "desc2":"Sondaggio concluso! Grazie per la vostra partecipazione. \n Di seguito sono riportati i risultati:",  
             "optPollDeny":"Hai già scelto un opzione!",
             "optPollThank":"Grazie per aver partecipato"
         }

@@ -261,6 +261,8 @@
             "desc":"Please choose one of these categories"
         },
         "poll": {        
+            "desc1":"You have 30 seconds to reply to this poll \n **Poll created by**",
+            "desc2":"Poll ended! Thank you for your participation. \n Following are the results:",
             "optPollDeny":"You have already choosed one option",
             "optPollThank":"Thank you for having participate"
         }
