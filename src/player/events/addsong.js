@@ -3,8 +3,8 @@ const bot = require("../../../bot");
 module.exports = {
     name: 'addSong',
 	async execute(queue) {
-        if (!queue.clientMember.guild.settings.playerPlugin.channelId) return
-        var textChannel = queue.clientMember.guild.settings.playerPlugin.channelId
+        if (!queue.clientMember.guild.settings.plugins.playerPlugin.channelId) return
+        var textChannel = queue.clientMember.guild.settings.plugins.playerPlugin.channelId
         var listchannels = queue.clientMember.guild.channels.cache
         let playerChannel = await listchannels.find(channel => channel.id === textChannel )
         let playlist = bot.player.queues.collection.first().songs;
