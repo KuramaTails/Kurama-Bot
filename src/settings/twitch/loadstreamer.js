@@ -5,7 +5,8 @@ module.exports = {
             var found = query.data.find(nchannel => nchannel.broadcaster_login == channel.broadcaster_login)
             if (!found) return
             found.alreadySend = found.is_live
-            channel = found
+            var foundIndex = twitchPlugin.streamerList.findIndex(lchannel => lchannel.broadcaster_login == channel.broadcaster_login);
+            twitchPlugin.streamerList[foundIndex] = found;
         }
 	}
 };

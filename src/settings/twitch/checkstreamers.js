@@ -1,17 +1,20 @@
 const { MessageEmbed } = require("discord.js");
-const guildSchema = require("../../schemas/guild-schema");
 module.exports = {
     async execute(guild,twitch) {
         var twitchPlugin = guild.settings.plugins.twitchPlugin
         for (const channel of twitchPlugin.streamerList) {
+            console.log(channel)
             var query = await twitch.searchChannels({ query: channel.broadcaster_login })
             var found = query.data.find(nchannel => nchannel.broadcaster_login == channel.broadcaster_login)
             if (!found) return
-            if (found.is_live == true && found.is_live != channel.alreadySend) return sendEmbed(guild,channel,found,guildSchema)
+            if (found.is_live == true && found.is_live != channel.alreadySend) {
+                found.alreadySend = found.is_live
+                var foundIndex = twitchPlugin.streamerList.findIndex(lchannel => lchannel.broadcaster_login == channel.broadcaster_login);
+                twitchPlugin.streamerList[foundIndex] = found;
+                return sendEmbed(guild,found)
+            }
         }
-        async function sendEmbed(guild,channel,found) {
-            channel = found
-            channel.alreadySend = channel.is_live
+        async function sendEmbed(guild,found) {
             var textChannel = guild.channels.cache.get(guild.settings.plugins.twitchPlugin.channelId)
             var thumbnail = found.thumbnail_url.replace("-{width}x{height}","")
             const streamingEmbed = new MessageEmbed()
