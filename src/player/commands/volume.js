@@ -8,7 +8,9 @@ module.exports = {
         player.getQueue(voiceChannel)? setVol(voiceChannel) : interaction.followUp({content: stringErr,ephemeral: true})  
         function setVol(voiceChannel) {
             let volume = interaction.options? interaction.options.getNumber("volume") : player.getQueue(voiceChannel).volume
-            btn=undefined? "" : (btn==true? volume=volume+10 : volume=volume-10)
+            if (btn==true || btn==false) {
+                (btn==true? volume=volume+10 : volume=volume-10)
+            }
             player.setVolume(voiceChannel, volume);
             interaction.followUp({
                 content: lang.get(interaction.guild.settings.lang).player.commands["volSet"]+"`" + volume + "`",
