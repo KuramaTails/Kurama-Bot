@@ -7,8 +7,7 @@ module.exports = {
 	    bot.timeoutID = undefined	
         if (!queue.clientMember.guild.settings.plugins.playerPlugin.channelId) return
         var textChannel = queue.clientMember.guild.settings.plugins.playerPlugin.channelId
-        var listchannels = queue.clientMember.guild.channels.cache
-        let playerChannel = await listchannels.find(channel => channel.id === textChannel )
+        let playerChannel = await queue.clientMember.guild.channels.resolve(textChannel)
         let playlist = bot.player.queues.collection.first().songs;
         const Embedsearch = new MessageEmbed()
         .setColor('#0099ff')
