@@ -6,7 +6,7 @@ module.exports = {
     async execute(member,selectedChannel,add,lang) {
         var guildSettings = member.guild.settings
         var title = add? lang.get(guildSettings.lang).welcomer.canvas["join"] : lang.get(guildSettings.lang).welcomer.canvas["leave"]
-        var text = add? guildSettings.plugins.welcomerPlugin.textWelcomer : guildSettings.plugins.leaverPlugin.textLeave
+        var text = add? guildSettings.plugins.welcomerPlugin.textWelcomer : guildSettings.plugins.leaverPlugin.textLeaver
         var desc = add? lang.get(guildSettings.lang).welcomer.canvas['descWelcome'] : lang.get(guildSettings.lang).welcomer.canvas['descLeave']
         var result = desc.replace("${member.user.id}",`${member.user.id}`);
         result = result.replace("${member.guild.memberCount}",`${member.guild.memberCount}`);
