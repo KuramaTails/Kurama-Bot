@@ -4,16 +4,16 @@ module.exports = {
         if (oldChannel.name != newChannel.name) {
             if (oldChannel.name.includes("Online") || oldChannel.name.includes("Offline") || oldChannel.name.includes("Members")) return
             try {
-                var botSettingsChannel = await channel.guild.channels.cache.find(channel => channel.name == "bot-settings")
+                var botSettingsChannel = await oldChannel.guild.channels.cache.find(channel => channel.name == "bot-settings")
                 if(!botSettingsChannel) return
                 var botChannelMessages = await botSettingsChannel.messages.fetch()
-                var listChannels = await channel.guild.channels.fetch()
+                var listChannels = await oldChannel.guild.channels.fetch()
                 var filteredChannels = listChannels.filter(c=> c.type=="GUILD_TEXT")
-                var par = channel.guild.channels.cache.find(channel =>channel.name.includes("Kurama"))
+                var par = oldChannel.guild.channels.cache.find(channel =>channel.name.includes("Kurama"))
                 if (par) par.children.forEach(channel => filteredChannels.get(channel.id)? filteredChannels.delete(channel.id) : "")
-                var par1 = channel.guild.channels.cache.find(channel =>channel.name == "Ticket Zone")
+                var par1 = oldChannel.guild.channels.cache.find(channel =>channel.name == "Ticket Zone")
                 if (par1) par1.children.forEach(channel => filteredChannels.get(channel.id)? filteredChannels.delete(channel.id) : "")
-                var par2 = channel.guild.channels.cache.find(channel =>channel.name == "Admin Zone")
+                var par2 = oldChannel.guild.channels.cache.find(channel =>channel.name == "Admin Zone")
                 if (par2) par2.children.forEach(channel => filteredChannels.get(channel.id)? filteredChannels.delete(channel.id) : "")
                 var selectPlayerEmbed = await botChannelMessages.find(message => message.embeds[0].title.includes("Set up player"));
                 var channelsonMenu = selectPlayerEmbed.components[0]

@@ -164,7 +164,7 @@
         "adminZone":{
             "reports":{
                 "commands":{
-                    "falseReportdesc":"¡Recibió una advertencia en ${interaction. guild. name} por un informe falso! Este es tu ${warnCount}o advertencia. Tenga cuidado con los comandos de informe. Si sigues infringiendo las reglas del servidor, los administradores pueden tomar medidas más severas contra ti. \n ***Si usted piensa que esta advertencia es incorrecta, por favor póngase en contacto con un administrador!***",
+                    "falseReportdesc":"¡Recibió una advertencia en ${interaction.guild.name} por un informe falso! Este es tu ${warnCount}o advertencia. Tenga cuidado con los comandos de informe. Si sigues infringiendo las reglas del servidor, los administradores pueden tomar medidas más severas contra ti. \n ***Si usted piensa que esta advertencia es incorrecta, por favor póngase en contacto con un administrador!***",
                     "optReport":"¡Gracias por ayudarnos!"
                 },
                 "reportEmbed":{
