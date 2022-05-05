@@ -1,3 +1,4 @@
+
 const { MessageEmbed, MessageActionRow, MessageSelectMenu } = require("discord.js");
 
 module.exports = {
@@ -23,7 +24,7 @@ module.exports = {
         }
         fieldArr[3] = {
             name: "Reason",
-            value: interaction.options.getUser("reaction")? interaction.options.getUser("reaction") : undefined
+            value: interaction.options.getString("reason")
         }
         const reportEmbed = new MessageEmbed()
         .setColor('#0099ff')
@@ -31,7 +32,20 @@ module.exports = {
         .setDescription("Status: Open")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
         fieldArr.forEach(element => {
-            element.value? element.name=="Reported in"? reportEmbed.addFields({ name: element.name , value: "<#"+element.value+">", inline: false }) : reportEmbed.addFields({ name: element.name , value: "<@"+element.value+">", inline: false }) : ""
+            if (element.value) {
+                switch (element.name) {
+                    case "Reported Member":
+                    case "Reported By":
+                        reportEmbed.addFields({ name: element.name , value: "<@"+element.value+">", inline: false })
+                    break;
+                    case "Reported in":
+                        reportEmbed.addFields({ name: element.name , value: "<#"+element.value+">", inline: false })
+                    break;
+                    case "Reason":
+                        reportEmbed.addFields({ name: element.name , value: element.value, inline: false })
+                    break;
+                }  
+            }
         });
         const menu = new MessageActionRow()
         menu.addComponents(

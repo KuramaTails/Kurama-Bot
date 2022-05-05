@@ -4,7 +4,7 @@ module.exports= {
     async execute(interaction,lang) {
         var fields = interaction.message.embeds[0].fields
         var noAction = interaction.message.embeds[0]
-        noAction.description= lang.get(interaction.guild.settings.lang).zones.adminZone.resolved["desc"]+ "`" + interaction.values[0] + "`"
+        noAction.description= lang.get(interaction.guild.settings.lang).zones.adminZone.reports.resolved["desc"]+ "`" + interaction.values[0] + "`"
         interaction.message.edit({embeds:[noAction],components:[]})
         switch (interaction.values[0]) {
             case "skip":
