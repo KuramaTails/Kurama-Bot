@@ -2,6 +2,9 @@ module.exports = {
     name: 'channelDelete',
     async execute(channel) {
         try {
+            var botSettingsChannel = await channel.guild.channels.cache.find(channel => channel.name == "bot-settings")
+            if(!botSettingsChannel) return
+            var botChannelMessages = await botSettingsChannel.messages.fetch()
             var listChannels = await channel.guild.channels.fetch()
             var filteredChannels = listChannels.filter(c=> c.type=="GUILD_TEXT")
             var par = channel.guild.channels.cache.find(channel =>channel.name.includes("Kurama"))
@@ -10,8 +13,6 @@ module.exports = {
             if (par1) par1.children.forEach(channel => filteredChannels.get(channel.id)? filteredChannels.delete(channel.id) : "")
             var par2 = channel.guild.channels.cache.find(channel =>channel.name == "Admin Zone")
             if (par2) par2.children.forEach(channel => filteredChannels.get(channel.id)? filteredChannels.delete(channel.id) : "")
-            var botSettingsChannel = await channel.guild.channels.cache.find(channel => channel.name == "bot-settings")
-            var botChannelMessages = await botSettingsChannel.messages.fetch()
             var selectPlayerEmbed = await botChannelMessages.find(message => message.embeds[0].title.includes("Set up player"));
             var channelsonMenu = selectPlayerEmbed.components[0]
             channelsonMenu.components[0].spliceOptions(0,channelsonMenu.components[0].options.length)

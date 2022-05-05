@@ -26,7 +26,11 @@ module.exports = {
             }
         } catch (error) {
             console.error(error);
-            await interaction.followUp({ content: bot.lang.get(interaction.guild.settings.lang).interaction["err"], ephemeral: true });
+            try {
+                await interaction.followUp({ content: bot.lang.get(interaction.guild.settings.lang).interaction["err"], ephemeral: true });
+            } catch (error) {
+                console.error(error);
+            } 
         } finally {
             setTimeout(() => {
                 bot.cooldownUser.delete(interaction.user.id);

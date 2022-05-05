@@ -6,7 +6,6 @@ module.exports = {
     part:2,
     async execute(interaction,lang,part) {
         await dbconnect()
-        console.log(interaction.guild.settings.lang)
         interaction.guild.settings.lang = part
         await guildSchema.findOneAndUpdate({
             _id: interaction.guild.id,
@@ -18,7 +17,6 @@ module.exports = {
         {
             upsert:true,
         })
-        console.log(interaction.guild.settings.lang)
         await dbdisconnect()
         await interaction.message.delete()
         const TutorialEmbed = new MessageEmbed()
