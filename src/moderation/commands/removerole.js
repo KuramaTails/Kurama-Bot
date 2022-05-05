@@ -6,7 +6,7 @@ module.exports = {
 	async execute(interaction,lang) {
         var member = await interaction.guild.members.fetch(interaction.options.getUser("user"));
         var role = interaction.options.getRole("role")
-        var hasAlready = interaction.member.roles.cache.find(role=> role.id == interaction.options.getRole("role").id)? true : false
+        var hasAlready = member.roles.cache.find(role=> role.id == interaction.options.getRole("role").id)? true : false
         if (hasAlready==true) {
             await member.roles.remove(role);
             var string = lang.get(interaction.guild.settings.lang).commands.moderation["optRoleRemoved"]
