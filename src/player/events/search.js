@@ -1,6 +1,5 @@
 module.exports = {
 	async execute(modal,player,lang) {
-        if (!modal.guild.settings.plugins.playerPlugin.channelId) return
         var link = modal.getTextInputValue('textinput-customid')
         var voicechannel = modal.member.voice.channel
         if (!voicechannel) {

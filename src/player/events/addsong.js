@@ -3,10 +3,10 @@ const bot = require("../../../bot");
 module.exports = {
     name: 'addSong',
 	async execute(queue) {
+        if (!queue.clientMember.guild.settings.plugins) return
+        if (!queue.clientMember.guild.settings.plugins.playerPlugin) return
         if (!queue.clientMember.guild.settings.plugins.playerPlugin.channelId) return
-        var textChannel = queue.clientMember.guild.settings.plugins.playerPlugin.channelId
-        var listchannels = queue.clientMember.guild.channels.cache
-        let playerChannel = await listchannels.find(channel => channel.id === textChannel )
+        var playerChannel = await queue.clientMember.guild.channels.resolve(queue.clientMember.guild.settings.plugins.playerPlugin.channelId)
         let playlist = bot.player.queues.collection.first().songs;
         const Embedsearch = new MessageEmbed()
         .setColor('#0099ff')

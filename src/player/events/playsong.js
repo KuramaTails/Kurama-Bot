@@ -8,10 +8,7 @@ module.exports = {
         if (!queue.clientMember.guild.settings.plugins) return
         if (!queue.clientMember.guild.settings.plugins.playerPlugin) return
         if (!queue.clientMember.guild.settings.plugins.playerPlugin.channelId) return
-        var channels = await queue.clientMember.guild.channels.fetch()
-        console.log(queue.clientMember.guild.settings.plugins.playerPlugin.channelId)
-        let playerChannel = await channels.find(channel => channel.id == queue.clientMember.guild.settings.plugins.playerPlugin.channelId)
-        console.log(playerChannel)
+        var playerChannel = await queue.clientMember.guild.channels.resolve(queue.clientMember.guild.settings.plugins.playerPlugin.channelId)
         if (!playerChannel) return
         let playlist = bot.player.queues.collection.first().songs;
         const Embedsearch = new MessageEmbed()
