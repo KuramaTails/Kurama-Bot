@@ -5,7 +5,7 @@
     "@discordjs/rest": "^0.3.0",
     "@discordjs/voice": "^0.8.0",
     "@distube/yt-dlp": "^1.0.2",
-    "@distube/ytdl-core": "^4.11.1",
+    "@distube/ytdl-core": "^4.11.3",
     "@twurple/api": "^5.1.0",
     "@twurple/auth": "^5.1.0",
     "canvas": "^2.9.0",

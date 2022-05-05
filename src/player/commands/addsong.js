@@ -8,7 +8,7 @@ module.exports = {
         await player.play(voiceChannel, link)
         var queue = await player.queues.get(voiceChannel)
         let addedsong = queue.songs[queue.songs.length-1]
-        var string = lang.get(interaction.guild.lang).player.commands["addsong"]
+        var string = lang.get(interaction.guild.settings.lang).player.commands["addsong"]
         let result = string.replace("${addedsong.name} - ${addedsong.formattedDuration}",`${addedsong.name} - ${addedsong.formattedDuration}`);
         interaction.followUp({
             content: result,

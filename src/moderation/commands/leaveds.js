@@ -32,6 +32,7 @@ module.exports = {
             var newChannels = await interaction.guild.channels.fetch()
             var selectedChannel = await newChannels.find(channel => channel.type== "GUILD_TEXT")
             await selectedChannel.send(lang.get(interaction.guild.settings.lang).commands.moderation["optLeaveDs"])
+            console.log("Guild left: "+interaction.guild.name)
             await interaction.guild.leave();
         } catch (error) {
             console.log(error)

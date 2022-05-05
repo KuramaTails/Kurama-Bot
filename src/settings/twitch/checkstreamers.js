@@ -1,6 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
     async execute(guild,twitch) {
+        if(!guild.settings.plugins) return
         var twitchPlugin = guild.settings.plugins.twitchPlugin
         for (const channel of twitchPlugin.streamerList) {
             var query = await twitch.searchChannels({ query: channel.broadcaster_login })

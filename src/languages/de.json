@@ -190,7 +190,7 @@
     "tutorial": {
         "buttons":{
             "yes":"Ja",
-            "Nein":"Nein"
+            "no":"Nein"
         },
         "start": {
             "desc":"Danke für das Hinzufügen von mir zu Ihrem discord.   n Bitte folgen Sie diesem Tutorial, um mein bestes setup.  n Es wird nicht lange dauern. ",
