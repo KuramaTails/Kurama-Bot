@@ -5,9 +5,14 @@ module.exports = {
 	async execute(queue) {
         clearTimeout(bot.timeoutID)
 	    bot.timeoutID = undefined	
+        if (!queue.clientMember.guild.settings.plugins) return
+        if (!queue.clientMember.guild.settings.plugins.playerPlugin) return
         if (!queue.clientMember.guild.settings.plugins.playerPlugin.channelId) return
-        var textChannel = queue.clientMember.guild.settings.plugins.playerPlugin.channelId
-        let playerChannel = await queue.clientMember.guild.channels.resolve(textChannel)
+        var channels = await queue.clientMember.guild.channels.fetch()
+        console.log(queue.clientMember.guild.settings.plugins.playerPlugin.channelId)
+        let playerChannel = await channels.find(channel => channel.id == queue.clientMember.guild.settings.plugins.playerPlugin.channelId)
+        console.log(playerChannel)
+        if (!playerChannel) return
         let playlist = bot.player.queues.collection.first().songs;
         const Embedsearch = new MessageEmbed()
         .setColor('#0099ff')

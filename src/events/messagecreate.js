@@ -7,7 +7,7 @@ module.exports = {
         if (message.author.username!=bot.client.user.username){
             await spamcheck.execute(message,bot.spamList,bot.lang)
             if(message.content.startsWith(bot.prefix)){
-                starttutorial.execute(message.guild,bot.lang)
+                console.log(message.guild.settings)
             }
         }
 	}
