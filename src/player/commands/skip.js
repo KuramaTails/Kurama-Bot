@@ -1,3 +1,7 @@
+const dbconnect = require("../../db/dbconnect");
+const dbdisconnect = require("../../db/dbdisconnect");
+const guildSchema = require("../../schemas/guild-schema");
+
 module.exports = {
     name: "skip",
     command:"skip",
@@ -31,6 +35,19 @@ module.exports = {
         }
         else {
             player.voices.leave(voiceChannel)
+            settings.plugins.playerPlugin.volume = vol
+            await dbconnect()
+            await guildSchema.findOneAndUpdate({
+                _id: interaction.guild.id,
+            }, {
+                $set: {
+                    "plugins.playerPlugin.volume":  vol,
+                }
+            },
+            {
+                upsert:true,
+            })
+            await dbdisconnect()
             interaction.followUp({
                 content: lang.get(interaction.guild.settings.lang).player.commands.errors["queue"],
                 ephemeral: true

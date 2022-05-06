@@ -38,6 +38,7 @@ const guildSchema = mongoose.Schema({
         },
         playerPlugin:{
             channelId: reqString,
+            volume: reqString,
         },
         chooseRolePlugin: {
             channelId:reqString,
