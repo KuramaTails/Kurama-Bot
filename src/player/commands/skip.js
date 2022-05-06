@@ -34,7 +34,7 @@ module.exports = {
                 })
         }
         else {
-            player.voices.leave(voiceChannel)
+            var vol = player.getQueue(voiceChannel)? player.getQueue(voiceChannel).volume : 50
             settings.plugins.playerPlugin.volume = vol
             await dbconnect()
             await guildSchema.findOneAndUpdate({
@@ -48,6 +48,7 @@ module.exports = {
                 upsert:true,
             })
             await dbdisconnect()
+            await player.voices.leave(voiceChannel)
             interaction.followUp({
                 content: lang.get(interaction.guild.settings.lang).player.commands.errors["queue"],
                 ephemeral: true

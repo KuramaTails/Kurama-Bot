@@ -9,7 +9,7 @@ module.exports = {
         var queue = await player.queues.get(voiceChannel)
         let addedsong = queue.songs[queue.songs.length-1]
         var string = lang.get(interaction.guild.settings.lang).player.embeds["addsong"]
-        let result = string.replace("${addedsong.name} - ${addedsong.formattedDuration}",` \`${addedsong.name}\` - \`${addedsong.formattedDuration}\``);
+        let result = string.replace("${addedsong.name} - ${addedsong.formattedDuration}",`\`${addedsong.name}\` - \`${addedsong.formattedDuration}\``);
         interaction.followUp({
             content: result,
             ephemeral: true
