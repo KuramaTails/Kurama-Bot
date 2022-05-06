@@ -2,16 +2,23 @@ const { MessageEmbed, MessageActionRow, MessageSelectMenu } = require("discord.j
 
 module.exports = {
 	async execute(interaction,channel,lang) {
+        var settings = interaction.guild.settings
+        if (settings.plugins) {
+            var playerChannel = settings.plugins.playerPlugin? settings.plugins.playerPlugin.channelId : ''
+            var chooseRoleChannel = settings.plugins.chooseRolePlugin? settings.plugins.chooseRolePlugin.channelId : ''
+        }
+        var selectedChannel 
+        if (playerChannel) selectedChannel = interaction.guild.channels.cache.find(channel => channel.id == playerChannel)
         const TutorialEmbed = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Set up player")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .addField(lang.get(interaction.guild.settings.lang).tutorial.part5["field1"],lang.get(interaction.guild.settings.lang).tutorial.part5["field2"])
+        .addField(lang.get(settings.lang).tutorial.part5["field1"],lang.get(settings.lang).tutorial.part5["field2"])
         const button1 = new MessageActionRow()
         button1.addComponents(
             new MessageSelectMenu()
                 .setCustomId('settings-bot-selectPlayerChannel')
-                .setPlaceholder(lang.get(interaction.guild.settings.lang).selectMenu["none"])
+                .setPlaceholder(selectedChannel? selectedChannel.name : lang.get(settings.lang).selectMenu["none"])
                 
         )
         var filteredChannels = interaction.guild.channels.cache.filter(c=> c.type=="GUILD_TEXT")
@@ -30,16 +37,17 @@ module.exports = {
                 },
             ])
         });
+        if (chooseRoleChannel) selectedChannel = interaction.guild.channels.cache.find(channel => channel.id == chooseRoleChannel)
         const chooseRoleEmbed = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Choose Role Embed")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .addField(lang.get(interaction.guild.settings.lang).settings.embeds.chooseRole["desc1"],lang.get(interaction.guild.settings.lang).settings.embeds.chooseRole["desc2"])
+        .addField(lang.get(settings.lang).settings.embeds.chooseRole["desc1"],lang.get(settings.lang).settings.embeds.chooseRole["desc2"])
         const button2 = new MessageActionRow()
         button2.addComponents(
             new MessageSelectMenu()
                 .setCustomId('settings-bot-selectChooseRoleChannel')
-                .setPlaceholder(lang.get(interaction.guild.settings.lang).selectMenu["none"])
+                .setPlaceholder(selectedChannel? selectedChannel.name : lang.get(settings.lang).selectMenu["none"])
                 
         )
         filteredChannels.forEach(channel => {

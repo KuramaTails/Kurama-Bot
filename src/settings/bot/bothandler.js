@@ -27,7 +27,6 @@ module.exports = {
             if (disabled) disabled.disabled = false
             interaction.message.edit({components:components})
         }
-        await dbconnect()
         switch (customId) {
             case "adminZoneEnable":
                 await adminzone.execute(interaction,lang)
@@ -43,143 +42,12 @@ module.exports = {
                 var par = interaction.guild.channels.cache.find(channel =>channel.name == "Ticket Zone")
                 if (par) par.children.forEach(channel => channel.delete()),par.delete()
             break;
-            case "autorolePluginEnable":
-                plugins.autorolePlugin = {
-                    active:true
-                }
-                await guildSchema.findOneAndUpdate({
-                    _id: interaction.guild.id,
-                }, {
-                    $set: {
-                        "plugins.autorolePlugin.active": true,
-                    }
-                },
-                {
-                    upsert:true,
-                })
-                await autoroleplugin.execute(interaction,lang)
-            break;
-            case "autorolePluginDisable":
-                plugins.autorolePlugin = {
-                    active:false
-                }
-                await guildSchema.findOneAndUpdate({
-                    _id: interaction.guild.id,
-                }, {
-                    $set: {
-                        "plugins.autorolePlugin": {active:false},
-                    }
-                },
-                {
-                    upsert:true,
-                })
-                interaction.guild.channels.cache.find(channel => {
-                    if (channel.name == "autorole-plugin") channel.delete()
-                })
-            break;
-            case "twitchPluginEnable":
-                plugins.twitchPlugin = {
-                    active:true
-                }
-                await guildSchema.findOneAndUpdate({
-                    _id: interaction.guild.id,
-                }, {
-                    $set: {
-                        "plugins.twitchPlugin.active": true,
-                    }
-                },
-                {
-                    upsert:true,
-                })
-                await twitchplugin.execute(interaction,lang)
-            break;
-            case "twitchPluginDisable":
-                plugins.twitchPlugin = {
-                    active:false
-                }
-                await guildSchema.findOneAndUpdate({
-                    _id: interaction.guild.id,
-                }, {
-                    $set: {
-                        "plugins.twitchPlugin": {active:false},
-                    }
-                },
-                {
-                    upsert:true,
-                })
-                interaction.guild.channels.cache.find(channel => {
-                    if (channel.name == "twitch-plugin") channel.delete()
-                })
-            break;
-            case "welcomerPluginEnable":
-                plugins.welcomerPlugin = {
-                    active:true
-                }
-                await guildSchema.findOneAndUpdate({
-                    _id: interaction.guild.id,
-                }, {
-                    $set: {
-                        "plugins.welcomerPlugin.active": true,
-                    }
-                },
-                {
-                    upsert:true,
-                })
-                await welcomerplugin.execute(interaction,lang,plugins)
-            break;
-            case "welcomerPluginDisable":
-                plugins.welcomerPlugin = {
-                    active:false
-                }
-                await guildSchema.findOneAndUpdate({
-                    _id: interaction.guild.id,
-                }, {
-                    $set: {
-                        "plugins.welcomerPlugin": {active:false},
-                    }
-                },
-                {
-                    upsert:true,
-                })
-                interaction.guild.channels.cache.find(channel => {
-                    if (channel.name == "welcomer-plugin") channel.delete()
-                })
-            break;
-            case "leaverPluginEnable":
-                plugins.leaverPlugin = {
-                    active:true
-                }
-                await guildSchema.findOneAndUpdate({
-                    _id: interaction.guild.id,
-                }, {
-                    $set: {
-                        "plugins.leaverPlugin": {active:true},
-                    }
-                },
-                {
-                    upsert:true,
-                })
-                await leaverplugin.execute(interaction,lang,plugins)
-            break;
-            case "leaverPluginDisable":
-                plugins.leaverPlugin = {
-                    active:false
-                }
-                await guildSchema.findOneAndUpdate({
-                    _id: interaction.guild.id,
-                }, {
-                    $set: {
-                        "plugins.leaverPlugin":  {activeLeaver:false},
-                    }
-                },
-                {
-                    upsert:true,
-                })
-                interaction.guild.channels.cache.find(channel => {
-                    if (channel.name == "leaver-plugin") channel.delete()
-                })
-            break;
             case "selectPlayerChannel":
+                var selectedChannel = interaction.guild.channels.cache.find(channel => channel.id == interaction.values[0])
+                if (!selectedChannel) return
+                var updatePlaceholder = interaction.message.components[0]
+                updatePlaceholder.components[0].placeholder= selectedChannel.name
+                await interaction.message.edit({components:[updatePlaceholder]})
                 plugins.playerPlugin = {
                     channelId:interaction.values[0]
                 }
@@ -196,6 +64,11 @@ module.exports = {
                 await playerembed.execute(interaction,lang,plugins.playerPlugin.channelId)
             break;
             case "selectChooseRoleChannel":
+                var selectedChannel = interaction.guild.channels.cache.find(channel => channel.id == interaction.values[0])
+                if (!selectedChannel) return
+                var updatePlaceholder = interaction.message.components[0]
+                updatePlaceholder.components[0].placeholder= selectedChannel.name
+                await interaction.message.edit({components:[updatePlaceholder]})
                 plugins.chooseRolePlugin = {
                     channelId:interaction.values[0]
                 }
@@ -213,9 +86,151 @@ module.exports = {
                 await chooserolesembed.execute(channel,lang)
             break;
             default:
-                await changelang.execute(interaction,customId,lang,plugins)
+                await dbconnect()
+                switch (customId) {
+                    case "autorolePluginEnable":
+                        plugins.autorolePlugin = {
+                            active:true
+                        }
+                        await guildSchema.findOneAndUpdate({
+                            _id: interaction.guild.id,
+                        }, {
+                            $set: {
+                                "plugins.autorolePlugin.active": true,
+                            }
+                        },
+                        {
+                            upsert:true,
+                        })
+                        await autoroleplugin.execute(interaction,lang)
+                    break;
+                    case "autorolePluginDisable":
+                        plugins.autorolePlugin = {
+                            active:false
+                        }
+                        await guildSchema.findOneAndUpdate({
+                            _id: interaction.guild.id,
+                        }, {
+                            $set: {
+                                "plugins.autorolePlugin": {active:false},
+                            }
+                        },
+                        {
+                            upsert:true,
+                        })
+                        interaction.guild.channels.cache.find(channel => {
+                            if (channel.name == "autorole-plugin") channel.delete()
+                        })
+                    break;
+                    case "twitchPluginEnable":
+                        plugins.twitchPlugin = {
+                            active:true
+                        }
+                        await guildSchema.findOneAndUpdate({
+                            _id: interaction.guild.id,
+                        }, {
+                            $set: {
+                                "plugins.twitchPlugin.active": true,
+                            }
+                        },
+                        {
+                            upsert:true,
+                        })
+                        await twitchplugin.execute(interaction,lang)
+                    break;
+                    case "twitchPluginDisable":
+                        plugins.twitchPlugin = {
+                            active:false
+                        }
+                        await guildSchema.findOneAndUpdate({
+                            _id: interaction.guild.id,
+                        }, {
+                            $set: {
+                                "plugins.twitchPlugin": {active:false},
+                            }
+                        },
+                        {
+                            upsert:true,
+                        })
+                        interaction.guild.channels.cache.find(channel => {
+                            if (channel.name == "twitch-plugin") channel.delete()
+                        })
+                    break;
+                    case "welcomerPluginEnable":
+                        plugins.welcomerPlugin = {
+                            active:true
+                        }
+                        await guildSchema.findOneAndUpdate({
+                            _id: interaction.guild.id,
+                        }, {
+                            $set: {
+                                "plugins.welcomerPlugin.active": true,
+                            }
+                        },
+                        {
+                            upsert:true,
+                        })
+                        await welcomerplugin.execute(interaction,lang,plugins)
+                    break;
+                    case "welcomerPluginDisable":
+                        plugins.welcomerPlugin = {
+                            active:false
+                        }
+                        await guildSchema.findOneAndUpdate({
+                            _id: interaction.guild.id,
+                        }, {
+                            $set: {
+                                "plugins.welcomerPlugin": {active:false},
+                            }
+                        },
+                        {
+                            upsert:true,
+                        })
+                        interaction.guild.channels.cache.find(channel => {
+                            if (channel.name == "welcomer-plugin") channel.delete()
+                        })
+                    break;
+                    case "leaverPluginEnable":
+                        plugins.leaverPlugin = {
+                            active:true
+                        }
+                        await guildSchema.findOneAndUpdate({
+                            _id: interaction.guild.id,
+                        }, {
+                            $set: {
+                                "plugins.leaverPlugin": {active:true},
+                            }
+                        },
+                        {
+                            upsert:true,
+                        })
+                        await leaverplugin.execute(interaction,lang,plugins)
+                    break;
+                    case "leaverPluginDisable":
+                        plugins.leaverPlugin = {
+                            active:false
+                        }
+                        await guildSchema.findOneAndUpdate({
+                            _id: interaction.guild.id,
+                        }, {
+                            $set: {
+                                "plugins.leaverPlugin":  {activeLeaver:false},
+                            }
+                        },
+                        {
+                            upsert:true,
+                        })
+                        interaction.guild.channels.cache.find(channel => {
+                            if (channel.name == "leaver-plugin") channel.delete()
+                        })
+                    break;
+                    default:
+                        await changelang.execute(interaction,customId,lang,plugins)
+                    break;
+                }
+                await dbdisconnect()
             break;
         }
-        await dbdisconnect()
+        
     }
 }

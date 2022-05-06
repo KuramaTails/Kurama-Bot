@@ -7,7 +7,11 @@ module.exports = {
         var autorolePlugin = plugins.autorolePlugin
         switch (customId) {
             case "selectAutoroleRole":
-                await dbconnect()
+                var selectedRole = interaction.guild.roles.cache.find(role => role.id == interaction.values[0])
+                if (!selectedRole) return
+                var updatePlaceholder = interaction.message.components[0]
+                updatePlaceholder.components[0].placeholder= selectedRole.name
+                await interaction.message.edit({components:[updatePlaceholder]})
                 await guildSchema.findOneAndUpdate({
                     _id: interaction.guild.id,
                 }, {
@@ -18,7 +22,6 @@ module.exports = {
                 {
                     upsert:true,
                 })
-                await dbdisconnect()
                 autorolePlugin.role = interaction.values[0]
                 interaction.followUp({
                     content: lang.get(interaction.guild.settings.lang).settings.plugins.autorolePlugin["autoRoleSet"]+` <@&${interaction.values[0]}>`,

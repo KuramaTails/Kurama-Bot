@@ -16,7 +16,11 @@ module.exports= {
                 modallayout.execute(interaction,bot.client,customId,title,label,placeholder)
             return;
             case "selectWelcomerChannel":
-                var selectedChannel = interaction.guild.channels.resolve(interaction.values[0])
+                var selectedChannel = interaction.guild.channels.cache.find(channel => channel.id == interaction.values[0])
+                if (!selectedChannel) return
+                var updatePlaceholder = interaction.message.components[0]
+                updatePlaceholder.components[0].placeholder= selectedChannel.name
+                await interaction.message.edit({components:[updatePlaceholder]})
                 welcomerPlugin.channelId = interaction.values[0]
                 await guildSchema.findOneAndUpdate({
                     _id: interaction.guild.id,
@@ -35,6 +39,10 @@ module.exports= {
             break;
             case "selectWelcomerBackground":
                 var str = interaction.values[0].split('/');
+                if (!str[str.length-1]) return
+                var updatePlaceholder = interaction.message.components[0]
+                updatePlaceholder.components[0].placeholder= str[str.length-1]
+                await interaction.message.edit({components:[updatePlaceholder]})
                 welcomerPlugin.background = interaction.values[0]
                 await guildSchema.findOneAndUpdate({
                     _id: interaction.guild.id,

@@ -21,7 +21,11 @@ module.exports = {
                 await modallayout.execute(interaction,bot.client,customId,title,label,placeholder)
 			break;
 			case "selectChannel":
-				await dbconnect()
+				var selectedChannel = interaction.guild.channels.cache.find(channel => channel.id == interaction.values[0])
+                if (!selectedChannel) return
+                var updatePlaceholder = interaction.message.components[0]
+                updatePlaceholder.components[0].placeholder= selectedChannel.name
+                await interaction.message.edit({components:[updatePlaceholder]})
 				twitchPlugin.channelId= interaction.values[0]
 				await guildSchema.findOneAndUpdate({
 					_id: interaction.guild.id,
@@ -33,7 +37,6 @@ module.exports = {
 					{
 						upsert:true,
 					})
-				await dbdisconnect()
 			break;
 		}
 	}
