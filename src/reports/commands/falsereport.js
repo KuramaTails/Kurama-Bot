@@ -19,7 +19,7 @@ module.exports = {
         await dbdisconnect()
         var string = lang.get(interaction.guild.settings.lang).zones.adminZone.reports.commands["falseReportdesc"]
         var result = string.replace("${interaction.guild.name}",`${interaction.guild.name}`);
-        result = string.replace("${warnCount}",`${warnCount}`);
+        result = result.replace("${warnCount}",`${warnCount}`);
         const reportedUser = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Warning")

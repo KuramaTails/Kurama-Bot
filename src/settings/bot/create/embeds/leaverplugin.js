@@ -6,7 +6,7 @@ module.exports = {
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Leaver Text")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
-        .addField(lang.get(interaction.guild.settings.lang).settings.plugins.leaverPlugin["text"],` \`${leaverPlugin.textLeave}\``)
+        .addField(lang.get(interaction.guild.settings.lang).settings.plugins.leaverPlugin["text"]+` \`${leaverPlugin.textLeave}\``,lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.embeds["changeTextDesc"])
         const button = new MessageActionRow()
         button.addComponents(
             new MessageButton()

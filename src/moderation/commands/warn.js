@@ -12,8 +12,24 @@ module.exports = {
         var reason = interaction.options? interaction.options.getString("reason") : fields.length>2? fields[3] : null;
         await dbconnect()
         var dbmembers = await membersSchema.findOne({_id: interaction.guild.id})
-        var warnCount = dbmembers.members.get(member.id).warn+1
-        dbmembers.members.get(member.id).warn = warnCount
+        var warnCount
+        if (!dbmembers.members.get(member.id)) {
+            warnCount = 1
+            var memberId= member.id
+            var roles = member.roles.cache
+            var rolesKeys = Array.from(roles.keys())
+            var memberObj = {
+                bot:member.user.bot,
+                username:member.user.username,
+                roles:rolesKeys,
+                warn:1,
+            }
+            dbmembers.members.set(memberId,memberObj)
+        }
+        else {
+            warnCount = dbmembers.members.get(member.id).warn+1
+            dbmembers.members.get(member.id).warn = warnCount
+        }
         dbmembers.markModified('members');
         await dbmembers.save()
         await dbdisconnect()

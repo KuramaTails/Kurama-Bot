@@ -3,7 +3,6 @@ const bot = require("../../../bot");
 module.exports = {
     name: 'guildMemberAdd',
     async execute(member) {
-        var add=true
         try {
             var memberChannel = member.guild.channels.cache.find(channel => channel.name.includes("Member"))
             if (memberChannel) memberChannel.setName(`Member : ${member.guild.memberCount}`)
@@ -12,6 +11,7 @@ module.exports = {
         }
         if (!member.guild.settings.plugins.welcomerPlugin) return
         if (!member.guild.settings.plugins.welcomerPlugin.active) return
+        var add=true
         await welcomer.execute(member,add,bot.lang)
         if (!member.guild.settings.plugins.autorolePlugin.active) return
         if (!member.guild.settings.plugins.autorolePlugin.role) return

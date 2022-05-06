@@ -30,13 +30,13 @@ module.exports = {
                 await selectPlayerEmbed.edit({components:[channelsonMenu]})
                 await selectRoleChannelEmbed.edit({components:[channelsonMenu]})
     
-                var welcomerSettingsChannel = await channel.guild.channels.cache.find(channel => channel.name == "welcomer-plugin")
+                var welcomerSettingsChannel = await oldChannel.guild.channels.cache.find(channel => channel.name == "welcomer-plugin")
                 if (welcomerSettingsChannel) {
                     var welcomerChannelMessages = await welcomerSettingsChannel.messages.fetch()
                     var selectWelcomerEmbed = await welcomerChannelMessages.find(message => message.embeds[0].title.includes("channel"));
                     await selectWelcomerEmbed.edit({components:[channelsonMenu]})
                 }
-                var twitchPluginChannel = await channel.guild.channels.cache.find(channel => channel.name == "twitch-plugin")
+                var twitchPluginChannel = await oldChannel.guild.channels.cache.find(channel => channel.name == "twitch-plugin")
                 if (twitchPluginChannel) {
                     var twitchPluginMessages = await twitchPluginChannel.messages.fetch()
                     var selectTwittchEmbed = await twitchPluginMessages.find(message => message.embeds[0].title.includes("Channel"));
