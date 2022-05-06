@@ -32,6 +32,10 @@ module.exports = {
             }
         )
         await dbdisconnect()
-        return await modal.editReply({ content: lang.get(modal.guild.settings.lang).settings.plugins.twitchPlugin.replies["added"], ephemeral: true }) 
+        var updateEmbed = modal.message.embeds[0]
+        updateEmbed.fields[0].value+=`\n- ${selectUser.display_name}`
+        await modal.message.edit({embeds:[updateEmbed]})
+        await modal.editReply({ content: lang.get(modal.guild.settings.lang).settings.plugins.twitchPlugin.replies["added"]+` ${selectUser.display_name}.`, ephemeral: true })
+        console.log(`Added streamer notification in ${modal.guild.name}`) 
 	}
 };

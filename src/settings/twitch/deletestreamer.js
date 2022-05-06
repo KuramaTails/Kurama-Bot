@@ -26,7 +26,12 @@ module.exports = {
                 }
             )
             await dbdisconnect()
-            return await modal.editReply({ content: lang.get(modal.guild.settings.lang).settings.plugins.twitchPlugin.replies["foundDelete"], ephemeral: true }) 
+            var updateEmbed = modal.message.embeds[0]
+            var str = updateEmbed.fields[0].value
+            updateEmbed.fields[0].value = str.replace(`\n- ${selectUser.display_name}`, "");
+            await modal.message.edit({embeds:[updateEmbed]})
+            await modal.editReply({ content: lang.get(modal.guild.settings.lang).settings.plugins.twitchPlugin.replies["foundDelete"]+` ${selectUser.display_name}.`, ephemeral: true })
+            console.log(`Deleted streamer notification in ${modal.guild.name}`) 
         }
 	}
 };
