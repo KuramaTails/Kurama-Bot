@@ -25,6 +25,12 @@ module.exports = {
 		)
 		.addSubcommand(subcommand =>
 			subcommand
+				.setName('clearwarn')
+				.setDescription('Bot will clear warn!')
+				.addUserOption(user =>user.setName("user").setDescription("Select a user from this discord"))
+		)
+		.addSubcommand(subcommand =>
+			subcommand
 				.setName('kick')
 				.setDescription('Bot will kick mentioned user from your discord!')
 				.addUserOption(user =>user.setName("user").setDescription("Select a user from this discord").setRequired(true))
