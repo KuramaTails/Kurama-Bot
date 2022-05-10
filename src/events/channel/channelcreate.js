@@ -35,16 +35,20 @@ module.exports = {
             var botChannelMessages = await botSettingsChannel.messages.fetch()
 
             var selectPlayerEmbed = await botChannelMessages.find(message => message.embeds[0].title.includes("Set up player"));
-            selectMenu.components[0].setCustomId("settings-bot-selectPlayerChannel")
-            var selectedChannel = channelList.find(channel => channel.id == plugins.playerPlugin.channelId)
-            selectedChannel? selectMenu.components[0].setPlaceholder(selectedChannel.name) : selectMenu.components[0].setPlaceholder(bot.lang.get(channel.guild.settings.lang).selectMenu["none"])
-            await selectPlayerEmbed.edit({components:[selectMenu]})
+            if (selectPlayerEmbed) {
+                selectMenu.components[0].setCustomId("settings-bot-selectPlayerChannel")
+                var selectedChannel = channelList.find(channel => channel.id == plugins.playerPlugin.channelId)
+                selectedChannel? selectMenu.components[0].setPlaceholder(selectedChannel.name) : selectMenu.components[0].setPlaceholder(bot.lang.get(channel.guild.settings.lang).selectMenu["none"])
+                await selectPlayerEmbed.edit({components:[selectMenu]})
+            }
 
             var selectRoleChannelEmbed = await botChannelMessages.find(message => message.embeds[0].title.includes("Choose Role"));
-            selectMenu.components[0].setCustomId("settings-bot-selectChooseRoleChannel")
-            var selectedChannel = channelList.find(channel => channel.id == plugins.chooseRolePlugin.channelId)
-            selectedChannel? selectMenu.components[0].setPlaceholder(selectedChannel.name) : selectMenu.components[0].setPlaceholder(bot.lang.get(channel.guild.settings.lang).selectMenu["none"])
-            await selectRoleChannelEmbed.edit({components:[selectMenu]})
+            if (selectRoleChannelEmbed) {
+                selectMenu.components[0].setCustomId("settings-bot-selectChooseRoleChannel")
+                var selectedChannel = channelList.find(channel => channel.id == plugins.chooseRolePlugin.channelId)
+                selectedChannel? selectMenu.components[0].setPlaceholder(selectedChannel.name) : selectMenu.components[0].setPlaceholder(bot.lang.get(channel.guild.settings.lang).selectMenu["none"])
+                await selectRoleChannelEmbed.edit({components:[selectMenu]})    
+            }
 
             var welcomerSettingsChannel = await channelList.find(channel => channel.name == "welcomer-plugin")
             if (welcomerSettingsChannel) {

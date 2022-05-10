@@ -18,14 +18,14 @@ module.exports = {
                 
         )
         var textChannels = interaction.guild.channels.cache.filter(c=> c.type=="GUILD_TEXT")
-        textChannels.forEach(channel => {
-            button1.components[0].addOptions([
+        await textChannels.forEach(async channel => {
+            await button1.components[0].addOptions([
                 {
                     label: `${channel.name}`,
                     value: `${channel.id}`,
                 },
             ])
         });
-        interaction.channel.send({embeds:[TutorialEmbed],components:[button1]})
+        await interaction.channel.send({embeds:[TutorialEmbed],components:[button1]})
     }
 };

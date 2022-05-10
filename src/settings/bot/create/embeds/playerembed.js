@@ -4,7 +4,7 @@ module.exports = {
         var selectedChannel = interaction.guild.channels.resolve(channelId)
         const Embedsearch = new MessageEmbed()
         .setColor('#0099ff')
-        .setTitle(lang.get(interaction.guild.settings.lang).player.embeds["playing"])
+        .setTitle(lang.get(interaction.guild.settings.lang).player.embeds.errors["playing"])
         .setThumbnail(``)
         .setURL(``)
         .setDescription(``)
