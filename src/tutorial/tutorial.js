@@ -28,6 +28,7 @@ module.exports = {
                 var matches = regExp.exec(interaction.message.embeds[0].title)
                 var splitParts = matches? matches[1].split("/") : ""
                 var tutorialPart = splitParts? parseInt(splitParts[0]) : 0
+                console.log(parts[tutorialPart+2])
                 await parts[tutorialPart+2].execute(interaction,lang,part)
             break;
         }

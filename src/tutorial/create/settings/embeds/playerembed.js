@@ -3,12 +3,8 @@ const { MessageEmbed, MessageActionRow, MessageSelectMenu } = require("discord.j
 module.exports = {
 	async execute(interaction,channel,lang) {
         var settings = interaction.guild.settings
-        if (settings.plugins) {
-            var playerChannel = settings.plugins.playerPlugin? settings.plugins.playerPlugin.channelId : ''
-            var chooseRoleChannel = settings.plugins.chooseRolePlugin? settings.plugins.chooseRolePlugin.channelId : ''
-        }
-        var selectedChannel 
-        if (playerChannel) selectedChannel = interaction.guild.channels.cache.find(channel => channel.id == playerChannel)
+        var playerChannel  = interaction.guild.channels.cache.find(channel => channel.id == settings.plugins.playerPlugin.channelId)
+        var chooseRolePlugin  = settings.plugins.chooseRolePlugin? interaction.guild.channels.cache.find(channel => channel.id == settings.plugins.chooseRolePlugin.channelId) : ""
         const TutorialEmbed = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Set up player")
@@ -18,7 +14,7 @@ module.exports = {
         button1.addComponents(
             new MessageSelectMenu()
                 .setCustomId('settings-bot-selectPlayerChannel')
-                .setPlaceholder(selectedChannel? selectedChannel.name : lang.get(settings.lang).selectMenu["none"])
+                .setPlaceholder(playerChannel? playerChannel.name : lang.get(settings.lang).selectMenu["none"])
                 
         )
         var filteredChannels = interaction.guild.channels.cache.filter(c=> c.type=="GUILD_TEXT")
@@ -37,7 +33,6 @@ module.exports = {
                 },
             ])
         });
-        if (chooseRoleChannel) selectedChannel = interaction.guild.channels.cache.find(channel => channel.id == chooseRoleChannel)
         const chooseRoleEmbed = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle("Bot Kurama : Choose Role Embed")
@@ -47,7 +42,7 @@ module.exports = {
         button2.addComponents(
             new MessageSelectMenu()
                 .setCustomId('settings-bot-selectChooseRoleChannel')
-                .setPlaceholder(selectedChannel? selectedChannel.name : lang.get(settings.lang).selectMenu["none"])
+                .setPlaceholder(chooseRolePlugin? chooseRolePlugin.name : lang.get(settings.lang).selectMenu["none"])
                 
         )
         filteredChannels.forEach(channel => {

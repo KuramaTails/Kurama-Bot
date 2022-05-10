@@ -1,10 +1,12 @@
+const { MessageSelectMenu, MessageActionRow } = require("discord.js");
+const bot = require("../../../bot");
+
 module.exports = {
     name: 'channelCreate',
     async execute(channel) {
         try {
             var botSettingsChannel = await channel.guild.channels.cache.find(channel => channel.name == "bot-settings")
             if(!botSettingsChannel) return
-            var botChannelMessages = await botSettingsChannel.messages.fetch()
             var listChannels = await channel.guild.channels.fetch()
             var filteredChannels = listChannels.filter(c=> c.type=="GUILD_TEXT")
             var par = channel.guild.channels.cache.find(channel =>channel.name.includes("Kurama"))
@@ -13,35 +15,54 @@ module.exports = {
             if (par1) par1.children.forEach(channel => filteredChannels.get(channel.id)? filteredChannels.delete(channel.id) : "")
             var par2 = channel.guild.channels.cache.find(channel =>channel.name == "Admin Zone")
             if (par2) par2.children.forEach(channel => filteredChannels.get(channel.id)? filteredChannels.delete(channel.id) : "")
-            var selectPlayerEmbed = await botChannelMessages.find(message => message.embeds[0].title.includes("Set up player"));
-            var channelsonMenu = selectPlayerEmbed.components[0]
-            channelsonMenu.components[0].spliceOptions(0,channelsonMenu.components[0].options.length)
+
+            const selectMenu = new MessageActionRow()
+            selectMenu.addComponents(
+                new MessageSelectMenu()
+                .setCustomId('')
+                .setPlaceholder('none')    
+            )
             await filteredChannels.forEach(async channel => {
-                await channelsonMenu.components[0].addOptions([
+                await selectMenu.components[0].addOptions([
                     {
                         label: `${channel.name}`,
                         value: `${channel.id}`,
                     },
                 ])
             });
-            var selectRoleChannelEmbed = await botChannelMessages.find(message => message.embeds[0].title.includes("Choose Role"));
-            await selectPlayerEmbed.edit({components:[channelsonMenu]})
-            channelsonMenu.components[0].customId="settings-bot-selectChooseRoleChannel"
-            await selectRoleChannelEmbed.edit({components:[channelsonMenu]})
+            var plugins = channel.guild.settings.plugins
+            var channelList = channel.guild.channels.cache
+            var botChannelMessages = await botSettingsChannel.messages.fetch()
 
-            var welcomerSettingsChannel = await channel.guild.channels.cache.find(channel => channel.name == "welcomer-plugin")
+            var selectPlayerEmbed = await botChannelMessages.find(message => message.embeds[0].title.includes("Set up player"));
+            selectMenu.components[0].setCustomId("settings-bot-selectPlayerChannel")
+            var selectedChannel = channelList.find(channel => channel.id == plugins.playerPlugin.channelId)
+            selectedChannel? selectMenu.components[0].setPlaceholder(selectedChannel.name) : selectMenu.components[0].setPlaceholder(bot.lang.get(channel.guild.settings.lang).selectMenu["none"])
+            await selectPlayerEmbed.edit({components:[selectMenu]})
+
+            var selectRoleChannelEmbed = await botChannelMessages.find(message => message.embeds[0].title.includes("Choose Role"));
+            selectMenu.components[0].setCustomId("settings-bot-selectChooseRoleChannel")
+            var selectedChannel = channelList.find(channel => channel.id == plugins.chooseRolePlugin.channelId)
+            selectedChannel? selectMenu.components[0].setPlaceholder(selectedChannel.name) : selectMenu.components[0].setPlaceholder(bot.lang.get(channel.guild.settings.lang).selectMenu["none"])
+            await selectRoleChannelEmbed.edit({components:[selectMenu]})
+
+            var welcomerSettingsChannel = await channelList.find(channel => channel.name == "welcomer-plugin")
             if (welcomerSettingsChannel) {
                 var welcomerChannelMessages = await welcomerSettingsChannel.messages.fetch()
                 var selectWelcomerEmbed = await welcomerChannelMessages.find(message => message.embeds[0].title.includes("channel"));
-                channelsonMenu.components[0].customId="settings-welcomer-selectWelcomerChannel"
-                await selectWelcomerEmbed.edit({components:[channelsonMenu]})
+                selectMenu.components[0].setCustomId("settings-welcomer-selectWelcomerChannel")
+                var selectedChannel = channelList.find(channel => channel.id == plugins.welcomerPlugin.channelId)
+                selectedChannel? selectMenu.components[0].setPlaceholder(selectedChannel.name) : selectMenu.components[0].setPlaceholder(bot.lang.get(channel.guild.settings.lang).selectMenu["none"])
+                await selectWelcomerEmbed.edit({components:[selectMenu]})
             }
-            var twitchPluginChannel = await channel.guild.channels.cache.find(channel => channel.name == "twitch-plugin")
+            var twitchPluginChannel = await channelList.find(channel => channel.name == "twitch-plugin")
             if (twitchPluginChannel) {
                 var twitchPluginMessages = await twitchPluginChannel.messages.fetch()
                 var selectTwittchEmbed = await twitchPluginMessages.find(message => message.embeds[0].title.includes("Channel"));
-                channelsonMenu.components[0].customId="settings-twitch-selectChannel"
-                await selectTwittchEmbed.edit({components:[channelsonMenu]})
+                selectMenu.components[0].setCustomId("settings-twitch-selectChannel")
+                var selectedChannel = channelList.find(channel => channel.id == plugins.twitchPlugin.channelId)
+                selectedChannel? selectMenu.components[0].setPlaceholder(selectedChannel.name) : selectMenu.components[0].setPlaceholder(bot.lang.get(channel.guild.settings.lang).selectMenu["none"])
+                await selectTwittchEmbed.edit({components:[selectMenu]})
             }
         } catch (error) {
             console.log(error)

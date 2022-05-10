@@ -1,3 +1,5 @@
+const { MessageActionRow, MessageSelectMenu } = require("discord.js");
+
 module.exports = {
     name: 'channelUpdate',
     async execute(oldChannel,newChannel) {
@@ -6,7 +8,6 @@ module.exports = {
             try {
                 var botSettingsChannel = await oldChannel.guild.channels.cache.find(channel => channel.name == "bot-settings")
                 if(!botSettingsChannel) return
-                var botChannelMessages = await botSettingsChannel.messages.fetch()
                 var listChannels = await oldChannel.guild.channels.fetch()
                 var filteredChannels = listChannels.filter(c=> c.type=="GUILD_TEXT")
                 var par = oldChannel.guild.channels.cache.find(channel =>channel.name.includes("Kurama"))
@@ -15,32 +16,62 @@ module.exports = {
                 if (par1) par1.children.forEach(channel => filteredChannels.get(channel.id)? filteredChannels.delete(channel.id) : "")
                 var par2 = oldChannel.guild.channels.cache.find(channel =>channel.name == "Admin Zone")
                 if (par2) par2.children.forEach(channel => filteredChannels.get(channel.id)? filteredChannels.delete(channel.id) : "")
-                var selectPlayerEmbed = await botChannelMessages.find(message => message.embeds[0].title.includes("Set up player"));
-                var channelsonMenu = selectPlayerEmbed.components[0]
-                channelsonMenu.components[0].spliceOptions(0,channelsonMenu.components[0].options.length)
+    
+                const selectMenu = new MessageActionRow()
+                selectMenu.addComponents(
+                    new MessageSelectMenu()
+                    .setCustomId('')
+                    .setPlaceholder('none')    
+                )
                 await filteredChannels.forEach(async channel => {
-                    await channelsonMenu.components[0].addOptions([
+                    await selectMenu.components[0].addOptions([
                         {
                             label: `${channel.name}`,
                             value: `${channel.id}`,
                         },
                     ])
                 });
-                var selectRoleChannelEmbed = await botChannelMessages.find(message => message.embeds[0].title.includes("Choose Role"));
-                await selectPlayerEmbed.edit({components:[channelsonMenu]})
-                await selectRoleChannelEmbed.edit({components:[channelsonMenu]})
+                var plugins = oldChannel.guild.settings.plugins
+                var channelList = oldChannel.guild.channels.cache
+                var botChannelMessages = await botSettingsChannel.messages.fetch()
     
-                var welcomerSettingsChannel = await oldChannel.guild.channels.cache.find(channel => channel.name == "welcomer-plugin")
+                var selectPlayerEmbed = await botChannelMessages.find(message => message.embeds[0].title.includes("Set up player"));
+                selectMenu.components[0].setCustomId("settings-bot-selectPlayerChannel")
+                if (plugins.playerPlugin.channelId) {
+                    var selectedChannel = channelList.find(channel => channel.id == plugins.playerPlugin.channelId)
+                    selectMenu.components[0].setPlaceholder(selectedChannel.name)
+                }
+                await selectPlayerEmbed.edit({components:[selectMenu]})
+    
+                var selectRoleChannelEmbed = await botChannelMessages.find(message => message.embeds[0].title.includes("Choose Role"));
+                selectMenu.components[0].setCustomId("settings-bot-selectChooseRoleChannel")
+                if (plugins.chooseRolePlugin.channelId) {
+                    var selectedChannel = channelList.find(channel => channel.id == plugins.chooseRolePlugin.channelId)
+                    selectMenu.components[0].setPlaceholder(selectedChannel.name)
+                }
+                await selectRoleChannelEmbed.edit({components:[selectMenu]})
+    
+                var welcomerSettingsChannel = await channelList.find(channel => channel.name == "welcomer-plugin")
                 if (welcomerSettingsChannel) {
                     var welcomerChannelMessages = await welcomerSettingsChannel.messages.fetch()
                     var selectWelcomerEmbed = await welcomerChannelMessages.find(message => message.embeds[0].title.includes("channel"));
-                    await selectWelcomerEmbed.edit({components:[channelsonMenu]})
+                    selectMenu.components[0].setCustomId("settings-welcomer-selectWelcomerChannel")
+                    if (plugins.welcomerPlugin.channelId) {
+                        var selectedChannel = channelList.find(channel => channel.id == plugins.welcomerPlugin.channelId)
+                        selectMenu.components[0].setPlaceholder(selectedChannel.name)
+                    }
+                    await selectWelcomerEmbed.edit({components:[selectMenu]})
                 }
-                var twitchPluginChannel = await oldChannel.guild.channels.cache.find(channel => channel.name == "twitch-plugin")
+                var twitchPluginChannel = await channelList.find(channel => channel.name == "twitch-plugin")
                 if (twitchPluginChannel) {
                     var twitchPluginMessages = await twitchPluginChannel.messages.fetch()
                     var selectTwittchEmbed = await twitchPluginMessages.find(message => message.embeds[0].title.includes("Channel"));
-                    await selectTwittchEmbed.edit({components:[channelsonMenu]})
+                    selectMenu.components[0].setCustomId("settings-twitch-selectChannel")
+                    if (plugins.twitchPlugin.channelId) {
+                        var selectedChannel = channelList.find(channel => channel.id == plugins.twitchPlugin.channelId)
+                        selectMenu.components[0].setPlaceholder(selectedChannel.name)
+                    }
+                    await selectTwittchEmbed.edit({components:[selectMenu]})
                 }
             } catch (error) {
                 console.log(error)

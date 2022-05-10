@@ -8,7 +8,7 @@ module.exports = {
         await interaction.message.delete()
         const TutorialEmbed = new MessageEmbed()
         .setColor('#0099ff')
-        .setTitle("Bot Kurama Tutorial (2/6) : Welcome Channels")
+        .setTitle("Bot Kurama Tutorial (2/5) : Welcome Channels")
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
         .addField(lang.get(interaction.guild.settings.lang).tutorial.part2["field1"],lang.get(interaction.guild.settings.lang).tutorial.part2["field2"])
         const button1 = new MessageActionRow()

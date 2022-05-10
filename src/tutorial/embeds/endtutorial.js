@@ -3,21 +3,25 @@ const dbconnect = require('../../db/dbconnect');
 const dbdisconnect = require('../../db/dbdisconnect');
 const guildSchema = require('../../schemas/guild-schema');
 const botsettings = require('../create/settings/botsettings');
+const playerembed = require("../../settings/bot/create/embeds/playerembed")
+
 module.exports = {
-    part:8,
+    part:6,
     async execute(interaction,lang,button) {
         await dbconnect()
         await guildSchema.findOneAndUpdate({
-            _id: interaction.guild.id,
+        _id: interaction.guild.id,
         }, {
             $set: {
-                "plugins.autorolePlugin.active": button,
+                "plugins.playerPlugin.channelId": interaction.values[0],
             }
         },
         {
             upsert:true,
         })
-        interaction.guild.settings.plugins.autorolePlugin = {active:button}
+        await dbdisconnect()
+        interaction.guild.settings.plugins = {playerPlugin:{channelId:interaction.values[0]}}
+        await playerembed.execute(interaction,lang,interaction.values[0])
         await botsettings.execute(interaction,lang)
         await dbdisconnect()
         await interaction.message.delete()

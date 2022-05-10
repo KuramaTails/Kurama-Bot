@@ -8,6 +8,7 @@ module.exports = {
             await spamcheck.execute(message,bot.spamList,bot.lang)
             if(message.content.startsWith(bot.prefix)){
                 console.log(message.guild.settings)
+                console.log(bot.client.application.id)
             }
         }
 	}

@@ -3,6 +3,7 @@ const bot = require('../../../bot');
 module.exports = {
     name: 'guildMemberRemove',
     async execute(member) {
+        if (member.user.id == bot.client.application.id) return
         try {
             var memberChannel = member.guild.channels.cache.find(channel => channel.name.includes("Member"))
             if (memberChannel) memberChannel.setName(`Member : ${member.guild.memberCount}`)

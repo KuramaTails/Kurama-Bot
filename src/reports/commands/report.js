@@ -8,7 +8,16 @@ module.exports = {
     example:"/moderation report",
 	async execute(interaction,lang) {
         var selectedChannel = interaction.guild.channels.cache.find(channel => channel.name == "reports")
-        if (!selectedChannel) return
+        if (!selectedChannel) {
+            return interaction.followUp({
+            content: 'reports are not activated in this discord. Pls contact an admin to let him inform about this',
+            ephemeral: true
+            })
+        }
+        interaction.followUp({
+            content: lang.get(interaction.guild.settings.lang).zones.adminZone.reports.commands["optReport"],
+            ephemeral: true
+        })
         var fieldArr = []
         fieldArr[0] = {
             name: "Reported Member",
@@ -84,10 +93,6 @@ module.exports = {
                 ])
 
         )
-        interaction.followUp({
-            content: lang.get(interaction.guild.settings.lang).zones.adminZone.reports.commands["optReport"],
-            ephemeral: true
-        })
         selectedChannel.send({embeds:[reportEmbed],components:[menu]})
     }
 };

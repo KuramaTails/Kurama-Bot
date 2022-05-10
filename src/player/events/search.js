@@ -9,11 +9,11 @@ module.exports = {
         }
         try {
             await player.play(voiceChannel, link)
-            await player.setVolume(voiceChannel, parseInt(settings.plugins.playerPlugin.volume));
+            settings.plugins.playerPlugin.volume? await player.setVolume(voiceChannel, parseInt(settings.plugins.playerPlugin.volume)) : await player.setVolume(voiceChannel, 50)
             var queue = await player.queues.get(voiceChannel)
             let addedsong = queue.songs[queue.songs.length-1]
             var string = lang.get(settings.lang).player.embeds["play"]
-            let result = string.replace("${addedsong.name} - ${addedsong.formattedDuration}",`${addedsong.name} - ${addedsong.formattedDuration}`);
+            let result = string.replace("${addedsong.name} - ${addedsong.formattedDuration}",`\`${addedsong.name}\` - \`${addedsong.formattedDuration}\``);
             await modal.editReply({ content: result, ephemeral: true })
         } catch (error) {
             console.log(error)
