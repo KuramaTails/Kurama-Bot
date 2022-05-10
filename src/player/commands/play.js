@@ -7,7 +7,7 @@ module.exports = {
         var settings = interaction.guild.settings
         let link = interaction.options.getString("link")
         await player.play(voiceChannel, link)
-        await player.setVolume(voiceChannel, parseInt(settings.plugins.playerPlugin.volume));
+        settings.plugins.playerPlugin.volume? await player.setVolume(voiceChannel, parseInt(settings.plugins.playerPlugin.volume)) : await player.setVolume(voiceChannel, 50)
         var queue = player.queues.get(voiceChannel)
         let addedsong = queue.songs[queue.songs.length-1]
         var string = lang.get(settings.lang).player.embeds["play"]

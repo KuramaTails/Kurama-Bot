@@ -35,7 +35,7 @@ module.exports = {
         }
         else {
             var vol = player.getQueue(voiceChannel)? player.getQueue(voiceChannel).volume : 50
-            settings.plugins.playerPlugin.volume = vol
+            interaction.guild.settings.plugins.playerPlugin.volume = vol
             await dbconnect()
             await guildSchema.findOneAndUpdate({
                 _id: interaction.guild.id,
