@@ -34,6 +34,21 @@ module.exports = {
             .setCustomId(`settings-welcomer-textWelcomer`)
             .setLabel(lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.embeds["changeTextDesc"])
             .setStyle(`SECONDARY`),
+            
+        )
+        const buttonWelcomertext2 = new MessageActionRow()
+        buttonWelcomertext2.addComponents(
+            new MessageSelectMenu()
+                .setCustomId('settings-welcomer-textColor')
+                .setPlaceholder(lang.get(interaction.guild.settings.lang).selectMenu["none"])
+                .addOptions([{label: 'Black',value: `#000000`}])
+                .addOptions([{label: 'White',value: `#FFFFFF`}])
+                .addOptions([{label: 'Classic Blue',value: `#34568B`}])
+                .addOptions([{label: 'Living Coral',value: `#FF6F61`}])
+                .addOptions([{label: 'Mint',value: `#00A170`}])
+                .addOptions([{label: 'Inkwell',value: `#363945`}])
+                .addOptions([{label: 'Raspberry Sorbet',value: `#D2386C`}])
+                .addOptions([{label: 'Cerulean',value: `#9BB7D4`}])
         )
         const backgroundEmbed = new MessageEmbed()
         .setColor('#0099ff')
@@ -41,11 +56,19 @@ module.exports = {
         .setURL("https://discord.js.org/#/docs/main/stable/class/MessageEmbed")
         .addField(lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.embeds["chooseBackgroundDesc1"],lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.embeds["chooseBackgroundDesc2"])
         const button3 = new MessageActionRow()
+        const button4 = new MessageActionRow()
         button3.addComponents(
             new MessageSelectMenu()
                 .setCustomId('settings-welcomer-selectWelcomerBackground')
                 .setPlaceholder(lang.get(interaction.guild.settings.lang).selectMenu["none"])
         )
+        button4.addComponents(
+            new MessageButton()
+            .setCustomId(`settings-welcomer-previewBackgrounds`)
+            .setLabel("Click here to preview all background images")
+            .setStyle(`SECONDARY`)
+        )
+        
         const background = fs.readdirSync('./src/welcomer/backgrounds').filter(file => file.endsWith('.jpg'));
         background.forEach(image => {
             var fullName = image.split(".")
@@ -57,7 +80,7 @@ module.exports = {
             ])
         });
         await channel.send({embeds:[channelEmbed],components:[button2]})
-        await channel.send({embeds:[textWelcomerEmbed],components:[buttonWelcomertext]})
-        await channel.send({embeds:[backgroundEmbed],components:[button3]})
+        await channel.send({embeds:[textWelcomerEmbed],components:[buttonWelcomertext,buttonWelcomertext2]})
+        await channel.send({embeds:[backgroundEmbed],components:[button3,button4]})
     }
 };

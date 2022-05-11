@@ -30,6 +30,7 @@ const guildSchema = mongoose.Schema({
             active: reqBoolean,
             channelId: reqString,
             textWelcomer: reqString,
+            textColor: reqString,
             background:reqString,
         },
         leaverPlugin:{
