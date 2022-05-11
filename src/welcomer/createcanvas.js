@@ -12,11 +12,12 @@ module.exports = {
         var repDesc = result
         var welcomerPlugin= guildSettings.plugins.welcomerPlugin
         var pathBackground = welcomerPlugin.background
-        var textColor = welcomerPlugin.textColor
+        var textColor = welcomerPlugin.textColor? welcomerPlugin.textColor : '#FFFFFF'
         const canvas = Canvas.createCanvas(700,250);
         const context = canvas.getContext('2d');
-        const background = await Canvas.loadImage(pathBackground+".jpg");
-        context.drawImage(background, 0, 0, canvas.width, canvas.height);
+        const background = await Canvas.loadImage(pathBackground);
+        var scale = background.width/canvas.width
+        background.width/background.height== 2.8? context.drawImage(background, 0, 0, background.width/ scale, background.height/ scale) : context.drawImage(background, -((background.width/ scale)-canvas.width)/2, -((background.height/ scale)-canvas.height)/2, background.width/ scale, background.height/ scale);
         context.strokeStyle =textColor;
         context.lineWidth = 5;
         context.strokeRect(0, 0, canvas.width, canvas.height);

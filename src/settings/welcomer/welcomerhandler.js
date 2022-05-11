@@ -16,6 +16,13 @@ module.exports= {
                 var placeholder=lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["placeholder"]
                 modallayout.execute(interaction,bot.client,customId,title,label,placeholder)
             return;
+            case "urlBackground":
+                var customId=customId
+                var title =lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["title"]
+                var label=lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["label"]
+                var placeholder=lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["placeholder"]
+                modallayout.execute(interaction,bot.client,customId,title,label,placeholder)
+            return;
             case "textColor":
                 var selectedColor = interaction.message.components[1].components[0].options.find(option => option.value == interaction.values[0])
                 var updatePlaceholder = interaction.message.components[1]
@@ -65,12 +72,12 @@ module.exports= {
                 var updatePlaceholder = interaction.message.components[0]
                 updatePlaceholder.components[0].placeholder= str[str.length-1]
                 await interaction.message.edit({components:[updatePlaceholder,interaction.message.components[1]]})
-                welcomerPlugin.background = interaction.values[0]
+                welcomerPlugin.background = interaction.values[0]+'.jpg'
                 await guildSchema.findOneAndUpdate({
                     _id: interaction.guild.id,
                     }, {
                         $set: {
-                            "plugins.welcomerPlugin.background": interaction.values[0],
+                            "plugins.welcomerPlugin.background": interaction.values[0]+'.jpg',
                         }
                     },
                     {

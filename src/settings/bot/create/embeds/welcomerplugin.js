@@ -66,7 +66,11 @@ module.exports = {
             new MessageButton()
             .setCustomId(`settings-welcomer-previewBackgrounds`)
             .setLabel("Click here to preview all background images")
-            .setStyle(`SECONDARY`)
+            .setStyle(`SECONDARY`),
+            new MessageButton()
+            .setCustomId(`settings-welcomer-urlBackground`)
+            .setLabel("or click here to add a custom link Background")
+            .setStyle(`PRIMARY`)
         )
         
         const background = fs.readdirSync('./src/welcomer/backgrounds').filter(file => file.endsWith('.jpg'));

@@ -4,6 +4,7 @@ const updatewelcomer = require("../settings/welcomer/updatewelcomer");
 const addstreamer = require("../settings/twitch/addstreamer");
 const updateleaver = require("../settings/leaver/updateleaver");
 const deletestreamer = require("../settings/twitch/deletestreamer");
+const urlbackground = require("../settings/welcomer/urlbackground");
 
 module.exports = {
     name: 'modalSubmit',
@@ -24,6 +25,9 @@ module.exports = {
                         break;
                         case 'modal-textLeaver':
                             await updateleaver.execute(modal,bot.lang)
+                        break;
+                        case 'modal-urlBackground':
+                            await urlbackground.execute(modal,bot.lang)
                         break;
                         case 'modal-addStreamer':
                             await addstreamer.execute(modal,bot.lang,bot.twitch)
