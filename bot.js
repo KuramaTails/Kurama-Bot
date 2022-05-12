@@ -5,6 +5,8 @@ const prefix = "?";
 const DisTube = require('distube')
 const { YtDlpPlugin } = require('@distube/yt-dlp')
 const discordModals = require('discord-modals')
+const {createAudioPlayer} = require("@discordjs/voice");
+
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 
 discordModals(bot);
@@ -61,6 +63,7 @@ const twitch = new TwitchAPI({
     client_id: process.env.TWITCH_CLIENDID,
     client_secret: process.env.TWITCH_CLIENTSECRET
 })
+let audioPlayer=createAudioPlayer();
 
 module.exports = {
 	prefix:prefix,
@@ -76,7 +79,9 @@ module.exports = {
 	pollUser:pollUser,
 	pollCounter:pollCounter,
 	playerUser:playerUser,
-	timeoutID:timeoutID
+	timeoutID:timeoutID,
+	audioPlayer:audioPlayer,
+	DisTube: DisTube,
 }
 
 fs.readdirSync('./src/languages').forEach(language => {
