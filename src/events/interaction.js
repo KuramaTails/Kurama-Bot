@@ -5,10 +5,11 @@ const bot = require("../../bot");
 module.exports = {
     name: 'interactionCreate',
 	async execute(interaction) {
+        if (interaction.customId.startsWith('modal')) return
         if (bot.cooldownUser.has(interaction.user.id)) {
-            await interaction.deferReply( {ephemeral: true});
-            await interaction.followUp({ content: bot.lang.get(interaction.guild.settings.lang).interaction["cooldown"], ephemeral: true });
-            return
+            interaction.deferred? '' : await interaction.deferReply( {ephemeral: true})
+            var cooldownErr = bot.lang.get(interaction.guild.settings.lang).interaction["cooldown"]
+            return await interaction.followUp({ content: cooldownErr, ephemeral: true })
         }
         try {
             bot.cooldownUser.set(interaction.user.id, true);
@@ -25,12 +26,8 @@ module.exports = {
                 await isselectmenu.execute(interaction,bot.lang)
             }
         } catch (error) {
+            await interaction.followUp({ content: bot.lang.get(interaction.guild.settings.lang).interaction["err"], ephemeral: true });
             console.error(error);
-            try {
-                await interaction.followUp({ content: bot.lang.get(interaction.guild.settings.lang).interaction["err"], ephemeral: true });
-            } catch (error) {
-                console.error(error);
-            } 
         } finally {
             setTimeout(() => {
                 bot.cooldownUser.delete(interaction.user.id);

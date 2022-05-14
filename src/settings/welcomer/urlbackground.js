@@ -6,6 +6,9 @@ const guildSchema = require("../../schemas/guild-schema");
 module.exports = {
 	async execute(modal,lang) {
         var urlBackground = modal.getTextInputValue('textinput-customid')
+        if (!urlBackground.includes('.jpg') && !urlBackground.includes('.png') ) {
+            return await modal.editReply({ content: 'error url', ephemeral: true })
+        }
         modal.guild.settings.plugins.welcomerPlugin.background = urlBackground
         await dbconnect()
         await guildSchema.findOneAndUpdate({
