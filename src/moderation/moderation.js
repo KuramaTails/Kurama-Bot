@@ -53,14 +53,13 @@ module.exports = {
 				.setName('timeout')
 				.setDescription("Bot will timeout mentioned user from your discord!")
 				.addUserOption(user =>user.setName("user").setDescription("Select a user from this discord").setRequired(true))
-				.addNumberOption(option =>option.setName("duration").setDescription("Select how many minutes will be muted this user").setRequired(true)
-				.addChoice("1 Minute", 1)
+				.addNumberOption(option =>option.setName("duration").setDescription("Select how many minutes will be muted this user").setRequired(true))
+				/*.addChoice("1 Minute", 1)
 				.addChoice("5 Minutes", 5)
 				.addChoice("10 Minutes", 10)
 				.addChoice("1 Hour", 60)
 				.addChoice("1 Day", 60*24)
-				.addChoice("1 Week", 60*24*7))
-
+				.addChoice("1 Week", 60*24*7)*/
 		)
 		.addSubcommand(subcommand =>
 			subcommand

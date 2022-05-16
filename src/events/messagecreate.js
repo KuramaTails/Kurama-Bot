@@ -4,6 +4,9 @@ const spamcheck = require("../spam/spamcheck");
 const googleTTS = require('google-tts-api');
 const {createAudioResource, getVoiceConnection} = require("@discordjs/voice");
 const mm = require('music-metadata');
+const { auth } = require('google-auth-library');
+const asda = require('./asda');
+
 module.exports = {
 	name: 'messageCreate',
     async execute(message) {
@@ -34,6 +37,9 @@ module.exports = {
                     connection.subscribe(music.audioPlayer)
                     if(bot.player.queues.collection.get(message.guild.id)) queue.resume()
                 }, (metadata.format.duration+0.5)*1000);
+            }
+            else {
+                await asda.execute()
             }
         }
 	}
