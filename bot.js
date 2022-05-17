@@ -4,12 +4,10 @@ const { Client, Collection} = require('discord.js');
 const prefix = "?";
 const DisTube = require('distube')
 const { YtDlpPlugin } = require('@distube/yt-dlp')
-const discordModals = require('discord-modals')
 const {createAudioPlayer} = require("@discordjs/voice");
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 
-discordModals(bot);
 bot.commands = new Collection();
 bot.lang = new Map();
 cooldownUser = new Collection();
