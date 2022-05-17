@@ -4,12 +4,12 @@ const guildSchema = require("../../schemas/guild-schema");
 
 
 module.exports = {
-	async execute(modal,lang) {
-        var textWelcomer = modal.getTextInputValue('textinput-customid')
-        modal.guild.settings.plugins.welcomerPlugin.textWelcomer = textWelcomer
+	async execute(interaction,lang) {
+        var textWelcomer = interaction.fields.getTextInputValue('textInput')
+        interaction.guild.settings.plugins.welcomerPlugin.textWelcomer = textWelcomer
         await dbconnect()
         await guildSchema.findOneAndUpdate({
-            _id: modal.member.guild.id,
+            _id: interaction.member.guild.id,
             }, {
                 $set: {
                     "plugins.welcomerPlugin.textWelcomer": textWelcomer,
@@ -19,10 +19,10 @@ module.exports = {
                 upsert:true,
             })
         await dbdisconnect()
-        var updateEmbed = modal.message.embeds[0]
-        updateEmbed.fields[0].name = lang.get(modal.guild.settings.lang).settings.plugins.welcomerPlugin["text"]+` \`${textWelcomer}\``
-        await modal.message.edit({embeds:[updateEmbed]})
-        await modal.editReply({ content: lang.get(modal.guild.settings.lang).settings.plugins.welcomerPlugin["text"] +` ${textWelcomer}.`, ephemeral: true })
-        console.log(`Changed welcomer text in ${modal.guild.name}`)  
+        var updateEmbed = interaction.message.embeds[0]
+        updateEmbed.fields[0].name = lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin["text"]+` \`${textWelcomer}\``
+        await interaction.message.edit({embeds:[updateEmbed]})
+        await interaction.editReply({ content: lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin["text"] +` ${textWelcomer}.`, ephemeral: true })
+        console.log(`Changed welcomer text in ${interaction.guild.name}`)  
 	}
 };

@@ -1,10 +1,11 @@
 module.exports = {
-	async execute(modal,player,lang) {
-        var link = modal.getTextInputValue('textinput-customid')
-        var settings = modal.guild.settings
-        var voiceChannel = modal.member.voice.channel
+	async execute(interaction,player,lang) {
+        console.log(interaction.fields.components[0].components)
+        var link = interaction.fields.getTextInputValue('textInput')
+        var settings = interaction.guild.settings
+        var voiceChannel = interaction.member.voice.channel
         if (!voiceChannel) {
-            await modal.editReply({ content: lang.get(settings.lang).player.commands.errors["memberJoin"], ephemeral: true })
+            await interaction.editReply({ content: lang.get(settings.lang).player.commands.errors["memberJoin"], ephemeral: true })
             return
         }
         try {
@@ -14,7 +15,7 @@ module.exports = {
             let addedsong = queue.songs[queue.songs.length-1]
             var string = lang.get(settings.lang).player.embeds["play"]
             let result = string.replace("${addedsong.name} - ${addedsong.formattedDuration}",`\`${addedsong.name}\` - \`${addedsong.formattedDuration}\``);
-            await modal.editReply({ content: result, ephemeral: true })
+            await interaction.editReply({ content: result, ephemeral: true })
         } catch (error) {
             console.log(error)
         }

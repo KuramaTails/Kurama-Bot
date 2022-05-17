@@ -2,10 +2,10 @@ const isbutton = require("../interactions/isbutton");
 const iscommand = require("../interactions/iscommand");
 const isselectmenu = require("../interactions/isselectmenu");
 const bot = require("../../bot");
+const ismodal = require("../interactions/ismodal");
 module.exports = {
     name: 'interactionCreate',
 	async execute(interaction) {
-        if (interaction.customId.startsWith('modal')) return
         if (bot.cooldownUser.has(interaction.user.id)) {
             interaction.deferred? '' : await interaction.deferReply( {ephemeral: true})
             var cooldownErr = bot.lang.get(interaction.guild.settings.lang).interaction["cooldown"]
@@ -24,6 +24,9 @@ module.exports = {
             }
             if(interaction.isSelectMenu()) {
                 await isselectmenu.execute(interaction,bot.lang)
+            }
+            if (interaction.isModalSubmit()) {
+                await ismodal.execute(interaction,bot.lang)
             }
         } catch (error) {
             await interaction.followUp({ content: bot.lang.get(interaction.guild.settings.lang).interaction["err"], ephemeral: true });

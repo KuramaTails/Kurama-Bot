@@ -1,7 +1,6 @@
-const bot = require("../../../bot")
+const { MessageActionRow, Modal, TextInputComponent } = require('discord.js');
 const dbconnect = require("../../db/dbconnect")
 const dbdisconnect = require("../../db/dbdisconnect")
-const modallayout = require("../../modal/modallayout")
 const guildSchema = require("../../schemas/guild-schema")
 const previewbackgrounds = require("./previewbackgrounds")
 module.exports= {
@@ -10,18 +9,28 @@ module.exports= {
         await dbconnect()
         switch (customId) {
             case "textWelcomer":
-                var customId=customId
-                var title =lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["title"]
-                var label=lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["label"]
-                var placeholder=lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["placeholder"]
-                modallayout.execute(interaction,bot.client,customId,title,label,placeholder)
+                var modal = new Modal()
+                    .setCustomId(customId)
+                    .setTitle(lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["title"]);
+                var textInput = new TextInputComponent()
+                    .setCustomId('textInput')
+                    .setLabel(lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["label"])
+                    .setStyle('SHORT');
+                var firstActionRow = new MessageActionRow().addComponents(textInput);
+                modal.addComponents(firstActionRow);
+                await interaction.showModal(modal);
             return;
             case "urlBackground":
-                var customId=customId
-                var title =lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["title"]
-                var label=lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["label"]
-                var placeholder=lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["placeholder"]
-                modallayout.execute(interaction,bot.client,customId,title,label,placeholder)
+                var modal = new Modal()
+                    .setCustomId(customId)
+                    .setTitle(lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["title"]);
+                var textInput = new TextInputComponent()
+                    .setCustomId('textInput')
+                    .setLabel(lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["label"])
+                    .setStyle('SHORT');
+                var firstActionRow = new MessageActionRow().addComponents(textInput);
+                modal.addComponents(firstActionRow);
+                await interaction.showModal(modal);
             return;
             case "textColor":
                 var selectedColor = interaction.message.components[1].components[0].options.find(option => option.value == interaction.values[0])

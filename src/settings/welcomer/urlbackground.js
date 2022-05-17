@@ -4,15 +4,15 @@ const guildSchema = require("../../schemas/guild-schema");
 
 
 module.exports = {
-	async execute(modal,lang) {
-        var urlBackground = modal.getTextInputValue('textinput-customid')
+	async execute(interaction,lang) {
+        var urlBackground = interaction.fields.getTextInputValue('textInput')
         if (!urlBackground.includes('.jpg') && !urlBackground.includes('.png') ) {
-            return await modal.editReply({ content: 'error url', ephemeral: true })
+            return await interaction.editReply({ content: 'error url', ephemeral: true })
         }
-        modal.guild.settings.plugins.welcomerPlugin.background = urlBackground
+        interaction.guild.settings.plugins.welcomerPlugin.background = urlBackground
         await dbconnect()
         await guildSchema.findOneAndUpdate({
-            _id: modal.guild.id,
+            _id: interaction.guild.id,
             }, {
                 $set: {
                     "plugins.welcomerPlugin.background": urlBackground,
@@ -22,7 +22,7 @@ module.exports = {
                 upsert:true,
             })
         await dbdisconnect()
-        await modal.editReply({ content: lang.get(modal.guild.settings.lang).settings.plugins.welcomerPlugin["welcomerBackgroundSet"], ephemeral: true })
-        console.log(`Changed welcomer background in ${modal.guild.name}`)  
+        await interaction.editReply({ content: lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin["welcomerBackgroundSet"], ephemeral: true })
+        console.log(`Changed welcomer background in ${interaction.guild.name}`)  
 	}
 };

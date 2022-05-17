@@ -1,7 +1,4 @@
-const bot = require("../../../bot");
-const dbconnect = require("../../db/dbconnect");
-const dbdisconnect = require("../../db/dbdisconnect");
-const modallayout = require("../../modal/modallayout");
+const { MessageActionRow, Modal, TextInputComponent } = require('discord.js');
 const guildSchema = require("../../schemas/guild-schema");
 
 module.exports = {
@@ -9,16 +6,28 @@ module.exports = {
 		var twitchPlugin = plugin.twitchPlugin
         switch (customId) {
 			case "addStreamer":
-                var title =lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalAdd["title"]
-                var label=lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalAdd["label"]
-                var placeholder=lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalAdd["placeholder"]
-                await modallayout.execute(interaction,bot.client,customId,title,label,placeholder)
+                var modal = new Modal()
+                    .setCustomId(customId)
+                    .setTitle(lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalAdd["title"]);
+                var textInput = new TextInputComponent()
+                    .setCustomId('textInput')
+                    .setLabel(lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalAdd["label"])
+                    .setStyle('SHORT');
+                var firstActionRow = new MessageActionRow().addComponents(textInput);
+                modal.addComponents(firstActionRow);
+                await interaction.showModal(modal);
 			break;
 			case "deleteStreamer":
-                var title =lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalDelete["title"]
-                var label=lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalDelete["label"]
-                var placeholder=lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalDelete["placeholder"]
-                await modallayout.execute(interaction,bot.client,customId,title,label,placeholder)
+                var modal = new Modal()
+                    .setCustomId(customId)
+                    .setTitle(lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalDelete["title"]);
+                var textInput = new TextInputComponent()
+                    .setCustomId('textInput')
+                    .setLabel(lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalDelete["label"])
+                    .setStyle('SHORT');
+                var firstActionRow = new MessageActionRow().addComponents(textInput);
+                modal.addComponents(firstActionRow);
+                await interaction.showModal(modal);
 			break;
 			case "selectChannel":
 				var selectedChannel = interaction.guild.channels.cache.find(channel => channel.id == interaction.values[0])

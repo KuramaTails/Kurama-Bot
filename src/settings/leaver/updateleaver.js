@@ -3,12 +3,12 @@ const dbdisconnect = require("../../db/dbdisconnect");
 const guildSchema = require("../../schemas/guild-schema");
 
 module.exports = {
-	async execute(modal,lang) {
-        var textLeave = modal.getTextInputValue('textinput-customid')
-        modal.guild.settings.plugins.leaverPlugin.textLeaver = textLeave
+	async execute(interaction,lang) {
+        var textLeave = interaction.fields.getTextInputValue('textInput')
+        interaction.guild.settings.plugins.leaverPlugin.textLeaver = textLeave
         await dbconnect()
         await guildSchema.findOneAndUpdate({
-            _id: modal.member.guild.id,
+            _id: interaction.member.guild.id,
             }, {
                 $set: {
                     "plugins.leaverPlugin.textLeaver": textLeave,
@@ -18,10 +18,10 @@ module.exports = {
                 upsert:true,
             })
         await dbdisconnect()
-        var updateEmbed = modal.message.embeds[0]
-        updateEmbed.fields[0].name = lang.get(modal.guild.settings.lang).settings.plugins.leaverPlugin["text"]+` \`${textLeave}\``
-        await modal.message.edit({embeds:[updateEmbed]})
-        await modal.editReply({ content: lang.get(modal.guild.settings.lang).settings.plugins.leaverPlugin["text"] +` ${textLeave}.`, ephemeral: true })
-        console.log(`Changed leaver text in ${modal.guild.name}`)  
+        var updateEmbed = interaction.message.embeds[0]
+        updateEmbed.fields[0].name = lang.get(interaction.guild.settings.lang).settings.plugins.leaverPlugin["text"]+` \`${textLeave}\``
+        await interaction.message.edit({embeds:[updateEmbed]})
+        await interaction.editReply({ content: lang.get(interaction.guild.settings.lang).settings.plugins.leaverPlugin["text"] +` ${textLeave}.`, ephemeral: true })
+        console.log(`Changed leaver text in ${interaction.guild.name}`)  
 	}
 };
