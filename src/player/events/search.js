@@ -1,6 +1,7 @@
+const { joinVoiceChannel } = require("@discordjs/voice");
+
 module.exports = {
 	async execute(interaction,player,lang) {
-        console.log(interaction.fields.components[0].components)
         var link = interaction.fields.getTextInputValue('textInput')
         var settings = interaction.guild.settings
         var voiceChannel = interaction.member.voice.channel

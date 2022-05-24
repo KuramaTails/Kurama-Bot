@@ -10,6 +10,7 @@ module.exports= {
                 var textInput = new TextInputComponent()
                     .setCustomId('textInput')
                     .setLabel(lang.get(interaction.guild.settings.lang).settings.plugins.leaverPlugin.modal["label"])
+                    .setPlaceholder(lang.get(interaction.guild.settings.lang).settings.plugins.leaverPlugin.modal["placeholder"])
                     .setStyle('SHORT');
                 var firstActionRow = new MessageActionRow().addComponents(textInput);
                 modal.addComponents(firstActionRow);

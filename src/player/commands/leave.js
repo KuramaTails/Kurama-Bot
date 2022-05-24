@@ -1,3 +1,4 @@
+const { getVoiceConnection } = require("@discordjs/voice");
 const dbconnect = require("../../db/dbconnect");
 const dbdisconnect = require("../../db/dbdisconnect");
 const guildSchema = require("../../schemas/guild-schema");
@@ -9,12 +10,12 @@ module.exports = {
     example:"/player leave",
 	async execute(interaction,player,lang,voiceChannel) {
 		var settings = interaction.guild.settings
-		var joinedChannnels = Array.from(player.voices.collection.keys())
-		var stringerr = lang.get(settings.lang).player.commands.errors["leave"]
-		var stringjoin = lang.get(settings.lang).player.commands["leave"]
-		var found = false
-		joinedChannnels.forEach(channel=> {found = channel.id=voiceChannel? true : false})
-		if (found!=true) return interaction.followUp({content: stringerr,ephemeral: true})
+		var stringErr = lang.get(settings.lang).player.commands.errors["leave"]
+		var stringLeave = lang.get(settings.lang).player.commands["leave"]
+		var connection = getVoiceConnection(voiceChannel.guild.id);
+		if (!connection) return interaction.followUp({content: stringErr,ephemeral: true})
+		interaction.followUp({content: stringLeave,ephemeral: true})
+		await connection.destroy();
 		var vol = player.getQueue(voiceChannel)? player.getQueue(voiceChannel).volume : 50
 		settings.plugins.playerPlugin.volume = vol
 		await dbconnect()
@@ -29,7 +30,5 @@ module.exports = {
 			upsert:true,
 		})
 		await dbdisconnect()
-		interaction.followUp({content: stringjoin,ephemeral: true})
-		player.voices.leave(voiceChannel)
 	},
 };

@@ -1,4 +1,4 @@
-const { MessageActionRow, Modal, TextInputComponent } = require('discord.js');
+const { MessageActionRow, Modal, TextInputComponent, MessageSelectMenu } = require('discord.js');
 const playerbuttons = require("./playerbuttons")
 
 module.exports = {
@@ -12,15 +12,16 @@ module.exports = {
         }
         switch (customId) {
             case "search":
-                const modal = new Modal()
+                var modal = new Modal()
                     .setCustomId(customId)
                     .setTitle(lang.get(interaction.guild.settings.lang).player.modal["title"]);
-                const textInput = new TextInputComponent()
+                var textInput = new TextInputComponent()
                     .setCustomId('textInput')
                     .setLabel(lang.get(interaction.guild.settings.lang).player.modal["label"])
+                    .setPlaceholder(lang.get(interaction.guild.settings.lang).player.modal["placeholder"])
                     .setStyle('SHORT');
                 const firstActionRow = new MessageActionRow().addComponents(textInput);
-                modal.addComponents(firstActionRow);
+		        modal.addComponents( firstActionRow);
                 await interaction.showModal(modal);
             break;
             default:

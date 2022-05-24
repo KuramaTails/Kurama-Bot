@@ -29,7 +29,8 @@ module.exports = {
                 await ismodal.execute(interaction,bot.lang)
             }
         } catch (error) {
-            await interaction.followUp({ content: bot.lang.get(interaction.guild.settings.lang).interaction["err"], ephemeral: true });
+            var err = bot.lang.get(interaction.guild.settings.lang).interaction["err"]
+            interaction.deferred? await interaction.followUp({ content: err, ephemeral: true }) : await interaction.reply({ content: err, ephemeral: true })
             console.error(error);
         } finally {
             setTimeout(() => {

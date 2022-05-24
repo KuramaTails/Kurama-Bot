@@ -15,6 +15,7 @@ module.exports= {
                 var textInput = new TextInputComponent()
                     .setCustomId('textInput')
                     .setLabel(lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["label"])
+                    .setPlaceholder(lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["placeholder"])
                     .setStyle('SHORT');
                 var firstActionRow = new MessageActionRow().addComponents(textInput);
                 modal.addComponents(firstActionRow);
@@ -27,6 +28,7 @@ module.exports= {
                 var textInput = new TextInputComponent()
                     .setCustomId('textInput')
                     .setLabel(lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["label"])
+                    .setPlaceholder(lang.get(interaction.guild.settings.lang).settings.plugins.welcomerPlugin.modal["placeholder"])
                     .setStyle('SHORT');
                 var firstActionRow = new MessageActionRow().addComponents(textInput);
                 modal.addComponents(firstActionRow);

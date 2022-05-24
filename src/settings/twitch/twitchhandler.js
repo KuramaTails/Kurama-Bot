@@ -12,6 +12,7 @@ module.exports = {
                 var textInput = new TextInputComponent()
                     .setCustomId('textInput')
                     .setLabel(lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalAdd["label"])
+                    .setPlaceholder(lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalAdd["placeholder"])
                     .setStyle('SHORT');
                 var firstActionRow = new MessageActionRow().addComponents(textInput);
                 modal.addComponents(firstActionRow);
@@ -24,6 +25,7 @@ module.exports = {
                 var textInput = new TextInputComponent()
                     .setCustomId('textInput')
                     .setLabel(lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalDelete["label"])
+                    .setPlaceholder(lang.get(interaction.guild.settings.lang).settings.plugins.twitchPlugin.modalDelete["placeholder"])
                     .setStyle('SHORT');
                 var firstActionRow = new MessageActionRow().addComponents(textInput);
                 modal.addComponents(firstActionRow);

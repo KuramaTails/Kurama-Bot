@@ -1,6 +1,6 @@
 module.exports = {
     name: 'error',
-	async execute() {
-        console.error(e)
+	async execute(error) {
+        console.error(error)
     }
 };
