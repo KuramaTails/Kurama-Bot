@@ -1,10 +1,7 @@
 const fs = require('fs');
 const bot = require("../../bot");
 const spamcheck = require("../spam/spamcheck");
-const googleTTS = require('google-tts-api');
-const {createAudioResource, getVoiceConnection, joinVoiceChannel} = require("@discordjs/voice");
-const mm = require('music-metadata');
-const qwe = require('./qwe');
+//const googleTTS = require('google-tts-api');
 const asda = require('./asda');
 
 module.exports = {
