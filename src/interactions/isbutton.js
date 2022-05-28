@@ -5,6 +5,7 @@ const tutorial = require('../tutorial/tutorial');
 const tickethandler = require("../ticket/tickethandler");
 const playerhandler = require('../player/playerhandler');
 const settingshandler = require('../settings/settingshandler');
+const assistanthandler = require('../assistant/assistanthandler');
 module.exports = {
 	async execute(interaction,bot,player,pollUser,pollCounter,lang,playerUser) {
 		var separateCustomId = interaction.customId.split("-")
@@ -26,6 +27,9 @@ module.exports = {
 			break;
 			case "help":
 				await helpButtons.execute(interaction,lang,separateCustomId[1])
+			break;
+			case "assistant":
+				await assistanthandler.execute(interaction,lang,separateCustomId[1])
 			break;
 			default:
 				switch (true) {

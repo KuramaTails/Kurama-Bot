@@ -31,7 +31,9 @@ const player = new DisTube.DisTube(bot, {
 let timeoutID;
 const AntiSpam = require("discord-anti-spam");
 const checkstreamers = require('./src/settings/twitch/checkstreamers');
-
+const GoogleAssistant = require('google-assistant');
+const {config} = require('./src/assistant/config');
+const startassistant = require('./src/assistant/startassistant');
 const antiSpam = new AntiSpam({
   warnThreshold: 3,
   muteThreshold: 4,
@@ -61,8 +63,9 @@ const twitch = new TwitchAPI({
     client_id: process.env.TWITCH_CLIENDID,
     client_secret: process.env.TWITCH_CLIENTSECRET
 })
+var gAssistant = new GoogleAssistant(config.auth);
+startassistant.execute(gAssistant)
 let audioPlayer=createAudioPlayer();
-
 module.exports = {
 	prefix:prefix,
 	client:bot,
@@ -80,8 +83,8 @@ module.exports = {
 	timeoutID:timeoutID,
 	audioPlayer:audioPlayer,
 	DisTube: DisTube,
+	gAssistant:gAssistant,
 }
-
 fs.readdirSync('./src/languages').forEach(language => {
 	var langName = (language.split("."))[0]
 	const reqLang = require(`./src/languages/${language}`);
@@ -123,4 +126,3 @@ bot.on('debug', (...args) => console.log('debug', ...args));
 bot.on('rateLimit', (...args) => console.log('rateLimit', ...args));
 
 bot.login(process.env.BOT_TOKEN);
-
