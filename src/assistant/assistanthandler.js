@@ -6,7 +6,7 @@ module.exports = {
 	async execute(interaction,lang,customId) {
         switch (customId) {
             case "y":
-                var textQuery = 'si'
+                var textQuery = 'imposta voce femminile'
                 startconversation.execute(gAssistant,interaction,textQuery)
             break;
         }
