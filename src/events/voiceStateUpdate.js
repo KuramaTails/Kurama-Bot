@@ -7,7 +7,7 @@ module.exports = {
     name: 'voiceStateUpdate',
 	async execute(oldState, newState) {
         if (oldState.id==bot.client.application.id) return
-        if (oldState.channel != newState.channel) {
+        /*if (oldState.channel != newState.channel) {
             var channel
             var channel = !oldState.channel.id? newState : oldState
             var connection = getVoiceConnection(channel.guild.id);
@@ -45,6 +45,6 @@ module.exports = {
                 connection.subscribe(music.audioPlayer)
                 if(bot.player.queues.collection.get(oldState.guild.id)) queue.resume()
             }, (metadata.format.duration+0.5)*1000);
-        }
+        }*/
 	}
 };

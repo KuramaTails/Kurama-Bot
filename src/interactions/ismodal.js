@@ -5,10 +5,11 @@ const addstreamer = require("../settings/twitch/addstreamer");
 const updateleaver = require("../settings/leaver/updateleaver");
 const deletestreamer = require("../settings/twitch/deletestreamer");
 const urlbackground = require("../settings/welcomer/urlbackground");
+const assistant = require("../assistant/assistant");
 
 module.exports = {
 	async execute(interaction,lang) {
-        await interaction.deferReply( {ephemeral: true})
+        interaction.customId=='assistant'? await interaction.deferUpdate() : await interaction.deferReply()
         switch (interaction.customId) {
             case 'search':
                 await search.execute(interaction,bot.player,lang)
@@ -27,6 +28,10 @@ module.exports = {
             break;
             case 'deleteStreamer':
                 await deletestreamer.execute(interaction,lang,bot.twitch)
+            break;
+            case 'assistant':
+                var textQuery = interaction.fields.getTextInputValue('textInput')
+                assistant.execute(interaction,textQuery)
             break;
         }
 	}

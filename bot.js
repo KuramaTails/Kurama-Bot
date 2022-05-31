@@ -4,7 +4,6 @@ const { Client, Collection} = require('discord.js');
 const prefix = "?";
 const DisTube = require('distube')
 const { YtDlpPlugin } = require('@distube/yt-dlp')
-const {createAudioPlayer} = require("@discordjs/voice");
 
 const bot = new Client({ presence: {status: 'online',afk: false,activities: [{ name: 'Thinking how to destroy Earth',type: 'PLAYING' }] },intents: 32767, partials: ['MESSAGE', 'CHANNEL', 'USER', 'REACTION','GUILD_MEMBER'] });
 
@@ -31,9 +30,6 @@ const player = new DisTube.DisTube(bot, {
 let timeoutID;
 const AntiSpam = require("discord-anti-spam");
 const checkstreamers = require('./src/settings/twitch/checkstreamers');
-const GoogleAssistant = require('google-assistant');
-const {config} = require('./src/assistant/config');
-const startassistant = require('./src/assistant/startassistant');
 const antiSpam = new AntiSpam({
   warnThreshold: 3,
   muteThreshold: 4,
@@ -63,9 +59,6 @@ const twitch = new TwitchAPI({
     client_id: process.env.TWITCH_CLIENDID,
     client_secret: process.env.TWITCH_CLIENTSECRET
 })
-var gAssistant = new GoogleAssistant(config.auth);
-startassistant.execute(gAssistant)
-let audioPlayer=createAudioPlayer();
 module.exports = {
 	prefix:prefix,
 	client:bot,
@@ -81,9 +74,7 @@ module.exports = {
 	pollCounter:pollCounter,
 	playerUser:playerUser,
 	timeoutID:timeoutID,
-	audioPlayer:audioPlayer,
 	DisTube: DisTube,
-	gAssistant:gAssistant,
 }
 fs.readdirSync('./src/languages').forEach(language => {
 	var langName = (language.split("."))[0]

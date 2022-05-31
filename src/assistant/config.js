@@ -12,7 +12,7 @@ const config = {
       encodingOut: 'OPUS_IN_OGG', // supported are LINEAR16 / MP3 / OPUS_IN_OGG (defaults to LINEAR16)
       sampleRateOut: 24000,
     },
-    lang: 'en-US',
+    lang: '',
     deviceModelId: 'xxxxxxxx',
     deviceId: 'xxxxxx',
     deviceLocation: {

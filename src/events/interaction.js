@@ -13,20 +13,22 @@ module.exports = {
         }
         try {
             bot.cooldownUser.set(interaction.user.id, true);
-            if (interaction.isButton()) {
-                await isbutton.execute(interaction,bot.client,bot.player,bot.pollUser,bot.pollCounter,bot.lang,bot.playerUser)
-            }
-            if (interaction.isCommand()) {
-                bot.pollUser.clear(); 
-                bot.pollCounter = [0,0,0,0,0]
-                const command = bot.commands.get(interaction.commandName);
-                await iscommand.execute(interaction,command,bot.player,bot.pollCounter,bot.lang,bot.playerUser)
-            }
-            if(interaction.isSelectMenu()) {
-                await isselectmenu.execute(interaction,bot.lang)
-            }
-            if (interaction.isModalSubmit()) {
-                await ismodal.execute(interaction,bot.lang)
+            switch (true) {
+                case interaction.isButton():
+                    await isbutton.execute(interaction,bot.client,bot.player,bot.pollUser,bot.pollCounter,bot.lang,bot.playerUser)    
+                break;
+                case interaction.isCommand():
+                    bot.pollUser.clear(); 
+                    bot.pollCounter = [0,0,0,0,0]
+                    const command = bot.commands.get(interaction.commandName);
+                    await iscommand.execute(interaction,command,bot.player,bot.pollCounter,bot.lang,bot.playerUser)
+                break;
+                case interaction.isSelectMenu():
+                    await isselectmenu.execute(interaction,bot.lang)
+                break;
+                case interaction.isModalSubmit():
+                    await ismodal.execute(interaction,bot.lang)
+                break;
             }
         } catch (error) {
             var err = bot.lang.get(interaction.guild.settings.lang).interaction["err"]
