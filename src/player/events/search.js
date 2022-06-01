@@ -1,4 +1,4 @@
-const { joinVoiceChannel } = require("@discordjs/voice");
+const { joinVoiceChannel, getVoiceConnection } = require("@discordjs/voice");
 
 module.exports = {
 	async execute(interaction,player,lang) {
@@ -10,6 +10,7 @@ module.exports = {
             return
         }
         try {
+            await player.voices.create(voiceChannel)
             await player.play(voiceChannel, link)
             settings.plugins.playerPlugin.volume? await player.setVolume(voiceChannel, parseInt(settings.plugins.playerPlugin.volume)) : await player.setVolume(voiceChannel, 50)
             var queue = await player.queues.get(voiceChannel)

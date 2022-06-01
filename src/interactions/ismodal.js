@@ -9,7 +9,7 @@ const assistant = require("../assistant/assistant");
 
 module.exports = {
 	async execute(interaction,lang) {
-        interaction.customId=='assistant'? await interaction.deferUpdate() : await interaction.deferReply()
+        interaction.customId=='assistant'? await interaction.deferUpdate() : await interaction.deferReply({ephemeral: true})
         switch (interaction.customId) {
             case 'search':
                 await search.execute(interaction,bot.player,lang)
@@ -31,7 +31,7 @@ module.exports = {
             break;
             case 'assistant':
                 var textQuery = interaction.fields.getTextInputValue('textInput')
-                assistant.execute(interaction,textQuery)
+                await assistant.execute(interaction,textQuery)
             break;
         }
 	}

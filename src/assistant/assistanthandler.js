@@ -17,6 +17,11 @@ module.exports = {
 		        modal.addComponents( firstActionRow);
                 await interaction.showModal(modal);
             break;
+            case "close":
+                var textQuery = 'See you later!'
+		        await assistant.execute(interaction,textQuery)
+                interaction.deferUpdate()
+            break;
         }
     }
 }
